@@ -8,8 +8,9 @@ members of multiple accounts.
 Project status
 ==============
 
-Let's get this out of the way right now. This is definitely pre-alpha! This is
-hardly feature complete, and it's still exploratory.
+Let's get this out of the way right now. This is definitely pre-alpha! Django
+group accounts is hardly feature complete, and it's still exploratory. There
+are no docs and even testing is incomlete. But it's in active development.
 
 Use case
 ========
