@@ -44,7 +44,7 @@ class BaseAccountList(ListView):
 
     Filter by category, client
     """
-    pass
+    model = Account
 
 
 class BaseAccountDetail(AccountSingleObjectMixin, DetailView):
