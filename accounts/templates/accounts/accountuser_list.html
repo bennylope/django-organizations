@@ -1,3 +1,5 @@
+{% extends "account_base.html" %}
+{% block content %}
 <h1>{{ account }}'s Members</h1>
 
 <ul>
@@ -5,3 +7,4 @@
     <li><a href="{{ accountuser.get_absolute_url }}">{{ accountuser }}</a></li>
     {% endfor %}
 </ul>
+{% endblock %}

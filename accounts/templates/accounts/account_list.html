@@ -1,7 +1,10 @@
+{% extends "account_base.html" %}
+{% block content %}
 <h1>Accounts</h1>
 
 <ul>
     {% for account in accounts %}
-    <li><a href="{{ account.get_absolute_url }}">{{ account }}</a/></li>
+    <li><a href="{{ account.get_absolute_url }}">{{ account }}</a></li>
     {% endfor %}
 </ul>
+{% endblock %}

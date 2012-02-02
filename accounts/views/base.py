@@ -37,6 +37,7 @@ class AccountUserSingleObjectMixin(AccountSingleObjectMixin):
         return kwargs
 
     def get(self, request, **kwargs):
+        # TODO: one query with select related?
         self.account = self.get_account(**kwargs)
         self.object = self.get_accountuser(**kwargs)
         context = self.get_context_data(accountuser=self.object,
@@ -93,11 +94,23 @@ class BaseAccountDelete(AccountSingleObjectMixin, DeleteView):
         return reverse("account_list")
 
 
-class BaseAccountUserList(ListView):
+class BaseAccountUserList(AccountSingleObjectMixin, ListView):
     """
     List all users for a given account
     """
     model = AccountUser
+    context_object_name = "accountusers"
+
+    def get(self, request, *args, **kwargs):
+        self.account = self.get_account(**kwargs)
+        self.object_list = self.get_queryset().filter(account=self.account)
+        allow_empty = self.get_allow_empty()
+        if not allow_empty and len(self.object_list) == 0:
+            raise Http404(_(u"Empty list and '%(class_name)s.allow_empty' is False.")
+                          % {'class_name': self.__class__.__name__})
+        context = self.get_context_data(accountusers=self.object_list,
+                account=self.account)
+        return self.render_to_response(context)
 
 
 class BaseAccountUserDetail(AccountUserSingleObjectMixin, DetailView):
