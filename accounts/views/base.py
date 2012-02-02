@@ -14,11 +14,15 @@ class AccountSingleObjectMixin(object):
         account_pk = self.kwargs.get('account_pk', None)
         return get_object_or_404(Account, id=account_pk)
 
+    def get_context_data(self, **kwargs):
+        return kwargs
+
     def get(self, request, **kwargs):
-        self.account = self.get_account(**kwargs)
-        return self.render_to_response({
-            "account": self.account,
-        })
+        # Use self.object rather than a descriptive name because the
+        # get_template_name method looks for that attribute
+        self.object= self.get_account(**kwargs)
+        context = self.get_context_data(account=self.object)
+        return self.render_to_response(context)
 
 
 class AccountUserSingleObjectMixin(AccountSingleObjectMixin):
@@ -29,13 +33,15 @@ class AccountUserSingleObjectMixin(AccountSingleObjectMixin):
         return get_object_or_404(AccountUser, id=accountuser_pk,
                 account__id=account_pk)
 
+    def get_context_data(self, **kwargs):
+        return kwargs
+
     def get(self, request, **kwargs):
         self.account = self.get_account(**kwargs)
-        self.accountuser = self.get_accountuser(**kwargs)
-        return self.render_to_response({
-            "account": self.account,
-            "accountuser": self.accountuser,
-        })
+        self.object = self.get_accountuser(**kwargs)
+        context = self.get_context_data(accountuser=self.object,
+                account=self.account)
+        return self.render_to_response(context)
 
 
 class BaseAccountList(ListView):
@@ -45,6 +51,7 @@ class BaseAccountList(ListView):
     Filter by category, client
     """
     model = Account
+    context_object_name = "accounts"
 
 
 class BaseAccountDetail(AccountSingleObjectMixin, DetailView):
@@ -63,7 +70,7 @@ class BaseAccountCreate(CreateView):
     the data pulled back in the from must correspond to the user's provider
     account.
     """
-    pass
+    model = Account
 
 
 class BaseAccountUpdate(AccountSingleObjectMixin, UpdateView):
@@ -90,8 +97,7 @@ class BaseAccountUserList(ListView):
     """
     List all users for a given account
     """
-    pass
-
+    model = AccountUser
 
 
 class BaseAccountUserDetail(AccountUserSingleObjectMixin, DetailView):
@@ -110,7 +116,7 @@ class BaseAccountUserCreate(CreateView):
     the data pulled back in the from must correspond to the user's provider
     account.
     """
-    pass
+    model = AccountUser
 
 
 class BaseAccountUserUpdate(AccountUserSingleObjectMixin, UpdateView):

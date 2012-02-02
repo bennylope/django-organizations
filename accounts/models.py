@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import permalink
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 
@@ -29,6 +30,10 @@ class Account(models.Model):
     def __unicode__(self):
         return u"%s" % self.name
 
+    @permalink
+    def get_absolute_url(self):
+        return ('account_detail', (), {'account_pk': self.pk})
+
 
 class AccountUser(models.Model):
     """
@@ -51,6 +56,11 @@ class AccountUser(models.Model):
 
     def __unicode__(self):
         return u"%s" % self.user
+
+    @permalink
+    def get_absolute_url(self):
+        return ('accountuser_detail', (),
+                {'account_pk': self.account.pk, 'accountuser_pk': self.pk})
 
     def delete(self, using=None):
         """
