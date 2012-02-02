@@ -49,6 +49,12 @@ between the Account and the Users to allow this.
 
 Ideally as much of the relationships should be defined in the database.
 
+License
+=======
+
+Anyone is free to use or modify this software under ther terms of the BSD
+license.
+
 To-do
 =====
 
