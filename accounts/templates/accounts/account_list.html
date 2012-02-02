@@ -2,6 +2,6 @@
 
 <ul>
     {% for account in accounts %}
-    <li>{{ account }}</li>
+    <li><a href="{{ account.get_absolute_url }}">{{ account }}</a/></li>
     {% endfor %}
 </ul>
