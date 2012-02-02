@@ -1,4 +1,5 @@
 from django.core.urlresolvers import reverse
+from django.http import Http404
 from django.views.generic import (ListView, DetailView, CreateView,
         UpdateView, DeleteView)
 from django.contrib.auth.decorators import login_required
@@ -28,18 +29,24 @@ class AccountSingleObjectMixin(object):
 class AccountUserSingleObjectMixin(AccountSingleObjectMixin):
 
     def get_accountuser(self, **kwargs):
+        """
+        Using select_related here allows us to make one database call to fetch
+        matching user and account information
+        """
         account_pk = self.kwargs.get('account_pk', None)
         accountuser_pk = self.kwargs.get('accountuser_pk', None)
-        return get_object_or_404(AccountUser, id=accountuser_pk,
-                account__id=account_pk)
+        try:
+            return AccountUser.objects.select_related().get(pk=accountuser_pk,
+                    account__pk=account_pk)
+        except AccountUser.DoesNotExist:
+            raise Http404
 
     def get_context_data(self, **kwargs):
         return kwargs
 
     def get(self, request, **kwargs):
-        # TODO: one query with select related?
-        self.account = self.get_account(**kwargs)
         self.object = self.get_accountuser(**kwargs)
+        self.account = self.object.account
         context = self.get_context_data(accountuser=self.object,
                 account=self.account)
         return self.render_to_response(context)
