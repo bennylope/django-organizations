@@ -12,6 +12,17 @@ Use case
 Installation
 ============
 
+First add the application to your Python path. The easiest way is to use `pip`:
+
+    pip install django-group-accounts
+
+Then make sure that you add the `accounts` application to your
+`INSTALLED_APPS` list.
+
+Usage
+=====
+
+
 
 
 To-do

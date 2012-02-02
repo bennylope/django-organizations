@@ -30,7 +30,7 @@ MEDIA_ROOT = join(TEST_ROOT, 'media')
 STATIC_URL = '/static/'
 STATIC_ROOT = MEDIA_ROOT
 
-#ROOT_URLCONF = 'tests.urls'
+ROOT_URLCONF = 'tests.urls'
 
 #TEMPLATE_DIRS = (join(TEST_ROOT, 'templates'),)
 
