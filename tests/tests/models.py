@@ -1,20 +1,6 @@
 from django.test import TestCase
 
-
-class AccountUserTestingMixin(object):
-    """
-    Common setup required for testing accounts
-    """
-
-    def create_users(self):
-        from django.contrib.auth.models import User
-        user = User.objects.create_user("user", "none",
-                "user@example.com")
-        seconduser = User.objects.create_user("lucy", "none",
-                "second@example.com")
-        thirduser = User.objects.create_user("bob", "none",
-                "third@example.com")
-        return user, seconduser, thirduser
+from testing_utils import AccountUserTestingMixin
 
 
 class AccountModelsTest(TestCase, AccountUserTestingMixin):
@@ -189,99 +175,5 @@ class AccountOwnership(TestCase, AccountUserTestingMixin):
 
         account.delete()
         self.assertEqual(0, len(AccountUser.objects.filter(account=account)))
-
-
-class AccountFormTest(TestCase, AccountUserTestingMixin):
-    """
-    The AccountForm should allow a user to easily create or edit an existing
-    account. That includes updating or creating an account user.
-    """
-    def setUp(self):
-        self.user, self.seconduser, self.thirduser = self.create_users()
-
-    def test_duplicate_subdomain(self):
-        """Subdomains must be unique or form is not valid"""
-        from accounts.forms import AccountForm
-        from accounts.utils import create_account
-        account = create_account("First", self.user, subdomain="first")
-        form = AccountForm(initial={
-            "name": "My test",
-            "subdomain": "first",
-        })
-        self.assertFalse(form.is_valid())
-
-    def test_duplicate_domain(self):
-        """Full domains must be unique or form is not valid"""
-        from accounts.forms import AccountForm
-        from accounts.utils import create_account
-        account = create_account("First", self.user,
-                domain="sub.example.com")
-        form = AccountForm(initial={
-            "name": "My test",
-            "domain": "sub.example.com",
-        })
-        self.assertFalse(form.is_valid())
-
-    def test_create_account_new_user(self):
-        """Ensure valid when all fresh information"""
-        pass
-
-    def test_create_account_exist_user(self):
-        """Ensure valid for existing user"""
-        pass
-
-
-class AccountUserFormTest(TestCase, AccountUserTestingMixin):
-    """
-    The AccountUserForm should allow a user to easily create or edit existing
-    user. This includes underlying User information.
-    """
-    def setUp(self):
-        pass
-
-    def test_duplicate_user(self):
-        """A form creating a duplicate User should not be valid"""
-        pass
-
-
-class CreateAccountTest(TestCase, AccountUserTestingMixin):
-    """
-    Test the view for creating accounts
-    """
-    pass
-
-
-class UpdateAccountTest(TestCase, AccountUserTestingMixin):
-    """
-    Test the view for updating accounts
-    """
-    pass
-
-
-class DeleteAccountTest(TestCase, AccountUserTestingMixin):
-    """
-    Test the view for deleting accounts
-    """
-    pass
-
-
-class CreateAccountUserTest(TestCase, AccountUserTestingMixin):
-    """
-    Test the view for creating user accounts
-    """
-    pass
-
-
-class UpdateAccountUserTest(TestCase, AccountUserTestingMixin):
-    """
-    """
-    pass
-
-
-class DeleteAccountUserTest(TestCase, AccountUserTestingMixin):
-    """
-    """
-    pass
-
 
 

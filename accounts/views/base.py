@@ -3,122 +3,132 @@ from django.views.generic import (ListView, DetailView, CreateView,
         UpdateView, DeleteView)
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
+from django.shortcuts import get_object_or_404
 
 from accounts.models import Account, AccountUser
 
 
+class AccountSingleObjectMixin(object):
 
-class AccountList(ListView):
+    def get_account(self, **kwargs):
+        account_pk = self.kwargs.get('account_pk', None)
+        return get_object_or_404(Account, id=account_pk)
+
+    def get(self, request, **kwargs):
+        self.account = self.get_account(**kwargs)
+        return self.render_to_response({
+            "account": self.account,
+        })
+
+
+class AccountUserSingleObjectMixin(AccountSingleObjectMixin):
+
+    def get_accountuser(self, **kwargs):
+        account_pk = self.kwargs.get('account_pk', None)
+        accountuser_pk = self.kwargs.get('accountuser_pk', None)
+        return get_object_or_404(AccountUser, id=accountuser_pk,
+                account__id=account_pk)
+
+    def get(self, request, **kwargs):
+        self.account = self.get_account(**kwargs)
+        self.accountuser = self.get_accountuser(**kwargs)
+        return self.render_to_response({
+            "account": self.account,
+            "accountuser": self.accountuser,
+        })
+
+
+class BaseAccountList(ListView):
     """
     List all documents for all clients
 
     Filter by category, client
     """
-    model = Account
-    context_object_name = "documents"
-    template_name = "documents/document_list.html"
+    pass
 
-    #@method_decorator(login_required)
-    #def dispatch(self, request, *args, **kwargs):
-    #    return super(AccountList, self).dispatch(request, *args, **kwargs)
-
-
-class AccountDetail(DetailView):
+class BaseAccountDetail(AccountSingleObjectMixin, DetailView):
     """
     View to show information about a document, contingent on the user having
     access to the document.
 
     Also provides base view fucntionality to the file view.
     """
-    model = Account
-
-    #@method_decorator(login_required)
-    #def dispatch(self, request, *args, **kwargs):
-    #    return super(AccountDetail, self).dispatch(request, *args, **kwargs)
+    pass
 
 
-class AccountCreate(CreateView):
+class BaseAccountCreate(CreateView):
     """
     This is a view restricted to providers. The data displayed in the form and
     the data pulled back in the from must correspond to the user's provider
     account.
     """
-    model = Account
+    pass
 
 
-class AccountUpdate(UpdateView):
+class BaseAccountUpdate(AccountSingleObjectMixin, UpdateView):
     """
     This is a view restricted to providers. The data displayed in the form and
     the data pulled back in the from must correspond to the user's provider
     account.
     """
-    model = Account
+    pass
 
 
-class AccountDelete(DeleteView):
+class BaseAccountDelete(AccountSingleObjectMixin, DeleteView):
     """
     This is a view restricted to providers. The data displayed in the form and
     the data pulled back in the from must correspond to the user's provider
     account.
     """
-    model = Account
+    pass
 
     def get_success_url(self):
         return reverse("account_list")
 
 
-class AccountUserList(ListView):
+class BaseAccountUserList(ListView):
     """
     List all users for a given account
     """
-    model = AccountUser
-
-    #@method_decorator(login_required)
-    #def dispatch(self, request, *args, **kwargs):
-    #    return super(AccountUserList, self).dispatch(request, *args, **kwargs)
+    pass
 
 
-class AccountUserDetail(DetailView):
+
+class BaseAccountUserDetail(AccountUserSingleObjectMixin, DetailView):
     """
     View to show information about a document, contingent on the user having
     access to the document.
 
     Also provides base view fucntionality to the file view.
     """
-    model = AccountUser
-
-    #@method_decorator(login_required)
-    #def dispatch(self, request, *args, **kwargs):
-    #    return super(AccountUserDetail, self).dispatch(request, *args, **kwargs)
+    pass
 
 
-class AccountUserCreate(CreateView):
+class BaseAccountUserCreate(CreateView):
     """
     This is a view restricted to providers. The data displayed in the form and
     the data pulled back in the from must correspond to the user's provider
     account.
     """
-    model = AccountUser
+    pass
 
 
-class AccountUserUpdate(UpdateView):
+class BaseAccountUserUpdate(AccountUserSingleObjectMixin, UpdateView):
     """
     This is a view restricted to providers. The data displayed in the form and
     the data pulled back in the from must correspond to the user's provider
     account.
     """
-    model = AccountUser
+    pass
 
 
-class AccountUserDelete(DeleteView):
+class BaseAccountUserDelete(AccountUserSingleObjectMixin, DeleteView):
     """
     This is a view restricted to providers. The data displayed in the form and
     the data pulled back in the from must correspond to the user's provider
     account.
     """
-    model = AccountUser
+    pass
 
     def get_success_url(self):
-        return reverse("account_list")
-
-
+        return reverse("accountuser_list")
