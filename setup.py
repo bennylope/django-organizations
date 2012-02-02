@@ -26,8 +26,9 @@ setup(
         'Django>=1.3',
     ],
     test_suite='tests.runtests.runtests',
+    include_package_data=True,
     packages=find_packages(),
-    zip_safe = False
+    zip_safe=False
 )
 
 

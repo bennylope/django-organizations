@@ -1,5 +1,2 @@
-include LICENSE
-include README.rst
-recursive-include docs *
+include setup.py README.rst MANIFEST.in LICENSE
 recursive-include accounts/templates *
-recursive-include tests *

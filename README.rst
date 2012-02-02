@@ -61,4 +61,5 @@ To-do
 
 * Merge users if someone has duplicate user profiles (or just validate that a
   user can have only one AccountUser object per Account)
-
+* Management command to clean orphan accounts
+* Add self-registration form
