@@ -1,2 +1,7 @@
-{{ account }}
-{{ accountusers }}
+<h1>{{ account }}'s Members</h1>
+
+<ul>
+    {% for accountuser in accountusers %}
+    <li>{{ accountuser }}</li>
+    {% endfor %}
+</ul>
