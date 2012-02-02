@@ -5,12 +5,12 @@ import os
 setup(
     author="Ben Lopatin",
     author_email="ben.lopatin@wellfireinteractive.com",
-    name='django-site-broadcasts',
+    name='django-group-accounts',
     version='0.0.1',
     description='Group accounts for Django.',
     long_description=open(os.path.join(os.path.dirname(__file__),
         'README.rst')).read(),
-    url='https://github.com/bennylope/django-site-broadcasts/',
+    url='https://github.com/bennylope/django-group-accounts/',
     license='BSD License',
     platforms=['OS Independent'],
     classifiers=[
