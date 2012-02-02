@@ -46,6 +46,7 @@ class BaseAccountList(ListView):
     """
     pass
 
+
 class BaseAccountDetail(AccountSingleObjectMixin, DetailView):
     """
     View to show information about a document, contingent on the user having
@@ -80,7 +81,6 @@ class BaseAccountDelete(AccountSingleObjectMixin, DeleteView):
     the data pulled back in the from must correspond to the user's provider
     account.
     """
-    pass
 
     def get_success_url(self):
         return reverse("account_list")
@@ -128,7 +128,6 @@ class BaseAccountUserDelete(AccountUserSingleObjectMixin, DeleteView):
     the data pulled back in the from must correspond to the user's provider
     account.
     """
-    pass
 
     def get_success_url(self):
         return reverse("accountuser_list")
