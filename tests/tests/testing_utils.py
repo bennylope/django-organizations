@@ -6,15 +6,11 @@ class AccountUserTestingMixin(object):
 
     def create_users(self):
         from django.contrib.auth.models import User
-        user = User.objects.create_user("user", "pass",
-                "user@example.com")
-        seconduser = User.objects.create_user("lucy", "pass",
-                "second@example.com")
-        thirduser = User.objects.create_user("bob", "pass",
-                "third@example.com")
-        fourthuser = User.objects.create_user("sue", "pass",
-                "fourth@example.com")
-        return user, seconduser, thirduser, fourthuser
+        self.user = User.objects.create_user(username="user", email="", password="pass")
+        self.seconduser = User.objects.create_user(username="lucy", email="", password="pass")
+        self.thirduser = User.objects.create_user(username="bob", email="", password="pass")
+        self.fourthuser = User.objects.create_user(username="sue", email="", password="pass")
+        return self.user, self.seconduser, self.thirduser, self.fourthuser
 
     def create_accounts(self):
         from accounts.models import Account

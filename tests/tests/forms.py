@@ -43,7 +43,7 @@ class AccountFormTest(TestCase, AccountUserTestingMixin):
         pass
 
 
-class AccountUserFormTest(TestCase, AccountUserTestingMixin):
+class AccountUserFormsTest(TestCase, AccountUserTestingMixin):
     """
     The AccountUserForm should allow a user to easily create or edit existing
     user. This includes underlying User information.
@@ -54,3 +54,15 @@ class AccountUserFormTest(TestCase, AccountUserTestingMixin):
     def test_duplicate_user(self):
         """A form creating a duplicate User should not be valid"""
         pass
+
+    def test_add_user_account(self):
+        """AccountUserAddForm properly validates with valid data?"""
+        from accounts.forms import AccountUserAddForm
+        form = AccountUserAddForm({
+            'username': 'lol1986',
+            'first_name': 'First',
+            'last_name': 'Last',
+            'email': 'user@exmaple.com',
+            'is_admin': False,
+        })
+        self.assertTrue(form.is_valid())

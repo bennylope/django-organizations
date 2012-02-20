@@ -1,4 +1,13 @@
 {% extends "account_base.html" %}
 {% block content %}
 <h1> {{ accountuser }} @ {{ account }}</h1>
+{% if user == accountuser.user %}This is you!{% endif %}
+<ul>
+    <li>Name: {{ accountuser.full_name }}</li>
+    <li>Email: {{ accountuser.user.email }}</li>
+</ul>
+<ul>
+    <li><a href="{% url accountuser_edit account.pk accountuser.pk %}">Edit</a></li>
+    <li><a href="{% url accountuser_delete account.pk accountuser.pk %}">Delete</a></li>
+</ul>
 {% endblock %}

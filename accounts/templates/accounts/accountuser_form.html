@@ -1,6 +1,9 @@
 {% extends "account_base.html" %}
 {% block content %}
 <h1> {{ accountuser }} @ {{ account }}</h1>
-
-{{ form }}
+{% if user == accountuser.user %}This is you!{% endif %}
+<form action="." method="POST">{% csrf_token %}
+    {{ form }}
+    <input type="submit" value="submit">
+</form>
 {% endblock %}

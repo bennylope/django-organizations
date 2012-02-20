@@ -24,8 +24,8 @@ class Account(models.Model):
 
     class Meta:
         ordering = ['name']
-        verbose_name = _("Account group")
-        verbose_name_plural = _("Account groups")
+        verbose_name = _("Account")
+        verbose_name_plural = _("Accounts")
 
     def __unicode__(self):
         return u"%s" % self.name
@@ -57,11 +57,6 @@ class AccountUser(models.Model):
     def __unicode__(self):
         return u"%s" % self.user
 
-    @permalink
-    def get_absolute_url(self):
-        return ('accountuser_detail', (),
-                {'account_pk': self.account.pk, 'accountuser_pk': self.pk})
-
     def delete(self, using=None):
         """
         If the account user is also the owner, this should not be deleted
@@ -73,6 +68,16 @@ class AccountUser(models.Model):
                                     "account or transferring ownership")
         else:
             super(AccountUser, self).delete(using=using)
+
+    @permalink
+    def get_absolute_url(self):
+        return ('accountuser_detail', (),
+                {'account_pk': self.account.pk, 'accountuser_pk': self.pk})
+
+    @property
+    def full_name(self):
+        return u"%s %s" % (self.user.first_name, self.user.last_name)
+
 
 
 class AccountOwner(models.Model):

@@ -1,33 +1,36 @@
 from django.conf.urls.defaults import patterns, url
 
-from accounts.views import (AccountList, AccountDetail, AccountUpdate,
-        AccountDelete, AccountCreate, AccountUserList, AccountUserDetail,
-        AccountUserUpdate, AccountUserCreate, AccountUserDelete)
+from accounts.views.base import (BaseAccountList, BaseAccountDetail,
+        BaseAccountUpdate, BaseAccountDelete, BaseAccountCreate,
+        BaseAccountUserList, BaseAccountUserDetail, BaseAccountUserUpdate,
+        BaseAccountUserCreate, BaseAccountUserDelete)
 
 
 urlpatterns = patterns('',
-    # Account URLs
-    url(r'^$', view=AccountList.as_view(), name="account_list"),
-    url(r'^add/$', view=AccountCreate.as_view(), name="account_add"),
-    url(r'^(?P<account_pk>[\d]+)/$', view=AccountDetail.as_view(),
-        name="account_detail"),
-    url(r'^(?P<account_pk>[\d]+)/edit/$', view=AccountUpdate.as_view(),
-        name="account_edit"),
-    url(r'^(?P<account_pk>[\d]+)/delete/$', view=AccountDelete.as_view(),
-        name="account_delete"),
+    # BaseAccount URLs
+    url(r'^$', view=BaseAccountList.as_view(), name="base_account_list"),
+    url(r'^add/$', view=BaseAccountCreate.as_view(), name="base_account_add"),
+    url(r'^(?P<account_pk>[\d]+)/$', view=BaseAccountDetail.as_view(),
+        name="base_account_detail"),
+    url(r'^(?P<account_pk>[\d]+)/edit/$', view=BaseAccountUpdate.as_view(),
+        name="base_account_edit"),
+    url(r'^(?P<account_pk>[\d]+)/delete/$', view=BaseAccountDelete.as_view(),
+        name="base_account_delete"),
 
-    # Account user URLs
-    url(r'^(?P<account_pk>[\d]+)/people/$', view=AccountUserList.as_view(),
-        name="accountuser_list"),
+    # BaseAccount user URLs
+    url(r'^(?P<account_pk>[\d]+)/people/$', view=BaseAccountUserList.as_view(),
+        name="base_accountuser_list"),
     url(r'^(?P<account_pk>[\d]+)/people/add/$',
-        view=AccountUserCreate.as_view(), name="accountuser_add"),
+        view=BaseAccountUserCreate.as_view(), name="base_accountuser_add"),
     url(r'^(?P<account_pk>[\d]+)/people/(?P<accountuser_pk>[\d]+)/$',
-        view=AccountUserDetail.as_view(), name="accountuser_detail"),
+        view=BaseAccountUserDetail.as_view(), name="base_accountuser_detail"),
     url(r'^(?P<account_pk>[\d]+)/people/(?P<accountuser_pk>[\d]+)/edit/$',
-        view=AccountUserUpdate.as_view(), name="accountuser_edit"),
+        view=BaseAccountUserUpdate.as_view(), name="base_accountuser_edit"),
     url(r'^(?P<account_pk>[\d]+)/people/(?P<accountuser_pk>[\d]+)/delete/$',
-        view=AccountUserDelete.as_view(), name="accountuser_delete"),
+        view=BaseAccountUserDelete.as_view(), name="base_accountuser_delete"),
 )
+
+
 
 
 
