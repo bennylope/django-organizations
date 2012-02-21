@@ -77,6 +77,41 @@ class AccountUserAddForm(forms.Form):
         return self.cleaned_data
 
 
+class AccountAddForm(AccountUserAddForm):
+    """
+    Form class for creating a new account, complete with new owner, including a
+    User instance, AccountUser instance, and AccountOwner instance.
+    """
+    # TODO hide the is_admin field, it's True by default for this
+    # TODO make a util mixin for creating the user...
+    account_name = forms.CharField(max_length=100)
+    subdomain = forms.CharField(max_length=100, required=False)
+    domain = forms.CharField(max_length=100, required=False)
+
+    def save(self):
+        """
+        Create the account, then get the user, then make the owner.
+        """
+        from django.contrib.auth.models import User
+        from accounts.utils import create_account
+        # Test for user with same email first?
+        user = User.objects.create_user(
+                username=self.cleaned_data['username'],
+                email=self.cleaned_data['email'],
+                password=User.objects.make_random_password()
+                )
+        user.first_name = self.cleaned_data['first_name']
+        user.last_name = self.cleaned_data['last_name']
+        user.save()
+        return create_account(
+                self.cleaned_data['account_name'],
+                user,
+                self.cleaned_data['subdomain'],
+                self.cleaned_data['domain'],
+                )
+
+
+
 class ProfileUserForm(AccountUserForm):
     """
     Form for updating your own profile

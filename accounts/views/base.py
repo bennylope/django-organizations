@@ -1,16 +1,16 @@
 from django.core.urlresolvers import reverse
 from django.http import Http404
-from django.views.generic import (ListView, DetailView, CreateView,
-        UpdateView, DeleteView, FormView)
+from django.views.generic import (ListView, DetailView, UpdateView, DeleteView,
+        FormView)
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
-from django.shortcuts import get_object_or_404
 
 from accounts.models import Account, AccountUser
 from accounts.views.mixins import (AccountAuthMixin, AccountSingleObjectMixin,
         AccountUserSingleObjectMixin, AccountsUpdateMixin)
 
-from accounts.forms import AccountUserForm, AccountUserAddForm
+from accounts.forms import (AccountUserForm, AccountUserAddForm,
+        AccountAddForm)
 
 
 class BaseAccountList(AccountAuthMixin, ListView):
@@ -36,13 +36,21 @@ class BaseAccountDetail(AccountSingleObjectMixin, DetailView):
         return context
 
 
-class BaseAccountCreate(AccountAuthMixin, CreateView):
+class BaseAccountCreate(AccountAuthMixin, FormView):
     """
     This is a view restricted to providers. The data displayed in the form and
     the data pulled back in the from must correspond to the user's provider
     account.
     """
-    model = Account
+    form_class = AccountAddForm
+    template_name = 'accounts/account_form.html'
+
+    def get_success_url(self):
+        return self.object.get_absolute_url()
+
+    def form_valid(self, form):
+        self.object = form.save()
+        return super(BaseAccountCreate, self).form_valid(form)
 
 
 class BaseAccountUpdate(AccountsUpdateMixin, AccountSingleObjectMixin, UpdateView):
