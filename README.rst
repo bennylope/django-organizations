@@ -24,12 +24,20 @@ or can be based on a group of people, rather than just one individual.
 Installing
 ==========
 
-First add the application to your Python path. The easiest way is to use `pip`:
+You should install by downloading the source and running::
 
-    pip install django-group-accounts
+    $ python setup.py install
 
-Then make sure that you add the `accounts` application to your
-`INSTALLED_APPS` list.
+Or use pip::
+
+    $ pip install -e git+git://github.com/bennylope/django-group-accounts.git#egg=django-group-accounts
+
+.. First add the application to your Python path. The easiest way is to use `pip`:
+
+..    pip install django-group-accounts
+
+.. Then make sure that you add the `accounts` application to your
+.. `INSTALLED_APPS` list.
 
 Using group accounts
 ====================
