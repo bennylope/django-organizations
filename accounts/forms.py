@@ -58,14 +58,13 @@ class AccountUserAddForm(forms.Form):
     def save(self, account=None):
         from django.contrib.auth.models import User
         # Test for user with same email first?
-        user = User.objects.create_user(
+        user = User.objects.create(
                 username=self.cleaned_data['username'],
                 email=self.cleaned_data['email'],
-                password=User.objects.make_random_password()
-                )
-        user.first_name = self.cleaned_data['first_name']
-        user.last_name = self.cleaned_data['last_name']
-        user.save()
+                password=User.objects.make_random_password(),
+                first_name=self.cleaned_data['first_name'],
+                last_name=self.cleaned_data['last_name'])
+        # TODO make sure duplicates cannot be added
         account_user = AccountUser.objects.create(
                 user=user,
                 is_admin=self.cleaned_data['is_admin'],
@@ -82,11 +81,13 @@ class AccountAddForm(AccountUserAddForm):
     Form class for creating a new account, complete with new owner, including a
     User instance, AccountUser instance, and AccountOwner instance.
     """
-    # TODO hide the is_admin field, it's True by default for this
-    # TODO make a util mixin for creating the user...
     account_name = forms.CharField(max_length=100)
     subdomain = forms.CharField(max_length=100, required=False)
     domain = forms.CharField(max_length=100, required=False)
+
+    def __init__(self, *args, **kwargs):
+        super(AccountAddForm, self).__init__(*args, **kwargs)
+        self.fields.pop('is_admin')
 
     def save(self):
         """
@@ -95,14 +96,12 @@ class AccountAddForm(AccountUserAddForm):
         from django.contrib.auth.models import User
         from accounts.utils import create_account
         # Test for user with same email first?
-        user = User.objects.create_user(
+        user = User.objects.create(
                 username=self.cleaned_data['username'],
                 email=self.cleaned_data['email'],
-                password=User.objects.make_random_password()
-                )
-        user.first_name = self.cleaned_data['first_name']
-        user.last_name = self.cleaned_data['last_name']
-        user.save()
+                password=User.objects.make_random_password(),
+                first_name=self.cleaned_data['first_name'],
+                last_name=self.cleaned_data['last_name'])
         return create_account(
                 self.cleaned_data['account_name'],
                 user,

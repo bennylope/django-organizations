@@ -34,6 +34,13 @@ class Account(models.Model):
     def get_absolute_url(self):
         return ('account_detail', (), {'account_pk': self.pk})
 
+    def is_member(self, user):
+        """
+        Returns a boolean value designating whether the User is a member of the
+        account.
+        """
+        return True if self.objects.users.filter(user=user) else False
+
 
 class AccountUser(models.Model):
     """
@@ -51,6 +58,7 @@ class AccountUser(models.Model):
 
     class Meta:
         ordering = ['account', 'user']
+        unique_together = ('user', 'account')
         verbose_name = _("Account user")
         verbose_name_plural = _("Account users")
 

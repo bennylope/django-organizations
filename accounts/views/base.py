@@ -33,6 +33,7 @@ class BaseAccountDetail(AccountSingleObjectMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super(BaseAccountDetail, self).get_context_data(**kwargs)
         context['accountusers'] = self.object.users.all()
+        context['account'] = self.object
         return context
 
 

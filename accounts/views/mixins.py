@@ -39,7 +39,9 @@ class AccountSingleObjectMixin(AccountAuthMixin):
         return kwargs
 
     def get_object(self, **kwargs):
-        account_pk = self.kwargs.get('account_pk', None)
+        if hasattr(self, 'object'):
+            return self.object
+        account_pk = kwargs.get('account_pk', None)
         return get_object_or_404(Account, id=account_pk)
     get_account = get_object
 
@@ -80,3 +82,24 @@ class AccountsUpdateMixin(object):
         form = self.get_form(form_class)
         context['form'] = form
         return context
+
+
+class AccountUserOnly(object):
+    """
+    A mixin to restrict the view to members of the given account
+    """
+    pass
+
+
+class AdminUserOnly(object):
+    """
+    A mixin to restrict the view to admin members of the given account only
+    """
+    pass
+
+
+class OwnerUserOnly(object):
+    """
+    A mixin to restrict the view to the owner of the account only
+    """
+    pass
