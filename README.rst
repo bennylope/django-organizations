@@ -8,14 +8,14 @@ members of multiple accounts.
 Project status
 ==============
 
-Let's get this out of the way right now. This is definitely pre-alpha! Django
-group accounts is hardly feature complete, and it's still exploratory. There
-are no docs and even testing is incomlete. But it's in active development.
+Let's get this out of the way right now. This is definitely pre-alpha. Django
+group accounts is hardly feature complete, and it's still exploratory.
+Documentation and test coverage is minimal.
 
 Use case
 ========
 
-It's an incredibly requirement to have not just users on your web site or
+It's an important requirement to have not just users on your web site or
 application but users who are members of a larger group account. This might be
 an additional feature, or it might be a core feature (GitHub has optional group
 accounts, Basecamp has required group accounts). Any place where the account is

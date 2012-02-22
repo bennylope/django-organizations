@@ -1,10 +1,5 @@
-from django.core.urlresolvers import reverse
-from django.http import Http404
-from django.contrib.auth.decorators import login_required
-from django.utils.decorators import method_decorator
-from django.shortcuts import get_object_or_404
-
 from accounts.decorators import require_account, require_admin, require_owner
+from accounts.models import Account
 from accounts.views.base import (BaseAccountList, BaseAccountDetail,
         BaseAccountUpdate, BaseAccountDelete, BaseAccountCreate,
         BaseAccountUserList, BaseAccountUserDetail, BaseAccountUserUpdate,
@@ -17,7 +12,8 @@ class AccountList(BaseAccountList):
 
     Filter by category, client
     """
-    pass
+    def get_queryset(self):
+        return Account.objects.filter(users__in=self.request.user.accountusers.all())
 
 
 @require_account
@@ -101,5 +97,3 @@ class AccountUserDelete(BaseAccountUserDelete):
     This view should be restricted to the user or admin users
     """
     pass
-
-

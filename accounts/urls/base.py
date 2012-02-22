@@ -29,9 +29,3 @@ urlpatterns = patterns('',
     url(r'^(?P<account_pk>[\d]+)/people/(?P<accountuser_pk>[\d]+)/delete/$',
         view=BaseAccountUserDelete.as_view(), name="base_accountuser_delete"),
 )
-
-
-
-
-
-

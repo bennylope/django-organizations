@@ -6,7 +6,7 @@ setup(
     author="Ben Lopatin",
     author_email="ben.lopatin@wellfireinteractive.com",
     name='django-group-accounts',
-    version='0.0.1a',
+    version='0.1a',
     description='Group accounts for Django.',
     long_description=open(os.path.join(os.path.dirname(__file__),
         'README.rst')).read(),
@@ -30,5 +30,3 @@ setup(
     packages=find_packages(),
     zip_safe=False
 )
-
-
