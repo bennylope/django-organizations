@@ -117,6 +117,7 @@ class ProfileUserForm(AccountUserForm):
     """
     password1 = forms.CharField(required=False, widget=forms.PasswordInput)
     password2 = forms.CharField(required=False, widget=forms.PasswordInput)
+    referrer = forms.CharField(required=False, widget=forms.HiddenInput)
 
     def __init__(self, *args, **kwargs):
         super(ProfileUserForm, self).__init__(*args, **kwargs)

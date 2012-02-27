@@ -1,5 +1,5 @@
 from django.core.urlresolvers import reverse
-from django.http import Http404
+from django.http import Http404, HttpResponseRedirect
 from django.views.generic import (ListView, DetailView, UpdateView, DeleteView,
         FormView)
 from django.contrib.auth.decorators import login_required
@@ -157,15 +157,16 @@ class BaseAccountUserDelete(AccountUserSingleObjectMixin, DeleteView):
         return reverse("accountuser_list")
 
 
-class UserProfileView(FormView):
+class UserProfileView(AccountAuthMixin, FormView):
     """
     Profile view that is specific to the logged in user
     """
     form_class = ProfileUserForm
     template_name = "accounts/accountuser_form.html"
+    success_url = "/"
 
-    def get_object(self):
-        return get_object_or_404(AccountUser, user=self.request.user)
+    def success_redirect(self, referrer):
+        return HttpResponseRedirect(referrer or self.success_url)
 
     def get_context_data(self, **kwargs):
         context = super(UserProfileView, self).get_context_data(**kwargs)
@@ -176,10 +177,27 @@ class UserProfileView(FormView):
         """
         Saves updates to the User model
         """
-        return super(UserProfileView, self).form_valid(form)
+        # Save the user
+        self.user.username = form.cleaned_data['username']
+        self.user.first_name = form.cleaned_data['first_name']
+        self.user.last_name = form.cleaned_data['last_name']
+        self.user.email = form.cleaned_data['email']
+        if form.cleaned_data['password1']:
+            self.user.set_password(form.cleaned_data['password1'])
+        self.user.save()
+        return self.success_redirect(form.cleaned_data['referrer'])
 
     def get(self, request, *args, **kwargs):
-        return super(UserProfileView, self).get(request, *args, **kwargs)
+        self.referrer = request.META.get('HTTP_REFERER')
+        self.user = request.user
+        form = ProfileUserForm(initial={
+            'username': self.user.username,
+            'first_name': self.user.first_name,
+            'last_name': self.user.last_name,
+            'email': self.user.email,
+            'referrer': self.referrer,})
+        return self.render_to_response(self.get_context_data(form=form))
 
     def post(self, request, *args, **kwargs):
+        self.user = request.user
         return super(UserProfileView, self).post(request, *args, **kwargs)
