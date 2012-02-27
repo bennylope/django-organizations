@@ -3,7 +3,7 @@ from django.conf.urls.defaults import patterns, url
 from accounts.views.base import (BaseAccountList, BaseAccountDetail,
         BaseAccountUpdate, BaseAccountDelete, BaseAccountCreate,
         BaseAccountUserList, BaseAccountUserDetail, BaseAccountUserUpdate,
-        BaseAccountUserCreate, BaseAccountUserDelete)
+        BaseAccountUserCreate, BaseAccountUserDelete, UserProfileView)
 
 
 urlpatterns = patterns('',
@@ -28,4 +28,8 @@ urlpatterns = patterns('',
         view=BaseAccountUserUpdate.as_view(), name="base_accountuser_edit"),
     url(r'^(?P<account_pk>[\d]+)/people/(?P<accountuser_pk>[\d]+)/delete/$',
         view=BaseAccountUserDelete.as_view(), name="base_accountuser_delete"),
+
+    # Profile
+    url(r'^profile/$', view=UserProfileView.as_view(),
+        name="base_accountuser_profile"),
 )

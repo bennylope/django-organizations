@@ -1,4 +1,5 @@
 from django import forms
+from django.contrib.auth.forms import AuthenticationForm
 
 from accounts.models import Account, AccountUser, AccountOwner
 
@@ -110,7 +111,6 @@ class AccountAddForm(AccountUserAddForm):
                 )
 
 
-
 class ProfileUserForm(AccountUserForm):
     """
     Form for updating your own profile
@@ -118,9 +118,28 @@ class ProfileUserForm(AccountUserForm):
     password1 = forms.CharField(required=False, widget=forms.PasswordInput)
     password2 = forms.CharField(required=False, widget=forms.PasswordInput)
 
+    def __init__(self, *args, **kwargs):
+        super(ProfileUserForm, self).__init__(*args, **kwargs)
+        self.fields.pop('is_admin')
+
+    def clean(self):
+        data = self.cleaned_data
+        password1, password2 = data.get('password1'), data.get('password2')
+        if (password1 or password2) and (password1 != password2):
+            err_msg = u"Your passwords must match"
+            self._errors['password2'] = self.error_class([err_msg])
+            del data['password1']
+            del data['password2']
+        return data
+
 
 class AccountOwnerForm(forms.ModelForm):
     """Form for updating account owner"""
     class Meta:
         model = AccountOwner
 
+
+class LoginForm(AuthenticationForm):
+    """Adds the next field for log in"""
+    redirect_url = forms.CharField(max_length=200, required=False,
+            widget=forms.HiddenInput())

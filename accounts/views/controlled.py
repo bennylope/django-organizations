@@ -3,7 +3,7 @@ from accounts.models import Account
 from accounts.views.base import (BaseAccountList, BaseAccountDetail,
         BaseAccountUpdate, BaseAccountDelete, BaseAccountCreate,
         BaseAccountUserList, BaseAccountUserDetail, BaseAccountUserUpdate,
-        BaseAccountUserCreate, BaseAccountUserDelete)
+        BaseAccountUserCreate, BaseAccountUserDelete, UserProfileView)
 
 
 class AccountList(BaseAccountList):

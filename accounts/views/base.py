@@ -4,13 +4,14 @@ from django.views.generic import (ListView, DetailView, UpdateView, DeleteView,
         FormView)
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
+from django.shortcuts import get_object_or_404
 
 from accounts.models import Account, AccountUser
 from accounts.views.mixins import (AccountAuthMixin, AccountSingleObjectMixin,
         AccountUserSingleObjectMixin, AccountsUpdateMixin)
 
 from accounts.forms import (AccountUserForm, AccountUserAddForm,
-        AccountAddForm)
+        AccountAddForm, ProfileUserForm)
 
 
 class BaseAccountList(AccountAuthMixin, ListView):
@@ -154,3 +155,31 @@ class BaseAccountUserDelete(AccountUserSingleObjectMixin, DeleteView):
     """
     def get_success_url(self):
         return reverse("accountuser_list")
+
+
+class UserProfileView(FormView):
+    """
+    Profile view that is specific to the logged in user
+    """
+    form_class = ProfileUserForm
+    template_name = "accounts/accountuser_form.html"
+
+    def get_object(self):
+        return get_object_or_404(AccountUser, user=self.request.user)
+
+    def get_context_data(self, **kwargs):
+        context = super(UserProfileView, self).get_context_data(**kwargs)
+        context['profile'] = True
+        return context
+
+    def form_valid(self, form):
+        """
+        Saves updates to the User model
+        """
+        return super(UserProfileView, self).form_valid(form)
+
+    def get(self, request, *args, **kwargs):
+        return super(UserProfileView, self).get(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        return super(UserProfileView, self).post(request, *args, **kwargs)
