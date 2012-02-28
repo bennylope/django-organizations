@@ -6,7 +6,18 @@ from django.utils.translation import ugettext_lazy as _
 from accounts.managers import AccountManager
 
 
-class Account(models.Model):
+class AccountsBase(models.Model):
+    """
+    Just a little helper
+    """
+    created = models.DateTimeField(auto_now_add=True)
+    modified = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        abstract = True
+
+
+class Account(AccountsBase):
     """
     This is the umbrella object under which all account users fall.
 
@@ -42,7 +53,7 @@ class Account(models.Model):
         return True if self.objects.users.filter(user=user) else False
 
 
-class AccountUser(models.Model):
+class AccountUser(AccountsBase):
     """
     This relates a User object to the account group. It is possible for a User
     to be a member of multiple accounts, so this class relates the AccountUser
@@ -87,8 +98,7 @@ class AccountUser(models.Model):
         return u"%s %s" % (self.user.first_name, self.user.last_name)
 
 
-
-class AccountOwner(models.Model):
+class AccountOwner(AccountsBase):
     """
     Each account must have one and only one account owner.
     """
@@ -111,4 +121,3 @@ class AccountOwner(models.Model):
             raise AccountMismatch
         else:
             super(AccountOwner, self).save(*args, **kwargs)
-
