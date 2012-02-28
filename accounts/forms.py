@@ -143,6 +143,6 @@ class AccountOwnerForm(forms.ModelForm):
 
 
 class LoginForm(AuthenticationForm):
-    """Adds the next field for log in"""
+    """Adds the 'next' field for log in"""
     redirect_url = forms.CharField(max_length=200, required=False,
             widget=forms.HiddenInput())

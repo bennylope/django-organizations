@@ -3,13 +3,13 @@ from django.test import TestCase
 from testing_utils import AccountUserTestingMixin
 
 
-class AccountFormTest(TestCase, AccountUserTestingMixin):
+class AccountFormTest(AccountUserTestingMixin, TestCase):
     """
     The AccountForm should allow a user to easily create or edit an existing
     account. That includes updating or creating an account user.
     """
     def setUp(self):
-        self.user, self.seconduser, self.thirduser = self.create_users()
+        self.user, self.seconduser, self.thirduser, self.fourthuser = self.create_users()
 
     def test_duplicate_subdomain(self):
         """Subdomains must be unique or form is not valid"""

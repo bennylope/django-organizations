@@ -186,13 +186,13 @@ class BaseUpdateDeletionViewsTest(TestCase, AccountUserTestingMixin):
 
     def test_simple_account_update(self):
         """Ensure that the account delete view deletes"""
-        response = self.client.post(reverse("base_account_update",
+        response = self.client.post(reverse("base_account_edit",
             kwargs={"account_pk": 2}),data={"pk": 2})
         self.assertEqual(response.status_code, 302)
 
     def test_simple_accountuser_update(self):
         """Ensure that the account delete view deletes"""
-        response = self.client.post(reverse("base_accountuser_update",
+        response = self.client.post(reverse("base_accountuser_edit",
             kwargs={"account_pk": 2, "accountuser_pk": 1}),data={"pk": 2})
         self.assertEqual(response.status_code, 302)
 
