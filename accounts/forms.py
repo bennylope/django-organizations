@@ -115,8 +115,10 @@ class ProfileUserForm(AccountUserForm):
     """
     Form for updating your own profile
     """
-    password1 = forms.CharField(required=False, widget=forms.PasswordInput)
-    password2 = forms.CharField(required=False, widget=forms.PasswordInput)
+    password1 = forms.CharField(label="New password", required=False,
+            widget=forms.PasswordInput)
+    password2 = forms.CharField(label="Confirm password", required=False,
+            widget=forms.PasswordInput)
     referrer = forms.CharField(required=False, widget=forms.HiddenInput)
 
     def __init__(self, *args, **kwargs):
