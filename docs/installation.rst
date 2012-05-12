@@ -1,21 +1,22 @@
 Installation
 ============
 
-You should install by downloading the source and running::
+Use pip to install group accounts::
+
+    $ pip install django-group-accounts
+
+Or get the development version by downloading the source and installing::
 
     $ python setup.py install
-
-Or use pip::
-
-    $ pip install -e git+git://github.com/bennylope/django-group-accounts.git#egg=django-group-accounts
-
 
 Configuration
 -------------
 
-Add `accounts` to your `INSTALLED_APPS` list::
+Make sure you have `django.contrib.auth` and `accounts` added to your
+`INSTALLED_APPS` list::
 
     INSTALLED_APPS = (
+        'django.contrib.auth',
         ...
         'accounts',
     )

@@ -10,8 +10,9 @@ Contents:
 .. toctree::
     :maxdepth: 2
 
-    install
-    basic_usage
+    installation
+    overview
+    usage
     custom_usage
 
 

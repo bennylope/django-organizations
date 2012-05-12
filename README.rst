@@ -71,3 +71,5 @@ To-do
   user can have only one AccountUser object per Account)
 * Management command to clean orphan accounts
 * Add self-registration form
+* Make Account and AccountUser models abstract and/or optional
+* Integrate existing registration app
