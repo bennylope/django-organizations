@@ -25,18 +25,15 @@ class Account(AccountsBase):
     owner.
     """
     name = models.CharField(max_length=100)
-    subdomain = models.CharField(max_length=100, blank=True, null=True,
-            unique=True)
-    domain = models.CharField(max_length=100, blank=True, null=True,
-            unique=True)
+    users = models.ManyToManyField(User, through="AccountUser")
     is_active = models.BooleanField(default=True)
 
     objects = AccountManager()
 
     class Meta:
         ordering = ['name']
-        verbose_name = _("Account")
-        verbose_name_plural = _("Accounts")
+        verbose_name = _("account")
+        verbose_name_plural = _("accounts")
 
     def __unicode__(self):
         return u"%s" % self.name
@@ -63,15 +60,15 @@ class AccountUser(AccountsBase):
     Authentication and general user information is handled by the User class
     and the contrib.auth application.
     """
-    user = models.ForeignKey(User, related_name="accountusers")
-    account = models.ForeignKey(Account, related_name="users")
+    user = models.ForeignKey(User)
+    account = models.ForeignKey(Account)
     is_admin = models.BooleanField(default=False)
 
     class Meta:
         ordering = ['account', 'user']
         unique_together = ('user', 'account')
-        verbose_name = _("Account user")
-        verbose_name_plural = _("Account users")
+        verbose_name = _("account user")
+        verbose_name_plural = _("account users")
 
     def __unicode__(self):
         return u"%s" % self.user
@@ -83,8 +80,7 @@ class AccountUser(AccountsBase):
         """
         from accounts.exceptions import OwnershipRequired
         if self.account.owner.id == self.id:
-            raise OwnershipRequired("Cannot delete account owner before"
-                                    "account or transferring ownership")
+            raise OwnershipRequired(_("Cannot delete account owner before account or transferring ownership"))
         else:
             super(AccountUser, self).delete(using=using)
 
@@ -106,8 +102,8 @@ class AccountOwner(AccountsBase):
     account_user = models.OneToOneField(AccountUser, related_name="owned_accounts")
 
     class Meta:
-        verbose_name = _("Account owner")
-        verbose_name_plural = _("Account owners")
+        verbose_name = _("account owner")
+        verbose_name_plural = verbose_name # Little value in pluralizing
 
     def __unicode__(self):
         return u"%s: %s" % (self.account, self.account_user)

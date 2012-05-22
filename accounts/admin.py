@@ -3,8 +3,12 @@ from django.contrib import admin
 from accounts.models import Account, AccountUser, AccountOwner
 
 
+class OwnerInline(admin.StackedInline):
+    model = AccountOwner
+
+
 class AccountAdmin(admin.ModelAdmin):
-    pass
+    inlines = [OwnerInline]
 
 
 class AccountUserAdmin(admin.ModelAdmin):
