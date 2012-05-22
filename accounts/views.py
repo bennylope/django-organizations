@@ -11,7 +11,7 @@ from accounts.forms import LoginForm
 from accounts.models import Account
 from accounts.mixins import AccountMixin, AccountUserMixin
 from accounts.forms import (AccountUserForm, AccountUserAddForm,
-        AccountAddForm, ProfileUserForm)
+        AccountAddForm, UserProfileForm)
 
 
 class LoginView(FormView):
@@ -184,45 +184,22 @@ class AccountUserDelete(BaseAccountUserDelete):
     pass
 
 
-class UserProfileView(FormView):
-    form_class = ProfileUserForm
+class UserProfileView(UpdateView):
+    form_class = UserProfileForm
     template_name = "accounts/accountuser_form.html"
-    success_url = "/"
 
-    def success_redirect(self, referrer):
-        return HttpResponseRedirect(referrer or self.success_url)
+    def get_success_url(self):
+        success_url = getattr(self, 'success_url')
+        return success_url if success_url else reverse('user_profile')
+
+    def get_object(self, **kwargs):
+        return self.request.user
+
+    def get_form_kwargs(self):
+        kwargs = super(UserProfileView, self).get_form_kwargs()
+        return kwargs
 
     def get_context_data(self, **kwargs):
         context = super(UserProfileView, self).get_context_data(**kwargs)
         context['profile'] = True
         return context
-
-    def form_valid(self, form):
-        """
-        Saves updates to the User model
-        """
-        # Save the user
-        self.user.username = form.cleaned_data['username']
-        self.user.first_name = form.cleaned_data['first_name']
-        self.user.last_name = form.cleaned_data['last_name']
-        self.user.email = form.cleaned_data['email']
-        if form.cleaned_data['password1']:
-            self.user.set_password(form.cleaned_data['password1'])
-        self.user.save()
-        return self.success_redirect(form.cleaned_data['referrer'])
-
-    def get(self, request, *args, **kwargs):
-        self.referrer = request.META.get('HTTP_REFERER')
-        self.user = request.user
-        form = ProfileUserForm(initial={
-            'username': self.user.username,
-            'first_name': self.user.first_name,
-            'last_name': self.user.last_name,
-            'email': self.user.email,
-            'referrer': self.referrer,})
-        return self.render_to_response(self.get_context_data(form=form))
-
-    def post(self, request, *args, **kwargs):
-        self.user = request.user
-        return super(UserProfileView, self).post(request, *args, **kwargs)
-

@@ -1,55 +1,32 @@
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.models import User
 
 from accounts.models import Account, AccountUser, AccountOwner
 
 
 class AccountForm(forms.ModelForm):
-    """Form for updating accounts"""
+    """Form class for updating Accounts"""
     class Meta:
         model = Account
 
 
 class AccountUserForm(forms.ModelForm):
-    """
-    Form for updating account users
-    """
-    username = forms.CharField(max_length=50)
-    first_name = forms.CharField(max_length=50)
-    last_name = forms.CharField(max_length=50)
-    email = forms.EmailField()
-    is_admin = forms.BooleanField(required=False)
-
+    """Form class for updating AccountUsers"""
     class Meta:
         model = AccountUser
         exclude = ('account', 'user')
 
-    def __init__(self, data=None, files=None, auto_id='id_%s', prefix=None,
-                 initial=None, label_suffix=':',
-                 empty_permitted=False, instance=None):
-        if instance:
-            initial['username'] = instance.user.username
-            initial['first_name'] = instance.user.first_name
-            initial['last_name'] = instance.user.last_name
-            initial['email'] = instance.user.email
-        super(AccountUserForm, self).__init__(data=data, files=files,
-                 initial=initial, instance=instance)
 
-    def save(self, commit=True):
-        form_data = self.cleaned_data
-        self.instance.user.username = form_data['username']
-        self.instance.user.first_name = form_data['first_name']
-        self.instance.user.last_name = form_data['last_name']
-        self.instance.user.email = form_data['email']
-        if commit:
-            self.instance.user.save()
-        return super(AccountUserForm, self).save(commit)
+class AccountOwnerForm(forms.ModelForm):
+    """Form class for updating an Account's AccountOwner"""
+    class Meta:
+        model = AccountOwner
 
 
 class AccountUserAddForm(forms.Form):
-    """
-    Form for creating account users
-    """
+    """Form class for adding AccountUsers to an Account"""
+    # TODO email only
     username = forms.CharField(max_length=30)
     first_name = forms.CharField(max_length=50)
     last_name = forms.CharField(max_length=50)
@@ -82,6 +59,8 @@ class AccountAddForm(AccountUserAddForm):
     Form class for creating a new account, complete with new owner, including a
     User instance, AccountUser instance, and AccountOwner instance.
     """
+    # TODO: formset? Allow adding multiple users, need to specify owner though
+    # if more than one
     account_name = forms.CharField(max_length=100)
     subdomain = forms.CharField(max_length=100, required=False)
     domain = forms.CharField(max_length=100, required=False)
@@ -111,38 +90,38 @@ class AccountAddForm(AccountUserAddForm):
                 )
 
 
-class ProfileUserForm(AccountUserForm):
+class UserProfileForm(forms.ModelForm):
     """
     Form for updating your own profile
     """
-    password1 = forms.CharField(label="New password", required=False,
-            widget=forms.PasswordInput)
-    password2 = forms.CharField(label="Confirm password", required=False,
-            widget=forms.PasswordInput)
-    referrer = forms.CharField(required=False, widget=forms.HiddenInput)
+    password = forms.CharField(max_length=30, widget=forms.PasswordInput,
+            required=False)
+    password_confirm = forms.CharField(max_length=30,
+            widget=forms.PasswordInput, required=False)
 
-    def __init__(self, *args, **kwargs):
-        super(ProfileUserForm, self).__init__(*args, **kwargs)
-        self.fields.pop('is_admin')
+    class Meta:
+        model = User
+        exclude = ('user_permissions', 'groups', 'is_active', 'is_staff',
+                'is_superuser', 'last_login', 'date_joined')
 
     def clean(self):
         data = self.cleaned_data
-        password1, password2 = data.get('password1'), data.get('password2')
-        if (password1 or password2) and (password1 != password2):
+        password, password_confirm = data.get('password'), data.get('password_confirm')
+        if (password or password_confirm) and (password != password_confirm):
             err_msg = u"Your passwords must match"
-            self._errors['password2'] = self.error_class([err_msg])
-            del data['password1']
-            del data['password2']
+            self._errors['password_confirm'] = self.error_class([err_msg])
+            del data['password']
+            del data['password_confirm']
         return data
 
-
-class AccountOwnerForm(forms.ModelForm):
-    """Form for updating account owner"""
-    class Meta:
-        model = AccountOwner
+    def save(self, commit=True):
+        if self.cleaned_data['password']:
+            self.instance.set_password(self.cleaned_data['password'])
+        return super(UserProfileForm, self).save(commit)
 
 
 class LoginForm(AuthenticationForm):
     """Adds the 'next' field for log in"""
     redirect_url = forms.CharField(max_length=200, required=False,
             widget=forms.HiddenInput())
+

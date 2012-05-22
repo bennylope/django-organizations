@@ -10,6 +10,7 @@ class AccountMixin(object):
     context_object_name = 'account'
 
     def get_context_data(self, **kwargs):
+        kwargs.update({'account': self.object})
         return kwargs
 
     def get_object(self, **kwargs):
@@ -25,6 +26,12 @@ class AccountUserMixin(AccountMixin):
     model = AccountUser
     context_object_name = 'account_user'
 
+    def get_context_data(self, **kwargs):
+        kwargs = super(AccountUserMixin, self).get_context_data(**kwargs)
+        kwargs.update({'account_user': self.object,
+            'account': self.object.account})
+        return kwargs
+
     def get_object(self, **kwargs):
         """ Returns the AccountUser object based on the primary keys for both
         the account and the account user.
@@ -37,13 +44,6 @@ class AccountUserMixin(AccountMixin):
                 AccountUser.objects.select_related(),
                 pk=account_user_pk, account__pk=account_pk)
         return self.account_user
-
-    def get(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        self.account = self.object.account
-        context = self.get_context_data(account_user=self.object,
-                account=self.account)
-        return self.render_to_response(context)
 
 
 class MembershipRequiredMixin(object):

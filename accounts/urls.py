@@ -43,6 +43,6 @@ urlpatterns = patterns('',
     # Profile
     # This view should be configurable for a custom UserProfile class
     url(r'^profile/$', view=login_required(UserProfileView.as_view()),
-        name="account_user_profile"),
+        name="user_profile"),
 )
 
