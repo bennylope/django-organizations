@@ -41,7 +41,7 @@ class AccountUserMixin(AccountMixin):
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
         self.account = self.object.account
-        context = self.get_context_data(accountuser=self.object,
+        context = self.get_context_data(account_user=self.object,
                 account=self.account)
         return self.render_to_response(context)
 

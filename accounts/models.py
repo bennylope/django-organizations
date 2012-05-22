@@ -86,7 +86,7 @@ class AccountUser(AccountsBase):
 
     @permalink
     def get_absolute_url(self):
-        return ('accountuser_detail', (),
+        return ('account_user_detail', (),
                 {'account_pk': self.account.pk, 'account_user_pk': self.pk})
 
     @property

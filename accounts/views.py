@@ -62,8 +62,8 @@ class BaseAccountList(ListView):
 class BaseAccountDetail(AccountMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super(BaseAccountDetail, self).get_context_data(**kwargs)
-        context['accountusers'] = self.object.users.all()
-        context['account'] = self.object
+        context['account_users'] = self.account.users.all()
+        context['account'] = self.account
         return context
 
 
@@ -96,7 +96,7 @@ class BaseAccountUserList(AccountMixin, ListView):
         if not allow_empty and len(self.object_list) == 0:
             raise Http404(_(u"Empty list and '%(class_name)s.allow_empty' is False.")
                           % {'class_name': self.__class__.__name__})
-        context = self.get_context_data(accountusers=self.object_list,
+        context = self.get_context_data(account_users=self.object_list,
                 account=self.account)
         return self.render_to_response(context)
 

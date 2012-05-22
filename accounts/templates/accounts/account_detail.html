@@ -2,8 +2,8 @@
 {% block content %}
 <h1>{{ account }}</h1>
 <ul>
-    {% for accountuser in accountusers %}
-    <li><a href="{{ accountuser.get_absolute_url }}">{{ accountuser }}</a></li>
+    {% for account_user in account_users %}
+    <li><a href="{{ account_user.get_absolute_url }}">{{ account_user }}</a></li>
     {% endfor %}
 </u>
 {% endblock %}
