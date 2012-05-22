@@ -45,16 +45,19 @@ Using group accounts
 Overview
 --------
 
-The group accounts application relies on Django's auth app for the User model.
-It offers no authentication of its own. There are three models:
+The application relies on Django's `contrib.auth` module for the
+User model, and `django-registration
+<https://bitbucket.org/ubernostrum/django-registration/>`_ for user
+
+There are three models:
 
 * Account
 * AccountUser
 * AccountOwner
 
-Each account can have only one owner however a site user can be a member of
-multiple organizations. The AccountUser model servers as an intermediary
-between the Account and the Users to allow this.
+Each account can have only one owner, however a site user can be a member of
+multiple accounts, or own multiple accounts. The AccountUser model servers as
+an intermediary between the `Account` and the `Users` to allow this.
 
 Ideally as much of the relationships should be defined in the database.
 
@@ -67,9 +70,71 @@ license.
 To-do
 =====
 
-* Merge users if someone has duplicate user profiles (or just validate that a
-  user can have only one AccountUser object per Account)
 * Management command to clean orphan accounts
 * Add self-registration form
-* Make Account and AccountUser models abstract and/or optional
 * Integrate existing registration app
+* Limit the choices for the owner in the account's admin to account users of
+  that account
+* Consistent doc strings
+* Consistent use of either "account_user" or "accountuser"
+
+* add search fields to admin
+
+Wishlist
+--------
+
+* Provide a way to use identifiers other than the IDs in the URLs
+* Make Account and AccountUser models abstract and/or optional
+* Merge users if someone has duplicate user profiles (or just validate that a
+  user can have only one AccountUser object per Account)
+
+Notes
+-----
+
+* add MIDDLEWARE that adds the user's AccountUser objects (with Accounts) to the request
+* Every account oriented view object should reference the same 'account'
+  attribute
+* Every account user oriented view object should reference the same 'account'
+  and 'account_user' attribute
+* Accounts list view should list accounts that the User is a member of, redirect if there is only one(?)
+* Dispatch method should call get_object method, NOT the get/request methods
+
+
+Rules
+=====
+
+* Anyone can create an account (subject to application specific restrictions)
+* Should see if the user exists before creating a new User object
+* Should rely upon django-registration
+* Should be authentication agnostic (meaning views should take default forms
+  but allow for user defined forms, either as param or module path in settings)
+
+Types of restrictions
+---------------------
+
+* Logged in user
+* Member of the account
+* Admin of the account
+* Owner of the account
+* User object is logged in user
+
+Editing data
+------------
+
+* Only admins can edit account information
+* Only admins can edit other users in the account
+* Only admins can delete other users in the account
+* Owners cannot be deleted
+* Only the owner can change account ownership
+* Only the owner can edit the owner
+* Only admins can add additional users
+* Only admins can reset another user's password
+* Only the owner can reset the owner's password
+
+Context data
+------------
+
+* the User
+* the Account
+* Is the user a member of the account?
+* the account owner

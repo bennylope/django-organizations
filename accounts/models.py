@@ -7,9 +7,6 @@ from accounts.managers import AccountManager
 
 
 class AccountsBase(models.Model):
-    """
-    Just a little helper
-    """
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
 
@@ -42,12 +39,15 @@ class Account(AccountsBase):
     def get_absolute_url(self):
         return ('account_detail', (), {'account_pk': self.pk})
 
+    def change_owner(self, account_user):
+        self.owner.account_user = account_user
+        self.owner.save()
+
     def is_member(self, user):
-        """
-        Returns a boolean value designating whether the User is a member of the
-        account.
-        """
-        return True if self.objects.users.filter(user=user) else False
+        return True if self.users.filter(user=user) else False
+
+    def is_admin(self, user):
+        return True if self.users.filter(user=user, is_admin=True) else False
 
 
 class AccountUser(AccountsBase):
@@ -66,7 +66,7 @@ class AccountUser(AccountsBase):
 
     class Meta:
         ordering = ['account', 'user']
-        unique_together = ('user', 'account')
+        #unique_together = ('user', 'account') # TODO remove, redundant
         verbose_name = _("account user")
         verbose_name_plural = _("account users")
 
@@ -87,7 +87,7 @@ class AccountUser(AccountsBase):
     @permalink
     def get_absolute_url(self):
         return ('accountuser_detail', (),
-                {'account_pk': self.account.pk, 'accountuser_pk': self.pk})
+                {'account_pk': self.account.pk, 'account_user_pk': self.pk})
 
     @property
     def full_name(self):
@@ -103,7 +103,7 @@ class AccountOwner(AccountsBase):
 
     class Meta:
         verbose_name = _("account owner")
-        verbose_name_plural = verbose_name # Little value in pluralizing
+        verbose_name_plural = _("account owners")
 
     def __unicode__(self):
         return u"%s: %s" % (self.account, self.account_user)

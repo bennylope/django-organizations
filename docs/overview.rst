@@ -15,7 +15,7 @@ The core of the application consists of these three models:
 The `Account` model represents an organization, the umbrella group by which a
 set of users are associated with each other.
 
-The `AccountUser` model is an account specific user profile that links a `User`
+The `AccountUser` model is a custom many-to-many class that links a `User`
 object to an account.
 
 The `AcountOwner` model is a one-to-one link between an `Account` and an

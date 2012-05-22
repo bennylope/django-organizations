@@ -54,3 +54,4 @@ def require_owner(original_class):
 
     original_class.dispatch = new_dispatch # set the class' dispatch to the new method
     return original_class
+

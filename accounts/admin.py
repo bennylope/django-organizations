@@ -9,14 +9,16 @@ class OwnerInline(admin.StackedInline):
 
 class AccountAdmin(admin.ModelAdmin):
     inlines = [OwnerInline]
+    list_display = ['name', 'is_active']
 
 
 class AccountUserAdmin(admin.ModelAdmin):
-    pass
+    list_filter = ['account']
+    list_display = ['user', 'is_admin']
 
 
 class AccountOwnerAdmin(admin.ModelAdmin):
-    pass
+    list_filter = ['account']
 
 
 admin.site.register(Account, AccountAdmin)
