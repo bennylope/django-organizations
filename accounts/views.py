@@ -1,13 +1,11 @@
-
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import logout
 from django.contrib.auth.views import login as login_view
 from django.core.urlresolvers import reverse
 from django.http import Http404, HttpResponseRedirect
-from django.views.generic import (View, ListView, DetailView, UpdateView, DeleteView,
-        FormView)
-from django.utils.decorators import method_decorator
+from django.views.generic import (View, ListView, DetailView, UpdateView,
+        DeleteView, FormView)
 
 from accounts.forms import LoginForm
 from accounts.models import Account
@@ -137,8 +135,7 @@ class BaseAccountUserCreate(AccountMixin, FormView):
             return self.form_invalid(form)
 
 
-class BaseAccountUserUpdate(AccountUserMixin,
-        UpdateView):
+class BaseAccountUserUpdate(AccountUserMixin, UpdateView):
     form_class = AccountUserForm
 
 

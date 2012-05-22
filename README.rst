@@ -77,12 +77,17 @@ To-do
   that account
 * Consistent doc strings
 * Consistent use of either "account_user" or "accountuser"
+* Redirect profile view to self (unless referrer)
 
 * add search fields to admin
 
 Wishlist
 --------
 
+* Profile view (among others) should take configurable form class
+* Add a user type choice field to AccountUsers for extensibility (switch
+  "is_admin" boolean to this?)
+* Enable i18n
 * Provide a way to use identifiers other than the IDs in the URLs
 * Make Account and AccountUser models abstract and/or optional
 * Merge users if someone has duplicate user profiles (or just validate that a
