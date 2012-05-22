@@ -62,7 +62,7 @@ class BaseAccountList(ListView):
 class BaseAccountDetail(AccountMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super(BaseAccountDetail, self).get_context_data(**kwargs)
-        context['account_users'] = self.account.users.all()
+        context['account_users'] = self.account.account_users.all()
         context['account'] = self.account
         return context
 
@@ -91,7 +91,7 @@ class BaseAccountDelete(AccountMixin, DeleteView):
 class BaseAccountUserList(AccountMixin, ListView):
     def get(self, request, *args, **kwargs):
         self.account = self.get_account(**kwargs)
-        self.object_list = self.account.users.all()
+        self.object_list = self.account.account_users.all()
         allow_empty = self.get_allow_empty()
         if not allow_empty and len(self.object_list) == 0:
             raise Http404(_(u"Empty list and '%(class_name)s.allow_empty' is False.")

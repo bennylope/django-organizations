@@ -60,8 +60,8 @@ class AccountUser(AccountsBase):
     Authentication and general user information is handled by the User class
     and the contrib.auth application.
     """
-    user = models.ForeignKey(User)
-    account = models.ForeignKey(Account)
+    user = models.ForeignKey(User, related_name="account_users")
+    account = models.ForeignKey(Account, related_name="account_users")
     is_admin = models.BooleanField(default=False)
 
     class Meta:
