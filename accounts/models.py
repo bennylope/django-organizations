@@ -99,7 +99,7 @@ class AccountOwner(AccountsBase):
     Each account must have one and only one account owner.
     """
     account = models.OneToOneField(Account, related_name="owner")
-    account_user = models.OneToOneField(AccountUser, related_name="owned_accounts")
+    account_user = models.OneToOneField(AccountUser, related_name="owned_account")
 
     class Meta:
         verbose_name = _("account owner")

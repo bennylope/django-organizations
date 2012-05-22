@@ -8,12 +8,14 @@ from accounts.models import Account, AccountUser, AccountOwner
 
 class LoginForm(AuthenticationForm):
     """Adds the 'next' field for log in"""
+
     redirect_url = forms.CharField(max_length=200, required=False,
             widget=forms.HiddenInput())
 
 
 class AccountForm(forms.ModelForm):
     """Form class for updating Accounts"""
+
     class Meta:
         model = Account
         exclude = ('users', 'is_active')
@@ -21,9 +23,17 @@ class AccountForm(forms.ModelForm):
 
 class AccountUserForm(forms.ModelForm):
     """Form class for updating AccountUsers"""
+
     class Meta:
         model = AccountUser
         exclude = ('account', 'user')
+
+    def clean_is_admin(self):
+        is_admin = self.cleaned_data['is_admin']
+        if self.instance.account.owner.account_user == self.instance and not is_admin:
+            raise forms.ValidationError(_("The account owner must be an admin"))
+        return is_admin
+
 
 
 class AccountOwnerForm(forms.ModelForm):
