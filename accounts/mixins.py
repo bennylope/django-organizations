@@ -15,15 +15,15 @@ class AccountMixin(object):
     def get_object(self, **kwargs):
         if hasattr(self, 'account'):
             return self.account
-        account_pk = kwargs.get('account_pk', None)
-        self.account = get_object_or_404(Account, id=account_pk)
+        account_pk = self.kwargs.get('account_pk', None)
+        self.account = get_object_or_404(Account, pk=account_pk)
         return self.account
     get_account = get_object # Now it's available when the method is overridden
 
 
 class AccountUserMixin(AccountMixin):
     model = AccountUser
-    context_object_name = 'accountuser'
+    context_object_name = 'account_user'
 
     def get_object(self, **kwargs):
         """ Returns the AccountUser object based on the primary keys for both
@@ -38,7 +38,7 @@ class AccountUserMixin(AccountMixin):
                 pk=account_user_pk, account__pk=account_pk)
         return self.account_user
 
-    def get(self, request, **kwargs):
+    def get(self, request, *args, **kwargs):
         self.object = self.get_object()
         self.account = self.object.account
         context = self.get_context_data(accountuser=self.object,
