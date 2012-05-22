@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
+from django.utils.translation import ugettext_lazy as _
 
 from accounts.models import Account, AccountUser, AccountOwner
 
@@ -15,6 +16,7 @@ class AccountForm(forms.ModelForm):
     """Form class for updating Accounts"""
     class Meta:
         model = Account
+        exclude = ('users', 'is_active')
 
 
 class AccountUserForm(forms.ModelForm):
@@ -30,34 +32,50 @@ class AccountOwnerForm(forms.ModelForm):
         model = AccountOwner
 
 
-class AccountUserAddForm(forms.Form):
-    """Form class for adding AccountUsers to an Account"""
-    # TODO email only
-    username = forms.CharField(max_length=30)
-    first_name = forms.CharField(max_length=50)
-    last_name = forms.CharField(max_length=50)
-    email = forms.EmailField(max_length=30)
-    is_admin = forms.BooleanField(required=False)
+class AccountUserAddForm(forms.ModelForm):
+    """Form class for adding AccountUsers to an existing Account"""
+    email = forms.EmailField(max_length=30) # TODO check length
 
-    def save(self, account=None):
+    def __init__(self, data=None, files=None, initial=None, instance=None, account=None):
+        self.account = account
+        super(AccountUserAddForm, self).__init__(data=data, initial=initial,
+                instance=instance)
+
+    class Meta:
+        model = AccountUser
+        exclude = ('user', 'account')
+
+    def save(self, *args, **kwargs):
+        """
+        The save method should create a new AccountUser linking the User
+        matching the provided email address. If not matching User is found it
+        should kick off the registration process. It needs to create a User in
+        order to link it to the Account.
+        """
         from django.contrib.auth.models import User
-        # Test for user with same email first?
-        user = User.objects.create(
-                username=self.cleaned_data['username'],
-                email=self.cleaned_data['email'],
-                password=User.objects.make_random_password(),
-                first_name=self.cleaned_data['first_name'],
-                last_name=self.cleaned_data['last_name'])
-        # TODO make sure duplicates cannot be added
-        account_user = AccountUser.objects.create(
-                user=user,
-                is_admin=self.cleaned_data['is_admin'],
-                account=account,
-                )
-        return account_user
+        try:
+            user = User.objects.get(email=self.cleaned_data['email'])
+        except User.MultipleObjectsReturned:
+            raise forms.ValidationError(_("This email address has been used multiple times."))
+        except User.DoesNotExist:
+            # Create the user...
+            #user = User.objects.create(
+            #        username=self.cleaned_data['username'],
+            #        email=self.cleaned_data['email'],
+            #        password=User.objects.make_random_password(),
+            #        first_name=self.cleaned_data['first_name'],
+            #        last_name=self.cleaned_data['last_name'])
+            return None
+        else:
+            return AccountUser.objects.create(user=user, account=self.account,
+                    is_admin=self.cleaned_data['is_admin'])
 
-    def clean(self):
-        return self.cleaned_data
+    def clean_email(self):
+        email = self.cleaned_data['email']
+        if self.account.users.filter(email=email):
+            raise forms.ValidationError(_("There is already an account member with this email address!"))
+        return email
+
 
 
 class AccountAddForm(AccountUserAddForm):

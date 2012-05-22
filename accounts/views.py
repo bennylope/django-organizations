@@ -5,14 +5,13 @@ from django.contrib.auth.views import login as login_view
 from django.core.urlresolvers import reverse
 from django.http import Http404, HttpResponseRedirect
 from django.views.generic import (View, ListView, DetailView, UpdateView,
-        DeleteView, FormView)
+        CreateView, DeleteView, FormView)
 
-from accounts.forms import LoginForm
 from accounts.models import Account
 from accounts.mixins import (AccountMixin, AccountUserMixin,
         MembershipRequiredMixin, AdminRequiredMixin, OwnerRequiredMixin)
-from accounts.forms import (AccountUserForm, AccountUserAddForm,
-        AccountAddForm, UserProfileForm)
+from accounts.forms import (LoginForm, AccountForm, AccountUserForm,
+        AccountUserAddForm, AccountAddForm, UserProfileForm)
 
 
 class LoginView(FormView):
@@ -66,7 +65,7 @@ class BaseAccountDetail(AccountMixin, DetailView):
         return context
 
 
-class BaseAccountCreate(FormView):
+class BaseAccountCreate(View):
     form_class = AccountAddForm
     template_name = 'accounts/account_form.html'
 
@@ -79,7 +78,7 @@ class BaseAccountCreate(FormView):
 
 
 class BaseAccountUpdate(AccountMixin, UpdateView):
-    pass
+    form_class = AccountForm
 
 
 class BaseAccountDelete(AccountMixin, DeleteView):
@@ -104,36 +103,17 @@ class BaseAccountUserDetail(AccountUserMixin, DetailView):
     pass
 
 
-class BaseAccountUserCreate(AccountMixin, FormView):
+class BaseAccountUserCreate(AccountMixin, CreateView):
     form_class = AccountUserAddForm
     template_name = 'accounts/accountuser_form.html'
 
     def get_success_url(self):
         return self.object.get_absolute_url()
 
-    def form_valid(self, form):
-        """
-        Create the User object, then the AccountUser object, then return the
-        user to the account page
-        """
-        form.save(self.object)
-        return super(BaseAccountUserCreate, self).form_valid(form)
-
-    def get(self, request, *args, **kwargs):
-        self.object = self.get_object(**kwargs)
-        form_class = self.get_form_class()
-        form = self.get_form(form_class)
-        return self.render_to_response(self.get_context_data(form=form,
-            account=self.object))
-
-    def post(self, request, *args, **kwargs):
-        self.object = self.get_object(**kwargs)
-        form_class = self.get_form_class()
-        form = self.get_form(form_class)
-        if form.is_valid():
-            return self.form_valid(form)
-        else:
-            return self.form_invalid(form)
+    def get_form_kwargs(self):
+        kwargs = super(BaseAccountUserCreate, self).get_form_kwargs()
+        kwargs.update({'account': self.account})
+        return kwargs
 
 
 class BaseAccountUserUpdate(AccountUserMixin, UpdateView):
@@ -177,7 +157,7 @@ class AccountUserUpdate(AdminRequiredMixin, BaseAccountUserUpdate):
     pass
 
 
-class AccountUserCreate(AdminRequiredMixin, BaseAccountUserUpdate):
+class AccountUserCreate(AdminRequiredMixin, BaseAccountUserCreate):
     pass
 
 
