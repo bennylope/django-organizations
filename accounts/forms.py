@@ -5,6 +5,12 @@ from django.contrib.auth.models import User
 from accounts.models import Account, AccountUser, AccountOwner
 
 
+class LoginForm(AuthenticationForm):
+    """Adds the 'next' field for log in"""
+    redirect_url = forms.CharField(max_length=200, required=False,
+            widget=forms.HiddenInput())
+
+
 class AccountForm(forms.ModelForm):
     """Form class for updating Accounts"""
     class Meta:
@@ -118,10 +124,4 @@ class UserProfileForm(forms.ModelForm):
         if self.cleaned_data['password']:
             self.instance.set_password(self.cleaned_data['password'])
         return super(UserProfileForm, self).save(commit)
-
-
-class LoginForm(AuthenticationForm):
-    """Adds the 'next' field for log in"""
-    redirect_url = forms.CharField(max_length=200, required=False,
-            widget=forms.HiddenInput())
 

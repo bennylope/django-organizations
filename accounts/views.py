@@ -9,7 +9,8 @@ from django.views.generic import (View, ListView, DetailView, UpdateView,
 
 from accounts.forms import LoginForm
 from accounts.models import Account
-from accounts.mixins import AccountMixin, AccountUserMixin
+from accounts.mixins import (AccountMixin, AccountUserMixin,
+        MembershipRequiredMixin, AdminRequiredMixin, OwnerRequiredMixin)
 from accounts.forms import (AccountUserForm, AccountUserAddForm,
         AccountAddForm, UserProfileForm)
 
@@ -148,39 +149,39 @@ class AccountList(BaseAccountList):
     pass
 
 
-class AccountDetail(BaseAccountDetail):
-    pass
-
-
-class AccountUpdate(BaseAccountUpdate):
-    pass
-
-
-class AccountDelete(BaseAccountDelete):
-    pass
-
-
 class AccountCreate(BaseAccountCreate):
     pass
 
 
-class AccountUserList(BaseAccountUserList):
+class AccountDetail(MembershipRequiredMixin, BaseAccountDetail):
     pass
 
 
-class AccountUserDetail(BaseAccountUserDetail):
+class AccountUpdate(AdminRequiredMixin, BaseAccountUpdate):
     pass
 
 
-class AccountUserUpdate(BaseAccountUserUpdate):
+class AccountDelete(OwnerRequiredMixin, BaseAccountDelete):
     pass
 
 
-class AccountUserCreate(BaseAccountUserUpdate):
+class AccountUserList(MembershipRequiredMixin, BaseAccountUserList):
     pass
 
 
-class AccountUserDelete(BaseAccountUserDelete):
+class AccountUserDetail(AdminRequiredMixin, BaseAccountUserDetail):
+    pass
+
+
+class AccountUserUpdate(AdminRequiredMixin, BaseAccountUserUpdate):
+    pass
+
+
+class AccountUserCreate(AdminRequiredMixin, BaseAccountUserUpdate):
+    pass
+
+
+class AccountUserDelete(AdminRequiredMixin, BaseAccountUserDelete):
     pass
 
 

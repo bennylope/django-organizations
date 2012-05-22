@@ -44,10 +44,10 @@ class Account(AccountsBase):
         self.owner.save()
 
     def is_member(self, user):
-        return True if self.users.filter(user=user) else False
+        return True if user in self.users.all() else False
 
     def is_admin(self, user):
-        return True if self.users.filter(user=user, is_admin=True) else False
+        return True if self.account_users.filter(user=user, is_admin=True) else False
 
 
 class AccountUser(AccountsBase):

@@ -78,6 +78,7 @@ To-do
 * Consistent doc strings
 * Consistent use of either "account_user" or "accountuser"
 * Redirect profile view to self (unless referrer)
+* Apply login_required decorator to 'final' view dispatch methods
 
 * add search fields to admin
 

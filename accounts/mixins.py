@@ -49,28 +49,37 @@ class AccountUserMixin(AccountMixin):
 class MembershipRequiredMixin(object):
     """This mixin presumes that authentication has already been checked"""
     def dispatch(self, request, *args, **kwargs):
+        self.request = request
+        self.args = args
+        self.kwargs = kwargs
         self.account = self.get_account(**kwargs)
         if not self.account.is_member(request.user):
             return HttpResponseForbidden(_("Whoops, wrong account"))
-        return super(MembershipRequiredMixin, self).dispatch(self, request, *args,
+        return super(MembershipRequiredMixin, self).dispatch(request, *args,
                 **kwargs)
 
 
 class AdminRequiredMixin(object):
     """This mixin presumes that authentication has already been checked"""
     def dispatch(self, request, *args, **kwargs):
+        self.request = request
+        self.args = args
+        self.kwargs = kwargs
         self.account = self.get_account(**kwargs)
         if not self.account.is_admin(request.user):
             return HttpResponseForbidden(_("Sorry, admins only"))
-        return super(AdminRequiredMixin, self).dispatch(self, request, *args,
+        return super(AdminRequiredMixin, self).dispatch(request, *args,
                 **kwargs)
 
 
 class OwnerRequiredMixin(object):
     """This mixin presumes that authentication has already been checked"""
     def dispatch(self, request, *args, **kwargs):
+        self.request = request
+        self.args = args
+        self.kwargs = kwargs
         self.account = self.get_account(**kwargs)
         if self.account.owner.account_user.user != request.user:
             return HttpResponseForbidden(_("You are not the account owner"))
-        return super(OwnerRequiredMixin, self).dispatch(self, request, *args,
+        return super(OwnerRequiredMixin, self).dispatch(request, *args,
                 **kwargs)
