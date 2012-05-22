@@ -115,6 +115,14 @@ class BaseAccountUserCreate(AccountMixin, CreateView):
         kwargs.update({'account': self.account})
         return kwargs
 
+    def get(self, request, *args, **kwargs):
+        self.account = self.get_object()
+        return super(BaseAccountUserCreate, self).get(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        self.account = self.get_object()
+        return super(BaseAccountUserCreate, self).post(request, *args, **kwargs)
+
 
 class BaseAccountUserUpdate(AccountUserMixin, UpdateView):
     form_class = AccountUserForm

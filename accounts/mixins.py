@@ -10,7 +10,7 @@ class AccountMixin(object):
     context_object_name = 'account'
 
     def get_context_data(self, **kwargs):
-        kwargs.update({'account': self.object})
+        kwargs.update({'account': self.account})
         return kwargs
 
     def get_object(self, **kwargs):
