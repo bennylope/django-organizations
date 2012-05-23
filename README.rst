@@ -80,8 +80,24 @@ To-do
 * Redirect profile view to self (unless referrer)
 * Apply login_required decorator to 'final' view dispatch methods
 * Add signals for registering users with new accounts
+* Create an inclusion tag for rendering the list of account users
+* Set up registration backend
+* Set up invitation backend
 
 * add search fields to admin
+
+Invitation backend
+------------------
+
+* Backend is called by sending email to the backend 
+* Backend sends out a signal that invitation has been sent
+* Sends out an invitation based on an email address
+* Returns a dummy user with that email address, but garbage for username, etc
+* Takes care of the invitation oriented registration views
+* Invitation acceptance should log the user in
+
+/accounts/register/ - add a new account
+/accounts/invitation/<invite id>/ - respond to an invitation
 
 Wishlist
 --------
