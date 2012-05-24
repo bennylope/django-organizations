@@ -59,6 +59,10 @@ class BaseAccountList(ListView):
     model = Account
     context_object_name = "accounts"
 
+    def get_queryset(self):
+        return super(BaseAccountList,
+                self).get_queryset().filter(users=self.request.user)
+
 
 class BaseAccountDetail(AccountMixin, DetailView):
     def get_context_data(self, **kwargs):
