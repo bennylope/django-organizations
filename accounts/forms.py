@@ -19,9 +19,10 @@ class AccountForm(forms.ModelForm):
     """Form class for updating Accounts"""
     owner = forms.ModelChoiceField(AccountUser.objects.all())
 
-    def __init__(self, data=None, files=None, auto_id='id_%s', prefix=None,
-                 initial=None, error_class=forms.util.ErrorList, label_suffix=':',
-                 empty_permitted=False, instance=None):
+    def __init__(self, request, data=None, files=None, auto_id='id_%s',
+            prefix=None, initial=None, error_class=forms.util.ErrorList,
+            label_suffix=':', empty_permitted=False, instance=None):
+        self.request = request
         super(AccountForm, self).__init__(data=data, files=files,
                 auto_id=auto_id, prefix=prefix, initial=initial,
                 error_class=error_class, label_suffix=label_suffix,
@@ -37,6 +38,13 @@ class AccountForm(forms.ModelForm):
     def save(self, commit=True):
         self.instance.change_owner(self.cleaned_data['owner'])
         return super(AccountForm, self).save(commit=commit)
+
+    def clean_owner(self):
+        owner = self.cleaned_data['owner']
+        if owner != self.instance.owner.account_user:
+            if self.request.user != self.instance.owner.account_user.user:
+                raise forms.ValidationError(_("Only the account owner can change ownerhip"))
+        return owner
 
 
 class AccountUserForm(forms.ModelForm):

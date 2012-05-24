@@ -89,6 +89,11 @@ class BaseAccountCreate(CreateView):
 class BaseAccountUpdate(AccountMixin, UpdateView):
     form_class = AccountForm
 
+    def get_form_kwargs(self):
+        kwargs = super(BaseAccountUpdate, self).get_form_kwargs()
+        kwargs.update({'request': self.request})
+        return kwargs
+
 
 class BaseAccountDelete(AccountMixin, DeleteView):
     def get_success_url(self):
