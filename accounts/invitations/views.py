@@ -45,3 +45,8 @@ class RegisterInvite(UpdateView):
                 password=form.cleaned_data['password'])
         login(self.request, user)
         return HttpResponseRedirect(self.get_success_url())
+
+    def get(self, request, *args, **kwargs):
+        if request.user.is_authenticated():
+            return HttpResponseRedirect(self.get_success_url())
+        return super(RegisterInvite, self).get(request, *args, **kwargs)

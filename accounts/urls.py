@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from accounts.views import (AccountList, AccountDetail, AccountUpdate,
         AccountDelete, AccountCreate, AccountUserList, AccountUserDetail,
         AccountUserUpdate, AccountUserCreate, AccountUserDelete,
-        UserProfileView)
+        UserProfileView, LogoutView)
 
 
 urlpatterns = patterns('',
@@ -44,6 +44,8 @@ urlpatterns = patterns('',
     # This view should be configurable for a custom UserProfile class
     url(r'^profile/$', view=login_required(UserProfileView.as_view()),
         name="user_profile"),
+
+    url(r'^logout/$', view=LogoutView.as_view(), name='logout'),
 
     # Invitations
     # TODO: get backend URLs
