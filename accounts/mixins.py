@@ -19,7 +19,7 @@ class AccountMixin(object):
         account_pk = self.kwargs.get('account_pk', None)
         self.account = get_object_or_404(Account, pk=account_pk)
         return self.account
-    get_account = get_object # Now it's available when the method is overridden
+    get_account = get_object # Now available when `get_object` is overridden
 
 
 class AccountUserMixin(AccountMixin):

@@ -71,7 +71,7 @@ class AccountUser(AccountsBase):
         verbose_name_plural = _("account users")
 
     def __unicode__(self):
-        return u"%s" % self.user
+        return u"%s" % self.user if self.user.is_active else self.user.email
 
     def delete(self, using=None):
         """

@@ -1,7 +1,9 @@
 {% extends "account_base.html" %}
 {% block content %}
 <h1>{{ account }}'s Members</h1>
-
+<ul>
+    <li><a href="{% url account_user_add account.pk %}">Add a member</a></li>
+</ul>
 <ul>
     {% for account_user in account_users %}
     <li><a href="{{ account_user.get_absolute_url }}">{{ account_user }}</a></li>

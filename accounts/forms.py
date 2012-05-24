@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 
 from accounts.models import Account, AccountUser, AccountOwner
+from accounts.invitations.backends import InvitationBackend
 
 
 class LoginForm(AuthenticationForm):
@@ -68,17 +69,10 @@ class AccountUserAddForm(forms.ModelForm):
         except User.MultipleObjectsReturned:
             raise forms.ValidationError(_("This email address has been used multiple times."))
         except User.DoesNotExist:
-            # Create the user...
-            #user = User.objects.create(
-            #        username=self.cleaned_data['username'],
-            #        email=self.cleaned_data['email'],
-            #        password=User.objects.make_random_password(),
-            #        first_name=self.cleaned_data['first_name'],
-            #        last_name=self.cleaned_data['last_name'])
-            return None
-        else:
-            return AccountUser.objects.create(user=user, account=self.account,
-                    is_admin=self.cleaned_data['is_admin'])
+            user = InvitationBackend().create_invitation(
+                    self.cleaned_data['email'])
+        return AccountUser.objects.create(user=user, account=self.account,
+                is_admin=self.cleaned_data['is_admin'])
 
     def clean_email(self):
         email = self.cleaned_data['email']
