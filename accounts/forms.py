@@ -5,6 +5,7 @@ from django.contrib.sites.models import get_current_site
 from django.utils.translation import ugettext_lazy as _
 
 from accounts.models import Account, AccountUser, AccountOwner
+from accounts.utils import create_account
 from accounts.invitations.backends import InvitationBackend
 
 
@@ -36,7 +37,6 @@ class AccountForm(forms.ModelForm):
     def save(self, commit=True):
         self.instance.change_owner(self.cleaned_data['owner'])
         return super(AccountForm, self).save(commit=commit)
-
 
 
 class AccountUserForm(forms.ModelForm):
@@ -81,7 +81,6 @@ class AccountUserAddForm(forms.ModelForm):
         should kick off the registration process. It needs to create a User in
         order to link it to the Account.
         """
-        from django.contrib.auth.models import User
         try:
             user = User.objects.get(email=self.cleaned_data['email'])
         except User.MultipleObjectsReturned:
@@ -125,8 +124,6 @@ class AccountAddForm(forms.ModelForm):
         """
         Create the account, then get the user, then make the owner.
         """
-        from django.contrib.auth.models import User
-        from accounts.utils import create_account
         try:
             user = User.objects.get(email=self.cleaned_data['email'])
         except User.DoesNotExist:
@@ -156,7 +153,7 @@ class UserProfileForm(forms.ModelForm):
         data = self.cleaned_data
         password, password_confirm = data.get('password'), data.get('password_confirm')
         if (password or password_confirm) and (password != password_confirm):
-            err_msg = u"Your passwords must match"
+            err_msg = _("Your passwords must match")
             self._errors['password_confirm'] = self.error_class([err_msg])
             del data['password']
             del data['password_confirm']
