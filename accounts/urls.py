@@ -1,4 +1,4 @@
-from django.conf.urls.defaults import patterns, url
+from django.conf.urls.defaults import patterns, url, include
 from django.contrib.auth.decorators import login_required
 
 from accounts.views import (AccountList, AccountDetail, AccountUpdate,
@@ -44,5 +44,9 @@ urlpatterns = patterns('',
     # This view should be configurable for a custom UserProfile class
     url(r'^profile/$', view=login_required(UserProfileView.as_view()),
         name="user_profile"),
+
+    # Invitations
+    # TODO: get backend URLs
+    url(r'^invite/', include('accounts.invitations.urls')),
 )
 

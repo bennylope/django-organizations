@@ -6,7 +6,7 @@
 <h1> {{ account_user }} @ {{ account }}</h1>
 {% endif %}
 {% if user == account_user.user %}This is you!{% endif %}
-<form action="." method="POST">{% csrf_token %}
+<form action="." method="post">{% csrf_token %}
     {{ form }}
     <input type="submit" value="submit">
 </form>

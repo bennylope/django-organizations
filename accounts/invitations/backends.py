@@ -58,6 +58,7 @@ class InvitationBackend(object):
         subject = subject_template.render(c).strip() # Remove newline character
         body = body_template.render(c)
         headers = {'Reply-To': settings.DEFAULT_FROM_EMAIL}
+        print user.id
         EmailMessage(subject, body, from_email, [user.email], headers).send()
 
     def send_reminder(self, user):

@@ -96,6 +96,10 @@ Invitation backend
 * Takes care of the invitation oriented registration views
 * Invitation acceptance should log the user in
 
+    # TODO offer more sophisticated error if no match
+    # TODO do everything no matter what so that 
+    # TODO be able to specify where redirects go?
+
 /accounts/register/ - add a new account
 /accounts/invitation/<invite id>/ - respond to an invitation
 
