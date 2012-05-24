@@ -75,7 +75,7 @@ To-do
 * Integrate existing registration app
 * Limit the choices for the owner in the account's admin to account users of
   that account
-* Consistent doc strings
+* Consistent doc strings (formatting and content)
 * Consistent use of either "account_user" or "accountuser"
 * Redirect profile view to self (unless referrer)
 * Apply login_required decorator to 'final' view dispatch methods
@@ -83,6 +83,11 @@ To-do
 * Create an inclusion tag for rendering the list of account users
 * Set up registration backend
 * Set up invitation backend
+
+* Add messages (person invited, or invitation sent, log in after registering)
+* Conditional messages, based on setting
+
+* Use namespaced URLs
 
 * add search fields to admin
 
@@ -114,6 +119,7 @@ Wishlist
 * Make Account and AccountUser models abstract and/or optional
 * Merge users if someone has duplicate user profiles (or just validate that a
   user can have only one AccountUser object per Account)
+* Add permissions to AccountUser
 
 Notes
 -----

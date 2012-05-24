@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
+from django.contrib.sites.models import get_current_site
 from django.utils.translation import ugettext_lazy as _
 
 from accounts.models import Account, AccountUser, AccountOwner
@@ -47,8 +48,11 @@ class AccountUserAddForm(forms.ModelForm):
     """Form class for adding AccountUsers to an existing Account"""
     email = forms.EmailField(max_length=30) # TODO check length
 
-    def __init__(self, data=None, files=None, initial=None, instance=None, account=None):
+    def __init__(self, data=None, files=None, initial=None, instance=None,
+            account=None, request=None):
+        # TODO change parameter order?
         self.account = account
+        self.request = request
         super(AccountUserAddForm, self).__init__(data=data, initial=initial,
                 instance=instance)
 
@@ -69,8 +73,13 @@ class AccountUserAddForm(forms.ModelForm):
         except User.MultipleObjectsReturned:
             raise forms.ValidationError(_("This email address has been used multiple times."))
         except User.DoesNotExist:
+            # TODO either replace the way the domain is set or send the request
+            # so that the backend can do it... OR send a callable or use a
+            # custom function...
             user = InvitationBackend().create_invitation(
-                    self.cleaned_data['email'])
+                    self.cleaned_data['email'],
+                    **{'domain': get_current_site(self.request),
+                        'account': self.account})
         return AccountUser.objects.create(user=user, account=self.account,
                 is_admin=self.cleaned_data['is_admin'])
 

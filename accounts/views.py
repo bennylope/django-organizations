@@ -113,7 +113,7 @@ class BaseAccountUserCreate(AccountMixin, CreateView):
 
     def get_form_kwargs(self):
         kwargs = super(BaseAccountUserCreate, self).get_form_kwargs()
-        kwargs.update({'account': self.account})
+        kwargs.update({'account': self.account, 'request': self.request})
         return kwargs
 
     def get(self, request, *args, **kwargs):

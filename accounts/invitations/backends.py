@@ -1,9 +1,7 @@
 import uuid
 
 from django.conf import settings
-from django.contrib import messages
 from django.contrib.auth.models import User
-from django.contrib.sites.models import get_current_site
 from django.core.exceptions import ImproperlyConfigured
 from django.core.mail import EmailMessage
 from django.template import Context, loader
@@ -46,10 +44,13 @@ class InvitationBackend(object):
             from_email = "%s %s <%s>" % (sender.first_name, sender.last_name,
                     from_email)
 
+        domain = kwargs.get('domain', '')
+
         c= Context({
-            'url': 'yahoo.com', #TODO replace this
+            'domain': domain,
+            'url': '/register/',
             'user': user,
-            'token': u"%s" % token,
+            'token': token,
             'protocol': 'http',
         })
 
@@ -58,7 +59,6 @@ class InvitationBackend(object):
         subject = subject_template.render(c).strip() # Remove newline character
         body = body_template.render(c)
         headers = {'Reply-To': settings.DEFAULT_FROM_EMAIL}
-        print user.id
         EmailMessage(subject, body, from_email, [user.email], headers).send()
 
     def send_reminder(self, user):
