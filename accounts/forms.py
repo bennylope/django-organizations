@@ -47,11 +47,10 @@ class AccountUserAddForm(forms.ModelForm):
     """Form class for adding AccountUsers to an existing Account"""
     email = forms.EmailField(max_length=30) # TODO check length
 
-    def __init__(self, data=None, files=None, initial=None, instance=None,
-            account=None, request=None):
-        # TODO change parameter order?
-        self.account = account
+    def __init__(self, request, account, data=None, files=None, initial=None,
+            instance=None):
         self.request = request
+        self.account = account
         super(AccountUserAddForm, self).__init__(data=data, initial=initial,
                 instance=instance)
 
@@ -96,9 +95,8 @@ class AccountAddForm(forms.ModelForm):
     """
     email = forms.EmailField(max_length=30)
 
-    def __init__(self, data=None, files=None, initial=None, instance=None,
-            request=None):
-        # TODO change parameter order?
+    def __init__(self, request, data=None, files=None, initial=None,
+            instance=None):
         self.request = request
         super(AccountAddForm, self).__init__(data=data, initial=initial,
                 instance=instance)
