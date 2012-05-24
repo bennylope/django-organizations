@@ -7,7 +7,7 @@
     <li>Email: {{ account_user.user.email }}</li>
 </ul>
 <ul>
-    <li><a href="{% url account_user_edit account.pk account_user.pk %}">Edit</a></li>
-    <li><a href="{% url account_user_delete account.pk account_user.pk %}">Delete</a></li>
+    <li><a href="{% url account_user_edit account.pk account_user.user.pk %}">Edit</a></li>
+    <li><a href="{% url account_user_delete account.pk account_user.user.pk %}">Delete</a></li>
 </ul>
 {% endblock %}

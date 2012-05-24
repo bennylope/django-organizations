@@ -39,10 +39,10 @@ class AccountUserMixin(AccountMixin):
         if hasattr(self, 'account_user'):
             return self.account_user
         account_pk = self.kwargs.get('account_pk', None)
-        account_user_pk = self.kwargs.get('account_user_pk', None)
+        user_pk = self.kwargs.get('user_pk', None)
         self.account_user = get_object_or_404(
                 AccountUser.objects.select_related(),
-                pk=account_user_pk, account__pk=account_pk)
+                user__pk=user_pk, account__pk=account_pk)
         return self.account_user
 
 
