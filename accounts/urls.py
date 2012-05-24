@@ -3,8 +3,8 @@ from django.contrib.auth.decorators import login_required
 
 from accounts.views import (AccountList, AccountDetail, AccountUpdate,
         AccountDelete, AccountCreate, AccountUserList, AccountUserDetail,
-        AccountUserUpdate, AccountUserCreate, AccountUserDelete,
-        UserProfileView, LogoutView)
+        AccountUserUpdate, AccountUserCreate, AccountUserRemind,
+        AccountUserDelete, UserProfileView, LogoutView)
 
 
 urlpatterns = patterns('',
@@ -30,6 +30,9 @@ urlpatterns = patterns('',
     url(r'^(?P<account_pk>[\d]+)/people/add/$',
         view=login_required(AccountUserCreate.as_view()),
         name="account_user_add"),
+    url(r'^(?P<account_pk>[\d]+)/people/(?P<account_user_pk>[\d]+)/remind/$',
+        view=login_required(AccountUserRemind.as_view()),
+        name="account_user_remind"),
     url(r'^(?P<account_pk>[\d]+)/people/(?P<account_user_pk>[\d]+)/$',
         view=login_required(AccountUserDetail.as_view()),
         name="account_user_detail"),

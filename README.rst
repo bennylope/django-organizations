@@ -83,6 +83,7 @@ To-do
 * Create an inclusion tag for rendering the list of account users
 * Set up registration backend
 * Set up invitation backend
+* List only accounts which the user belongs to
 
 * Add messages (person invited, or invitation sent, log in after registering)
 * Conditional messages, based on setting
@@ -105,6 +106,8 @@ Invitation backend
     # TODO do everything no matter what so that 
     # TODO be able to specify where redirects go?
 
+Invitations should be added to the DB so that we can track who invited and when
+
 /accounts/register/ - add a new account
 /accounts/invitation/<invite id>/ - respond to an invitation
 
@@ -120,6 +123,7 @@ Wishlist
 * Merge users if someone has duplicate user profiles (or just validate that a
   user can have only one AccountUser object per Account)
 * Add permissions to AccountUser
+* Include an optional welcome message from the sender
 
 Notes
 -----

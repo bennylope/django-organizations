@@ -2,8 +2,10 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import logout
 from django.contrib.auth.views import login as login_view
+from django.contrib.sites.models import get_current_site
 from django.core.urlresolvers import reverse
 from django.http import Http404, HttpResponseRedirect
+from django.utils.translation import ugettext as _
 from django.views.generic import (View, ListView, DetailView, UpdateView,
         CreateView, DeleteView, FormView)
 
@@ -12,6 +14,7 @@ from accounts.mixins import (AccountMixin, AccountUserMixin,
         MembershipRequiredMixin, AdminRequiredMixin, OwnerRequiredMixin)
 from accounts.forms import (LoginForm, AccountForm, AccountUserForm,
         AccountUserAddForm, AccountAddForm, UserProfileForm)
+from accounts.invitations.backends import InvitationBackend
 
 
 class LoginView(FormView):
@@ -125,6 +128,23 @@ class BaseAccountUserCreate(AccountMixin, CreateView):
         return super(BaseAccountUserCreate, self).post(request, *args, **kwargs)
 
 
+class BaseAccountUserRemind(AccountUserMixin, DetailView):
+    template_name = 'accounts/accountuser_remind.html'
+
+    def get_object(self, **kwargs):
+        self.account_user = super(BaseAccountUserRemind, self).get_object()
+        if self.account_user.user.is_active:
+            raise Http404(_("Already active")) # TODO add better error
+        return self.account_user
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        InvitationBackend().send_reminder(self.object.user,
+                **{'domain': get_current_site(self.request),
+                    'account': self.account, 'sender': request.user})
+        return HttpResponseRedirect(self.object.get_absolute_url())
+
+
 class BaseAccountUserUpdate(AccountUserMixin, UpdateView):
     form_class = AccountUserForm
 
@@ -167,6 +187,10 @@ class AccountUserUpdate(AdminRequiredMixin, BaseAccountUserUpdate):
 
 
 class AccountUserCreate(AdminRequiredMixin, BaseAccountUserCreate):
+    pass
+
+
+class AccountUserRemind(AdminRequiredMixin, BaseAccountUserRemind):
     pass
 
 

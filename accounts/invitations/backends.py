@@ -14,6 +14,10 @@ class InvitationBackend(object):
     """
     A default invitation backend
     """
+    invitation_subject = 'invitations/invitation_subject.txt'
+    invitation_body = 'invitations/invitation_body.html'
+    reminder_subject = 'invitations/reminder_subject.txt'
+    reminder_body = 'invitations/reminder_body.html'
 
     def create_invitation(self, email, **kwargs):
         """
@@ -46,23 +50,31 @@ class InvitationBackend(object):
 
         domain = kwargs.get('domain', '')
 
-        c= Context({
+        c = Context({
             'domain': domain,
             'url': '/register/',
             'user': user,
-            'token': token,
+            'token': unicode(token),
             'protocol': 'http',
+            'sender': sender,
+            'account': kwargs.get('account', None)
         })
 
-        subject_template = loader.get_template('invitations/email_subject.txt')
-        body_template = loader.get_template('invitations/email_body.html')
+        msg_subject = kwargs.get('subject_template', self.invitation_subject)
+        msg_body = kwargs.get('body_template', self.invitation_body)
+
+        subject_template = loader.get_template(msg_subject)
+        body_template = loader.get_template(msg_body)
         subject = subject_template.render(c).strip() # Remove newline character
         body = body_template.render(c)
         headers = {'Reply-To': settings.DEFAULT_FROM_EMAIL}
         EmailMessage(subject, body, from_email, [user.email], headers).send()
 
-    def send_reminder(self, user):
-        raise NotImplementedError
+    def send_reminder(self, user, **kwargs):
+        kwargs.update({'subject_template': 'invitations/reminder_subject.txt',
+            'body_template': 'invitations/reminder_body.html'})
+        token = InvitationTokenGenerator().make_token(user)
+        self.send_invitation(user, token, **kwargs)
 
     def activate(self, request, key):
         raise NotImplementedError
