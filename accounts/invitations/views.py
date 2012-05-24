@@ -1,3 +1,4 @@
+from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import get_object_or_404
@@ -39,4 +40,8 @@ class RegisterInvite(UpdateView):
 
     def form_valid(self, form):
         form.instance.is_active = True
-        return super(RegisterInvite, self).form_valid(form)
+        self.object = form.save()
+        user = authenticate(username=form.cleaned_data['username'],
+                password=form.cleaned_data['password'])
+        login(self.request, user)
+        return HttpResponseRedirect(self.get_success_url())
