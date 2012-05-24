@@ -1,11 +1,11 @@
-{% extends "account_base.html" %}
+{% extends "organizations_base.html" %}
 {% block content %}
 {% if profile %}
 <h1>Update your profile</h1>
 {% else %}
-<h1> {{ account_user }} @ {{ account }}</h1>
+<h1> {{ organization_user }} @ {{ organization }}</h1>
 {% endif %}
-{% if user == account_user.user %}This is you!{% endif %}
+{% if user == organization_user.user %}This is you!{% endif %}
 <form action="." method="post">{% csrf_token %}
     {{ form }}
     <input type="submit" value="submit">

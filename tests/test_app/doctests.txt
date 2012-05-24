@@ -1,1 +1,1 @@
->>> from accounts.models import AccountGroup
+>>> from organizations.models import Organization

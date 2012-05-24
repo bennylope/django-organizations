@@ -1,0 +1,13 @@
+{% extends "organizations_base.html" %}
+{% block content %}
+<h1> {{ organization_user }} @ {{ organization }}</h1>
+{% if user == organization_user.user %}This is you!{% endif %}
+<ul>
+    <li>Name: {{ organization_user.full_name }}</li>
+    <li>Email: {{ organization_user.user.email }}</li>
+</ul>
+<ul>
+    <li><a href="{% url organization_user_edit organization.pk organization_user.user.pk %}">Edit</a></li>
+    <li><a href="{% url organization_user_delete organization.pk organization_user.user.pk %}">Delete</a></li>
+</ul>
+{% endblock %}

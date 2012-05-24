@@ -1,6 +1,6 @@
-{% extends "account_base.html" %}
+{% extends "organizations_base.html" %}
 {% block content %}
-<h1>{{ account }}</h1>
+<h1>{{ organization }}</h1>
 <form action="." method="post">{% csrf_token %}
     {{ form }}
     <input type="submit" value="Send reminder">

@@ -1,6 +1,6 @@
 from django.conf.urls.defaults import patterns, url, include
 
-from accounts.invitations.views import RegisterInvite
+from organizations.invitations.views import RegisterInvite
 
 
 urlpatterns = patterns('',

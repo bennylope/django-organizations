@@ -5,8 +5,8 @@ from django.shortcuts import get_object_or_404
 from django.utils.translation import ugettext as _
 from django.views.generic import UpdateView
 
-from accounts.invitations.forms import InvitationRegistrationForm
-from accounts.invitations.tokens import InvitationTokenGenerator
+from organizations.invitations.forms import InvitationRegistrationForm
+from organizations.invitations.tokens import InvitationTokenGenerator
 
 
 class RegisterInvite(UpdateView):
@@ -15,7 +15,7 @@ class RegisterInvite(UpdateView):
     template_name = "invitations/register_form.html"
 
     def get_success_url(self):
-        return "/accounts/"
+        return "/organizations/"
 
     def get_form_kwargs(self):
         kwargs = super(RegisterInvite, self).get_form_kwargs()

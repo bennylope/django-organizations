@@ -1,7 +1,7 @@
 from django import forms
 
 
-from accounts.forms import UserProfileForm
+from organizations.forms import UserProfileForm
 
 
 class InvitationRegistrationForm(UserProfileForm):

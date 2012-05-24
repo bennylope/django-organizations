@@ -1,24 +1,23 @@
-=====================
-Django group accounts
-=====================
+====================
+Django Organizations
+====================
 
-Create and manage group accounts in Django projects and allow users to be
-members of multiple accounts.
+Create and manage organizations in Django projects and allow users to be
+members of multiple organizations.
 
 Project status
 ==============
 
-Let's get this out of the way right now. This is definitely pre-alpha. Django
-group accounts is hardly feature complete, and it's still exploratory.
-Documentation and test coverage is minimal.
+**This project is pre-alpha.** Test coverage is broken, documentation needs
+updating, and features are changing.
 
 Use case
 ========
 
 It's an important requirement to have not just users on your web site or
-application but users who are members of a larger group account. This might be
+application but users who are members of a larger group organization. This might be
 an additional feature, or it might be a core feature (GitHub has optional group
-accounts, Basecamp has required group accounts). Any place where the account is
+organizations, Basecamp has required organizations). Any place where the organization is
 or can be based on a group of people, rather than just one individual.
 
 Installing
@@ -30,16 +29,16 @@ You should install by downloading the source and running::
 
 Or use pip::
 
-    $ pip install -e git+git://github.com/bennylope/django-group-accounts.git#egg=django-group-accounts
+    $ pip install -e git+git://github.com/bennylope/django-organizations.git#egg=django-organizations
 
 .. First add the application to your Python path. The easiest way is to use `pip`:
 
-..    pip install django-group-accounts
+..    pip install django-organizations
 
-.. Then make sure that you add the `accounts` application to your
+.. Then make sure that you add the `organizations` application to your
 .. `INSTALLED_APPS` list.
 
-Using group accounts
+Using organizations
 ====================
 
 Overview
@@ -51,13 +50,13 @@ User model, and `django-registration
 
 There are three models:
 
-* Account
-* AccountUser
-* AccountOwner
+* Organization
+* OrganizationUser
+* OrganizationOwner
 
-Each account can have only one owner, however a site user can be a member of
-multiple accounts, or own multiple accounts. The AccountUser model servers as
-an intermediary between the `Account` and the `Users` to allow this.
+Each organization can have only one owner, however a site user can be a member of
+multiple organizations, or own multiple organizations. The OrganizationUser model servers as
+an intermediary between the `Organization` and the `Users` to allow this.
 
 Ideally as much of the relationships should be defined in the database.
 
@@ -70,20 +69,20 @@ license.
 To-do
 =====
 
-* Management command to clean orphan accounts
+* Management command to clean orphan organizations
 * Add self-registration form
 * Integrate existing registration app
-* Limit the choices for the owner in the account's admin to account users of
-  that account
+* Limit the choices for the owner in the organization's admin to organization users of
+  that organization
 * Consistent doc strings (formatting and content)
-* Consistent use of either "account_user" or "accountuser"
+* Consistent use of either "organization_user" or "organizationuser"
 * Redirect profile view to self (unless referrer)
 * Apply login_required decorator to 'final' view dispatch methods
-* Add signals for registering users with new accounts
-* Create an inclusion tag for rendering the list of account users
+* Add signals for registering users with new organizations
+* Create an inclusion tag for rendering the list of organization users
 * Set up registration backend
 * Set up invitation backend
-* List only accounts which the user belongs to
+* List only organizations which the user belongs to
 
 * Add messages (person invited, or invitation sent, log in after registering)
 * Conditional messages, based on setting
@@ -108,39 +107,39 @@ Invitation backend
 
 Invitations should be added to the DB so that we can track who invited and when
 
-/accounts/register/ - add a new account
-/accounts/invitation/<invite id>/ - respond to an invitation
+/organizations/register/ - add a new organization
+/organizations/invitation/<invite id>/ - respond to an invitation
 
 Wishlist
 --------
 
 * Profile view (among others) should take configurable form class
-* Add a user type choice field to AccountUsers for extensibility (switch
+* Add a user type choice field to OrganizationUsers for extensibility (switch
   "is_admin" boolean to this?)
 * Enable i18n
 * Provide a way to use identifiers other than the IDs in the URLs
-* Make Account and AccountUser models abstract and/or optional
+* Make Organization and OrganizationUser models abstract and/or optional
 * Merge users if someone has duplicate user profiles (or just validate that a
-  user can have only one AccountUser object per Account)
-* Add permissions to AccountUser
+  user can have only one OrganizationUser object per Organization)
+* Add permissions to OrganizationUser
 * Include an optional welcome message from the sender
 
 Notes
 -----
 
-* add MIDDLEWARE that adds the user's AccountUser objects (with Accounts) to the request
-* Every account oriented view object should reference the same 'account'
+* add MIDDLEWARE that adds the user's OrganizationUser objects (with Organizations) to the request
+* Every organization oriented view object should reference the same 'organization'
   attribute
-* Every account user oriented view object should reference the same 'account'
-  and 'account_user' attribute
-* Accounts list view should list accounts that the User is a member of, redirect if there is only one(?)
+* Every organization user oriented view object should reference the same 'organization'
+  and 'organization_user' attribute
+* Organizations list view should list organizations that the User is a member of, redirect if there is only one(?)
 * Dispatch method should call get_object method, NOT the get/request methods
 
 
 Rules
 =====
 
-* Anyone can create an account (subject to application specific restrictions)
+* Anyone can create an organization (subject to application specific restrictions)
 * Should see if the user exists before creating a new User object
 * Should rely upon django-registration
 * Should be authentication agnostic (meaning views should take default forms
@@ -150,19 +149,19 @@ Types of restrictions
 ---------------------
 
 * Logged in user
-* Member of the account
-* Admin of the account
-* Owner of the account
+* Member of the organization
+* Admin of the organization
+* Owner of the organization
 * User object is logged in user
 
 Editing data
 ------------
 
-* Only admins can edit account information
-* Only admins can edit other users in the account
-* Only admins can delete other users in the account
+* Only admins can edit organization information
+* Only admins can edit other users in the organization
+* Only admins can delete other users in the organization
 * Owners cannot be deleted
-* Only the owner can change account ownership
+* Only the owner can change organization ownership
 * Only the owner can edit the owner
 * Only admins can add additional users
 * Only admins can reset another user's password
@@ -172,6 +171,6 @@ Context data
 ------------
 
 * the User
-* the Account
-* Is the user a member of the account?
-* the account owner
+* the Organization
+* Is the user a member of the organization?
+* the organization owner

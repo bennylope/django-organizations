@@ -1,0 +1,9 @@
+{% extends "organizations_base.html" %}
+{% load org_tags %}
+{% block content %}
+<h1>{{ organization }}'s Members</h1>
+<ul>
+    <li><a href="{% url organization_user_add organization.pk %}">Add a member</a></li>
+</ul>
+{% organization_users organization %}
+{% endblock %}
