@@ -71,7 +71,7 @@ class AccountUser(AccountsBase):
         verbose_name_plural = _("account users")
 
     def __unicode__(self):
-        return u"%s" % self.user if self.user.is_active else self.user.email
+        return u"%s" % self.full_name if self.user.is_active else self.user.email
 
     def delete(self, using=None):
         """
@@ -91,7 +91,9 @@ class AccountUser(AccountsBase):
 
     @property
     def full_name(self):
-        return u"%s %s" % (self.user.first_name, self.user.last_name)
+        if self.user.first_name and self.user.last_name:
+            return u"%s %s" % (self.user.first_name, self.user.last_name)
+        return self.user.username
 
 
 class AccountOwner(AccountsBase):
