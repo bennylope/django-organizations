@@ -37,7 +37,6 @@ class AccountUserForm(forms.ModelForm):
         return is_admin
 
 
-
 class AccountOwnerForm(forms.ModelForm):
     """Form class for updating an Account's AccountOwner"""
     class Meta:
@@ -90,21 +89,23 @@ class AccountUserAddForm(forms.ModelForm):
         return email
 
 
-
-class AccountAddForm(AccountUserAddForm):
+class AccountAddForm(forms.ModelForm):
     """
     Form class for creating a new account, complete with new owner, including a
     User instance, AccountUser instance, and AccountOwner instance.
     """
-    # TODO: formset? Allow adding multiple users, need to specify owner though
-    # if more than one
-    account_name = forms.CharField(max_length=100)
-    subdomain = forms.CharField(max_length=100, required=False)
-    domain = forms.CharField(max_length=100, required=False)
+    email = forms.EmailField(max_length=30)
 
-    def __init__(self, *args, **kwargs):
-        super(AccountAddForm, self).__init__(*args, **kwargs)
-        self.fields.pop('is_admin')
+    def __init__(self, data=None, files=None, initial=None, instance=None,
+            request=None):
+        # TODO change parameter order?
+        self.request = request
+        super(AccountAddForm, self).__init__(data=data, initial=initial,
+                instance=instance)
+
+    class Meta:
+        model = Account
+        exclude = ('users', 'is_active')
 
     def save(self):
         """
@@ -112,19 +113,15 @@ class AccountAddForm(AccountUserAddForm):
         """
         from django.contrib.auth.models import User
         from accounts.utils import create_account
-        # Test for user with same email first?
-        user = User.objects.create(
-                username=self.cleaned_data['username'],
-                email=self.cleaned_data['email'],
-                password=User.objects.make_random_password(),
-                first_name=self.cleaned_data['first_name'],
-                last_name=self.cleaned_data['last_name'])
-        return create_account(
-                self.cleaned_data['account_name'],
-                user,
-                self.cleaned_data['subdomain'],
-                self.cleaned_data['domain'],
-                )
+        try:
+            user = User.objects.get(email=self.cleaned_data['email'])
+        except User.DoesNotExist:
+            user = InvitationBackend().create_invitation(
+                    self.cleaned_data['email'],
+                    **{'domain': get_current_site(self.request),
+                        'account': self.cleaned_data['name'], 
+                        'sender': self.request.user, 'created': True})
+        return create_account(self.cleaned_data['name'], user)
 
 
 class UserProfileForm(forms.ModelForm):

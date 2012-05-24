@@ -7,7 +7,8 @@ def create_account(name, owner):
     owner.
     """
     account = Account.objects.create(name=name)
-    new_user = AccountUser.objects.create(account=account, user=owner)
+    new_user = AccountUser.objects.create(account=account, user=owner,
+            is_admin=True)
     AccountOwner.objects.create(account=account, account_user=new_user)
     return account
 

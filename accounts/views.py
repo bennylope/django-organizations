@@ -72,16 +72,18 @@ class BaseAccountDetail(AccountMixin, DetailView):
         return context
 
 
-class BaseAccountCreate(View):
+class BaseAccountCreate(CreateView):
+    model = Account
     form_class = AccountAddForm
     template_name = 'accounts/account_form.html'
 
     def get_success_url(self):
-        return self.object.get_absolute_url()
+        return reverse("account_list")
 
-    def form_valid(self, form):
-        self.object = form.save()
-        return super(BaseAccountCreate, self).form_valid(form)
+    def get_form_kwargs(self):
+        kwargs = super(BaseAccountCreate, self).get_form_kwargs()
+        kwargs.update({'request': self.request})
+        return kwargs
 
 
 class BaseAccountUpdate(AccountMixin, UpdateView):
