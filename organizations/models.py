@@ -40,6 +40,10 @@ class Organization(OrganizationsBase):
     def get_absolute_url(self):
         return ('organization_detail', (), {'organization_pk': self.pk})
 
+    def add_user(self, user, is_admin=False):
+        return OrganizationUser.objects.create(user=user, organization=self,
+                is_admin=is_admin)
+
     def change_owner(self, organization_user):
         self.owner.organization_user = organization_user
         self.owner.save()
@@ -68,7 +72,6 @@ class OrganizationUser(OrganizationsBase):
 
     class Meta:
         ordering = ['organization', 'user']
-        #unique_together = ('user', 'organization') # TODO remove, redundant
         verbose_name = _("organization user")
         verbose_name_plural = _("organization users")
 

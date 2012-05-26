@@ -4,13 +4,7 @@ from django.db import models
 class OrgManager(models.Manager):
 
     def get_for_user(self, user):
-        """
-        Returns all matching `Organization` objects
-
-        user: a `User` object
-        """
         return self.get_query_set().filter(users=user)
-
 
 
 class ActiveOrgManager(OrgManager):

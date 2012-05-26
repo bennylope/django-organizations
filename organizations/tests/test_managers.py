@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from organizations.models import Organization
 
 
-class OrgManagerTests(TestCase):
+class ActiveManagerTests(TestCase):
 
     fixtures = ['users.json', 'orgs.json']
 
@@ -16,3 +16,4 @@ class OrgManagerTests(TestCase):
         user = User.objects.get(username="dave")
         self.assertEqual(3, Organization.objects.get_for_user(user).count())
         self.assertEqual(2, Organization.active.get_for_user(user).count())
+
