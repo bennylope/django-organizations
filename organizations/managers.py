@@ -12,12 +12,4 @@ class OrganizationManager(models.Manager):
 
         user: a `User` object
         """
-        return self.get_query_set().filter(users__user=user)
-
-    def get_for_request(self, request):
-        """
-        Returns all matching `Organization` objects
-
-        request: an `HttpRequest` object
-        """
-        return self.get_query_set().filter(user__user=request.user)
+        return self.get_query_set().filter(users=user)
