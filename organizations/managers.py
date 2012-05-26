@@ -1,10 +1,7 @@
 from django.db import models
 
 
-class OrganizationManager(models.Manager):
-
-    def active(self):
-        return self.get_query_set().filter(is_active=True)
+class OrgManager(models.Manager):
 
     def get_for_user(self, user):
         """
@@ -13,3 +10,15 @@ class OrganizationManager(models.Manager):
         user: a `User` object
         """
         return self.get_query_set().filter(users=user)
+
+
+
+class ActiveOrgManager(OrgManager):
+    """
+    A more useful extension of the default manager which returns querysets
+    including only active organizations
+    """
+
+    def get_query_set(self):
+        return super(ActiveOrgManager,
+                self).get_query_set().filter(is_active=True)

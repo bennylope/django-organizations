@@ -3,7 +3,7 @@ from django.db.models import permalink
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 
-from organizations.managers import OrganizationManager
+from organizations.managers import OrgManager, ActiveOrgManager
 
 
 class OrganizationsBase(models.Model):
@@ -25,7 +25,8 @@ class Organization(OrganizationsBase):
     users = models.ManyToManyField(User, through="OrganizationUser")
     is_active = models.BooleanField(default=True)
 
-    objects = OrganizationManager()
+    objects = OrgManager()
+    active = ActiveOrgManager()
 
     class Meta:
         ordering = ['name']

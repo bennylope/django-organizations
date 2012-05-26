@@ -10,9 +10,9 @@ class OrgManagerTests(TestCase):
 
     def test_active(self):
         self.assertEqual(3, Organization.objects.all().count())
-        self.assertEqual(2, Organization.objects.active().count())
+        self.assertEqual(2, Organization.active.all().count())
 
     def test_by_user(self):
         user = User.objects.get(username="dave")
-        self.assertEqual(2, Organization.objects.get_for_user(user).count())
-        self.assertEqual(3, Organization.objects.get_for_user(user).active().count())
+        self.assertEqual(3, Organization.objects.get_for_user(user).count())
+        self.assertEqual(2, Organization.active.get_for_user(user).count())
