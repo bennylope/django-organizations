@@ -9,12 +9,6 @@ from organizations.utils import create_organization
 from organizations.invitations.backends import InvitationBackend
 
 
-class LoginForm(AuthenticationForm):
-    """Adds the 'next' field for log in"""
-    redirect_url = forms.CharField(max_length=200, required=False,
-            widget=forms.HiddenInput())
-
-
 class OrganizationForm(forms.ModelForm):
     """Form class for updating Organizations"""
     owner = forms.ModelChoiceField(OrganizationUser.objects.all())
@@ -63,6 +57,7 @@ class OrganizationUserForm(forms.ModelForm):
 
 class OrganizationUserAddForm(forms.ModelForm):
     """Form class for adding OrganizationUsers to an existing Organization"""
+    # TODO move to default invitations backend
     email = forms.EmailField(max_length=75)
 
     def __init__(self, request, organization, data=None, files=None, initial=None,
@@ -135,34 +130,4 @@ class OrganizationAddForm(forms.ModelForm):
                         'organization': self.cleaned_data['name'], 
                         'sender': self.request.user, 'created': True})
         return create_organization(self.cleaned_data['name'], user)
-
-
-class UserProfileForm(forms.ModelForm):
-    """
-    Form for updating your own profile
-    """
-    password = forms.CharField(max_length=30, widget=forms.PasswordInput,
-            required=False)
-    password_confirm = forms.CharField(max_length=30,
-            widget=forms.PasswordInput, required=False)
-
-    class Meta:
-        model = User
-        exclude = ('user_permissions', 'groups', 'is_active', 'is_staff',
-                'is_superuser', 'last_login', 'date_joined')
-
-    def clean(self):
-        data = self.cleaned_data
-        password, password_confirm = data.get('password'), data.get('password_confirm')
-        if (password or password_confirm) and (password != password_confirm):
-            err_msg = _("Your passwords must match")
-            self._errors['password_confirm'] = self.error_class([err_msg])
-            del data['password']
-            del data['password_confirm']
-        return data
-
-    def save(self, commit=True):
-        if self.cleaned_data['password']:
-            self.instance.set_password(self.cleaned_data['password'])
-        return super(UserProfileForm, self).save(commit)
 

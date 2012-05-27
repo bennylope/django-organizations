@@ -4,8 +4,7 @@ from django.contrib.auth.decorators import login_required
 from organizations.views import (OrganizationList, OrganizationDetail,
         OrganizationUpdate, OrganizationDelete, OrganizationCreate,
         OrganizationUserList, OrganizationUserDetail, OrganizationUserUpdate,
-        OrganizationUserCreate, OrganizationUserRemind, OrganizationUserDelete,
-        UserProfileView, LogoutView)
+        OrganizationUserCreate, OrganizationUserRemind, OrganizationUserDelete)
 
 
 urlpatterns = patterns('',
@@ -43,13 +42,6 @@ urlpatterns = patterns('',
     url(r'^(?P<organization_pk>[\d]+)/people/(?P<user_pk>[\d]+)/delete/$',
         view=login_required(OrganizationUserDelete.as_view()),
         name="organization_user_delete"),
-
-    # Profile
-    # This view should be configurable for a custom UserProfile class
-    url(r'^profile/$', view=login_required(UserProfileView.as_view()),
-        name="user_profile"),
-
-    url(r'^logout/$', view=LogoutView.as_view(), name='logout'),
 
     # Invitations
     # TODO: get backend URLs
