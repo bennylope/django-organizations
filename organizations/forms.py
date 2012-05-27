@@ -61,15 +61,9 @@ class OrganizationUserForm(forms.ModelForm):
         return is_admin
 
 
-class OrganizationOwnerForm(forms.ModelForm):
-    """Form class for updating an Organization's OrganizationOwner"""
-    class Meta:
-        model = OrganizationOwner
-
-
 class OrganizationUserAddForm(forms.ModelForm):
     """Form class for adding OrganizationUsers to an existing Organization"""
-    email = forms.EmailField(max_length=30) # TODO check length
+    email = forms.EmailField(max_length=75)
 
     def __init__(self, request, organization, data=None, files=None, initial=None,
             instance=None):
