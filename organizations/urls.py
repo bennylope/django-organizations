@@ -1,6 +1,7 @@
 from django.conf.urls.defaults import patterns, url, include
 from django.contrib.auth.decorators import login_required
 
+from organizations.backends import invitation_backend
 from organizations.views import (OrganizationList, OrganizationDetail,
         OrganizationUpdate, OrganizationDelete, OrganizationCreate,
         OrganizationUserList, OrganizationUserDetail, OrganizationUserUpdate,
@@ -45,6 +46,6 @@ urlpatterns = patterns('',
 
     # Invitations
     # TODO: get backend URLs
-    url(r'^invite/', include('organizations.invitations.urls')),
+    url(r'^invite/', include(invitation_backend().get_urls())),
 )
 

@@ -1,4 +1,5 @@
 from django.core import mail
+from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 from django.http import Http404
 from django.test import TestCase
@@ -24,7 +25,7 @@ class InvitationTests(TestCase):
 
     def test_backend_definition(self):
         from organizations.backends import invitation_backend
-        self.assertEqual(InvitationBackend, invitation_backend())
+        self.assertTrue(isinstance(invitation_backend(), InvitationBackend))
 
     def test_create_user(self):
         invited = InvitationBackend().invite_by_email("sedgewick@example.com")
@@ -46,7 +47,9 @@ class InvitationTests(TestCase):
         mail.outbox = []
 
     def test_urls(self):
-        mail.outbox = []
+        reverse('invitations_register', kwargs={
+            'user_id': self.pending_user.id,
+            'token': self.tokenizer.make_token(self.pending_user)})
 
     def test_activate_user(self):
         request = self.factory.request()

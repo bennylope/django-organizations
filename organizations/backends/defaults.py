@@ -39,7 +39,7 @@ class InvitationBackend(object):
     def get_urls(self):
         return patterns('',
             url(r'^(?P<user_id>[\d]+)-(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
-                view=self.activate_user_view, name="invitations_register"),
+                view=self.activate_view, name="invitations_register"),
         )
 
     def invite_by_email(self, email, sender=None, **kwargs):
