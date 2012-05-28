@@ -7,7 +7,7 @@ from django.utils.http import base36_to_int
 REGISTRATION_TIMEOUT_DAYS = getattr(settings, 'REGISTRATION_TIMEOUT_DAYS', 15)
 
 
-class InvitationTokenGenerator(PasswordResetTokenGenerator):
+class RegistrationTokenGenerator(PasswordResetTokenGenerator):
     """
     Very similar to the password reset token generator, but should
     allow slightly greater time for timeout, so it only updates one
@@ -44,3 +44,4 @@ class InvitationTokenGenerator(PasswordResetTokenGenerator):
             return False
 
         return True
+

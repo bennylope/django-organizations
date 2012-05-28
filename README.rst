@@ -82,7 +82,7 @@ To-do
 * Create an inclusion tag for rendering the list of organization users
 * Set up registration backend
 * Set up invitation backend
-* List only organizations which the user belongs to
+* Add slug field for org name
 
 * Add messages (person invited, or invitation sent, log in after registering)
 * Conditional messages, based on setting
@@ -123,6 +123,7 @@ Wishlist
   user can have only one OrganizationUser object per Organization)
 * Add permissions to OrganizationUser
 * Include an optional welcome message from the sender
+* Allow pools of multiple registration and invitation backends
 
 Notes
 -----
