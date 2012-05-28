@@ -1,5 +1,3 @@
-from django.conf import settings
-from django.contrib import messages
 from django.contrib.sites.models import get_current_site
 from django.core.urlresolvers import reverse
 from django.http import Http404, HttpResponseRedirect
