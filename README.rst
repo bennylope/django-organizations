@@ -21,17 +21,14 @@ functionality beyond the individual user.
 Installing
 ==========
 
-.. First add the application to your Python path. The easiest way is to use `pip`:
+First add the application to your Python path. The easiest way is to use
+`pip`::
 
-..    pip install django-organizations
+    pip install django-organizations
 
 You should install by downloading the source and running::
 
     $ python setup.py install
-
-Or use pip::
-
-    $ pip install -e git+git://github.com/bennylope/django-organizations.git#egg=django-organizations
 
 Configuring
 -----------
@@ -42,7 +39,7 @@ application to your `INSTALLED_APPS` list::
     INSTALLED_APPS = (
         ...
         'django.contrib.auth',
-        'django_wysiwyg',
+        'organizations',
     )
 
 Then ensure that your project URL conf is updated. You should hook in the
