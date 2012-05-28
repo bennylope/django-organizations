@@ -1,62 +1,23 @@
 from django.conf import settings
 from django.contrib import messages
-from django.contrib.auth import logout
-from django.contrib.auth.views import login as login_view
 from django.contrib.sites.models import get_current_site
 from django.core.urlresolvers import reverse
 from django.http import Http404, HttpResponseRedirect
 from django.utils.translation import ugettext as _
-from django.views.generic import (View, ListView, DetailView, UpdateView,
-        CreateView, DeleteView, FormView)
+from django.views.generic import (ListView, DetailView, UpdateView, CreateView,
+        DeleteView, FormView)
 
 from organizations.models import Organization
 from organizations.mixins import (OrganizationMixin, OrganizationUserMixin,
         MembershipRequiredMixin, AdminRequiredMixin, OwnerRequiredMixin)
-from organizations.forms import (LoginForm, OrganizationForm, OrganizationUserForm,
-        OrganizationUserAddForm, OrganizationAddForm, UserProfileForm)
+from organizations.forms import (OrganizationForm, OrganizationUserForm,
+        OrganizationUserAddForm, OrganizationAddForm)
 from organizations.invitations.backends import InvitationBackend
 
 
-class LoginView(FormView):
-    """
-    Performs the same actions as the default Django login view but also
-    checks for a logged in user and redirects that person if s/he is
-    logged in.
-    """
-    template_name = "organizations/login.html"
-    form_class = LoginForm
-
-    def get(self, request, *args, **kwargs):
-        redirect_url = request.GET.get("next", settings.LOGIN_REDIRECT_URL)
-        if request.user.is_authenticated():
-            return HttpResponseRedirect(redirect_url)
-        else:
-            form = LoginForm(initial={"redirect_url": redirect_url})
-            return self.render_to_response(self.get_context_data(form=form))
-
-    def post(self, request, *args, **kwargs):
-        return login_view(request, redirect_field_name="redirect_url",
-                authentication_form=LoginForm)
-
-
-class LogoutView(View):
-    """
-    Logs the user out, and then redirects to the login view. It also
-    updates the request messages with a message that the user has 
-    successfully logged out.
-    """
-
-    def get(self, request, *args, **kwargs):
-        logout(request)
-        messages.add_message(request, messages.INFO, "You have successfully logged out.")
-        return HttpResponseRedirect(reverse('login'))
-
-    def post(self, request, *args, **kwargs):
-        return self.get(request, *args, **kwargs)
-
 
 class BaseOrganizationList(ListView):
-    model = Organization
+    queryset = Organization.active.all()
     context_object_name = "organizations"
 
     def get_queryset(self):
@@ -141,6 +102,7 @@ class BaseOrganizationUserCreate(OrganizationMixin, CreateView):
 
 class BaseOrganizationUserRemind(OrganizationUserMixin, DetailView):
     template_name = 'organizations/organizationuser_remind.html'
+    # TODO move to invitations backend?
 
     def get_object(self, **kwargs):
         self.organization_user = super(BaseOrganizationUserRemind, self).get_object()
@@ -208,23 +170,3 @@ class OrganizationUserRemind(AdminRequiredMixin, BaseOrganizationUserRemind):
 class OrganizationUserDelete(AdminRequiredMixin, BaseOrganizationUserDelete):
     pass
 
-
-class UserProfileView(UpdateView):
-    form_class = UserProfileForm
-    template_name = "organizations/organizationuser_form.html"
-
-    def get_success_url(self):
-        success_url = getattr(self, 'success_url')
-        return success_url if success_url else reverse('user_profile')
-
-    def get_object(self, **kwargs):
-        return self.request.user
-
-    def get_form_kwargs(self):
-        kwargs = super(UserProfileView, self).get_form_kwargs()
-        return kwargs
-
-    def get_context_data(self, **kwargs):
-        context = super(UserProfileView, self).get_context_data(**kwargs)
-        context['profile'] = True
-        return context
