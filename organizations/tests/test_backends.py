@@ -22,6 +22,10 @@ class InvitationTests(TestCase):
         self.pending_user.is_active = False
         self.pending_user.save()
 
+    def test_backend_definition(self):
+        from organizations.backends import invitation_backend
+        self.assertEqual(InvitationBackend, invitation_backend())
+
     def test_create_user(self):
         invited = InvitationBackend().invite_by_email("sedgewick@example.com")
         self.assertTrue(isinstance(invited, User))

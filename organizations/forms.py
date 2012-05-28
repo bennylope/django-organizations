@@ -6,7 +6,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from organizations.models import Organization, OrganizationUser, OrganizationOwner
 from organizations.utils import create_organization
-from organizations.invitations.backends import InvitationBackend
+from organizations.backends import invitation_backend
 
 
 class OrganizationForm(forms.ModelForm):
@@ -86,7 +86,7 @@ class OrganizationUserAddForm(forms.ModelForm):
             # TODO either replace the way the domain is set or send the request
             # so that the backend can do it... OR send a callable or use a
             # custom function...
-            user = InvitationBackend().create_invitation(
+            user = invitation_backend().create_invitation(
                     self.cleaned_data['email'],
                     **{'domain': get_current_site(self.request),
                         'organization': self.organization})
@@ -124,7 +124,7 @@ class OrganizationAddForm(forms.ModelForm):
         try:
             user = User.objects.get(email=self.cleaned_data['email'])
         except User.DoesNotExist:
-            user = InvitationBackend().create_invitation(
+            user = invitation_backend().create_invitation(
                     self.cleaned_data['email'],
                     **{'domain': get_current_site(self.request),
                         'organization': self.cleaned_data['name'], 

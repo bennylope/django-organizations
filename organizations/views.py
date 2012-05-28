@@ -12,7 +12,7 @@ from organizations.mixins import (OrganizationMixin, OrganizationUserMixin,
         MembershipRequiredMixin, AdminRequiredMixin, OwnerRequiredMixin)
 from organizations.forms import (OrganizationForm, OrganizationUserForm,
         OrganizationUserAddForm, OrganizationAddForm)
-from organizations.invitations.backends import InvitationBackend
+from organizations.backends import invitation_backend
 
 
 class BaseOrganizationList(ListView):
@@ -107,7 +107,7 @@ class BaseOrganizationUserRemind(OrganizationUserMixin, DetailView):
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
-        InvitationBackend().send_reminder(self.object.user,
+        invitation_backend().send_reminder(self.object.user,
                 **{'domain': get_current_site(self.request),
                     'organization': self.organization, 'sender': request.user})
         return HttpResponseRedirect(self.object.get_absolute_url())
