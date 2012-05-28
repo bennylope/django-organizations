@@ -1,23 +1,18 @@
 from django.db import models
 
 
-class OrganizationManager(models.Manager):
-
-    def active(self):
-        return self.get_query_set().filter(is_active=True)
+class OrgManager(models.Manager):
 
     def get_for_user(self, user):
-        """
-        Returns all matching `Organization` objects
+        return self.get_query_set().filter(users=user)
 
-        user: a `User` object
-        """
-        return self.get_query_set().filter(users__user=user)
 
-    def get_for_request(self, request):
-        """
-        Returns all matching `Organization` objects
+class ActiveOrgManager(OrgManager):
+    """
+    A more useful extension of the default manager which returns querysets
+    including only active organizations
+    """
 
-        request: an `HttpRequest` object
-        """
-        return self.get_query_set().filter(user__user=request.user)
+    def get_query_set(self):
+        return super(ActiveOrgManager,
+                self).get_query_set().filter(is_active=True)

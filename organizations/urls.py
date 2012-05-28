@@ -1,11 +1,11 @@
 from django.conf.urls.defaults import patterns, url, include
 from django.contrib.auth.decorators import login_required
 
+from organizations.backends import invitation_backend
 from organizations.views import (OrganizationList, OrganizationDetail,
         OrganizationUpdate, OrganizationDelete, OrganizationCreate,
         OrganizationUserList, OrganizationUserDetail, OrganizationUserUpdate,
-        OrganizationUserCreate, OrganizationUserRemind, OrganizationUserDelete,
-        UserProfileView, LogoutView)
+        OrganizationUserCreate, OrganizationUserRemind, OrganizationUserDelete)
 
 
 urlpatterns = patterns('',
@@ -44,15 +44,8 @@ urlpatterns = patterns('',
         view=login_required(OrganizationUserDelete.as_view()),
         name="organization_user_delete"),
 
-    # Profile
-    # This view should be configurable for a custom UserProfile class
-    url(r'^profile/$', view=login_required(UserProfileView.as_view()),
-        name="user_profile"),
-
-    url(r'^logout/$', view=LogoutView.as_view(), name='logout'),
-
     # Invitations
     # TODO: get backend URLs
-    url(r'^invite/', include('organizations.invitations.urls')),
+    url(r'^invite/', include(invitation_backend().get_urls())),
 )
 

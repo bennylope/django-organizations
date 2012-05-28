@@ -3,7 +3,7 @@ from django.db.models import permalink
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 
-from organizations.managers import OrganizationManager
+from organizations.managers import OrgManager, ActiveOrgManager
 
 
 class OrganizationsBase(models.Model):
@@ -25,7 +25,8 @@ class Organization(OrganizationsBase):
     users = models.ManyToManyField(User, through="OrganizationUser")
     is_active = models.BooleanField(default=True)
 
-    objects = OrganizationManager()
+    objects = OrgManager()
+    active = ActiveOrgManager()
 
     class Meta:
         ordering = ['name']
@@ -39,9 +40,9 @@ class Organization(OrganizationsBase):
     def get_absolute_url(self):
         return ('organization_detail', (), {'organization_pk': self.pk})
 
-    def change_owner(self, organization_user):
-        self.owner.organization_user = organization_user
-        self.owner.save()
+    def add_user(self, user, is_admin=False):
+        return OrganizationUser.objects.create(user=user, organization=self,
+                is_admin=is_admin)
 
     def is_member(self, user):
         return True if user in self.users.all() else False
@@ -67,12 +68,11 @@ class OrganizationUser(OrganizationsBase):
 
     class Meta:
         ordering = ['organization', 'user']
-        #unique_together = ('user', 'organization') # TODO remove, redundant
         verbose_name = _("organization user")
         verbose_name_plural = _("organization users")
 
     def __unicode__(self):
-        return u"%s" % self.full_name if self.user.is_active else self.user.email
+        return self.name if self.user.is_active else self.user.email
 
     def delete(self, using=None):
         """
@@ -80,7 +80,7 @@ class OrganizationUser(OrganizationsBase):
         unless it's part of a cascade from the Organization.
         """
         from organizations.exceptions import OwnershipRequired
-        if self.organization.owner.id == self.id:
+        if self.organization.owner.organization_user.id == self.id:
             raise OwnershipRequired(_("Cannot delete organization owner before organization or transferring ownership"))
         else:
             super(OrganizationUser, self).delete(using=using)
@@ -91,7 +91,7 @@ class OrganizationUser(OrganizationsBase):
                 {'organization_pk': self.organization.pk, 'user_pk': self.user.pk})
 
     @property
-    def full_name(self):
+    def name(self):
         if self.user.first_name and self.user.last_name:
             return u"%s %s" % (self.user.first_name, self.user.last_name)
         return self.user.username
