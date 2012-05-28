@@ -10,10 +10,10 @@ class OrganizationMixin(object):
     context_object_name = 'organization'
 
     def get_context_data(self, **kwargs):
-        kwargs.update({'organization': self.organization})
+        kwargs.update({'organization': self.get_organization()})
         return kwargs
 
-    def get_object(self, **kwargs):
+    def get_object(self):
         if hasattr(self, 'organization'):
             return self.organization
         organization_pk = self.kwargs.get('organization_pk', None)

@@ -15,7 +15,6 @@ from organizations.forms import (OrganizationForm, OrganizationUserForm,
 from organizations.invitations.backends import InvitationBackend
 
 
-
 class BaseOrganizationList(ListView):
     queryset = Organization.active.all()
     context_object_name = "organizations"
@@ -63,12 +62,8 @@ class BaseOrganizationDelete(OrganizationMixin, DeleteView):
 
 class BaseOrganizationUserList(OrganizationMixin, ListView):
     def get(self, request, *args, **kwargs):
-        self.organization = self.get_organization(**kwargs)
+        self.organization = self.get_organization()
         self.object_list = self.organization.organization_users.all()
-        allow_empty = self.get_allow_empty()
-        if not allow_empty and len(self.object_list) == 0:
-            raise Http404(_(u"Empty list and '%(class_name)s.allow_empty' is False.")
-                          % {'class_name': self.__class__.__name__})
         context = self.get_context_data(organization_users=self.object_list,
                 organization=self.organization)
         return self.render_to_response(context)
