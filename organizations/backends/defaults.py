@@ -41,6 +41,7 @@ class InvitationBackend(object):
             url(r'^(?P<user_id>[\d]+)-(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
                 view=self.activate_view, name="invitations_register"),
         )
+    backend_urls = get_urls
 
     def invite_by_email(self, email, sender=None, **kwargs):
         """

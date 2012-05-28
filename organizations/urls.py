@@ -1,7 +1,6 @@
-from django.conf.urls.defaults import patterns, url, include
+from django.conf.urls.defaults import patterns, url
 from django.contrib.auth.decorators import login_required
 
-from organizations.backends import invitation_backend
 from organizations.views import (OrganizationList, OrganizationDetail,
         OrganizationUpdate, OrganizationDelete, OrganizationCreate,
         OrganizationUserList, OrganizationUserDetail, OrganizationUserUpdate,
@@ -43,9 +42,4 @@ urlpatterns = patterns('',
     url(r'^(?P<organization_pk>[\d]+)/people/(?P<user_pk>[\d]+)/delete/$',
         view=login_required(OrganizationUserDelete.as_view()),
         name="organization_user_delete"),
-
-    # Invitations
-    # TODO: get backend URLs
-    url(r'^invite/', include(invitation_backend().get_urls())),
 )
-
