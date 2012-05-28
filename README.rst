@@ -1,27 +1,29 @@
 ====================
-Django Organizations
+django-organizations
 ====================
 
-Create and manage organizations in Django projects and allow users to be
-members of multiple organizations.
+:Info: Groups and multi-user account management
+:Version: 0.1.0
+:Status: alpha
+:Author: Ben Lopatin (http://benlopatin.com)
 
-Project status
-==============
+Add user-managed, multi-user groups to your Django project. Use
+django-organizations whether your site needs organizations that function like
+social groups or multi-user account objects to provide account and subscription
+functionality beyond the individual user.
 
-**This project is pre-alpha.** Test coverage is broken, documentation needs
-updating, and features are changing.
-
-Use case
-========
-
-It's an important requirement to have not just users on your web site or
-application but users who are members of a larger group organization. This might be
-an additional feature, or it might be a core feature (GitHub has optional group
-organizations, Basecamp has required organizations). Any place where the organization is
-or can be based on a group of people, rather than just one individual.
+* Relies on `django.contrib.auth` and does not add or require additional user
+  or authentication functionality
+* Users can be belong to and own more than one organization (account, group)
+* Invitation and registration functionality is designed to be flexible to allow
+  you to integrate existing invitation and registration apps
 
 Installing
 ==========
+
+.. First add the application to your Python path. The easiest way is to use `pip`:
+
+..    pip install django-organizations
 
 You should install by downloading the source and running::
 
@@ -31,22 +33,46 @@ Or use pip::
 
     $ pip install -e git+git://github.com/bennylope/django-organizations.git#egg=django-organizations
 
-.. First add the application to your Python path. The easiest way is to use `pip`:
+Configuring
+-----------
 
-..    pip install django-organizations
+Make sure you have `django.contrib.auth` installed, and add the `organizations`
+application to your `INSTALLED_APPS` list::
 
-.. Then make sure that you add the `organizations` application to your
-.. `INSTALLED_APPS` list.
+    INSTALLED_APPS = (
+        ...
+        'django.contrib.auth',
+        'django_wysiwyg',
+    )
+
+Then ensure that your project URL conf is updated. You should hook in the
+main application URL conf as well as your chosen invitation backend URLs::
+
+    from organizations.backends import invitation_backend
+
+    urlpatterns = patterns('',
+        ...
+        url(r'^accounts/', include('organizations.urls')),
+        url(r'^invitations/', include(invitation_backend().get_urls())),
+    )
+
+You can specify a different invitation backend in your project settings, and
+the `invitation_backend` function will provide the URLs defined by that
+backend::
+
+    ORGS_INVITATION_BACKEND = 'myapp.backends.MyInvitationBackend'
+
+License
+=======
+
+Anyone is free to use or modify this software under ther terms of the BSD
+license.
 
 Using organizations
 ====================
 
 Overview
 --------
-
-The application relies on Django's `contrib.auth` module for the
-User model, and `django-registration
-<https://bitbucket.org/ubernostrum/django-registration/>`_ for user
 
 There are three models:
 
@@ -59,12 +85,6 @@ multiple organizations, or own multiple organizations. The OrganizationUser mode
 an intermediary between the `Organization` and the `Users` to allow this.
 
 Ideally as much of the relationships should be defined in the database.
-
-License
-=======
-
-Anyone is free to use or modify this software under ther terms of the BSD
-license.
 
 To-do
 =====
@@ -79,36 +99,19 @@ To-do
 * Redirect profile view to self (unless referrer)
 * Apply login_required decorator to 'final' view dispatch methods
 * Add signals for registering users with new organizations
-* Create an inclusion tag for rendering the list of organization users
 * Set up registration backend
-* Set up invitation backend
 * Add slug field for org name
-
 * Add messages (person invited, or invitation sent, log in after registering)
 * Conditional messages, based on setting
-
 * Use namespaced URLs
-
 * add search fields to admin
 
 Invitation backend
 ------------------
 
-* Backend is called by sending email to the backend 
 * Backend sends out a signal that invitation has been sent
-* Sends out an invitation based on an email address
-* Returns a dummy user with that email address, but garbage for username, etc
-* Takes care of the invitation oriented registration views
-* Invitation acceptance should log the user in
-
-    # TODO offer more sophisticated error if no match
-    # TODO do everything no matter what so that 
-    # TODO be able to specify where redirects go?
-
-Invitations should be added to the DB so that we can track who invited and when
-
-/organizations/register/ - add a new organization
-/organizations/invitation/<invite id>/ - respond to an invitation
+* offer more sophisticated error if no match
+* be able to specify where redirects go?
 
 Wishlist
 --------
@@ -125,26 +128,8 @@ Wishlist
 * Include an optional welcome message from the sender
 * Allow pools of multiple registration and invitation backends
 
-Notes
------
-
-* add MIDDLEWARE that adds the user's OrganizationUser objects (with Organizations) to the request
-* Every organization oriented view object should reference the same 'organization'
-  attribute
-* Every organization user oriented view object should reference the same 'organization'
-  and 'organization_user' attribute
-* Organizations list view should list organizations that the User is a member of, redirect if there is only one(?)
-* Dispatch method should call get_object method, NOT the get/request methods
-
-
 Rules
 =====
-
-* Anyone can create an organization (subject to application specific restrictions)
-* Should see if the user exists before creating a new User object
-* Should rely upon django-registration
-* Should be authentication agnostic (meaning views should take default forms
-  but allow for user defined forms, either as param or module path in settings)
 
 Types of restrictions
 ---------------------
