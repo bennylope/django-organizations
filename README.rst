@@ -124,6 +124,18 @@ for me and contributors should include:
 
 Please use the project's issues tracker to report bugs. Thanks!
 
+Project goals
+-------------
+
+django-organizations should be backend agnostic:
+
+1. Authentication agnostic
+2. Registration agnostic
+3. Invitation agnostic
+4. User messaging agnostic
+
+Etc.
+
 License
 =======
 
