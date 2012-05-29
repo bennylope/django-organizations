@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib.sites.models import get_current_site
 from django.utils.translation import ugettext_lazy as _
 
-from organizations.models import Organization, OrganizationUser, OrganizationOwner
+from organizations.models import Organization, OrganizationUser
 from organizations.utils import create_organization
 from organizations.backends import invitation_backend
 
@@ -56,7 +56,6 @@ class OrganizationUserForm(forms.ModelForm):
 
 class OrganizationUserAddForm(forms.ModelForm):
     """Form class for adding OrganizationUsers to an existing Organization"""
-    # TODO move to default invitations backend
     email = forms.EmailField(max_length=75)
 
     def __init__(self, request, organization, data=None, files=None, initial=None,
@@ -82,14 +81,12 @@ class OrganizationUserAddForm(forms.ModelForm):
         except User.MultipleObjectsReturned:
             raise forms.ValidationError(_("This email address has been used multiple times."))
         except User.DoesNotExist:
-            # TODO either replace the way the domain is set or send the request
-            # so that the backend can do it... OR send a callable or use a
-            # custom function...
             user = invitation_backend().invite_by_email(
                     self.cleaned_data['email'],
                     **{'domain': get_current_site(self.request),
                         'organization': self.organization})
-        return OrganizationUser.objects.create(user=user, organization=self.organization,
+        return OrganizationUser.objects.create(user=user,
+                organization=self.organization,
                 is_admin=self.cleaned_data['is_admin'])
 
     def clean_email(self):
