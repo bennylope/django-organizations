@@ -52,7 +52,7 @@ class MembershipRequiredMixin(object):
         self.request = request
         self.args = args
         self.kwargs = kwargs
-        self.organization = self.get_organization(**kwargs)
+        self.organization = self.get_organization()
         if not self.organization.is_member(request.user):
             return HttpResponseForbidden(_("Whoops, wrong organization"))
         return super(MembershipRequiredMixin, self).dispatch(request, *args,
@@ -65,7 +65,7 @@ class AdminRequiredMixin(object):
         self.request = request
         self.args = args
         self.kwargs = kwargs
-        self.organization = self.get_organization(**kwargs)
+        self.organization = self.get_organization()
         if not self.organization.is_admin(request.user):
             return HttpResponseForbidden(_("Sorry, admins only"))
         return super(AdminRequiredMixin, self).dispatch(request, *args,
@@ -78,7 +78,7 @@ class OwnerRequiredMixin(object):
         self.request = request
         self.args = args
         self.kwargs = kwargs
-        self.organization = self.get_organization(**kwargs)
+        self.organization = self.get_organization()
         if self.organization.owner.organization_user.user != request.user:
             return HttpResponseForbidden(_("You are not the organization owner"))
         return super(OwnerRequiredMixin, self).dispatch(request, *args,
