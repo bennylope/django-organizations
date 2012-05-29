@@ -1,0 +1,14 @@
+====================
+django-organizations
+====================
+
+0.1.1
+-----
+
+* Add RequestContext to default invitation registration view
+* Fix invitations
+
+0.1.0
+-----
+
+* Initial alpha application
