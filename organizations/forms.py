@@ -85,7 +85,7 @@ class OrganizationUserAddForm(forms.ModelForm):
             # TODO either replace the way the domain is set or send the request
             # so that the backend can do it... OR send a callable or use a
             # custom function...
-            user = invitation_backend().create_invitation(
+            user = invitation_backend().invite_by_email(
                     self.cleaned_data['email'],
                     **{'domain': get_current_site(self.request),
                         'organization': self.organization})
@@ -123,7 +123,7 @@ class OrganizationAddForm(forms.ModelForm):
         try:
             user = User.objects.get(email=self.cleaned_data['email'])
         except User.DoesNotExist:
-            user = invitation_backend().create_invitation(
+            user = invitation_backend().invite_by_email(
                     self.cleaned_data['email'],
                     **{'domain': get_current_site(self.request),
                         'organization': self.cleaned_data['name'], 
