@@ -1,9 +1,7 @@
-{% comment %}
-You've been invited to join {{ account }} on SITE NAME by {{ sender.first_name }} {{ sender.last_name }}.
+You've been invited to join {{ account }} on {{ site_name }} by {{ sender.first_name }} {{ sender.last_name }}.
 
 Follow this link to create your user account.
 
-{{ protocol}}://{{ domain }}{% url invitations_register user.id token %}
+http://{{ domain }}{% url invitations_register user.id token %}
 
 If you are unsure about this link please contact the sender.
-{% endcomment %}

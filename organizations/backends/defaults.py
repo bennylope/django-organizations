@@ -9,7 +9,7 @@ from django.core.exceptions import ImproperlyConfigured
 from django.core.mail import EmailMessage
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import render_to_response
-from django.template import Context, loader
+from django.template import RequestContext, Context, loader
 from django.utils.translation import ugettext as _
 
 from organizations.backends.tokens import RegistrationTokenGenerator
@@ -40,9 +40,9 @@ class InvitationBackend(object):
         return patterns('',
             url(r'^(?P<user_id>[\d]+)-(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
                 view=self.activate_view, name="invitations_register"),
-        )
+            )
 
-    def invite_by_email(self, email, sender=None, **kwargs):
+    def invite_by_email(self, email, sender=None, request=None, **kwargs):
         """
         Returns a User object filled with dummy data and not active, and sends
         an invitation email.
@@ -64,8 +64,9 @@ class InvitationBackend(object):
         if user.is_active:
             return False
         token = RegistrationTokenGenerator().make_token(user)
+        kwargs.update({'token': token})
         self._send_email(user, self.invitation_subject, self.invitation_body,
-                sender, **{'token': token})
+                sender, **kwargs)
 
     def send_reminder(self, user, sender=None, **kwargs):
         """
@@ -74,8 +75,9 @@ class InvitationBackend(object):
         if user.is_active:
             return False
         token = RegistrationTokenGenerator().make_token(user)
+        kwargs.update({'token': token})
         self._send_email(user, self.invitation_subject, self.invitation_body,
-                sender, **{'token': token})
+                sender, **kwargs)
 
     def activate_view(self, request, user_id, token):
         """
@@ -92,13 +94,15 @@ class InvitationBackend(object):
         if form.is_valid():
             form.instance.is_active = True
             user = form.save()
+            user.set_password(form.cleaned_data['password'])
+            user.save()
             user = authenticate(username=form.cleaned_data['username'],
                     password=form.cleaned_data['password'])
             login(request, user)
             return HttpResponseRedirect(self.get_success_url())
             #return HttpResponseRedirect('/')
         return render_to_response('organizations/register_form.html',
-                {'form': form})
+                {'form': form}, context_instance=RequestContext(request))
 
 
     def _send_email(self, user, subject_template, body_template,
@@ -118,7 +122,9 @@ class InvitationBackend(object):
                     sender.email)
         headers = {'Reply-To': reply_to} if sender else {}
 
+        kwargs.update({'sender': sender, 'user': user})
         ctx = Context(kwargs)
+
         subject_template = loader.get_template(subject_template)
         body_template = loader.get_template(body_template)
         subject = subject_template.render(ctx).strip() # Remove stray newline characters
