@@ -106,6 +106,24 @@ of multiple organizations, or own multiple organizations. The OrganizationUser
 model servers as an intermediary between the `Organization` and the `Users` to
 allow this.
 
+Development & Contributing
+==========================
+
+Development is on-going. To-do items have been moved to the wiki for the time
+being.
+
+The basic functionality should not need much extending. Current dev priorities
+for me and contributors should include:
+
+* Improving the tests and test coverage (ideally moving them back out of the
+  main module and executable using the setup.py file)
+* Improving the backends and backends concept so that additional invitation and
+  registration backends can be used
+* Documentation
+* Ensuring all application text is translatable
+
+Please use the project's issues tracker to report bugs. Thanks!
+
 License
 =======
 
