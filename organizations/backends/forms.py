@@ -9,6 +9,12 @@ class InvitationRegistrationForm(forms.ModelForm):
     password_confirm = forms.CharField(max_length=30,
             widget=forms.PasswordInput)
 
+    def __init__(self, *args, **kwargs):
+        super(InvitationRegistrationForm, self).__init__(*args, **kwargs)
+        self.initial['username'] = ''
+
     class Meta:
         model = User
+        exclude = ('is_staff', 'is_superuser', 'is_active', 'last_login',
+                'date_joined', 'groups', 'user_permissions')
 
