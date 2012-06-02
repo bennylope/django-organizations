@@ -29,7 +29,9 @@ class OrganizationForm(forms.ModelForm):
         exclude = ('users', 'is_active')
 
     def save(self, commit=True):
-        self.instance.change_owner(self.cleaned_data['owner'])
+        if self.instance.owner.organization_user != self.cleaned_data['owner']:
+            self.instance.owner = self.cleaned_data['owner']
+            self.instance.owner.save()
         return super(OrganizationForm, self).save(commit=commit)
 
     def clean_owner(self):
