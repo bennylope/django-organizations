@@ -12,14 +12,9 @@ class OrganizationForm(forms.ModelForm):
     """Form class for updating Organizations"""
     owner = forms.ModelChoiceField(OrganizationUser.objects.all())
 
-    def __init__(self, request, data=None, files=None, auto_id='id_%s',
-            prefix=None, initial=None, error_class=forms.util.ErrorList,
-            label_suffix=':', empty_permitted=False, instance=None):
+    def __init__(self, request, *args, **kwargs):
         self.request = request
-        super(OrganizationForm, self).__init__(data=data, files=files,
-                auto_id=auto_id, prefix=prefix, initial=initial,
-                error_class=error_class, label_suffix=label_suffix,
-                empty_permitted=empty_permitted, instance=instance)
+        super(OrganizationForm, self).__init__(*args, **kwargs)
         self.fields['owner'].queryset = self.instance.organization_users.filter(
                 is_admin=True, user__is_active=True)
         self.fields['owner'].initial = self.instance.owner.organization_user
@@ -60,12 +55,10 @@ class OrganizationUserAddForm(forms.ModelForm):
     """Form class for adding OrganizationUsers to an existing Organization"""
     email = forms.EmailField(max_length=75)
 
-    def __init__(self, request, organization, data=None, files=None, initial=None,
-            instance=None):
+    def __init__(self, request, organization, *args, **kwargs):
         self.request = request
         self.organization = organization
-        super(OrganizationUserAddForm, self).__init__(data=data, initial=initial,
-                instance=instance)
+        super(OrganizationUserAddForm, self).__init__(*args, **kwargs)
 
     class Meta:
         model = OrganizationUser
@@ -105,11 +98,9 @@ class OrganizationAddForm(forms.ModelForm):
     """
     email = forms.EmailField(max_length=30)
 
-    def __init__(self, request, data=None, files=None, initial=None,
-            instance=None):
+    def __init__(self, request, *args, **kwargs):
         self.request = request
-        super(OrganizationAddForm, self).__init__(data=data, initial=initial,
-                instance=instance)
+        super(OrganizationAddForm, self).__init__(*args, **kwargs)
 
     class Meta:
         model = Organization
