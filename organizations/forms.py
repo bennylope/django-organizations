@@ -127,5 +127,5 @@ class OrganizationAddForm(forms.ModelForm):
                     **{'domain': get_current_site(self.request),
                         'organization': self.cleaned_data['name'], 
                         'sender': self.request.user, 'created': True})
-        return create_organization(self.cleaned_data['name'], user)
+        return create_organization(user, self.cleaned_data['name'])
 
