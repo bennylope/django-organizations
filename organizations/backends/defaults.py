@@ -87,7 +87,7 @@ class InvitationBackend(object):
         try:
             user = User.objects.get(id=user_id, is_active=False)
         except User.DoesNotExist:
-            user = User.objects.create(username="kjasdkfj")
+            raise Http404(_("Your URL may have expired."))
         if not RegistrationTokenGenerator().check_token(user, token):
             raise Http404(_("Your URL may have expired."))
         form = self.get_register_form(data=request.POST or None, instance=user)
@@ -100,7 +100,6 @@ class InvitationBackend(object):
                     password=form.cleaned_data['password'])
             login(request, user)
             return HttpResponseRedirect(self.get_success_url())
-            #return HttpResponseRedirect('/')
         return render_to_response('organizations/register_form.html',
                 {'form': form}, context_instance=RequestContext(request))
 
