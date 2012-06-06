@@ -21,7 +21,15 @@ class Organization(OrganizationsBase):
     The class has multiple organization users and one that is designated the organization
     owner.
     """
-    name = models.CharField(max_length=100)
+    #try:
+    #    from django_extensions.db.fields import AutoSlugField
+    #except ImportError:
+    #    slug_field = models.SlugField
+    #else:
+    #    slug_field = AutoSlugField
+
+    name = models.CharField(max_length=50)
+    slug = models.SlugField(max_length=50)
     users = models.ManyToManyField(User, through="OrganizationUser")
     is_active = models.BooleanField(default=True)
 

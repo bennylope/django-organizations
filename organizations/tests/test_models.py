@@ -1,5 +1,6 @@
 from django.test import TestCase
 from django.contrib.auth.models import User
+from django.db import IntegrityError
 
 from organizations.models import (Organization, OrganizationUser,
         OrganizationOwner)
@@ -29,6 +30,10 @@ class OrgModelTests(TestCase):
         self.krist = User.objects.get(username="krist")
         self.nirvana = Organization.objects.get(name="Nirvana")
         self.foo = Organization.objects.get(name="Foo Fighters")
+
+    def test_duplicate_members(self):
+        """Ensure that a User can only have one OrganizationUser object"""
+        self.assertRaises(IntegrityError, self.nirvana.add_user, self.dave)
 
     def test_is_member(self):
         self.assertTrue(self.nirvana.is_member(self.kurt))
