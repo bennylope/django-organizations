@@ -126,6 +126,9 @@ class OrganizationList(BaseOrganizationList):
 
 
 class OrganizationCreate(BaseOrganizationCreate):
+    """
+    Allows any user to create a new organization.
+    """
     pass
 
 
