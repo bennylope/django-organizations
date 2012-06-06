@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-from django.http import Http404
+from django.http import HttpResponse
 from django.test import TestCase
 from django.test.client import RequestFactory
 
@@ -13,6 +13,17 @@ class ViewStub(object):
     def __init__(self, **kwargs):
         self.kwargs = kwargs
 
+    def dispatch(self, request, *args, **kwargs):
+        return HttpResponse("Success")
+
+
+class OrgView(OrganizationMixin, ViewStub):
+    pass
+
+
+class UserView(OrganizationUserMixin, ViewStub):
+    pass
+
 
 class ObjectMixinTests(TestCase):
 
@@ -24,14 +35,10 @@ class ObjectMixinTests(TestCase):
                 organization=self.foo)
 
     def test_get_org_object(self):
-        class OrgView(OrganizationMixin, ViewStub):
-            pass
         view = OrgView(organization_pk=self.foo.pk)
         self.assertEqual(view.get_object(), self.foo)
 
     def test_get_user_object(self):
-        class UserView(OrganizationUserMixin, ViewStub):
-            pass
         view = UserView(organization_pk=self.foo.pk, user_pk=self.dave.pk)
         self.assertEqual(view.get_object(), self.dave)
         self.assertEqual(view.get_organization(), self.foo)
@@ -42,16 +49,52 @@ class AccessMixinTests(TestCase):
     fixtures = ['users.json', 'orgs.json']
 
     def setUp(self):
-        # add users (add them to request in methods)
-        pass
+        self.nirvana = Organization.objects.get(name="Nirvana")
+        self.kurt = User.objects.get(username="kurt")
+        self.krist = User.objects.get(username="krist")
+        self.dave = User.objects.get(username="dave")
+        self.dummy = User.objects.create_user("dummy",
+                email="dummy@example.com", password="test")
+        self.factory = RequestFactory()
+        self.kurt_request = request_factory_login(self.factory, self.kurt)
+        self.krist_request = request_factory_login(self.factory, self.krist)
+        self.dave_request = request_factory_login(self.factory, self.dave)
+        self.dummy_request = request_factory_login(self.factory, self.dummy)
 
     def test_member_access(self):
-        pass
+        class MemberView(MembershipRequiredMixin, OrgView):
+            pass
+        self.assertEqual(200, MemberView().dispatch(self.kurt_request,
+            organization_pk=self.nirvana.pk).status_code)
+        self.assertEqual(200, MemberView().dispatch(self.krist_request,
+            organization_pk=self.nirvana.pk).status_code)
+        self.assertEqual(200, MemberView().dispatch(self.dave_request,
+            organization_pk=self.nirvana.pk).status_code)
+        self.assertEqual(403, MemberView().dispatch(self.dummy_request,
+            organization_pk=self.nirvana.pk).status_code)
 
     def test_admin_access(self):
-        pass
+        class AdminView(AdminRequiredMixin, OrgView):
+            pass
+        self.assertEqual(200, AdminView().dispatch(self.kurt_request,
+            organization_pk=self.nirvana.pk).status_code)
+        self.assertEqual(200, AdminView().dispatch(self.krist_request,
+            organization_pk=self.nirvana.pk).status_code)
+        self.assertEqual(403, AdminView().dispatch(self.dave_request,
+            organization_pk=self.nirvana.pk).status_code)
+        self.assertEqual(403, AdminView().dispatch(self.dummy_request,
+            organization_pk=self.nirvana.pk).status_code)
 
     def test_owner_access(self):
-        pass
+        class OwnerView(OwnerRequiredMixin, OrgView):
+            pass
+        self.assertEqual(200, OwnerView().dispatch(self.kurt_request,
+            organization_pk=self.nirvana.pk).status_code)
+        self.assertEqual(403, OwnerView().dispatch(self.krist_request,
+            organization_pk=self.nirvana.pk).status_code)
+        self.assertEqual(403, OwnerView().dispatch(self.dave_request,
+            organization_pk=self.nirvana.pk).status_code)
+        self.assertEqual(403, OwnerView().dispatch(self.dummy_request,
+            organization_pk=self.nirvana.pk).status_code)
 
 
