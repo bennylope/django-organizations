@@ -81,7 +81,8 @@ class BaseOrganizationUserCreate(OrganizationMixin, CreateView):
 
     def get_form_kwargs(self):
         kwargs = super(BaseOrganizationUserCreate, self).get_form_kwargs()
-        kwargs.update({'organization': self.organization, 'request': self.request})
+        kwargs.update({'organization': self.organization,
+            'request': self.request})
         return kwargs
 
     def get(self, request, *args, **kwargs):
