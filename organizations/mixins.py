@@ -32,7 +32,7 @@ class OrganizationUserMixin(OrganizationMixin):
             'organization': self.object.organization})
         return kwargs
 
-    def get_object(self, **kwargs):
+    def get_object(self):
         """ Returns the OrganizationUser object based on the primary keys for both
         the organization and the organization user.
         """
