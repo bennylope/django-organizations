@@ -68,6 +68,7 @@ class OrganizationUser(OrganizationsBase):
 
     class Meta:
         ordering = ['organization', 'user']
+        unique_together = ('user', 'organization')
         verbose_name = _("organization user")
         verbose_name_plural = _("organization users")
 
