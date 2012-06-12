@@ -5,6 +5,18 @@ from django.utils.translation import ugettext_lazy as _
 
 from organizations.managers import OrgManager, ActiveOrgManager
 
+try:
+    from django_extensions.db.fields import AutoSlugField
+except ImportError:
+    slug_field = models.SlugField
+    slug_field_kwargs = {}
+else:
+    slug_field = AutoSlugField
+    slug_field_kwargs = {'populate_from': 'name', 'editable': True,
+            'blank': False}
+
+#slug_field = models.SlugField
+#slug_field_kwargs = {}
 
 class OrganizationsBase(models.Model):
     created = models.DateTimeField(auto_now_add=True)
@@ -21,15 +33,8 @@ class Organization(OrganizationsBase):
     The class has multiple organization users and one that is designated the organization
     owner.
     """
-    #try:
-    #    from django_extensions.db.fields import AutoSlugField
-    #except ImportError:
-    #    slug_field = models.SlugField
-    #else:
-    #    slug_field = AutoSlugField
-
     name = models.CharField(max_length=50)
-    slug = models.SlugField(max_length=50)
+    slug = slug_field(max_length=50, **slug_field_kwargs)
     users = models.ManyToManyField(User, through="OrganizationUser")
     is_active = models.BooleanField(default=True)
 

@@ -19,18 +19,21 @@ class OrgFormTests(TestCase):
     def test_admin_edits_org(self):
         user = self.admin.user
         request = request_factory_login(self.factory, user)
-        form = OrganizationForm(request, instance=self.org,
-                data={'name': self.org.name, 'owner': self.owner.id})
+        form = OrganizationForm(request, instance=self.org, data={
+            'name': self.org.name, 'slug': self.org.slug,
+            'owner': self.owner.id})
         self.assertTrue(form.is_valid())
-        form = OrganizationForm(request, instance=self.org,
-                data={'name': self.org.name, 'owner': self.admin.id})
+        form = OrganizationForm(request, instance=self.org, data={
+            'name': self.org.name, 'slug': self.org.slug,
+            'owner': self.admin.id})
         self.assertFalse(form.is_valid())
 
     def test_owner_edits_org(self):
         user = self.owner.user
         request = request_factory_login(self.factory, user)
-        form = OrganizationForm(request, instance=self.org,
-                data={'name': self.org.name, 'owner': self.owner.id})
+        form = OrganizationForm(request, instance=self.org, data={
+            'name': self.org.name, 'slug': self.org.slug,
+            'owner': self.owner.id})
         self.assertTrue(form.is_valid())
 
     def test_edit_owner_user(self):
@@ -43,14 +46,15 @@ class OrgFormTests(TestCase):
 
     def test_save_org_form(self):
         request = request_factory_login(self.factory, self.owner.user)
-        form = OrganizationForm(request, instance=self.org,
-                data={'name': self.org.name, 'owner': self.owner.id})
-        form.is_valid()
+        form = OrganizationForm(request, instance=self.org, data={
+                'name': self.org.name, 'slug': self.org.slug,
+                'owner': self.owner.id})
+        self.assertTrue(form.is_valid())
         form.save()
 
     def test_save_user_form(self):
         form = OrganizationUserForm(instance=self.owner,
                 data={'is_admin': True})
-        form.is_valid()
+        self.assertTrue(form.is_valid())
         form.save()
 
