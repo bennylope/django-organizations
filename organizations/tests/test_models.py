@@ -62,3 +62,24 @@ class OrgModelTests(TestCase):
         foo_user = self.foo.owner
         self.nirvana.owner = foo_user
         self.assertRaises(OrganizationMismatch, self.nirvana.owner.save)
+
+class OrgDeleteTests(TestCase):
+
+    fixtures = ['users.json', 'orgs.json']
+
+    def test_delete_account(self):
+        """Ensure Users are not deleted on the cascade"""
+        self.assertEqual(3, OrganizationOwner.objects.all().count())
+        self.assertEqual(3, User.objects.all().count())
+        scream = Organization.objects.get(name="Scream")
+        scream.delete()
+        self.assertEqual(2, OrganizationOwner.objects.all().count())
+        self.assertEqual(3, User.objects.all().count())
+
+    def test_delete_orguser(self):
+        """Ensure the user is not deleted on the cascade"""
+        krist = User.objects.get(username="krist")
+        org_user = OrganizationUser.objects.filter(
+                organization__name="Nirvana", user=krist)
+        org_user.delete()
+        self.assertTrue(krist.pk)
