@@ -15,8 +15,6 @@ else:
     slug_field_kwargs = {'populate_from': 'name', 'editable': True,
             'blank': False}
 
-#slug_field = models.SlugField
-#slug_field_kwargs = {}
 
 class OrganizationsBase(models.Model):
     created = models.DateTimeField(auto_now_add=True)
@@ -33,8 +31,11 @@ class Organization(OrganizationsBase):
     The class has multiple organization users and one that is designated the organization
     owner.
     """
-    name = models.CharField(max_length=50)
-    slug = slug_field(max_length=50, **slug_field_kwargs)
+    name = models.CharField(max_length=50,
+            help_text=_("The name of the organization"))
+    slug = slug_field(max_length=50,
+            help_text=_("""The name in all lowercase, suitable for URL
+                identification"""), **slug_field_kwargs)
     users = models.ManyToManyField(User, through="OrganizationUser")
     is_active = models.BooleanField(default=True)
 
@@ -95,7 +96,7 @@ class OrganizationUser(OrganizationsBase):
         """
         from organizations.exceptions import OwnershipRequired
         if self.organization.owner.organization_user.id == self.id:
-            raise OwnershipRequired(_("Cannot delete organization owner before organization or transferring ownership"))
+            raise OwnershipRequired(_("Cannot delete organization owner before organization or transferring ownership."))
         else:
             super(OrganizationUser, self).delete(using=using)
 

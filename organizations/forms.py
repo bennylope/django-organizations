@@ -96,7 +96,8 @@ class OrganizationAddForm(forms.ModelForm):
     Form class for creating a new organization, complete with new owner, including a
     User instance, OrganizationUser instance, and OrganizationOwner instance.
     """
-    email = forms.EmailField(max_length=30)
+    email = forms.EmailField(max_length=30,
+            help_text=_("The email address for the account owner"))
 
     def __init__(self, request, *args, **kwargs):
         self.request = request
