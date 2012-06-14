@@ -7,6 +7,7 @@ from organizations.managers import OrgManager, ActiveOrgManager
 
 
 class OrganizationsBase(models.Model):
+    """Timestamped base for Organization models"""
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
 
@@ -15,16 +16,16 @@ class OrganizationsBase(models.Model):
 
 
 class Organization(OrganizationsBase):
-    """
-    This is the umbrella object under which all organization users fall.
+    """The umbrella object with which users can be associated.
 
-    The class has multiple organization users and one that is designated the organization
-    owner.
+    An organization can have multiple users but only one who can be designated
+    the owner user.
+
     """
     name = models.CharField(max_length=50,
             help_text=_("The name of the organization"))
-    slug = models.SlugField(max_length=50, help_text=_("""The name in all
-            lowercase, suitable for URL identification"""))
+    slug = models.SlugField(max_length=50, unique=True,
+            help_text=_("The name in all lowercase, suitable for URL identification"))
     users = models.ManyToManyField(User, through="OrganizationUser")
     is_active = models.BooleanField(default=True)
 
@@ -55,14 +56,15 @@ class Organization(OrganizationsBase):
 
 
 class OrganizationUser(OrganizationsBase):
-    """
-    This relates a User object to the organization group. It is possible for a User
-    to be a member of multiple organizations, so this class relates the OrganizationUser
-    to the User model using a ForeignKey relationship, rather than a OneToOne
-    relationship.
+    """ManyToMany through field relating Users to Organizations.
+
+    It is possible for a User to be a member of multiple organizations, so this
+    class relates the OrganizationUser to the User model using a ForeignKey
+    relationship, rather than a OneToOne relationship.
 
     Authentication and general user information is handled by the User class
     and the contrib.auth application.
+
     """
     user = models.ForeignKey(User, related_name="organization_users")
     organization = models.ForeignKey(Organization,
@@ -102,9 +104,8 @@ class OrganizationUser(OrganizationsBase):
 
 
 class OrganizationOwner(OrganizationsBase):
-    """
-    Each organization must have one and only one organization owner.
-    """
+    """Each organization must have one and only one organization owner."""
+
     organization = models.OneToOneField(Organization, related_name="owner")
     organization_user = models.OneToOneField(OrganizationUser,
             related_name="owned_organization")
@@ -117,8 +118,9 @@ class OrganizationOwner(OrganizationsBase):
         return u"%s: %s" % (self.organization, self.organization_user)
 
     def save(self, *args, **kwargs):
-        """
-        Ensure that the organization owner is actually an organization user
+        """Extends the default save method by verifying that the chosen
+        organization user is associated with the organization.
+
         """
         from organizations.exceptions import OrganizationMismatch
         if self.organization_user.organization != self.organization:

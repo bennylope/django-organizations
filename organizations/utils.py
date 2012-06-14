@@ -2,12 +2,13 @@ from organizations.models import (Organization, OrganizationUser,
         OrganizationOwner)
 
 
-def create_organization(user, name):
+def create_organization(user, name, slug, is_active=True):
     """
     Returns a new organization, also creating an initial organization user who
     is the owner.
     """
-    organization = Organization.objects.create(name=name)
+    organization = Organization.objects.create(name=name, slug=slug,
+            is_active=is_active)
     new_user = OrganizationUser.objects.create(organization=organization,
             user=user, is_admin=True)
     OrganizationOwner.objects.create(organization=organization,
