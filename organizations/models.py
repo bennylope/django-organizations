@@ -5,16 +5,6 @@ from django.utils.translation import ugettext_lazy as _
 
 from organizations.managers import OrgManager, ActiveOrgManager
 
-try:
-    from django_extensions.db.fields import AutoSlugField
-except ImportError:
-    slug_field = models.SlugField
-    slug_field_kwargs = {}
-else:
-    slug_field = AutoSlugField
-    slug_field_kwargs = {'populate_from': 'name', 'editable': True,
-            'blank': False}
-
 
 class OrganizationsBase(models.Model):
     created = models.DateTimeField(auto_now_add=True)
@@ -33,9 +23,8 @@ class Organization(OrganizationsBase):
     """
     name = models.CharField(max_length=50,
             help_text=_("The name of the organization"))
-    slug = slug_field(max_length=50,
-            help_text=_("""The name in all lowercase, suitable for URL
-                identification"""), **slug_field_kwargs)
+    slug = models.SlugField(max_length=50, help_text=_("""The name in all
+            lowercase, suitable for URL identification"""))
     users = models.ManyToManyField(User, through="OrganizationUser")
     is_active = models.BooleanField(default=True)
 
