@@ -88,7 +88,7 @@ class OrganizationUser(OrganizationsBase):
         verbose_name_plural = _("organization users")
 
     def __unicode__(self):
-        return self.name if self.user.is_active else self.user.email
+        return "%s@%s" % (self.name if self.user.is_active else self.user.email, self.organization.name)
 
     def delete(self, using=None):
         """
