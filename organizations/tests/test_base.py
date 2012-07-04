@@ -100,7 +100,10 @@ class BaseViewTests(TestCase):
                 **kwargs).status_code)
 
     def test_signup(self):
-        self.assertEqual(302, OrganizationSignup(request=self.kurt_request).get(
+        """Ensure logged in users are redirected"""
+        self.assertEqual(302,
+                OrganizationSignup(request=self.kurt_request).dispatch(
                 self.kurt_request).status_code)
-        self.assertEqual(200, OrganizationSignup(self.anon_request).get(
+        self.assertEqual(200,
+                OrganizationSignup(request=self.anon_request).dispatch(
                 self.anon_request).status_code)

@@ -132,9 +132,10 @@ class OrganizationSignup(FormView):
     """
     form_class = SignUpForm
     template_name = "organizations/signup_form.html"
-    backend = registration_backend()
     # TODO get success from backend, because some backends may do something
     # else, like require verification
+    backend = registration_backend()
+
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated():
             return HttpResponseRedirect(reverse('organization_add'))
