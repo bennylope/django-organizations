@@ -23,10 +23,10 @@ class RegistrationBackend(object):
     activation_body = 'organizations/activation_body.html'
     reminder_subject = 'organizations/reminder_subject.txt'
     reminder_body = 'organizations/reminder_body.html'
-    form_class = OrganizationRegistrationForm
+    form_class = UserRegistrationForm
 
     def get_register_form(self, **kwargs):
-        raise NotImplementedError
+        return self.form_class(**kwargs)
 
     def register_by_email(self, email, sender=None, request=None, **kwargs):
         """
@@ -96,7 +96,6 @@ class RegistrationBackend(object):
         """
         Initiates the organization and user account creation process
         """
-        # TODO if logged in, redirect to the create view
         if request.user.is_authenticated():
             return HttpResponseRedirect(reverse("organization_add"))
         form = OrganizationRegistrationForm(request.POST or None)
@@ -112,9 +111,10 @@ class RegistrationBackend(object):
             else:
                 return HttpResponseRedirect(reverse("organization_add"))
             organization = create_organization(user, form.cleaned_data['name'],
-                    form.cleaned_data['slug'])
-            organization.is_active = False
-            organization.save()
+                    form.cleaned_data['slug'], is_active=False)
+            return render_to_response('organizations/register_success.html',
+                    {'user': user, 'organization': organization},
+                    context_instance=RequestContext(request))
         return render_to_response('organizations/register_form.html',
                 {'form': form}, context_instance=RequestContext(request))
 

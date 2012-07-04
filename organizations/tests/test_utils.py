@@ -11,6 +11,6 @@ class OrgManagerTests(TestCase):
 
     def test_create_organization(self):
         user = User.objects.get(username="dave")
-        acme = create_organization(user, "Acme")
+        acme = create_organization(user, "Acme", "acme")
         self.assertTrue(isinstance(acme, Organization))
         self.assertEqual(user, acme.owner.organization_user.user)

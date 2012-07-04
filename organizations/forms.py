@@ -107,17 +107,30 @@ class OrganizationAddForm(forms.ModelForm):
         model = Organization
         exclude = ('users', 'is_active')
 
-    def save(self):
+    def save(self, **kwargs):
         """
         Create the organization, then get the user, then make the owner.
         """
+        is_active = True
         try:
             user = User.objects.get(email=self.cleaned_data['email'])
         except User.DoesNotExist:
             user = invitation_backend().invite_by_email(
                     self.cleaned_data['email'],
                     **{'domain': get_current_site(self.request),
-                        'organization': self.cleaned_data['name'], 
+                        'organization': self.cleaned_data['name'],
                         'sender': self.request.user, 'created': True})
-        return create_organization(user, self.cleaned_data['name'])
+            is_active = False
+        return create_organization(user, self.cleaned_data['name'],
+                self.cleaned_data['slug'], is_active=is_active)
 
+
+class SignUpForm(forms.Form):
+    """
+    From class for signing up a new user and new account.
+    """
+    name = forms.CharField(max_length=50,
+            help_text=_("The name of the organization"))
+    slug = forms.SlugField(max_length=50,
+            help_text=_("The name in all lowercase, suitable for URL identification"))
+    email = forms.EmailField()

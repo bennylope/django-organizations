@@ -1,6 +1,8 @@
 from django.contrib.sites.models import get_current_site
 from django.core.urlresolvers import reverse
 from django.http import Http404, HttpResponseRedirect
+from django.shortcuts import render_to_response
+from django.template import RequestContext
 from django.utils.translation import ugettext as _
 from django.views.generic import (ListView, DetailView, UpdateView, CreateView,
         DeleteView, FormView)
@@ -9,8 +11,9 @@ from organizations.models import Organization
 from organizations.mixins import (OrganizationMixin, OrganizationUserMixin,
         MembershipRequiredMixin, AdminRequiredMixin, OwnerRequiredMixin)
 from organizations.forms import (OrganizationForm, OrganizationUserForm,
-        OrganizationUserAddForm, OrganizationAddForm)
-from organizations.backends import invitation_backend
+        OrganizationUserAddForm, OrganizationAddForm, SignUpForm)
+from organizations.utils import create_organization
+from organizations.backends import invitation_backend, registration_backend
 
 
 class BaseOrganizationList(ListView):
@@ -119,6 +122,43 @@ class BaseOrganizationUserUpdate(OrganizationUserMixin, UpdateView):
 class BaseOrganizationUserDelete(OrganizationUserMixin, DeleteView):
     def get_success_url(self):
         return reverse("organizationuser_list")
+
+
+class OrganizationSignup(FormView):
+    """View that allows unregistered users to create an organization account.
+
+    It simply processes the form and then calls the specified registration
+    backend.
+    """
+    form_class = SignUpForm
+    template_name = "organizations/signup_form.html"
+    backend = registration_backend()
+    # TODO get success from backend, because some backends may do something
+    # else, like require verification
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated():
+            return HttpResponseRedirect(reverse('organization_add'))
+        return super(OrganizationSignup, self).dispatch(request, *args,
+                **kwargs)
+
+    def get_success_url(self):
+        if hasattr(self, 'success_url'):
+            return self.success_url
+        return reverse('organization_signup_success')
+
+    def form_valid(self, request):
+        """
+        """
+        user = self.backend.register_by_email(form.cleaned_data['email'])
+        organization = create_organization(
+                user=user, name=form.cleaned_data['name'],
+                slug=form.cleaned_data['slug'], is_active=False)
+        return HttpResponseRedirect(self.get_success_url())
+
+
+def signup_success(self, request):
+    return render_to_response("organizations/signup_success.html", {},
+            context_instance=RequestContext(request))
 
 
 class OrganizationList(BaseOrganizationList):

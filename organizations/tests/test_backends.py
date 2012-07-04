@@ -101,7 +101,7 @@ class RegistrationTests(TestCase):
         self.assertEqual(1, len(mail.outbox))
         mail.outbox = []
 
-    def _test_create_existing_user(self):
+    def test_create_existing_user(self):
         registered = RegistrationBackend().register_by_email(self.user.email)
         self.assertEqual(self.user, registered)
         self.assertEqual(0, len(mail.outbox)) # User is active
@@ -118,7 +118,7 @@ class RegistrationTests(TestCase):
             'user_id': self.pending_user.id,
             'token': self.tokenizer.make_token(self.pending_user)})
 
-    def _test_activate_user(self):
+    def test_activate_user(self):
         request = self.factory.request()
         with self.assertRaises(Http404):
             RegistrationBackend().activate_view(request, self.user.id,

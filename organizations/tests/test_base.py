@@ -9,7 +9,7 @@ from organizations.views import (BaseOrganizationList, BaseOrganizationDetail,
         BaseOrganizationCreate, BaseOrganizationUpdate, BaseOrganizationDelete,
         BaseOrganizationUserList, BaseOrganizationUserDetail,
         BaseOrganizationUserCreate, BaseOrganizationUserUpdate,
-        BaseOrganizationUserDelete)
+        BaseOrganizationUserDelete, OrganizationSignup)
 
 
 class BaseViewTests(TestCase):
@@ -25,6 +25,7 @@ class BaseViewTests(TestCase):
         self.factory = RequestFactory()
         self.kurt_request = request_factory_login(self.factory, self.kurt)
         self.dave_request = request_factory_login(self.factory, self.dave)
+        self.anon_request = request_factory_login(self.factory)
 
     def test_org_list(self):
         """Ensure that the status code 200 is returned"""
@@ -97,3 +98,9 @@ class BaseViewTests(TestCase):
         self.assertEqual(200, BaseOrganizationUserDelete(
             request=self.kurt_request, kwargs=kwargs).get(self.kurt_request,
                 **kwargs).status_code)
+
+    def test_signup(self):
+        self.assertEqual(302, OrganizationSignup(request=self.kurt_request).get(
+                self.kurt_request).status_code)
+        self.assertEqual(200, OrganizationSignup(self.anon_request).get(
+                self.anon_request).status_code)
