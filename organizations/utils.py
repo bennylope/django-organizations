@@ -20,5 +20,5 @@ def model_field_attr(model, field, attr):
     """
     Returns the specified attribute for the specified field on the model class.
     """
-    fields = {field.name: field for field in model._meta.fields}
+    fields = dict([(field.name, field) for field in model._meta.fields])
     return getattr(fields[field], attr)
