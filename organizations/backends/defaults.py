@@ -19,10 +19,10 @@ from organizations.utils import create_organization
 
 
 class RegistrationBackend(object):
-    activation_subject = 'organizations/activation_subject.txt'
-    activation_body = 'organizations/activation_body.html'
-    reminder_subject = 'organizations/reminder_subject.txt'
-    reminder_body = 'organizations/reminder_body.html'
+    activation_subject = 'organizations/email/activation_subject.txt'
+    activation_body = 'organizations/email/activation_body.html'
+    reminder_subject = 'organizations/email/reminder_subject.txt'
+    reminder_body = 'organizations/email/reminder_body.html'
     form_class = UserRegistrationForm
 
     def get_register_form(self, **kwargs):
@@ -163,10 +163,10 @@ class InvitationBackend(object):
     """
     Defines the base functionality of an InvitationBackend
     """
-    invitation_subject = 'organizations/invitation_subject.txt'
-    invitation_body = 'organizations/invitation_body.html'
-    reminder_subject = 'organizations/reminder_subject.txt'
-    reminder_body = 'organizations/reminder_body.html'
+    invitation_subject = 'organizations/email/invitation_subject.txt'
+    invitation_body = 'organizations/email/invitation_body.html'
+    reminder_subject = 'organizations/email/reminder_subject.txt'
+    reminder_body = 'organizations/email/reminder_body.html'
     form_class = UserRegistrationForm
 
     def get_register_form(self, **kwargs):
