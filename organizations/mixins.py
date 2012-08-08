@@ -7,10 +7,13 @@ from organizations.models import Organization, OrganizationUser
 
 class OrganizationMixin(object):
     model = Organization
-    context_object_name = 'organization'
+    org_context_name = 'organization'
+
+    def get_model(self):
+        return self.model
 
     def get_context_data(self, **kwargs):
-        kwargs.update({'organization': self.get_organization()})
+        kwargs.update({self.org_context_name: self.get_organization()})
         return kwargs
 
     def get_object(self):
@@ -24,12 +27,16 @@ class OrganizationMixin(object):
 
 class OrganizationUserMixin(OrganizationMixin):
     model = OrganizationUser
-    context_object_name = 'organization_user'
+    org_context_name = 'organization'
+    org_user_context_name = 'organization_user'
+
+    def get_model(self):
+        return self.model
 
     def get_context_data(self, **kwargs):
         kwargs = super(OrganizationUserMixin, self).get_context_data(**kwargs)
-        kwargs.update({'organization_user': self.object,
-            'organization': self.object.organization})
+        kwargs.update({self.org_user_context_name: self.object,
+            self.org_context_name: self.object.organization})
         return kwargs
 
     def get_object(self):
