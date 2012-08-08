@@ -5,9 +5,8 @@ from organizations.models import Organization
 
 
 class UserRegistrationForm(forms.ModelForm):
-    """
-    Form class for completing a user's registration and activating the User.
-    """
+    """Form class for completing a user's registration and activating the
+    User."""
     first_name = forms.CharField(max_length=30)
     last_name = forms.CharField(max_length=30)
     password = forms.CharField(max_length=30, widget=forms.PasswordInput)
@@ -25,9 +24,7 @@ class UserRegistrationForm(forms.ModelForm):
 
 
 class OrganizationRegistrationForm(forms.ModelForm):
-    """
-    Form class for creating new organizations owned by new users.
-    """
+    """Form class for creating new organizations owned by new users."""
     email = forms.EmailField()
 
     class Meta:
