@@ -38,7 +38,7 @@ class Organization(OrganizationsBase):
         verbose_name_plural = _("organizations")
 
     def __unicode__(self):
-        return u"%s" % self.name
+        return self.name
 
     @permalink
     def get_absolute_url(self):
@@ -99,7 +99,7 @@ class OrganizationUser(OrganizationsBase):
     @property
     def name(self):
         if self.user.first_name and self.user.last_name:
-            return u"%s %s" % (self.user.first_name, self.user.last_name)
+            return u"{0} {1}".format(self.user.first_name, self.user.last_name)
         return self.user.username
 
 
@@ -115,7 +115,7 @@ class OrganizationOwner(OrganizationsBase):
         verbose_name_plural = _("organization owners")
 
     def __unicode__(self):
-        return u"%s: %s" % (self.organization, self.organization_user)
+        return u"{0}: {1}".format(self.organization, self.organization_user)
 
     def save(self, *args, **kwargs):
         """Extends the default save method by verifying that the chosen
