@@ -27,6 +27,6 @@ setup(
     ],
     #test_suite='tests.runtests.runtests',
     include_package_data=True,
-    packages=find_packages(),
+    packages=find_packages(exclude=["tests.tests", "tests.test_app", "tests"]),
     zip_safe=False
 )
