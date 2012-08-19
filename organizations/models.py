@@ -22,9 +22,9 @@ class Organization(OrganizationsBase):
     the owner user.
 
     """
-    name = models.CharField(max_length=50,
+    name = models.CharField(max_length=100,
             help_text=_("The name of the organization"))
-    slug = models.SlugField(max_length=50, unique=True,
+    slug = models.SlugField(max_length=100, unique=True,
             help_text=_("The name in all lowercase, suitable for URL identification"))
     users = models.ManyToManyField(User, through="OrganizationUser")
     is_active = models.BooleanField(default=True)
