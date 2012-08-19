@@ -18,10 +18,12 @@ class ViewStub(object):
 
 
 class OrgView(OrganizationMixin, ViewStub):
+    """A testing view class"""
     pass
 
 
 class UserView(OrganizationUserMixin, ViewStub):
+    """A testing view class"""
     pass
 
 
@@ -42,6 +44,13 @@ class ObjectMixinTests(TestCase):
         view = UserView(organization_pk=self.foo.pk, user_pk=self.dave.pk)
         self.assertEqual(view.get_object(), self.dave)
         self.assertEqual(view.get_organization(), self.foo)
+
+    def test_get_model(self):
+        """Ensure that the method returns the class object"""
+        self.assertEqual(Organization, OrganizationMixin().get_org_model())
+        self.assertEqual(Organization, OrganizationUserMixin().get_org_model())
+        self.assertEqual(OrganizationUser,
+                OrganizationUserMixin().get_user_model())
 
 
 class AccessMixinTests(TestCase):

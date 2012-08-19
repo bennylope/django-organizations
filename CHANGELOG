@@ -9,6 +9,7 @@ django-organizations
 * Added configurable context variable names to view mixins
 * Added a base backend class which the Invitation and Registration backends extend
 * Lengthed Organization name and slug fields
+* Makes mixin model classes configurable
 
 0.1.2
 -----

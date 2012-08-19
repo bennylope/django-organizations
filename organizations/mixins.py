@@ -6,11 +6,11 @@ from organizations.models import Organization, OrganizationUser
 
 
 class OrganizationMixin(object):
-    model = Organization
+    org_model = Organization
     org_context_name = 'organization'
 
-    def get_model(self):
-        return self.model
+    def get_org_model(self):
+        return self.org_model
 
     def get_context_data(self, **kwargs):
         kwargs.update({self.org_context_name: self.get_organization()})
@@ -20,18 +20,17 @@ class OrganizationMixin(object):
         if hasattr(self, 'organization'):
             return self.organization
         organization_pk = self.kwargs.get('organization_pk', None)
-        self.organization = get_object_or_404(Organization, pk=organization_pk)
+        self.organization = get_object_or_404(self.get_org_model(), pk=organization_pk)
         return self.organization
     get_organization = get_object # Now available when `get_object` is overridden
 
 
 class OrganizationUserMixin(OrganizationMixin):
-    model = OrganizationUser
-    org_context_name = 'organization'
+    user_model = OrganizationUser
     org_user_context_name = 'organization_user'
 
-    def get_model(self):
-        return self.model
+    def get_user_model(self):
+        return self.user_model
 
     def get_context_data(self, **kwargs):
         kwargs = super(OrganizationUserMixin, self).get_context_data(**kwargs)
