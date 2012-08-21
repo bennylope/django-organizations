@@ -1,11 +1,13 @@
 from django.test import TestCase
 from django.test.client import RequestFactory
+from django.test.utils import override_settings
 
 from organizations.forms import OrganizationForm, OrganizationUserForm
 from organizations.models import Organization
 from organizations.tests.utils import request_factory_login
 
 
+@override_settings(USE_TZ=True)
 class OrgFormTests(TestCase):
 
     fixtures = ['users.json', 'orgs.json']

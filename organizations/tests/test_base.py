@@ -2,6 +2,7 @@ from django.contrib.auth.models import User
 from django.http import Http404
 from django.test import TestCase
 from django.test.client import RequestFactory
+from django.test.utils import override_settings
 
 from organizations.models import Organization
 from organizations.tests.utils import request_factory_login
@@ -12,6 +13,7 @@ from organizations.views import (BaseOrganizationList, BaseOrganizationDetail,
         BaseOrganizationUserDelete, OrganizationSignup)
 
 
+@override_settings(USE_TZ=True)
 class BaseViewTests(TestCase):
 
     fixtures = ['users.json', 'orgs.json']

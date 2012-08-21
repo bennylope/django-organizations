@@ -2,11 +2,13 @@ from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.test import TestCase
 from django.test.client import RequestFactory
+from django.test.utils import override_settings
 
 from organizations.models import Organization, OrganizationUser
 from organizations.tests.utils import request_factory_login
 from organizations.mixins import (OrganizationMixin, OrganizationUserMixin,
         MembershipRequiredMixin, AdminRequiredMixin, OwnerRequiredMixin)
+from django.conf.locale import tr
 
 
 class ViewStub(object):
@@ -27,6 +29,7 @@ class UserView(OrganizationUserMixin, ViewStub):
     pass
 
 
+@override_settings(USE_TZ=True)
 class ObjectMixinTests(TestCase):
 
     fixtures = ['users.json', 'orgs.json']
@@ -52,7 +55,7 @@ class ObjectMixinTests(TestCase):
         self.assertEqual(OrganizationUser,
                 OrganizationUserMixin().get_user_model())
 
-
+@override_settings(USE_TZ=True)
 class AccessMixinTests(TestCase):
 
     fixtures = ['users.json', 'orgs.json']

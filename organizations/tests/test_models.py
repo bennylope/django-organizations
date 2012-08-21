@@ -1,11 +1,12 @@
 from django.test import TestCase
+from django.test.utils import override_settings
 from django.contrib.auth.models import User
 from django.db import IntegrityError
 
 from organizations.models import (Organization, OrganizationUser,
         OrganizationOwner)
 
-
+@override_settings(USE_TZ=True)
 class ActiveManagerTests(TestCase):
 
     fixtures = ['users.json', 'orgs.json']
@@ -20,6 +21,7 @@ class ActiveManagerTests(TestCase):
         self.assertEqual(2, Organization.active.get_for_user(user).count())
 
 
+@override_settings(USE_TZ=True)
 class OrgModelTests(TestCase):
 
     fixtures = ['users.json', 'orgs.json']
@@ -63,6 +65,7 @@ class OrgModelTests(TestCase):
         self.nirvana.owner = foo_user
         self.assertRaises(OrganizationMismatch, self.nirvana.owner.save)
 
+@override_settings(USE_TZ=True)
 class OrgDeleteTests(TestCase):
 
     fixtures = ['users.json', 'orgs.json']
