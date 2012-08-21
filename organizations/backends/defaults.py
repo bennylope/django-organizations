@@ -42,6 +42,9 @@ class BaseBackend(object):
         """Returns a unique token for the given user"""
         return RegistrationTokenGenerator().make_token(user)
 
+    def get_username(self):
+        return unicode(uuid.uuid4()).replace("-", "")[:30]
+
     def activate_view(self, request, user_id, token):
         """
         Activates the given User by setting `is_active` to true if the provided
@@ -132,8 +135,8 @@ class RegistrationBackend(BaseBackend):
         try:
             user = User.objects.get(email=email)
         except User.DoesNotExist:
-            user = User.objects.create(username=unicode(uuid.uuid1()), email=email,
-                    password=User.objects.make_random_password())
+            user = User.objects.create(username=self.get_username(),
+                    email=email, password=User.objects.make_random_password())
             user.is_active = False
             user.save()
         self.send_activation(user, sender, **kwargs)
@@ -161,7 +164,7 @@ class RegistrationBackend(BaseBackend):
             try:
                 user = User.objects.get(email=form.cleaned_data['email'])
             except User.DoesNotExist:
-                user = User.objects.create(username=unicode(uuid.uuid1()),
+                user = User.objects.create(username=self.get_username(),
                         email=form.cleaned_data['email'],
                         password=User.objects.make_random_password())
                 user.is_active = False
@@ -210,8 +213,8 @@ class InvitationBackend(BaseBackend):
         try:
             user = User.objects.get(email=email)
         except User.DoesNotExist:
-            user = User.objects.create(username=unicode(uuid.uuid1()), email=email,
-                    password=User.objects.make_random_password())
+            user = User.objects.create(username=self.get_username(),
+                    email=email, password=User.objects.make_random_password())
             user.is_active = False
             user.save()
         self.send_invitation(user, sender, **kwargs)
