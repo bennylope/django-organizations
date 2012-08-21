@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.http import Http404, QueryDict
 from django.test import TestCase
 from django.test.client import RequestFactory
+from django.test.utils import override_settings
 
 from organizations.tests.utils import request_factory_login
 from organizations.backends.defaults import (InvitationBackend,
@@ -11,6 +12,7 @@ from organizations.backends.defaults import (InvitationBackend,
 from organizations.backends.tokens import RegistrationTokenGenerator
 
 
+@override_settings(USE_TZ=True)
 class InvitationTests(TestCase):
 
     fixtures = ['users.json', 'orgs.json']
@@ -63,6 +65,7 @@ class InvitationTests(TestCase):
             self.tokenizer.make_token(self.pending_user)).status_code)
 
 
+@override_settings(USE_TZ=True)
 class RegistrationTests(TestCase):
 
     fixtures = ['users.json', 'orgs.json']
