@@ -16,6 +16,7 @@ from organizations.backends.tokens import RegistrationTokenGenerator
 from organizations.backends.forms import (UserRegistrationForm,
         OrganizationRegistrationForm)
 from organizations.utils import create_organization
+from organizations.utils import model_field_attr
 
 
 # Backend classes should provide common interface
@@ -132,7 +133,8 @@ class RegistrationBackend(BaseBackend):
         try:
             user = User.objects.get(email=email)
         except User.DoesNotExist:
-            user = User.objects.create(username=unicode(uuid.uuid1()), email=email,
+            username = unicode(uuid.uuid1())[:model_field_attr(User, 'username', 'max_length')]
+            user = User.objects.create(username=username, email=email,
                     password=User.objects.make_random_password())
             user.is_active = False
             user.save()
@@ -161,7 +163,8 @@ class RegistrationBackend(BaseBackend):
             try:
                 user = User.objects.get(email=form.cleaned_data['email'])
             except User.DoesNotExist:
-                user = User.objects.create(username=unicode(uuid.uuid1()),
+                username = unicode(uuid.uuid1())[:model_field_attr(User, 'username', 'max_length')]
+                user = User.objects.create(username=username,
                         email=form.cleaned_data['email'],
                         password=User.objects.make_random_password())
                 user.is_active = False
@@ -210,13 +213,14 @@ class InvitationBackend(BaseBackend):
         try:
             user = User.objects.get(email=email)
         except User.DoesNotExist:
-            user = User.objects.create(username=unicode(uuid.uuid1()), email=email,
+            username = unicode(uuid.uuid1())[:model_field_attr(User, 'username', 'max_length')]
+            user = User.objects.create(username=username, email=email,
                     password=User.objects.make_random_password())
             user.is_active = False
             user.save()
         self.send_invitation(user, sender, **kwargs)
         return user
-
+    
     def send_invitation(self, user, sender=None, **kwargs):
         """An intermediary function for sending an invitation email that
         selects the templates, generating the token, and ensuring that the user
