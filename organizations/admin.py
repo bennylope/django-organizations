@@ -15,7 +15,7 @@ class OrganizationAdmin(admin.ModelAdmin):
 
 class OrganizationUserAdmin(admin.ModelAdmin):
     list_filter = ['organization']
-    list_display = ['user', 'is_admin']
+    list_display = ['user', 'organization', 'is_admin']
 
 
 class OrganizationOwnerAdmin(admin.ModelAdmin):
