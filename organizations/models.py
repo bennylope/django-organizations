@@ -45,8 +45,18 @@ class Organization(OrganizationsBase):
         return ('organization_detail', (), {'organization_pk': self.pk})
 
     def add_user(self, user, is_admin=False):
-        return OrganizationUser.objects.create(user=user, organization=self,
-                is_admin=is_admin)
+        """Adds a new user and if the first user makes the user an admin and
+        the owner.
+        """
+        users_count = self.users.all().count()
+        if users_count == 0:
+            is_admin = True
+        org_user = OrganizationUser.objects.create(user=user,
+                organization=self, is_admin=is_admin)
+        if users_count == 0:
+            OrganizationOwner.objects.create(organization=self,
+                    organization_user=org_user)
+        return org_user
 
     def is_member(self, user):
         return True if user in self.users.all() else False
