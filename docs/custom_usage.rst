@@ -8,10 +8,6 @@ organizations. The application is extensible with these use cases in mind.
 Custom models
 -------------
 
-I'm not sure exactly what you're trying to do, but there are two basic ways of
-going about this: one, directly using the Organization model and two, extending
-it with your own account/group model.
-
 Let's say you had an Account model in your app, which defined a group account
 to which multiple users could belong, and also had its own logo, a foreign key
 to a subscription plan, a website URL, and some descriptive information. Also,
