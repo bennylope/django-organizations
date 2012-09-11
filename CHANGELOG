@@ -10,6 +10,8 @@ django-organizations
 * Added a base backend class which the Invitation and Registration backends extend
 * Lengthed Organization name and slug fields
 * Makes mixin model classes configurable
+* Improved admin display
+* Removes initial passwords
 
 0.1.2
 -----
