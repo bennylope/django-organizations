@@ -54,6 +54,9 @@ class Organization(OrganizationsBase):
     def is_admin(self, user):
         return True if self.organization_users.filter(user=user, is_admin=True) else False
 
+    def is_owner(self, user):
+        return True if user in OrganizationOwner.objects.filter(organization=self, user=user) else False
+
 
 class OrganizationUser(OrganizationsBase):
     """ManyToMany through field relating Users to Organizations.
