@@ -7,9 +7,9 @@ from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.core.exceptions import ImproperlyConfigured
 from django.core.mail import EmailMessage
-from django.http import Http404, HttpResponseRedirect
-from django.shortcuts import render_to_response
-from django.template import RequestContext, Context, loader
+from django.http import Http404
+from django.shortcuts import render, redirect
+from django.template import Context, loader
 from django.utils.translation import ugettext as _
 
 from organizations.backends.tokens import RegistrationTokenGenerator
@@ -65,9 +65,9 @@ class BaseBackend(object):
             user = authenticate(username=form.cleaned_data['username'],
                     password=form.cleaned_data['password'])
             login(request, user)
-            return HttpResponseRedirect(self.get_success_url())
-        return render_to_response('organizations/register_form.html',
-                {'form': form}, context_instance=RequestContext(request))
+            return redirect(self.get_success_url())
+        return render(request, 'organizations/register_form.html',
+                {'form': form})
 
     def send_reminder(self, user, sender=None, **kwargs):
         """Sends a reminder email to the specified user"""
@@ -158,7 +158,7 @@ class RegistrationBackend(BaseBackend):
         Initiates the organization and user account creation process
         """
         if request.user.is_authenticated():
-            return HttpResponseRedirect(reverse("organization_add"))
+            return redirect("organization_add")
         form = OrganizationRegistrationForm(request.POST or None)
         if form.is_valid():
             try:
@@ -169,18 +169,16 @@ class RegistrationBackend(BaseBackend):
                 user.is_active = False
                 user.save()
             else:
-                return HttpResponseRedirect(reverse("organization_add"))
+                return redirect("organization_add")
             organization = create_organization(user, form.cleaned_data['name'],
                     form.cleaned_data['slug'], is_active=False)
-            return render_to_response('organizations/register_success.html',
-                    {'user': user, 'organization': organization},
-                    context_instance=RequestContext(request))
-        return render_to_response('organizations/register_form.html',
-                {'form': form}, context_instance=RequestContext(request))
+            return render(request, 'organizations/register_success.html',
+                    {'user': user, 'organization': organization})
+        return render(request, 'organizations/register_form.html',
+                {'form': form})
 
     def success_view(self, request):
-        return render_to_response('organizations/register_success.html',
-                {}, context_instance=RequestContext(request))
+        return render(request, 'organizations/register_success.html', {})
 
 
 class InvitationBackend(BaseBackend):
