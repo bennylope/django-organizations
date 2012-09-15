@@ -122,7 +122,8 @@ for me and contributors should include:
 * Documentation
 * Ensuring all application text is translatable
 
-Please use the project's issues tracker to report bugs. Thanks!
+Please use the project's issues tracker to report bugs, doc updates, or other
+requests/suggestions.
 
 Project goals
 -------------
