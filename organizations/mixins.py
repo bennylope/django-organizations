@@ -14,7 +14,7 @@ class OrganizationMixin(object):
 
     def get_context_data(self, **kwargs):
         kwargs.update({self.org_context_name: self.get_organization()})
-        return kwargs
+        return super(OrganizationMixin, self).get_context_data(**kwargs)
 
     def get_object(self):
         if hasattr(self, 'organization'):
