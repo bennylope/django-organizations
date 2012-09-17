@@ -11,22 +11,29 @@ Authentication
 --------------
 
 django-group-accounts relies on `django.contrib.auth` for the `User` model and
-authentication mechanisms. Modified login and logout views are included to make
-use of Django's messaging framework, `django.contrib.messages`, and to add an
-authenticated user redirect to the login view.
-
-The app's URL config includes Django's password reset views by default.
+authentication mechanisms.
 
 Creating accounts
 -----------------
 
 TODO
 
-Registration
-------------
+User registration
+-----------------
 
-The registration views allow new site members to create new users and accounts
-on the site, and to invite additional people to join the account.
+Registering new users with organizations is accomplished by extensible
+invitation and registration backends.
+
+The default invitation backend accepts an email address and returns the user
+who either matches that email address or creates a new user with that email
+address. The view for adding a new user is then responsbile for adding this
+user to the organization.
+
+The `OrganizationSignup` view is used for allowing a user new to the site to
+create an organization and account. This view relies on the registration
+backend to create and verify a new user.
+
+The backends can be extended to fit the needs of a given site.
 
 Creating accounts
 ~~~~~~~~~~~~~~~~~

@@ -3,7 +3,7 @@ django-organizations
 ====================
 
 :Info: Groups and multi-user account management
-:Version: 0.1.2
+:Version: 0.1.3a
 :Status: alpha
 :Author: Ben Lopatin (http://benlopatin.com)
 
@@ -122,7 +122,8 @@ for me and contributors should include:
 * Documentation
 * Ensuring all application text is translatable
 
-Please use the project's issues tracker to report bugs. Thanks!
+Please use the project's issues tracker to report bugs, doc updates, or other
+requests/suggestions.
 
 Project goals
 -------------

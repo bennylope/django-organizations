@@ -7,16 +7,15 @@ from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.core.exceptions import ImproperlyConfigured
 from django.core.mail import EmailMessage
-from django.http import Http404, HttpResponseRedirect
-from django.shortcuts import render_to_response
-from django.template import RequestContext, Context, loader
+from django.http import Http404
+from django.shortcuts import render, redirect
+from django.template import Context, loader
 from django.utils.translation import ugettext as _
 
 from organizations.backends.tokens import RegistrationTokenGenerator
 from organizations.backends.forms import (UserRegistrationForm,
         OrganizationRegistrationForm)
 from organizations.utils import create_organization
-from organizations.utils import model_field_attr
 
 
 # Backend classes should provide common interface
@@ -43,6 +42,9 @@ class BaseBackend(object):
         """Returns a unique token for the given user"""
         return RegistrationTokenGenerator().make_token(user)
 
+    def get_username(self):
+        return unicode(uuid.uuid4()).replace("-", "")[:30]
+
     def activate_view(self, request, user_id, token):
         """
         Activates the given User by setting `is_active` to true if the provided
@@ -63,9 +65,9 @@ class BaseBackend(object):
             user = authenticate(username=form.cleaned_data['username'],
                     password=form.cleaned_data['password'])
             login(request, user)
-            return HttpResponseRedirect(self.get_success_url())
-        return render_to_response('organizations/register_form.html',
-                {'form': form}, context_instance=RequestContext(request))
+            return redirect(self.get_success_url())
+        return render(request, 'organizations/register_form.html',
+                {'form': form})
 
     def send_reminder(self, user, sender=None, **kwargs):
         """Sends a reminder email to the specified user"""
@@ -79,10 +81,11 @@ class BaseBackend(object):
     def _send_email(self, user, subject_template, body_template,
             sender=None, **kwargs):
         """Utility method for sending emails to new users"""
-        try:
-            from_email = settings.DEFAULT_FROM_EMAIL
-        except AttributeError:
-            raise ImproperlyConfigured(_("You must define DEFAULT_FROM_EMAIL in your settings"))
+        if not sender:
+            try:
+                from_email = settings.DEFAULT_FROM_EMAIL
+            except AttributeError:
+                raise ImproperlyConfigured(_("You must define DEFAULT_FROM_EMAIL in your settings"))
 
         if sender:
             from_email = "%s %s <%s>" % (sender.first_name, sender.last_name,
@@ -132,9 +135,8 @@ class RegistrationBackend(BaseBackend):
         try:
             user = User.objects.get(email=email)
         except User.DoesNotExist:
-            username = unicode(uuid.uuid1())[:model_field_attr(User, 'username', 'max_length')]
-            user = User.objects.create(username=username, email=email,
-                    password=User.objects.make_random_password())
+            user = User.objects.create(username=self.get_username(),
+                    email=email)
             user.is_active = False
             user.save()
         self.send_activation(user, sender, **kwargs)
@@ -156,31 +158,27 @@ class RegistrationBackend(BaseBackend):
         Initiates the organization and user account creation process
         """
         if request.user.is_authenticated():
-            return HttpResponseRedirect(reverse("organization_add"))
+            return redirect("organization_add")
         form = OrganizationRegistrationForm(request.POST or None)
         if form.is_valid():
             try:
                 user = User.objects.get(email=form.cleaned_data['email'])
             except User.DoesNotExist:
-                username = unicode(uuid.uuid1())[:model_field_attr(User, 'username', 'max_length')]
-                user = User.objects.create(username=username,
-                        email=form.cleaned_data['email'],
-                        password=User.objects.make_random_password())
+                user = User.objects.create(username=self.get_username(),
+                        email=form.cleaned_data['email'])
                 user.is_active = False
                 user.save()
             else:
-                return HttpResponseRedirect(reverse("organization_add"))
+                return redirect("organization_add")
             organization = create_organization(user, form.cleaned_data['name'],
                     form.cleaned_data['slug'], is_active=False)
-            return render_to_response('organizations/register_success.html',
-                    {'user': user, 'organization': organization},
-                    context_instance=RequestContext(request))
-        return render_to_response('organizations/register_form.html',
-                {'form': form}, context_instance=RequestContext(request))
+            return render(request, 'organizations/register_success.html',
+                    {'user': user, 'organization': organization})
+        return render(request, 'organizations/register_form.html',
+                {'form': form})
 
     def success_view(self, request):
-        return render_to_response('organizations/register_success.html',
-                {}, context_instance=RequestContext(request))
+        return render(request, 'organizations/register_success.html', {})
 
 
 class InvitationBackend(BaseBackend):
@@ -212,9 +210,8 @@ class InvitationBackend(BaseBackend):
         try:
             user = User.objects.get(email=email)
         except User.DoesNotExist:
-            username = unicode(uuid.uuid1())[:model_field_attr(User, 'username', 'max_length')]
-            user = User.objects.create(username=username, email=email,
-                    password=User.objects.make_random_password())
+            user = User.objects.create(username=self.get_username(),
+                    email=email)
             user.is_active = False
             user.save()
         self.send_invitation(user, sender, **kwargs)

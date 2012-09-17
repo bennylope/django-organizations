@@ -1,8 +1,7 @@
 from django.contrib.sites.models import get_current_site
 from django.core.urlresolvers import reverse
-from django.http import Http404, HttpResponseRedirect
-from django.shortcuts import render_to_response
-from django.template import RequestContext
+from django.http import Http404
+from django.shortcuts import render, redirect
 from django.utils.translation import ugettext as _
 from django.views.generic import (ListView, DetailView, UpdateView, CreateView,
         DeleteView, FormView)
@@ -112,7 +111,7 @@ class BaseOrganizationUserRemind(OrganizationUserMixin, DetailView):
         invitation_backend().send_reminder(self.object.user,
                 **{'domain': get_current_site(self.request),
                     'organization': self.organization, 'sender': request.user})
-        return HttpResponseRedirect(self.object.get_absolute_url())
+        return redirect(self.object)
 
 
 class BaseOrganizationUserUpdate(OrganizationUserMixin, UpdateView):
@@ -138,7 +137,7 @@ class OrganizationSignup(FormView):
 
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated():
-            return HttpResponseRedirect(reverse('organization_add'))
+            return redirect('organization_add')
         return super(OrganizationSignup, self).dispatch(request, *args,
                 **kwargs)
 
@@ -154,12 +153,11 @@ class OrganizationSignup(FormView):
         organization = create_organization(
                 user=user, name=form.cleaned_data['name'],
                 slug=form.cleaned_data['slug'], is_active=False)
-        return HttpResponseRedirect(self.get_success_url())
+        return redirect(self.get_success_url())
 
 
 def signup_success(self, request):
-    return render_to_response("organizations/signup_success.html", {},
-            context_instance=RequestContext(request))
+    return render(request, "organizations/signup_success.html", {})
 
 
 class OrganizationList(BaseOrganizationList):

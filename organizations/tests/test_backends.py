@@ -7,10 +7,15 @@ from django.test.client import RequestFactory
 from django.test.utils import override_settings
 
 from organizations.tests.utils import request_factory_login
-from organizations.backends.defaults import (InvitationBackend,
+from organizations.backends.defaults import (BaseBackend, InvitationBackend,
         RegistrationBackend)
 from organizations.backends.tokens import RegistrationTokenGenerator
 
+
+class BaseTests(TestCase):
+
+    def test_generate_username(self):
+        self.assertTrue(BaseBackend().get_username())
 
 @override_settings(USE_TZ=True)
 class InvitationTests(TestCase):
@@ -51,6 +56,7 @@ class InvitationTests(TestCase):
         mail.outbox = []
 
     def test_urls(self):
+        """Ensure no error is raised"""
         reverse('invitations_register', kwargs={
             'user_id': self.pending_user.id,
             'token': self.tokenizer.make_token(self.pending_user)})
