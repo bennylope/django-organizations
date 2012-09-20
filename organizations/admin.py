@@ -25,7 +25,6 @@ class OrganizationForm(ModelForm):
                                            help_text="Select users that will be administrators of this organization. \
                                            Administrators are able to add and remove users.")
 
-
     def __init__(self, *args, **kwargs):
         super(OrganizationForm, self).__init__(*args, **kwargs)
         try:
@@ -75,11 +74,8 @@ class OrganizationForm(ModelForm):
         new_or_changed_admins = form_admins.difference(db_admins)
         
         for user in deleted_users:
-            try:
-                organization_user = OrganizationUser.objects.get(organization=self.instance, user=user)
-                organization_user.delete()
-            except OwnershipRequired:
-                pass
+            OrganizationUser.objects.delete(organization=self.instance, user=user)
+
         for user in new_or_changed_users:
             try:
                 organization_user = OrganizationUser.objects.get(organization=self.instance, user=user)
@@ -96,25 +92,11 @@ class OrganizationForm(ModelForm):
                 organization_user = OrganizationUser.objects.create(organization=self.instance, user=user, is_admin=True)
         return super(OrganizationForm, self).save(*args, **kwargs)
         
-    #UR HERE write validation and save methods...
-class OrganizationOwnerInline(admin.StackedInline):
-    model = OrganizationOwner
-
-    def formfield_for_foreignkey(self, db_field, request, **kwargs):
-        if db_field.name == "organization_user" and request._obj_:
-            kwargs["queryset"] = OrganizationUser.objects.filter(organization=request._obj_)
-        return super(OrganizationOwnerInline, self).formfield_for_foreignkey(db_field, request, **kwargs)
-
 class OrganizationAdmin(admin.ModelAdmin):
     form= OrganizationForm
     list_display = ['name', 'is_active']
     prepopulated_fields = {"slug": ("name",)}
     
-    def get_form(self, request, obj=None, **kwargs):
-        # just save obj reference for future processing in Inline
-        request._obj_ = obj
-        return super(OrganizationAdmin, self).get_form(request, obj, **kwargs)
-        
 class OrganizationUserAdmin(admin.ModelAdmin):
     list_filter = ['user', 'organization']
     list_display = ['user', 'organization', 'is_admin']
