@@ -44,7 +44,8 @@ class BaseBackend(object):
         return RegistrationTokenGenerator().make_token(user)
 
     def get_username(self):
-        return unicode(uuid.uuid4()).replace("-", "")[:30]
+        """Returns an UUID based 'random' and unique username"""
+        return unicode(uuid.uuid4())[:model_field_attr(User, 'username', 'max_length')]
 
     def activate_view(self, request, user_id, token):
         """
@@ -136,8 +137,7 @@ class RegistrationBackend(BaseBackend):
         try:
             user = User.objects.get(email=email)
         except User.DoesNotExist:
-            username = unicode(uuid.uuid1())[:model_field_attr(User, 'username', 'max_length')]
-            user = User.objects.create(username=username, email=email,
+            user = User.objects.create(username=self.get_username(), email=email,
                     password=User.objects.make_random_password())
             user.is_active = False
             user.save()
@@ -166,8 +166,7 @@ class RegistrationBackend(BaseBackend):
             try:
                 user = User.objects.get(email=form.cleaned_data['email'])
             except User.DoesNotExist:
-                username = unicode(uuid.uuid1())[:model_field_attr(User, 'username', 'max_length')]
-                user = User.objects.create(username=username,
+                user = User.objects.create(username=self.get_username(),
                         email=form.cleaned_data['email'],
                         password=User.objects.make_random_password())
                 user.is_active = False
@@ -214,9 +213,8 @@ class InvitationBackend(BaseBackend):
         try:
             user = User.objects.get(email=email)
         except User.DoesNotExist:
-            username = unicode(uuid.uuid1())[:model_field_attr(User, 'username', 'max_length')]
-            user = User.objects.create(username=username, email=email,
-                    password=User.objects.make_random_password())
+            user = User.objects.create(username=self.get_username(),
+                    email=email, password=User.objects.make_random_password())
             user.is_active = False
             user.save()
         self.send_invitation(user, sender, **kwargs)
