@@ -15,7 +15,7 @@ class OrganizationForm(ModelForm):
     class Meta:
         model = Organization
 
-    owner = forms.ModelChoiceField(queryset=User.objects.all())
+    organization_owner = forms.ModelChoiceField(queryset=User.objects.all())
     organization_users = forms.ModelMultipleChoiceField(queryset=User.objects.all(),
                                            widget=FilteredSelectMultiple(_('Users'),False,),
                                            help_text="Select users that will be members of this organization.")
@@ -29,7 +29,7 @@ class OrganizationForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(OrganizationForm, self).__init__(*args, **kwargs)
         try:
-            self.fields['owner'].initial = self.instance.owner.organization_user.user
+            self.fields['organization_owner'].initial = self.instance.owner.organization_user.user
         except:
             pass
         try:           
@@ -41,9 +41,21 @@ class OrganizationForm(ModelForm):
         except:
             pass
     
+    def clean(self):
+        import pdb
+        pdb.set_trace()
+        cleaned_data = super(OrganizationForm, self).clean()
+        organization_owner = cleaned_data.get('organization_owner')
+        organization_users = set(cleaned_data.get('organization_users', ''))    
+        organization_admins = set(cleaned_data.get('organization_admins', ''))
+        all_users = organization_users.union(organization_admins)
+        if organization_owner not in all_users:
+            raise forms.ValidationError("%s is the owner of this group. Assign a new owner before removing this user." % self.instance.owner.organization_user.user )
+        return cleaned_data
+ 
     def save(self, *args, **kwargs):
         #save owner
-        organization_user, created = OrganizationUser.objects.get_or_create(organization=self.instance, user=self.cleaned_data['owner'])
+        organization_user, created = OrganizationUser.objects.get_or_create(organization=self.instance, user=self.cleaned_data['organization_owner'])
         try:
             organization_owner = OrganizationOwner.objects.get(organization=self.instance)
             organization_owner.organization_user = organization_user
