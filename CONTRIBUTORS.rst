@@ -5,3 +5,4 @@ Primary author:
 Contributors:
 
 * `Sebastian Annies <https://github.com/sannies>`_
+* `Paul Backhouse <https://github.com/powlo>`_
