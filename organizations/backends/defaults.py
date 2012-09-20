@@ -81,11 +81,10 @@ class BaseBackend(object):
     def _send_email(self, user, subject_template, body_template,
             sender=None, **kwargs):
         """Utility method for sending emails to new users"""
-        if not sender:
-            try:
-                from_email = settings.DEFAULT_FROM_EMAIL
-            except AttributeError:
-                raise ImproperlyConfigured(_("You must define DEFAULT_FROM_EMAIL in your settings"))
+        try:
+            from_email = settings.DEFAULT_FROM_EMAIL
+        except AttributeError:
+            raise ImproperlyConfigured(_("You must define DEFAULT_FROM_EMAIL in your settings"))
 
         if sender:
             from_email = "%s %s <%s>" % (sender.first_name, sender.last_name,
