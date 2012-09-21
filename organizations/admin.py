@@ -41,8 +41,6 @@ class OrganizationForm(ModelForm):
             pass
     
     def clean(self):
-        import pdb
-        pdb.set_trace()
         cleaned_data = super(OrganizationForm, self).clean()
         organization_owner = cleaned_data.get('organization_owner')
         organization_users = set(cleaned_data.get('organization_users', ''))    
