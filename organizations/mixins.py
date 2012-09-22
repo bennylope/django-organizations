@@ -52,7 +52,7 @@ class OrganizationUserMixin(OrganizationMixin):
         return self.organization_user
 
 
-class MembershipRequiredMixin(object):
+class MembershipRequiredMixin(OrganizationMixin):
     """This mixin presumes that authentication has already been checked"""
     def dispatch(self, request, *args, **kwargs):
         self.request = request
@@ -60,12 +60,13 @@ class MembershipRequiredMixin(object):
         self.kwargs = kwargs
         self.organization = self.get_organization()
         if not self.organization.is_member(request.user):
+            context = self.get_context_data()
             return HttpResponseForbidden(_("Whoops, wrong organization"))
         return super(MembershipRequiredMixin, self).dispatch(request, *args,
                 **kwargs)
 
 
-class AdminRequiredMixin(object):
+class AdminRequiredMixin(OrganizationMixin):
     """This mixin presumes that authentication has already been checked"""
     def dispatch(self, request, *args, **kwargs):
         self.request = request
@@ -78,7 +79,7 @@ class AdminRequiredMixin(object):
                 **kwargs)
 
 
-class OwnerRequiredMixin(object):
+class OwnerRequiredMixin(OrganizationMixin):
     """This mixin presumes that authentication has already been checked"""
     def dispatch(self, request, *args, **kwargs):
         self.request = request

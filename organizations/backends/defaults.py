@@ -83,11 +83,10 @@ class BaseBackend(object):
     def _send_email(self, user, subject_template, body_template,
             sender=None, **kwargs):
         """Utility method for sending emails to new users"""
-        if not sender:
-            try:
-                from_email = settings.DEFAULT_FROM_EMAIL
-            except AttributeError:
-                raise ImproperlyConfigured(_("You must define DEFAULT_FROM_EMAIL in your settings"))
+        try:
+            from_email = settings.DEFAULT_FROM_EMAIL
+        except AttributeError:
+            raise ImproperlyConfigured(_("You must define DEFAULT_FROM_EMAIL in your settings"))
 
         if sender:
             from_email = "%s %s <%s>" % (sender.first_name, sender.last_name,
@@ -231,3 +230,23 @@ class InvitationBackend(BaseBackend):
         kwargs.update({'token': token})
         self._send_email(user, self.invitation_subject, self.invitation_body,
                 sender, **kwargs)
+
+class NotificationBackend(BaseBackend):
+    """A backend for notifying existing users that they have been added an
+    organization.
+    """
+    notification_subject = 'organizations/email/notification_subject.txt'
+    notification_body = 'organizations/email/notification_body.html'
+    
+    def notify_by_email(self, email, sender=None, request=None, **kwargs):
+        """Sends an active user a notification email
+        """
+        try:
+            user = User.objects.get(email=email)
+            if not user.is_active:
+                return False
+            self._send_email(user, self.notification_subject, self.notification_body,
+                    sender, **kwargs)
+        except User.DoesNotExist:
+            pass
+    
