@@ -3,7 +3,7 @@ django-organizations
 ====================
 
 :Info: Groups and multi-user account management
-:Version: 0.1.3a
+:Version: 0.1.3b
 :Status: alpha
 :Author: Ben Lopatin (http://benlopatin.com)
 
@@ -17,6 +17,9 @@ functionality beyond the individual user.
 * Users can be belong to and own more than one organization (account, group)
 * Invitation and registration functionality is designed to be flexible to allow
   you to integrate existing invitation and registration apps
+
+Documentation is on `Read the Docs
+<http://django-organizations.readthedocs.org/en/latest/index.html>`_
 
 Installing
 ==========
