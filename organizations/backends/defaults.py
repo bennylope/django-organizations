@@ -109,6 +109,8 @@ class RegistrationBackend(BaseBackend):
     """A backend for allowing new users to join the site by creating a new user
     associated with a new organization.
     """
+    # NOTE this backend stands to be simplified further, as email verification
+    # should be beyond the purview of this app
     activation_subject = 'organizations/email/activation_subject.txt'
     activation_body = 'organizations/email/activation_body.html'
     reminder_subject = 'organizations/email/reminder_subject.txt'

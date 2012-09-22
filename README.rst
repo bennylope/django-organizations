@@ -121,9 +121,35 @@ for me and contributors should include:
   registration backends can be used
 * Documentation
 * Ensuring all application text is translatable
+* Python 3 readiness
+* Configurable user model (a la Django 1.5's anticipated auth.User rewrite)
 
 Please use the project's issues tracker to report bugs, doc updates, or other
 requests/suggestions.
+
+Targets
+-------
+
+Django 1.4+
+
+Python 2.6+
+
+Submitting
+----------
+
+These submission guidelines will make it more likely your submissions will be
+reviewed and make it into the project:
+
+* Ensure they match the project goals and are sufficiently generalized
+* Please try to follow `Django coding style
+  <https://docs.djangoproject.com/en/1.4/internals/contributing/writing-code/coding-style/>`_.
+  The code base style isn't all up to par, but I'd like it to move in that
+  direction
+* Also please try to include `good commit log messages
+  <http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html>`_.
+* Pull requests should include a quantity amount of code and commits that are
+  reasonable to review, are logically grouped, and based off clean feature
+  branches.
 
 Project goals
 -------------

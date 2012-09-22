@@ -16,7 +16,8 @@ authentication mechanisms.
 Creating accounts
 -----------------
 
-TODO
+.. note::
+    This is a to-do item, and an opportunity to contribute to the project!
 
 User registration
 -----------------
@@ -52,4 +53,5 @@ token generating mechanism as Django's password reset functionality.
 Changing ownership
 ------------------
 
-TODO
+.. note::
+    This is a to-do item, and an opportunity to contribute to the project!

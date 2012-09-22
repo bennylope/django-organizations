@@ -45,4 +45,10 @@ Default Views
 Hooking the django-organizations URLs into your project provides a default set
 of views for accessing and updating organizations and organization membership.
 
+Implementing in your own project
+--------------------------------
 
+While django-organizations has some basic usability 'out-of-the-box', it's
+designed to be used as a foundation for project specific functionality. The
+view mixins should provide base functionality from which to work for unique
+situations.

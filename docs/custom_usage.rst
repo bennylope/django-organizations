@@ -45,6 +45,41 @@ Common use cases for extending the views include updating context variable
 names, adding project specific functionality, or updating access controls based
 on your project::
 
+    class ServiceProvidersOnly(LoginRequired, OrganizationMixin):
+        def dispatch(self, request, *args, **kwargs):
+            self.request = request
+            self.args = args
+            self.kwargs = kwargs
+            self.organization = self.get_organization()
+            self.service_provider = self.organization.provider
+            if not self.organization.is_admin(request.user) and not \
+                    self.service_provider.is_member(request.user):
+                return HttpResponseForbidden(_("Sorry, admins only"))
+            return super(AdminRequiredMixin, self).dispatch(request, *args,
+                    **kwargs)
+
+
+This mixin implements the same restriction as the `AdminRequiredMixin` mixin
+and adds an allowance for anyone who is a member of the service provider::
+
+    class AccountUpdateView(ServiceProviderOnly, BaseOrganizationUpdate):
+        context_object_name = "account"
+        template_name = "myapp/account_detail.html"
+
+        def get_context_data(self, **kwargs):
+            context = super(AccountUpdateView, self).get_context_data(**kwargs)
+            context.update(provider=self.service_provider)
+            return context
+
+The `ServiceProvidersOnly` mixin inherits from the `LoginRequired` class which
+is a mixin for applying the `login_required` decorator. You can write your own
+(it's fairly simple) or use the convenient mixins provided by `django-braces
+<http://django-braces.readthedocs.org/en/latest/index.html>`_.
+
+It would also have been possible to define the `ServiceProvidersOnly` without
+inheriting from a base class, and then defining all of the mixins in the view
+class definition. This has the benefit of explitness at the expense of
+verbosity::
 
     class ServiceProvidersOnly(object):
         def dispatch(self, request, *args, **kwargs):
@@ -60,5 +95,19 @@ on your project::
                     **kwargs)
 
 
-This mixin implements the same restriction as the `AdminRequiredMixin` mixin
-and adds an allowance for anyone who is a member of the service provider.
+    class AccountUpdateView(LoginRequired, OrganizationMixin,
+                        ServiceProviderOnly, BaseOrganizationUpdate):
+        context_object_name = "account"
+        template_name = "myapp/account_detail.html"
+
+        def get_context_data(self, **kwargs):
+            context = super(AccountUpdateView, self).get_context_data(**kwargs)
+            context.update(provider=self.service_provider)
+            return context
+
+While this isn't recommended in your own proejct, the mixins in
+django-organizations itself will err on the side of depending on composition
+rather than inheritence from other mixins. This may require defining a mixin in
+your own project that combines them for simplicity in your own views, but it
+reduces the inheritence chain potentially making functionality more difficult
+ot identify.
