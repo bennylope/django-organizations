@@ -83,17 +83,16 @@ class BaseBackend(object):
     def _send_email(self, user, subject_template, body_template,
             sender=None, **kwargs):
         """Utility method for sending emails to new users"""
-        try:
-            from_email = settings.DEFAULT_FROM_EMAIL
-        except AttributeError:
-            raise ImproperlyConfigured(_("You must define DEFAULT_FROM_EMAIL in your settings"))
-
         if sender:
             from_email = "%s %s <%s>" % (sender.first_name, sender.last_name,
-                    from_email)
+                    settings.DEFAULT_FROM_EMAIL)
             reply_to = "%s %s <%s>" % (sender.first_name, sender.last_name,
                     sender.email)
-        headers = {'Reply-To': reply_to} if sender else {}
+        else:
+            from_email = settings.DEFAULT_FROM_EMAIL
+            reply_to = {}
+
+        headers = {'Reply-To': reply_to}
 
         kwargs.update({'sender': sender, 'user': user})
         ctx = Context(kwargs)
