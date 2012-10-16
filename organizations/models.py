@@ -3,19 +3,11 @@ from django.db.models import permalink
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 
+from django_extensions.db.models import TimeStampedModel
 from organizations.managers import OrgManager, ActiveOrgManager
 
 
-class OrganizationsBase(models.Model):
-    """Timestamped base for Organization models"""
-    created = models.DateTimeField(auto_now_add=True)
-    modified = models.DateTimeField(auto_now=True)
-
-    class Meta:
-        abstract = True
-
-
-class Organization(OrganizationsBase):
+class Organization(TimeStampedModel):
     """The umbrella object with which users can be associated.
 
     An organization can have multiple users but only one who can be designated
@@ -65,7 +57,7 @@ class Organization(OrganizationsBase):
         return True if self.organization_users.filter(user=user, is_admin=True) else False
 
 
-class OrganizationUser(OrganizationsBase):
+class OrganizationUser(TimeStampedModel):
     """ManyToMany through field relating Users to Organizations.
 
     It is possible for a User to be a member of multiple organizations, so this
@@ -113,7 +105,7 @@ class OrganizationUser(OrganizationsBase):
         return self.user.username
 
 
-class OrganizationOwner(OrganizationsBase):
+class OrganizationOwner(TimeStampedModel):
     """Each organization must have one and only one organization owner."""
 
     organization = models.OneToOneField(Organization, related_name="owner")

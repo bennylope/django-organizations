@@ -24,6 +24,7 @@ setup(
     ],
     install_requires=[
         'Django>=1.4',
+        'django-extensions>=0.9',
     ],
     #test_suite='tests.runtests.runtests',
     include_package_data=True,
