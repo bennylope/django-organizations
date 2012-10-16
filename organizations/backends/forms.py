@@ -1,7 +1,6 @@
 from django import forms
-from django.contrib.auth.models import User
 
-from organizations.models import Organization
+from organizations.models import Organization, get_user_model
 
 
 class UserRegistrationForm(forms.ModelForm):
@@ -18,7 +17,7 @@ class UserRegistrationForm(forms.ModelForm):
         self.initial['username'] = ''
 
     class Meta:
-        model = User
+        model = get_user_model()
         exclude = ('is_staff', 'is_superuser', 'is_active', 'last_login',
                 'date_joined', 'groups', 'user_permissions')
 

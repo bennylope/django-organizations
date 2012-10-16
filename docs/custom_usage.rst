@@ -5,14 +5,13 @@ The use cases from which django-organizations originated included more complex
 ways of determining access to the views as well as additional relationships to
 organizations. The application is extensible with these use cases in mind.
 
-Custom models
--------------
+Custom organization models
+--------------------------
 
 Let's say you had an Account model in your app, which defined a group account
 to which multiple users could belong, and also had its own logo, a foreign key
 to a subscription plan, a website URL, and some descriptive information. Also,
 this client organization is related to a service provider organization.::
-
 
     class ServiceProvider(Organization):
         """Now this model has a name field and a slug field"""
@@ -30,13 +29,31 @@ this client organization is related to a service provider organization.::
 
         objects = models.Manager()
 
-
 Now the `ServiceProvider` and `Client` objects you create have the attributes
 of the Organization model class, including access to the OrganizationUser and
 OrganizationOwner models.  This is an indirect relationship through a join in
 the database - this type of inheritance is multi-table inheritance so there
 will be a Client table and an Organization table; the latter is what the
 OrganizationUser and OrganizationOwner tables are still linked to.
+
+Custom user model
+-----------------
+
+By default django-organizations will map User objects from django's
+`contrib.auth` application to an Organization. However you can change this by
+specifying a different model in your settings using the `AUTH_USER_MODEL`
+setting. This should include the appname and model name in a string like so::
+
+    AUTH_USER_MODEL = 'auth.User'
+
+or::
+
+    AUTH_USER_MODEL = 'myapp.MyUser'
+
+.. note::
+    If you choose a different user class make sure to pay attention to the API.
+    If it differs from the `auth.User` API you will likely need to use an
+    extended backend, if you are not already.
 
 View mixins
 -----------

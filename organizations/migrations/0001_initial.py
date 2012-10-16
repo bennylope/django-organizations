@@ -3,6 +3,10 @@ import datetime
 from south.db import db
 from south.v2 import SchemaMigration
 from django.db import models
+from django.conf import settings
+
+
+AUTH_USER_MODEL = getattr(settings, 'AUTH_USER_MODEL', 'auth.User')
 
 
 class Migration(SchemaMigration):
@@ -24,7 +28,7 @@ class Migration(SchemaMigration):
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('created', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
             ('modified', self.gf('django.db.models.fields.DateTimeField')(auto_now=True, blank=True)),
-            ('user', self.gf('django.db.models.fields.related.ForeignKey')(related_name='organization_users', to=orm['auth.User'])),
+            ('user', self.gf('django.db.models.fields.related.ForeignKey')(related_name='organization_users', to=orm['{model}'.format(model=AUTH_USER_MODEL)])),
             ('organization', self.gf('django.db.models.fields.related.ForeignKey')(related_name='organization_users', to=orm['organizations.Organization'])),
             ('is_admin', self.gf('django.db.models.fields.BooleanField')(default=False)),
         ))
@@ -72,7 +76,7 @@ class Migration(SchemaMigration):
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '50'})
         },
-        'auth.user': {
+        '{model}'.format(model=AUTH_USER_MODEL.lower()): {
             'Meta': {'object_name': 'User'},
             'date_joined': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
             'email': ('django.db.models.fields.EmailField', [], {'max_length': '75', 'blank': 'True'}),
@@ -103,7 +107,7 @@ class Migration(SchemaMigration):
             'modified': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'blank': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '50'}),
             'slug': ('django.db.models.fields.SlugField', [], {'unique': 'True', 'max_length': '50'}),
-            'users': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['auth.User']", 'through': "orm['organizations.OrganizationUser']", 'symmetrical': 'False'})
+            'users': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['{model}']".format(model=AUTH_USER_MODEL), 'through': "orm['organizations.OrganizationUser']", 'symmetrical': 'False'})
         },
         'organizations.organizationowner': {
             'Meta': {'object_name': 'OrganizationOwner'},
@@ -120,7 +124,7 @@ class Migration(SchemaMigration):
             'is_admin': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'modified': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'blank': 'True'}),
             'organization': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'organization_users'", 'to': "orm['organizations.Organization']"}),
-            'user': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'organization_users'", 'to': "orm['auth.User']"})
+            'user': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'organization_users'", 'to': "orm['{model}']".format(model=AUTH_USER_MODEL)})
         }
     }
 
