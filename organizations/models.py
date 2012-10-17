@@ -4,6 +4,7 @@ from django.db import models
 from django.db.models import permalink, get_model
 from django.utils.translation import ugettext_lazy as _
 
+from django_extensions.db.fields import AutoSlugField
 from django_extensions.db.models import TimeStampedModel
 from organizations.managers import OrgManager, ActiveOrgManager
 
@@ -30,7 +31,8 @@ class Organization(TimeStampedModel):
     """
     name = models.CharField(max_length=100,
             help_text=_("The name of the organization"))
-    slug = models.SlugField(max_length=100, unique=True,
+    slug = AutoSlugField(max_length=100, blank=False, editable=True,
+            populate_from='name', unique=True,
             help_text=_("The name in all lowercase, suitable for URL identification"))
     users = models.ManyToManyField(get_user_model(), through="OrganizationUser")
     is_active = models.BooleanField(default=True)
