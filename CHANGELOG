@@ -2,6 +2,13 @@
 django-organizations
 ====================
 
+0.1.3b
+------
+
+* Changes SlugField to an AutoSlugField from django-extensions
+* Base models on TimeStampedModel from django-extensions
+* ForeignKey to user model based on configurable user selection
+
 0.1.3
 -----
 

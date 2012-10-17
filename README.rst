@@ -62,6 +62,14 @@ backend::
 
     ORGS_INVITATION_BACKEND = 'myapp.backends.MyInvitationBackend'
 
+There is also a lightly tested way to use your own user model, rather than the
+default `auth.User` model. Set the `AUTH_USER_MODEL` setting to the dotted
+model name of your custom user model, following the procedure in Django 1.5::
+
+    AUTH_USER_MODEL = 'myuserapp.MyUser'
+
+**This is still experimental and your user model's API should hew close to that
+of the `auth.User` class.**
 
 Usage Overview
 ==============
