@@ -13,13 +13,13 @@ class OrganizationAdmin(admin.ModelAdmin):
     list_display = ['name', 'is_active']
     prepopulated_fields = {"slug": ("name",)}
 
+
 class OrganizationUserAdmin(admin.ModelAdmin):
-    list_filter = ['organization']
     list_display = ['user', 'organization', 'is_admin']
 
 
 class OrganizationOwnerAdmin(admin.ModelAdmin):
-    list_filter = ['organization']
+    pass
 
 
 admin.site.register(Organization, OrganizationAdmin)
