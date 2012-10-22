@@ -116,9 +116,9 @@ class OrganizationUser(TimeStampedModel):
 
     @property
     def name(self):
-        if self.user.first_name and self.user.last_name:
-            return u"{0} {1}".format(self.user.first_name, self.user.last_name)
-        return self.user.username
+        if hasattr(self.user, 'get_full_name'):
+            return self.user.get_full_name()
+        return "{0}".format(self.user)
 
 
 class OrganizationOwner(TimeStampedModel):
