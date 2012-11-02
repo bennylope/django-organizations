@@ -25,7 +25,7 @@ class OrganizationForm(forms.ModelForm):
 
     def save(self, commit=True):
         if self.instance.owner.organization_user != self.cleaned_data['owner']:
-            self.instance.owner = self.cleaned_data['owner']
+            self.instance.owner.organization_user = self.cleaned_data['owner']
             self.instance.owner.save()
         return super(OrganizationForm, self).save(commit=commit)
 
