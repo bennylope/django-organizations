@@ -2,6 +2,12 @@
 django-organizations
 ====================
 
+0.1.4
+-----
+
+* Bugfixes for deleting organization users
+* Removes additional `auth.User` references in app code
+
 0.1.3b
 ------
 
