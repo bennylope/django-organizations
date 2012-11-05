@@ -6,6 +6,7 @@ from django.db import IntegrityError
 from organizations.models import (Organization, OrganizationUser,
         OrganizationOwner)
 
+
 @override_settings(USE_TZ=True)
 class ActiveManagerTests(TestCase):
 
@@ -59,11 +60,21 @@ class OrgModelTests(TestCase):
         owner = self.nirvana.owner.organization_user
         self.assertRaises(OwnershipRequired, owner.delete)
 
+    def test_delete_missing_owner(self):
+        """Ensure an org user can be deleted when there is no owner"""
+        org = Organization.objects.create(name="Some test", slug="some-test")
+        # Avoid the Organization.add_user method which would make an owner
+        org_user = OrganizationUser.objects.create(user=self.kurt,
+                organization=org)
+        # Just make sure it doesn't raise an error
+        org_user.delete()
+
     def test_nonmember_owner(self):
         from organizations.exceptions import OrganizationMismatch
         foo_user = self.foo.owner
         self.nirvana.owner = foo_user
         self.assertRaises(OrganizationMismatch, self.nirvana.owner.save)
+
 
 @override_settings(USE_TZ=True)
 class OrgDeleteTests(TestCase):

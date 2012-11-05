@@ -102,12 +102,16 @@ class OrganizationUser(TimeStampedModel):
         """
         If the organization user is also the owner, this should not be deleted
         unless it's part of a cascade from the Organization.
+
+        If there is no owner then the deletion should proceed.
         """
         from organizations.exceptions import OwnershipRequired
-        if self.organization.owner.organization_user.id == self.id:
-            raise OwnershipRequired(_("Cannot delete organization owner before organization or transferring ownership."))
-        else:
-            super(OrganizationUser, self).delete(using=using)
+        try:
+            if self.organization.owner.organization_user.id == self.id:
+                raise OwnershipRequired(_("Cannot delete organization owner before organization or transferring ownership."))
+        except OrganizationOwner.DoesNotExist:
+            pass
+        super(OrganizationUser, self).delete(using=using)
 
     @permalink
     def get_absolute_url(self):
