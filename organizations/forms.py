@@ -1,9 +1,8 @@
 from django import forms
-from django.contrib.auth.models import User
 from django.contrib.sites.models import get_current_site
 from django.utils.translation import ugettext_lazy as _
 
-from organizations.models import Organization, OrganizationUser
+from organizations.models import Organization, OrganizationUser, get_user_model
 from organizations.utils import create_organization
 from organizations.backends import invitation_backend
 
@@ -72,10 +71,10 @@ class OrganizationUserAddForm(forms.ModelForm):
         order to link it to the Organization.
         """
         try:
-            user = User.objects.get(email=self.cleaned_data['email'])
-        except User.MultipleObjectsReturned:
+            user = get_user_model().objects.get(email__iexact=self.cleaned_data['email'])
+        except get_user_model().MultipleObjectsReturned:
             raise forms.ValidationError(_("This email address has been used multiple times."))
-        except User.DoesNotExist:
+        except get_user_model().DoesNotExist:
             user = invitation_backend().invite_by_email(
                     self.cleaned_data['email'],
                     **{'domain': get_current_site(self.request),
@@ -113,8 +112,8 @@ class OrganizationAddForm(forms.ModelForm):
         """
         is_active = True
         try:
-            user = User.objects.get(email=self.cleaned_data['email'])
-        except User.DoesNotExist:
+            user = get_user_model().objects.get(email=self.cleaned_data['email'])
+        except get_user_model().DoesNotExist:
             user = invitation_backend().invite_by_email(
                     self.cleaned_data['email'],
                     **{'domain': get_current_site(self.request),
