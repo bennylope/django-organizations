@@ -9,16 +9,17 @@ from django_extensions.db.models import TimeStampedModel
 from organizations.managers import OrgManager, ActiveOrgManager
 
 
+USER_MODEL = getattr(settings, 'AUTH_USER_MODEL', 'auth.User')
+
+
 def get_user_model():
-    """Returns the User model which should be used. This functionality won't be
+    """Returns the chosen user model as a class. This functionality won't be
     built-in until Django 1.5.
     """
-    klass_string = getattr(settings, 'AUTH_USER_MODEL', 'auth.User')
     try:
-        klass = get_model(klass_string.split('.')[0],
-                klass_string.split('.')[1])
+        klass = get_model(USER_MODEL.split('.')[0], USER_MODEL.split('.')[1])
     except:
-        raise ImproperlyConfigured(_("Your user class is improperly defined"))
+        raise ImproperlyConfigured("Your user class, {0}, is improperly defined".format(klass_string))
     return klass
 
 
@@ -34,7 +35,7 @@ class Organization(TimeStampedModel):
     slug = AutoSlugField(max_length=100, blank=False, editable=True,
             populate_from='name', unique=True,
             help_text=_("The name in all lowercase, suitable for URL identification"))
-    users = models.ManyToManyField(get_user_model(), through="OrganizationUser")
+    users = models.ManyToManyField(USER_MODEL, through="OrganizationUser")
     is_active = models.BooleanField(default=True)
 
     objects = OrgManager()
@@ -84,7 +85,7 @@ class OrganizationUser(TimeStampedModel):
     and the contrib.auth application.
 
     """
-    user = models.ForeignKey(get_user_model(), related_name="organization_users")
+    user = models.ForeignKey(USER_MODEL, related_name="organization_users")
     organization = models.ForeignKey(Organization,
             related_name="organization_users")
     is_admin = models.BooleanField(default=False)
