@@ -1,7 +1,7 @@
-Welcome to django-group-accounts's documentation!
-=================================================
+Welcome to django-organizations!
+================================
 
-Django group accounts is an application that provides group account
+django-organizations is an application that provides group account
 functionality for Django, allowing user access and rights to be consolidated
 into group accounts.
 
@@ -10,12 +10,10 @@ Contents:
 .. toctree::
     :maxdepth: 2
 
-    installation
-    overview
+    getting_started
     usage
-    backends
     custom_usage
-
+    backends
 
 
 Indices and tables

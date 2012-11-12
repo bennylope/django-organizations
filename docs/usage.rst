@@ -1,7 +1,7 @@
 Basic Usage
 ===========
 
-After installing django-group-accounts you can make basic use of the accounts
+After installing django-organizations you can make basic use of the accounts
 with minimal configuration.
 
 The application's default views and URL configuration provide functionality for
@@ -10,7 +10,7 @@ account creation, user registration, and account management.
 Authentication
 --------------
 
-django-group-accounts relies on `django.contrib.auth` for the `User` model and
+django-organizations relies on `django.contrib.auth` for the `User` model and
 authentication mechanisms.
 
 Creating accounts
@@ -47,7 +47,7 @@ new Account - the view creates a new `User`, a new `Account`, a new
 Adding users
 ~~~~~~~~~~~~
 
-The user registration system in django-group-accounts is based on the same
+The user registration system in django-organizations is based on the same
 token generating mechanism as Django's password reset functionality.
 
 Changing ownership
