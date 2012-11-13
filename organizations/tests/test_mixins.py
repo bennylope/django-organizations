@@ -15,6 +15,9 @@ class ViewStub(object):
     def __init__(self, **kwargs):
         self.kwargs = kwargs
 
+    def get_context_data(self, **kwargs):
+        return kwargs
+
     def dispatch(self, request, *args, **kwargs):
         return HttpResponse("Success")
 
