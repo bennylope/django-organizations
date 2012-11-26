@@ -121,7 +121,8 @@ class BaseOrganizationUserUpdate(OrganizationUserMixin, UpdateView):
 
 class BaseOrganizationUserDelete(OrganizationUserMixin, DeleteView):
     def get_success_url(self):
-        return reverse("organizationuser_list")
+        return reverse('organization_user_list',
+                kwargs={'organization_pk': self.object.organization.pk})
 
 
 class OrganizationSignup(FormView):
