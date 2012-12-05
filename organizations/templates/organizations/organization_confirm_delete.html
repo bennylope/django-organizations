@@ -1,6 +1,6 @@
 {% extends "organizations_base.html" %}
 {% block content %}
-<h1>{{ account }}</h1>
+<h1>{{ organization }}</h1>
 <h3>Are you sure you want to delete this organization?</h3>
 <form action="." method="post">{% csrf_token %}
     {{ form }}

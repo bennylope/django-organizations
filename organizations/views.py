@@ -148,12 +148,11 @@ class OrganizationSignup(FormView):
             return self.success_url
         return reverse('organization_signup_success')
 
-    def form_valid(self, request):
+    def form_valid(self, form):
         """
         """
         user = self.backend.register_by_email(form.cleaned_data['email'])
-        organization = create_organization(
-                user=user, name=form.cleaned_data['name'],
+        create_organization(user=user, name=form.cleaned_data['name'],
                 slug=form.cleaned_data['slug'], is_active=False)
         return redirect(self.get_success_url())
 
