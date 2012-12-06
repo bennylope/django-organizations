@@ -1,9 +1,9 @@
 {% load url from future %}
 
-You've been invited to join {{ organization }} on {{ site_name }} by {{ sender.first_name }} {{ sender.last_name }}.
+You've been invited to join {{ organization }} on {{ domain.name }} by {{ sender.first_name }} {{ sender.last_name }}.
 
 Follow this link to create your user account.
 
-http://{{ domain }}{% url "invitations_register" user.id token %}
+http://{{ domain.domain }}{% url "invitations_register" user.id token %}
 
 If you are unsure about this link please contact the sender.
