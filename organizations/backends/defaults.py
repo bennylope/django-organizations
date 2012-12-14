@@ -66,6 +66,9 @@ class BaseBackend(object):
             user = form.save()
             user.set_password(form.cleaned_data['password'])
             user.save()
+            for org in user.organization_set.filter(is_active=False):
+                org.is_active = True
+                org.save()
             user = authenticate(username=form.cleaned_data['username'],
                     password=form.cleaned_data['password'])
             login(request, user)
