@@ -6,6 +6,8 @@ from organizations.models import Organization, OrganizationUser
 
 
 class OrganizationMixin(object):
+    """Mixin used like a SingleObjectMixin to fetch an organization"""
+
     org_model = Organization
     org_context_name = 'organization'
 
@@ -26,6 +28,8 @@ class OrganizationMixin(object):
 
 
 class OrganizationUserMixin(OrganizationMixin):
+    """Mixin used like a SingleObjectMixin to fetch an organization user"""
+
     user_model = OrganizationUser
     org_user_context_name = 'organization_user'
 
@@ -54,25 +58,29 @@ class OrganizationUserMixin(OrganizationMixin):
 
 class MembershipRequiredMixin(object):
     """This mixin presumes that authentication has already been checked"""
+
     def dispatch(self, request, *args, **kwargs):
         self.request = request
         self.args = args
         self.kwargs = kwargs
         self.organization = self.get_organization()
-        if not self.organization.is_member(request.user):
-            return HttpResponseForbidden(_("Whoops, wrong organization"))
+        if not self.organization.is_member(request.user) and not \
+                    request.user.is_superuser:
+            return HttpResponseForbidden(_("Wrong organization"))
         return super(MembershipRequiredMixin, self).dispatch(request, *args,
                 **kwargs)
 
 
 class AdminRequiredMixin(object):
     """This mixin presumes that authentication has already been checked"""
+
     def dispatch(self, request, *args, **kwargs):
         self.request = request
         self.args = args
         self.kwargs = kwargs
         self.organization = self.get_organization()
-        if not self.organization.is_admin(request.user):
+        if not self.organization.is_admin(request.user) and not \
+                    request.user.is_superuser:
             return HttpResponseForbidden(_("Sorry, admins only"))
         return super(AdminRequiredMixin, self).dispatch(request, *args,
                 **kwargs)
@@ -80,12 +88,14 @@ class AdminRequiredMixin(object):
 
 class OwnerRequiredMixin(object):
     """This mixin presumes that authentication has already been checked"""
+
     def dispatch(self, request, *args, **kwargs):
         self.request = request
         self.args = args
         self.kwargs = kwargs
         self.organization = self.get_organization()
-        if self.organization.owner.organization_user.user != request.user:
+        if self.organization.owner.organization_user.user != request.user \
+                    and not request.user.is_superuser:
             return HttpResponseForbidden(_("You are not the organization owner"))
         return super(OwnerRequiredMixin, self).dispatch(request, *args,
                 **kwargs)

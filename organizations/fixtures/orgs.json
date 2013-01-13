@@ -1,1 +1,120 @@
-[{"pk": 1, "model": "organizations.organization", "fields": {"is_active": true, "modified": "2012-05-25T21:16:30.126Z", "name": "Foo Fighters", "slug": "foo-fighters", "created": "2012-05-24T20:42:07.894Z"}}, {"pk": 2, "model": "organizations.organization", "fields": {"is_active": true, "modified": "2012-05-25T21:16:37.827Z", "name": "Nirvana", "slug": "nirvana", "created": "2012-05-25T21:14:34.818Z"}}, {"pk": 3, "model": "organizations.organization", "fields": {"is_active": false, "modified": "2012-05-26T04:03:38.182Z", "name": "Scream", "slug": "scream", "created": "2012-05-26T04:03:21.839Z"}}, {"pk": 1, "model": "organizations.organizationuser", "fields": {"organization": 1, "user": 1, "is_admin": true, "modified": "2012-05-24T20:42:07.906Z", "created": "2012-05-24T20:42:07.906Z"}}, {"pk": 2, "model": "organizations.organizationuser", "fields": {"organization": 2, "user": 1, "is_admin": false, "modified": "2012-05-26T01:27:51.941Z", "created": "2012-05-26T01:27:51.941Z"}}, {"pk": 3, "model": "organizations.organizationuser", "fields": {"organization": 2, "user": 2, "is_admin": true, "modified": "2012-05-26T01:28:02.221Z", "created": "2012-05-26T01:28:02.221Z"}}, {"pk": 4, "model": "organizations.organizationuser", "fields": {"organization": 2, "user": 3, "is_admin": true, "modified": "2012-05-26T01:28:06.247Z", "created": "2012-05-26T01:28:06.247Z"}}, {"pk": 5, "model": "organizations.organizationuser", "fields": {"organization": 3, "user": 1, "is_admin": true, "modified": "2012-05-26T04:03:57.353Z", "created": "2012-05-26T04:03:57.353Z"}}, {"pk": 1, "model": "organizations.organizationowner", "fields": {"organization_user": 1, "organization": 1, "modified": "2012-05-24T20:42:07.916Z", "created": "2012-05-24T20:42:07.916Z"}}, {"pk": 2, "model": "organizations.organizationowner", "fields": {"organization_user": 4, "organization": 2, "modified": "2012-05-26T01:28:19.145Z", "created": "2012-05-26T01:28:19.145Z"}}, {"pk": 3, "model": "organizations.organizationowner", "fields": {"organization_user": 5, "organization": 3, "modified": "2012-05-26T04:06:07.650Z", "created": "2012-05-26T04:06:07.650Z"}}]
+[
+    {
+        "pk": 1,
+        "model": "organizations.organization",
+        "fields": {
+            "is_active": true,
+            "modified": "2012-05-25T21:16:30.126Z",
+            "name": "Foo Fighters",
+            "slug": "foo-fighters",
+            "created": "2012-05-24T20:42:07.894Z"
+        }
+    },
+    {
+        "pk": 2,
+        "model": "organizations.organization",
+        "fields": {
+            "is_active": true,
+            "modified": "2012-05-25T21:16:37.827Z",
+            "name": "Nirvana",
+            "slug": "nirvana",
+            "created": "2012-05-25T21:14:34.818Z"
+        }
+    },
+    {
+        "pk": 3,
+        "model": "organizations.organization",
+        "fields": {
+            "is_active": false,
+            "modified": "2012-05-26T04:03:38.182Z",
+            "name": "Scream",
+            "slug": "scream",
+            "created": "2012-05-26T04:03:21.839Z"
+        }
+    },
+    {
+        "pk": 1,
+        "model": "organizations.organizationuser",
+        "fields": {
+            "organization": 1,
+            "user": 1,
+            "is_admin": true,
+            "modified": "2012-05-24T20:42:07.906Z",
+            "created": "2012-05-24T20:42:07.906Z"
+        }
+    },
+    {
+        "pk": 2,
+        "model": "organizations.organizationuser",
+        "fields": {
+            "organization": 2,
+            "user": 1,
+            "is_admin": false,
+            "modified": "2012-05-26T01:27:51.941Z",
+            "created": "2012-05-26T01:27:51.941Z"
+        }
+    },
+    {
+        "pk": 3,
+        "model": "organizations.organizationuser",
+        "fields": {
+            "organization": 2,
+            "user": 2,
+            "is_admin": true,
+            "modified": "2012-05-26T01:28:02.221Z",
+            "created": "2012-05-26T01:28:02.221Z"
+        }
+    },
+    {
+        "pk": 4,
+        "model": "organizations.organizationuser",
+        "fields": {
+            "organization": 2,
+            "user": 3,
+            "is_admin": true,
+            "modified": "2012-05-26T01:28:06.247Z",
+            "created": "2012-05-26T01:28:06.247Z"
+        }
+    },
+    {
+        "pk": 5,
+        "model": "organizations.organizationuser",
+        "fields": {
+            "organization": 3,
+            "user": 1,
+            "is_admin": true,
+            "modified": "2012-05-26T04:03:57.353Z",
+            "created": "2012-05-26T04:03:57.353Z"
+        }
+    },
+    {
+        "pk": 1,
+        "model": "organizations.organizationowner",
+        "fields": {
+            "organization_user": 1,
+            "organization": 1,
+            "modified": "2012-05-24T20:42:07.916Z",
+            "created": "2012-05-24T20:42:07.916Z"
+        }
+    },
+    {
+        "pk": 2,
+        "model": "organizations.organizationowner",
+        "fields": {
+            "organization_user": 4,
+            "organization": 2,
+            "modified": "2012-05-26T01:28:19.145Z",
+            "created": "2012-05-26T01:28:19.145Z"
+        }
+    },
+    {
+        "pk": 3,
+        "model": "organizations.organizationowner",
+        "fields": {
+            "organization_user": 5,
+            "organization": 3,
+            "modified": "2012-05-26T04:06:07.650Z",
+            "created": "2012-05-26T04:06:07.650Z"
+        }
+    }
+]

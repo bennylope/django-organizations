@@ -95,7 +95,8 @@ class AccessMixinTests(TestCase):
             organization_pk=self.nirvana.pk).status_code)
         self.assertEqual(200, AdminView().dispatch(self.krist_request,
             organization_pk=self.nirvana.pk).status_code)
-        self.assertEqual(403, AdminView().dispatch(self.dave_request,
+        # Superuser
+        self.assertEqual(200, AdminView().dispatch(self.dave_request,
             organization_pk=self.nirvana.pk).status_code)
         self.assertEqual(403, AdminView().dispatch(self.dummy_request,
             organization_pk=self.nirvana.pk).status_code)
@@ -107,7 +108,8 @@ class AccessMixinTests(TestCase):
             organization_pk=self.nirvana.pk).status_code)
         self.assertEqual(403, OwnerView().dispatch(self.krist_request,
             organization_pk=self.nirvana.pk).status_code)
-        self.assertEqual(403, OwnerView().dispatch(self.dave_request,
+        # Superuser
+        self.assertEqual(200, OwnerView().dispatch(self.dave_request,
             organization_pk=self.nirvana.pk).status_code)
         self.assertEqual(403, OwnerView().dispatch(self.dummy_request,
             organization_pk=self.nirvana.pk).status_code)
