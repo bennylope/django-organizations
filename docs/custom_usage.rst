@@ -128,3 +128,8 @@ rather than inheritence from other mixins. This may require defining a mixin in
 your own project that combines them for simplicity in your own views, but it
 reduces the inheritence chain potentially making functionality more difficult
 ot identify.
+
+.. note::
+    The view mixins expressly allow superusers to access organization
+    resources. If this is undesired behaviour you will need to use your own
+    mixins.
