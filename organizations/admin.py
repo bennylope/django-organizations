@@ -6,6 +6,7 @@ from organizations.models import (Organization, OrganizationUser,
 
 class OwnerInline(admin.StackedInline):
     model = OrganizationOwner
+    raw_id_fields = ('organization_user',)
 
 
 class OrganizationAdmin(admin.ModelAdmin):
@@ -16,10 +17,11 @@ class OrganizationAdmin(admin.ModelAdmin):
 
 class OrganizationUserAdmin(admin.ModelAdmin):
     list_display = ['user', 'organization', 'is_admin']
+    raw_id_fields = ('user', 'organization')
 
 
 class OrganizationOwnerAdmin(admin.ModelAdmin):
-    pass
+    raw_id_fields = ('organization_user', 'organization')
 
 
 admin.site.register(Organization, OrganizationAdmin)
