@@ -97,7 +97,7 @@ class OrganizationUser(TimeStampedModel):
         verbose_name_plural = _("organization users")
 
     def __unicode__(self):
-        return "%s@%s" % (self.name if self.user.is_active else self.user.email, self.organization.name)
+        return "%s (%s)" % (self.name if self.user.is_active else self.user.email, self.organization.name)
 
     def delete(self, using=None):
         """
