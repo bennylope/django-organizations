@@ -4,7 +4,7 @@ django-organizations
 
 :Info: Groups and multi-user account management
 :Version: 0.1.5
-:Status: alpha
+:Status: beta
 :Author: Ben Lopatin (http://benlopatin.com)
 
 Add user-managed, multi-user groups to your Django project. Use
