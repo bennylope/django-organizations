@@ -2,6 +2,14 @@
 django-organizations
 ====================
 
+0.1.5
+-----
+
+* Use raw ID fields in admin
+* Fixes template variable names
+* Allow superusers access to all organization views
+* Activate related organizations when activating an owner user
+
 0.1.4a
 ------
 
