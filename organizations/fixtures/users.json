@@ -52,5 +52,23 @@
             "email": "kurt@nirvana.com",
             "date_joined": "2012-05-26T01:23:42Z"
         }
+    },
+    {
+        "pk": 4,
+        "model": "auth.user",
+        "fields": {
+            "username": "duder",
+            "first_name": "Some",
+            "last_name": "Tester",
+            "is_active": true,
+            "is_superuser": false,
+            "is_staff": false,
+            "last_login": "2012-05-26T01:23:06Z",
+            "groups": [],
+            "user_permissions": [],
+            "password": "pbkdf2_sha256$10000$BywHke8M7Vuu$2+fAbb+HY7xSGGEtiuiWH5ve7v/LVKMStwgz2r9iwEg=",
+            "email": "duder@testing.com",
+            "date_joined": "2012-05-26T01:23:06Z"
+        }
     }
 ]

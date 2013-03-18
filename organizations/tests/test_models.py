@@ -31,6 +31,7 @@ class OrgModelTests(TestCase):
         self.kurt = User.objects.get(username="kurt")
         self.dave = User.objects.get(username="dave")
         self.krist = User.objects.get(username="krist")
+        self.duder = User.objects.get(username="duder")
         self.nirvana = Organization.objects.get(name="Nirvana")
         self.foo = Organization.objects.get(name="Foo Fighters")
 
@@ -54,6 +55,17 @@ class OrgModelTests(TestCase):
         new_guy = self.foo.add_user(self.krist)
         self.assertTrue(isinstance(new_guy, OrganizationUser))
         self.assertEqual(new_guy.organization, self.foo)
+
+    def test_get_or_add_user(self):
+        """Ensure `get_or_add_user` adds a user IFF it exists"""
+        new_guy, created = self.foo.get_or_add_user(self.duder)
+        self.assertTrue(isinstance(new_guy, OrganizationUser))
+        self.assertEqual(new_guy.organization, self.foo)
+        self.assertTrue(created)
+
+        new_guy, created = self.foo.get_or_add_user(self.dave)
+        self.assertTrue(isinstance(new_guy, OrganizationUser))
+        self.assertFalse(created)
 
     def test_delete_owner(self):
         from organizations.exceptions import OwnershipRequired
@@ -84,11 +96,11 @@ class OrgDeleteTests(TestCase):
     def test_delete_account(self):
         """Ensure Users are not deleted on the cascade"""
         self.assertEqual(3, OrganizationOwner.objects.all().count())
-        self.assertEqual(3, User.objects.all().count())
+        self.assertEqual(4, User.objects.all().count())
         scream = Organization.objects.get(name="Scream")
         scream.delete()
         self.assertEqual(2, OrganizationOwner.objects.all().count())
-        self.assertEqual(3, User.objects.all().count())
+        self.assertEqual(4, User.objects.all().count())
 
     def test_delete_orguser(self):
         """Ensure the user is not deleted on the cascade"""
