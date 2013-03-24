@@ -1,6 +1,6 @@
 {% load url from future %}
 
-You've been invited to join {{ organization }} on {{ domain.name }} by {{ sender.first_name }} {{ sender.last_name }}.
+You've been invited to join {{ organization|safe }} on {{ domain.name }} by {{ sender.first_name|safe }} {{ sender.last_name|safe }}.
 
 Follow this link to create your user account.
 
