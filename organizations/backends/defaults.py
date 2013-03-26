@@ -22,7 +22,8 @@ from organizations.utils import model_field_attr
 
 
 class BaseBackend(object):
-    """Base backend class for registering and inviting users to an organization
+    """
+    Base backend class for registering and inviting users to an organization
     """
 
     def __init__(self, *args, **kwargs):
@@ -46,7 +47,7 @@ class BaseBackend(object):
         return RegistrationTokenGenerator().make_token(user)
 
     def get_username(self):
-        """Returns an UUID based 'random' and unique username"""
+        """Returns a UUID based 'random' and unique username"""
         return unicode(uuid.uuid4())[:model_field_attr(self.user_model, 'username', 'max_length')]
 
     def activate_view(self, request, user_id, token):
@@ -111,7 +112,8 @@ class BaseBackend(object):
 
 
 class RegistrationBackend(BaseBackend):
-    """A backend for allowing new users to join the site by creating a new user
+    """
+    A backend for allowing new users to join the site by creating a new user
     associated with a new organization.
     """
     # NOTE this backend stands to be simplified further, as email verification
@@ -190,7 +192,8 @@ class RegistrationBackend(BaseBackend):
 
 
 class InvitationBackend(BaseBackend):
-    """A backend for inviting new users to join the site as members of an
+    """
+    A backend for inviting new users to join the site as members of an
     organization.
     """
     invitation_subject = 'organizations/email/invitation_subject.txt'
