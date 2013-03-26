@@ -35,13 +35,16 @@ Configuration
 First ensure that you have a user system in place to connect to your
 organizations. django-organizations will work just fine with the Django's
 `contrib.auth` package. To use it, make sure you have `django.contrib.auth`
-installed.
+installed. You can specify a different model in your settings using the
+`AUTH_USER_MODEL` setting `described in the docs
+<https://docs.djangoproject.com/en/1.5/ref/settings/#std:setting-AUTH_USER_MODEL>`_.
+You can use this setting to configure a custom user model or to refer to a
+profile model if your project is using Django 1.4.
 
 Add the `organizations` application to your `INSTALLED_APPS`
 list::
 
     INSTALLED_APPS = (
-        ...
         'django.contrib.auth',
         'organizations',
     )
@@ -53,17 +56,15 @@ invitation/registration system, set your backend URLs, too::
     from organizations.backends import invitation_backend
 
     urlpatterns = patterns('',
-        ...
         url(r'^accounts/', include('organizations.urls')),
         url(r'^invitations/', include(invitation_backend().get_urls())),
     )
 
-You can specify a different invitation backend in your project settings, and
-the `invitation_backend` function will provide the URLs defined by that
-backend::
+You can specify a different :ref:`invitation backend <invitation-backend>` in
+your project settings, and the `invitation_backend` function will provide the
+URLs defined by that backend::
 
     ORGS_INVITATION_BACKEND = 'myapp.backends.MyInvitationBackend'
-
 
 Users and multi-account membership
 ----------------------------------
@@ -88,13 +89,13 @@ For many projects a simple one-user-per-account model will suffice, and this
 can be handled quite ably in your own application's logic.
 
 Views and Mixins
--------------
+----------------
 
 Hooking the django-organizations URLs into your project provides a default set
 of views for accessing and updating organizations and organization membership.
 
 The included `class based views
-<https://docs.djangoproject.com/en/1.4/topics/class-based-views/>` are based on
+<https://docs.djangoproject.com/en/1.5/topics/class-based-views/>`_ are based on
 a set of mixins that allow the views to limit access by a user's relationship
 to an organization and that query the appropriate organization or user based on
 URL keywords.
@@ -104,5 +105,5 @@ Implementing in your own project
 
 While django-organizations has some basic usability 'out-of-the-box', it's
 designed to be used as a foundation for project specific functionality. The
-view mixins should provide base functionality from which to work for unique
+:ref:`view mixins <mixins>` should provide base functionality from which to work for unique
 situations.

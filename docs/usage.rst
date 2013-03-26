@@ -7,12 +7,6 @@ with minimal configuration.
 The application's default views and URL configuration provide functionality for
 account creation, user registration, and account management.
 
-Authentication
---------------
-
-django-organizations relies on `django.contrib.auth` for the `User` model and
-authentication mechanisms.
-
 Creating accounts
 -----------------
 
@@ -22,8 +16,8 @@ Creating accounts
 User registration
 -----------------
 
-Registering new users with organizations is accomplished by extensible
-invitation and registration backends.
+You can register new users and organizations through your project's own system
+or use the extensible invitation and registration backends.
 
 The default invitation backend accepts an email address and returns the user
 who either matches that email address or creates a new user with that email

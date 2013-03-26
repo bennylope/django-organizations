@@ -5,6 +5,8 @@ The use cases from which django-organizations originated included more complex
 ways of determining access to the views as well as additional relationships to
 organizations. The application is extensible with these use cases in mind.
 
+.. _custom-organization-model:
+
 Custom organization models
 --------------------------
 
@@ -36,6 +38,8 @@ the database - this type of inheritance is multi-table inheritance so there
 will be a Client table and an Organization table; the latter is what the
 OrganizationUser and OrganizationOwner tables are still linked to.
 
+.. _custom-user-model:
+
 Custom user model
 -----------------
 
@@ -54,6 +58,8 @@ or::
     If you choose a different user class make sure to pay attention to the API.
     If it differs from the `auth.User` API you will likely need to use an
     extended backend, if you are not already.
+
+.. _mixins:
 
 View mixins
 -----------
@@ -131,5 +137,5 @@ ot identify.
 
 .. note::
     The view mixins expressly allow superusers to access organization
-    resources. If this is undesired behaviour you will need to use your own
+    resources. If this is undesired behavior you will need to use your own
     mixins.
