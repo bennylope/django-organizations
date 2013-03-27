@@ -100,7 +100,7 @@ class BaseBackend(object):
         headers = {'Reply-To': reply_to}
 
         kwargs.update({'sender': sender, 'user': user})
-        ctx = Context(kwargs)
+        ctx = Context(kwargs, autoescape=False)
 
         subject_template = loader.get_template(subject_template)
         body_template = loader.get_template(body_template)
