@@ -2,23 +2,55 @@ Invitation and Registration Backends
 ====================================
 
 The purpose of the backends is to provide scaffolding for adding and managing
-users and organizations. You do not have to implement these backends to use
-django-organizations.
+users and organizations. **The scope is limited to the basics of adding new
+users and creating new organizations**.
 
-The default backends will likely suffice for simple implementations. If you
-make use of a profile model or a user model other than `auth.User` you should
-extend the releveant backends for your own project. If you've used custom URL
-names then you'll also want to extend the backends to use your own success
-URLs.
+While the default backends should suffice for basic implementations, the
+backends are designed to be easily extended for your specific project needs. If
+you make use of a profile model or a user model other than `auth.User` you
+should extend the releveant backends for your own project. If you've used
+custom URL names then you'll also want to extend the backends to use your own
+success URLs.
 
-The two default backends share a common structure as well as methods.
+You do not have to implement these backends to use django-organizations, but
+they will make user management within accounts easier.
+
+The two default backends share a common structure and interface. This includes
+methods for sending emails, generating URLs, and template references.
+
+The backend URLs will need to be configured to allow for registration and/or
+user activation. You can add these by referring to the backend's `get_urls`
+method:::
+
+    from organizations.backends import invitation_backend
+
+    urlpatterns = patterns('',
+        url(r'^invitations/', include(invitation_backend().get_urls())),
+     )
+
+.. _backend-settings:
+
+Backend Settings
+----------------
+
+.. attribute:: settings.INVITATION_BACKEND
+
+  The full dotted path to the invitation backend. Defaults to::
+
+      INVITATION_BACKEND = 'organizations.backends.defaults.InvitationBackend'
+
+.. attribute:: settings.REGISTRATION_BACKEND
+
+  The full dotted path to the regisration backend. Defaults to::
+
+      REGISTRATION_BACKEND = 'organizations.backends.defaults.RegistrationBackend'
 
 .. _registration-backend:
 
 Registration Backend
 --------------------
 
-A registration backend is used for creating new users with new organizations,
+The registration backend is used for creating new users with new organizations,
 e.g. new user sign up.
 
 Attributes
@@ -60,8 +92,10 @@ Attributes
 Invitation backend
 ------------------
 
-An invitation backend is used for adding new users to an *existing
+The invitation backend is used for adding new users to an *existing
 organization*.
+
+When 
 
 Attributes
 ~~~~~~~~~~

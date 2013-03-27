@@ -11,9 +11,9 @@ Contents:
     :maxdepth: 2
 
     getting_started
-    usage
+    basic_usage
     custom_usage
-    backends
+    reference/index
 
 
 Indices and tables
