@@ -2,6 +2,14 @@
 django-organizations
 ====================
 
+0.1.6
+-----
+
+* Extends organizaton name length
+* Increase email field max length
+* Adds `get_or_add_user` method to Organization
+* Email character escaping
+
 0.1.5
 -----
 

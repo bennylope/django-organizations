@@ -3,7 +3,7 @@ django-organizations
 ====================
 
 :Info: Groups and multi-user account management
-:Version: 0.1.5
+:Version: 0.1.6
 :Status: beta
 :Author: Ben Lopatin (http://benlopatin.com)
 
