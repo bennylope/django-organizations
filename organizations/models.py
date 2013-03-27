@@ -13,7 +13,8 @@ USER_MODEL = getattr(settings, 'AUTH_USER_MODEL', 'auth.User')
 
 
 def get_user_model():
-    """Returns the chosen user model as a class. This functionality won't be
+    """
+    Returns the chosen user model as a class. This functionality won't be
     built-in until Django 1.5.
     """
     try:
@@ -24,7 +25,8 @@ def get_user_model():
 
 
 class Organization(TimeStampedModel):
-    """The umbrella object with which users can be associated.
+    """
+    The umbrella object with which users can be associated.
 
     An organization can have multiple users but only one who can be designated
     the owner user.
@@ -54,7 +56,8 @@ class Organization(TimeStampedModel):
         return ('organization_detail', (), {'organization_pk': self.pk})
 
     def add_user(self, user, is_admin=False):
-        """Adds a new user and if the first user makes the user an admin and
+        """
+        Adds a new user and if the first user makes the user an admin and
         the owner.
         """
         users_count = self.users.all().count()
@@ -100,7 +103,8 @@ class Organization(TimeStampedModel):
 
 
 class OrganizationUser(TimeStampedModel):
-    """ManyToMany through field relating Users to Organizations.
+    """
+    ManyToMany through field relating Users to Organizations.
 
     It is possible for a User to be a member of multiple organizations, so this
     class relates the OrganizationUser to the User model using a ForeignKey
@@ -166,7 +170,8 @@ class OrganizationOwner(TimeStampedModel):
         return u"{0}: {1}".format(self.organization, self.organization_user)
 
     def save(self, *args, **kwargs):
-        """Extends the default save method by verifying that the chosen
+        """
+        Extends the default save method by verifying that the chosen
         organization user is associated with the organization.
 
         """

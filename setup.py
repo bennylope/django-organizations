@@ -6,7 +6,7 @@ setup(
     author="Ben Lopatin",
     author_email="ben.lopatin@wellfireinteractive.com",
     name='django-organizations',
-    version='0.1.6',
+    version='0.2.0',
     description='Group accounts for Django',
     long_description=open(os.path.join(os.path.dirname(__file__),
         'README.rst')).read(),

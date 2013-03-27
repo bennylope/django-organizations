@@ -126,7 +126,8 @@ class BaseOrganizationUserDelete(OrganizationUserMixin, DeleteView):
 
 
 class OrganizationSignup(FormView):
-    """View that allows unregistered users to create an organization account.
+    """
+    View that allows unregistered users to create an organization account.
 
     It simply processes the form and then calls the specified registration
     backend.

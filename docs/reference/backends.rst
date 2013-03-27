@@ -28,23 +28,6 @@ method:::
         url(r'^invitations/', include(invitation_backend().get_urls())),
      )
 
-.. _backend-settings:
-
-Backend Settings
-----------------
-
-.. attribute:: settings.INVITATION_BACKEND
-
-  The full dotted path to the invitation backend. Defaults to::
-
-      INVITATION_BACKEND = 'organizations.backends.defaults.InvitationBackend'
-
-.. attribute:: settings.REGISTRATION_BACKEND
-
-  The full dotted path to the regisration backend. Defaults to::
-
-      REGISTRATION_BACKEND = 'organizations.backends.defaults.RegistrationBackend'
-
 .. _registration-backend:
 
 Registration Backend
