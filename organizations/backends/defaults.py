@@ -1,7 +1,7 @@
 import uuid
 
 from django.conf import settings
-from django.conf.urls.defaults import patterns, url
+from django.conf.urls import patterns, url
 from django.contrib.auth import authenticate, login
 from django.core.urlresolvers import reverse
 from django.core.mail import EmailMessage
