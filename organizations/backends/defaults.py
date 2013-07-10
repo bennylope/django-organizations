@@ -48,7 +48,7 @@ class BaseBackend(object):
 
     def get_username(self):
         """Returns a UUID based 'random' and unique username"""
-        return unicode(uuid.uuid4())[:model_field_attr(self.user_model, 'username', 'max_length')]
+        return str(uuid.uuid4())[:model_field_attr(self.user_model, 'username', 'max_length')]
 
     def activate_view(self, request, user_id, token):
         """

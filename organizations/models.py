@@ -48,8 +48,8 @@ class Organization(TimeStampedModel):
         verbose_name = _("organization")
         verbose_name_plural = _("organizations")
 
-    def __unicode__(self):
-        return self.name
+    def __str__(self):
+        return u"{0}".format(self.name)
 
     @permalink
     def get_absolute_url(self):
@@ -125,8 +125,9 @@ class OrganizationUser(TimeStampedModel):
         verbose_name = _("organization user")
         verbose_name_plural = _("organization users")
 
-    def __unicode__(self):
-        return "%s (%s)" % (self.name if self.user.is_active else self.user.email, self.organization.name)
+    def __str__(self):
+        return u"{0} ({1})".format(self.name if self.user.is_active else
+                self.user.email, self.organization.name)
 
     def delete(self, using=None):
         """
@@ -166,7 +167,7 @@ class OrganizationOwner(TimeStampedModel):
         verbose_name = _("organization owner")
         verbose_name_plural = _("organization owners")
 
-    def __unicode__(self):
+    def __str__(self):
         return u"{0}: {1}".format(self.organization, self.organization_user)
 
     def save(self, *args, **kwargs):
