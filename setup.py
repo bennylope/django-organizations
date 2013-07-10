@@ -10,7 +10,7 @@ setup(
     description='Group accounts for Django',
     long_description=open(os.path.join(os.path.dirname(__file__),
         'README.rst')).read(),
-    url='https://github.com/bennylope/django-organizations/',
+    url='https://github.com/wellfire/django-organizations/',
     license='BSD License',
     platforms=['OS Independent'],
     classifiers=[
