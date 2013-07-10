@@ -4,10 +4,11 @@ python:
   - "2.7"
   - "3.3"
 env:
-  - DJANGO_VERSION=1.4.5
-  - DJANGO_VERSION=1.5
+  - DJANGO_INSTALL="Django==1.4.5"
+  - DJANGO_INSTALL="Django==1.5.1"
+  - DJANGO_INSTALL="-e git+https://github.com/django/django.git@stable/1.6.x#egg=Django"
 install:
-  - pip install -q Django==$DJANGO_VERSION
+  - pip install -q $DJANGO_INSTALL
   - python setup.py -q install
 script:  ./runtests.sh
 matrix:
