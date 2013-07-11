@@ -11,8 +11,12 @@ django-organizations
     :alt: Build Status
     :target: http://travis-ci.org/wellfire/django-organizations
 
-.. image:: https://pypip.in/d/django-organizations/badge.png
+.. image:: https://pypip.in/v/django-organizations/badge.png
     :alt: Current PyPI release
+    :target: https://crate.io/packages/django-organizations
+
+.. image:: https://pypip.in/d/django-organizations/badge.png
+    :alt: Download count
     :target: https://crate.io/packages/django-organizations
 
 Add user-managed, multi-user groups to your Django project. Use
