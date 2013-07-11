@@ -153,9 +153,11 @@ requests/suggestions.
 Targets
 -------
 
-Django 1.4+
+The codebase is targeted at tested against:
 
-Python 2.6+
+* Django 1.4.x against Python 2.6 and Python 2.7
+* Django 1.5.x against Python 2.6, Python 2.7, and Python 3.3
+* Django 1.6.x (beta) against Python 2.7 and Python 3.3
 
 Submitting
 ----------
@@ -173,6 +175,9 @@ reviewed and make it into the project:
 * Pull requests should include a quantity amount of code and commits that are
   reasonable to review, are logically grouped, and based off clean feature
   branches.
+
+Code contributions are expected to pass in all three target environments, and
+pull requests should be made from branches with passing builds.
 
 Project goals
 -------------
