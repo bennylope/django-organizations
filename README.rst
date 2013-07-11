@@ -7,6 +7,14 @@ django-organizations
 :Status: beta
 :Author: Ben Lopatin (http://benlopatin.com)
 
+.. image:: https://secure.travis-ci.org/wellfire/django-organizations.png?branch=master
+    :alt: Build Status
+    :target: http://travis-ci.org/wellfire/django-organizations
+
+.. image:: https://pypip.in/d/django-organizations/badge.png
+    :alt: Current PyPI release
+    :target: https://crate.io/packages/django-organizations
+
 Add user-managed, multi-user groups to your Django project. Use
 django-organizations whether your site needs organizations that function like
 social groups or multi-user account objects to provide account and subscription
