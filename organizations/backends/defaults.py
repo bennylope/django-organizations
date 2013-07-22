@@ -96,10 +96,9 @@ class BaseBackend(object):
                     sender.email)
         else:
             from_email = settings.DEFAULT_FROM_EMAIL
-            reply_to = ''
+            reply_to = from_email
 
         headers = {'Reply-To': reply_to}
-
         kwargs.update({'sender': sender, 'user': user})
         ctx = Context(kwargs, autoescape=False)
 
@@ -108,7 +107,7 @@ class BaseBackend(object):
         subject = subject_template.render(ctx).strip() # Remove stray newline characters
         body = body_template.render(ctx)
         return EmailMessage(subject, body, from_email, [user.email],
-                headers).send()
+                headers=headers).send()
 
 
 class RegistrationBackend(BaseBackend):

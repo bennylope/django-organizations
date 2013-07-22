@@ -2,6 +2,11 @@
 django-organizations
 ====================
 
+0.1.8
+-----
+
+* Fixes *another* bug in email invitations
+
 0.1.7
 -----
 
