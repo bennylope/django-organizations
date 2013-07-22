@@ -96,7 +96,7 @@ class BaseBackend(object):
                     sender.email)
         else:
             from_email = settings.DEFAULT_FROM_EMAIL
-            reply_to = {}
+            reply_to = ''
 
         headers = {'Reply-To': reply_to}
 
