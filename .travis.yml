@@ -6,7 +6,7 @@ python:
 env:
   - DJANGO_INSTALL="Django==1.4.5"
   - DJANGO_INSTALL="Django==1.5.1"
-  - DJANGO_INSTALL="-e git+https://github.com/django/django.git@stable/1.6.x#egg=Django"
+  - DJANGO_INSTALL="-e git+https://github.com/django/django.git@1.6b2#egg=Django"
 install:
   - pip install -q $DJANGO_INSTALL
   - python setup.py -q install
