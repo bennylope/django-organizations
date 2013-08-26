@@ -107,7 +107,7 @@ The underlying organizations API is simple::
 
     >>> chris = User.objects.get(username="chris")
     >>> soundgarden = create_organization(chris, "Soundgarden")
-    >>> soundgarden.is_user(chris)
+    >>> soundgarden.is_member(chris)
     True
     >>> soundgarden.is_admin(chris)
     True
