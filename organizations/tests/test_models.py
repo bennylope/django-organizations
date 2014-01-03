@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from django.test import TestCase
 from django.test.utils import override_settings
 from django.contrib.auth.models import User
@@ -34,6 +36,13 @@ class OrgModelTests(TestCase):
         self.duder = User.objects.get(username="duder")
         self.nirvana = Organization.objects.get(name="Nirvana")
         self.foo = Organization.objects.get(name="Foo Fighters")
+
+    def test_org_string_representation(self):
+        """Ensure that models' string representation are error free"""
+        self.foo.name = u"Föö Fíghterß"
+        self.assertTrue("{0}".format(self.foo))
+        self.assertTrue("{0}".format(self.foo.owner))
+        self.assertTrue("{0}".format(self.foo.owner.organization_user))
 
     def test_duplicate_members(self):
         """Ensure that a User can only have one OrganizationUser object"""
