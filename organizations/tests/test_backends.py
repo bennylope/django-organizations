@@ -48,13 +48,13 @@ class InvitationTests(TestCase):
     def test_create_existing_user(self):
         invited = InvitationBackend().invite_by_email(self.user.email)
         self.assertEqual(self.user, invited)
-        self.assertEqual(0, len(mail.outbox)) # User is active
+        self.assertEqual(0, len(mail.outbox))  # User is active
 
     def test_send_reminder(self):
         InvitationBackend().send_reminder(self.pending_user)
         self.assertEqual(1, len(mail.outbox))
         InvitationBackend().send_reminder(self.user)
-        self.assertEqual(1, len(mail.outbox)) # User is active
+        self.assertEqual(1, len(mail.outbox))  # User is active
         mail.outbox = []
 
     def test_urls(self):
@@ -115,13 +115,13 @@ class RegistrationTests(TestCase):
     def test_create_existing_user(self):
         registered = RegistrationBackend().register_by_email(self.user.email)
         self.assertEqual(self.user, registered)
-        self.assertEqual(0, len(mail.outbox)) # User is active
+        self.assertEqual(0, len(mail.outbox))  # User is active
 
     def test_send_reminder(self):
         RegistrationBackend().send_reminder(self.pending_user)
         self.assertEqual(1, len(mail.outbox))
         RegistrationBackend().send_reminder(self.user)
-        self.assertEqual(1, len(mail.outbox)) # User is active
+        self.assertEqual(1, len(mail.outbox))  # User is active
         mail.outbox = []
 
     def test_urls(self):

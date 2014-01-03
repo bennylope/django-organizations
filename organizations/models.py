@@ -20,7 +20,8 @@ def get_user_model():
     try:
         klass = get_model(USER_MODEL.split('.')[0], USER_MODEL.split('.')[1])
     except:
-        raise ImproperlyConfigured("Your user class, {0}, is improperly defined".format(klass_string))
+        raise ImproperlyConfigured("Your user class, {0},"
+                " is improperly defined".format(USER_MODEL))
     return klass
 
 
@@ -139,7 +140,8 @@ class OrganizationUser(TimeStampedModel):
         from organizations.exceptions import OwnershipRequired
         try:
             if self.organization.owner.organization_user.id == self.id:
-                raise OwnershipRequired(_("Cannot delete organization owner before organization or transferring ownership."))
+                raise OwnershipRequired(_("Cannot delete organization owner "
+                    "before organization or transferring ownership."))
         except OrganizationOwner.DoesNotExist:
             pass
         super(OrganizationUser, self).delete(using=using)

@@ -104,7 +104,7 @@ class BaseBackend(object):
 
         subject_template = loader.get_template(subject_template)
         body_template = loader.get_template(body_template)
-        subject = subject_template.render(ctx).strip() # Remove stray newline characters
+        subject = subject_template.render(ctx).strip()  # Remove stray newline characters
         body = body_template.render(ctx)
         return EmailMessage(subject, body, from_email, [user.email],
                 headers=headers).send()
@@ -133,7 +133,7 @@ class RegistrationBackend(BaseBackend):
             url(r'^(?P<user_id>[\d]+)-(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
                 view=self.activate_view, name="registration_register"),
             url(r'^$', view=self.create_view, name="registration_create"),
-            )
+        )
 
     def register_by_email(self, email, sender=None, request=None, **kwargs):
         """
@@ -208,7 +208,7 @@ class InvitationBackend(BaseBackend):
         return patterns('',
             url(r'^(?P<user_id>[\d]+)-(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
                 view=self.activate_view, name="invitations_register"),
-            )
+        )
 
     def invite_by_email(self, email, sender=None, request=None, **kwargs):
         """Creates an inactive user with the information we know and then sends

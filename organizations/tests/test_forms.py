@@ -65,4 +65,3 @@ class OrgFormTests(TestCase):
                 data={'is_admin': True})
         self.assertTrue(form.is_valid())
         form.save()
-

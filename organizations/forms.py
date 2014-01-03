@@ -86,7 +86,8 @@ class OrganizationUserAddForm(forms.ModelForm):
     def clean_email(self):
         email = self.cleaned_data['email']
         if self.organization.users.filter(email=email):
-            raise forms.ValidationError(_("There is already an organization member with this email address!"))
+            raise forms.ValidationError(_("There is already an organization "
+                                          "member with this email address!"))
         return email
 
 

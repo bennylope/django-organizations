@@ -104,7 +104,7 @@ class BaseOrganizationUserRemind(OrganizationUserMixin, DetailView):
     def get_object(self, **kwargs):
         self.organization_user = super(BaseOrganizationUserRemind, self).get_object()
         if self.organization_user.user.is_active:
-            raise Http404(_("Already active")) # TODO add better error
+            raise Http404(_("Already active"))  # TODO add better error
         return self.organization_user
 
     def post(self, request, *args, **kwargs):
@@ -207,4 +207,3 @@ class OrganizationUserRemind(AdminRequiredMixin, BaseOrganizationUserRemind):
 
 class OrganizationUserDelete(AdminRequiredMixin, BaseOrganizationUserDelete):
     pass
-

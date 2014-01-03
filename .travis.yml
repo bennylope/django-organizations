@@ -9,6 +9,7 @@ env:
   - TOX_ENV=py26-django16
   - TOX_ENV=py26-django15
   - TOX_ENV=py26-django14
+  - TOX_ENV=flake8
 install:
   - pip install tox
 script:

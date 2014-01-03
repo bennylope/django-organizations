@@ -104,8 +104,7 @@ class BaseViewTests(TestCase):
     def test_signup(self):
         """Ensure logged in users are redirected"""
         self.assertEqual(302,
-                OrganizationSignup(request=self.kurt_request).dispatch(
+            OrganizationSignup(request=self.kurt_request).dispatch(
                 self.kurt_request).status_code)
         self.assertEqual(200,
-                OrganizationSignup(request=self.anon_request).dispatch(
-                self.anon_request).status_code)
+            OrganizationSignup(request=self.anon_request).dispatch(self.anon_request).status_code)

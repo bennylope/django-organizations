@@ -8,7 +8,6 @@ from organizations.models import Organization, OrganizationUser
 from organizations.tests.utils import request_factory_login
 from organizations.mixins import (OrganizationMixin, OrganizationUserMixin,
         MembershipRequiredMixin, AdminRequiredMixin, OwnerRequiredMixin)
-from django.conf.locale import tr
 
 
 class ViewStub(object):
@@ -57,6 +56,7 @@ class ObjectMixinTests(TestCase):
         self.assertEqual(Organization, OrganizationUserMixin().get_org_model())
         self.assertEqual(OrganizationUser,
                 OrganizationUserMixin().get_user_model())
+
 
 @override_settings(USE_TZ=True)
 class AccessMixinTests(TestCase):
@@ -113,5 +113,3 @@ class AccessMixinTests(TestCase):
             organization_pk=self.nirvana.pk).status_code)
         self.assertEqual(403, OwnerView().dispatch(self.dummy_request,
             organization_pk=self.nirvana.pk).status_code)
-
-
