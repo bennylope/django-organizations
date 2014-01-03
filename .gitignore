@@ -4,3 +4,4 @@ dist/
 *.egg-info
 docs/_build
 *.sqlite
+.tox
