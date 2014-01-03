@@ -145,7 +145,6 @@ for me and contributors should include:
 * Documentation
 * Ensuring all application text is translatable
 * Python 3 readiness
-* Configurable user model (a la Django 1.5's anticipated auth.User rewrite)
 
 Please use the project's issues tracker to report bugs, doc updates, or other
 requests/suggestions.
@@ -183,12 +182,13 @@ reviewed and make it into the project:
   direction
 * Also please try to include `good commit log messages
   <http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html>`_.
-* Pull requests should include a quantity amount of code and commits that are
-  reasonable to review, are logically grouped, and based off clean feature
+* Pull requests should include an amount of code and commits that are
+  reasonable to review, are **logically grouped**, and based off clean feature
   branches.
 
-Code contributions are expected to pass in all three target environments, and
-pull requests should be made from branches with passing builds.
+Code contributions are expected to pass in all target environments, and
+pull requests should be made from branches with passing builds on `Travis
+CI.<https://travis-ci.org/wellfire/django-organizations>`_
 
 Project goals
 -------------
