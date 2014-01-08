@@ -17,6 +17,11 @@ The core of the application consists of these three models:
   model. This allows users to own multiple organizations and makes it
   easy to enforce ownership from within the organization's membership.
 
+.. note::
+    If you want to use highly customized organization models it may be best to
+    treat Django organizations as a library and not install it in your Django
+    project.
+
 Installation
 ------------
 
