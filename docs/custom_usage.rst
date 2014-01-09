@@ -128,7 +128,7 @@ verbosity::
             context.update(provider=self.service_provider)
             return context
 
-While this isn't recommended in your own proejct, the mixins in
+While this isn't recommended in your own project, the mixins in
 django-organizations itself will err on the side of depending on composition
 rather than inheritence from other mixins. This may require defining a mixin in
 your own project that combines them for simplicity in your own views, but it
