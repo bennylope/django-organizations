@@ -101,7 +101,7 @@ is a mixin for applying the `login_required` decorator. You can write your own
 
 It would also have been possible to define the `ServiceProvidersOnly` without
 inheriting from a base class, and then defining all of the mixins in the view
-class definition. This has the benefit of explitness at the expense of
+class definition. This has the benefit of explicitness at the expense of
 verbosity::
 
     class ServiceProvidersOnly(object):
