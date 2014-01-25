@@ -22,12 +22,15 @@ setup(
     author="Ben Lopatin",
     author_email="ben@wellfire.co",
     name='django-organizations',
-    version='0.1.9',
+    version='0.1.10',
     description='Group accounts for Django',
     long_description=readme + '\n\n' + history,
     url='https://github.com/wellfire/django-organizations/',
     license='BSD License',
     platforms=['OS Independent'],
+    packages=[
+        'organizations',
+    ],
     classifiers=[
         'Development Status :: 4 - Beta',
         'Environment :: Web Environment',
