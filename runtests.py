@@ -20,6 +20,7 @@ try:
         ],
         SITE_ID=1,
         NOSE_ARGS=['-s'],
+        FIXTURE_DIRS=['tests/fixtures']
     )
 
     from django_nose import NoseTestSuiteRunner
