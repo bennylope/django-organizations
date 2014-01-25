@@ -1,15 +1,30 @@
-from setuptools import setup, find_packages
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 import os
+import sys
+
+
+try:
+    from setuptools import setup
+except ImportError:
+    from distutils.core import setup
+
+if sys.argv[-1] == 'publish':
+    os.system('python setup.py sdist upload')
+    sys.exit()
+
+readme = open('README.rst').read()
+history = open('HISTORY.rst').read().replace('.. :changelog:', '')
 
 
 setup(
     author="Ben Lopatin",
-    author_email="ben.lopatin@wellfireinteractive.com",
+    author_email="ben@wellfire.co",
     name='django-organizations',
     version='0.1.9',
     description='Group accounts for Django',
-    long_description=open(os.path.join(os.path.dirname(__file__),
-        'README.rst')).read(),
+    long_description=readme + '\n\n' + history,
     url='https://github.com/wellfire/django-organizations/',
     license='BSD License',
     platforms=['OS Independent'],
@@ -26,8 +41,7 @@ setup(
         'Django>=1.4',
         'django-extensions>=0.9',
     ],
-    #test_suite='tests.runtests.runtests',
+    test_suite='tests',
     include_package_data=True,
-    packages=find_packages(exclude=["tests.tests", "tests.test_app", "tests"]),
-    zip_safe=False
+    zip_safe=False,
 )
