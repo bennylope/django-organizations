@@ -6,7 +6,8 @@ History
 0.1.9
 +++++
 
-* Restructures tests to remove from installed module
+* Restructures tests to remove from installed module, should reduce installed
+  package size
 
 0.1.8
 +++++
