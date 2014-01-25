@@ -182,7 +182,7 @@ reviewed and make it into the project:
 
 Code contributions are expected to pass in all target environments, and
 pull requests should be made from branches with passing builds on `Travis
-CI.<https://travis-ci.org/wellfire/django-organizations>`_
+CI <https://travis-ci.org/wellfire/django-organizations>`_.
 
 Project goals
 -------------
