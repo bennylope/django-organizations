@@ -5,9 +5,9 @@ from django.test.client import RequestFactory
 from django.test.utils import override_settings
 
 from organizations.models import Organization, OrganizationUser
-from organizations.tests.utils import request_factory_login
 from organizations.mixins import (OrganizationMixin, OrganizationUserMixin,
         MembershipRequiredMixin, AdminRequiredMixin, OwnerRequiredMixin)
+from .utils import request_factory_login
 
 
 class ViewStub(object):

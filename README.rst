@@ -158,16 +158,10 @@ The codebase is targeted at tested against:
 * Django 1.5.x against Python 2.6, Python 2.7, and Python 3.3
 * Django 1.6.x against Python 2.7 and Python 3.3
 
-You can run the tests from the example project using the simple wrapper script:
-
-    ./runtests.sh
-
-To run tests against all target environments, install `tox
+To run the tests against all target environments, install `tox
 <https://testrun.org/tox/latest/>`_ and then execute the command:
 
     tox
-
-Yes, that's it.
 
 Submitting
 ----------

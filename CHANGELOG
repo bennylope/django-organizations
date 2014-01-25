@@ -2,6 +2,11 @@
 django-organizations
 ====================
 
+0.1.9
+-----
+
+* Restructures tests to remove from installed module
+
 0.1.8
 -----
 

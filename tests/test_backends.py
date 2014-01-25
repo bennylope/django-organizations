@@ -6,10 +6,10 @@ from django.test import TestCase
 from django.test.client import RequestFactory
 from django.test.utils import override_settings
 
-from organizations.tests.utils import request_factory_login
 from organizations.backends.defaults import (BaseBackend, InvitationBackend,
         RegistrationBackend)
 from organizations.backends.tokens import RegistrationTokenGenerator
+from .utils import request_factory_login
 
 
 @override_settings(USE_TZ=True)

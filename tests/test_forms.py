@@ -4,7 +4,7 @@ from django.test.utils import override_settings
 
 from organizations.forms import OrganizationForm, OrganizationUserForm
 from organizations.models import Organization
-from organizations.tests.utils import request_factory_login
+from .utils import request_factory_login
 
 
 @override_settings(USE_TZ=True)
