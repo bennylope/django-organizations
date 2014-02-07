@@ -6,4 +6,5 @@ Contributors:
 
 * `Sebastian Annies <https://github.com/sannies>`_
 * `Paul Backhouse <https://github.com/powlo>`_
-* `Phil McMahon <https://github.com/philmcmahon`_
+* `Phil McMahon <https://github.com/philmcmahon>`_
+* `Aaron Krill <https://github.com/krillr>`_
