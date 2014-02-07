@@ -42,7 +42,7 @@ class Migration(SchemaMigration):
             'name': ('django.db.models.fields.CharField', [], {'max_length': '50'})
         },
         '{model}'.format(model=AUTH_USER_MODEL.lower()): {
-            'Meta': {'object_name': 'User'},
+            'Meta': {'object_name': AUTH_USER_MODEL.rsplit(".",1)[1]},
             'date_joined': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
             'email': ('django.db.models.fields.EmailField', [], {'max_length': '75', 'blank': 'True'}),
             'first_name': ('django.db.models.fields.CharField', [], {'max_length': '30', 'blank': 'True'}),
