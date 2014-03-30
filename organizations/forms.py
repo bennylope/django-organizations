@@ -105,7 +105,7 @@ class OrganizationAddForm(forms.ModelForm):
 
     class Meta:
         model = Organization
-        exclude = ('users', 'is_active')
+        exclude = ('users', 'slug', 'is_active')
 
     def save(self, **kwargs):
         """
@@ -122,7 +122,7 @@ class OrganizationAddForm(forms.ModelForm):
                         'sender': self.request.user, 'created': True})
             is_active = False
         return create_organization(user, self.cleaned_data['name'],
-                self.cleaned_data['slug'], is_active=is_active)
+                is_active=is_active)
 
 
 class SignUpForm(forms.Form):
@@ -131,6 +131,4 @@ class SignUpForm(forms.Form):
     """
     name = forms.CharField(max_length=50,
             help_text=_("The name of the organization"))
-    slug = forms.SlugField(max_length=50,
-            help_text=_("The name in all lowercase, suitable for URL identification"))
     email = forms.EmailField()
