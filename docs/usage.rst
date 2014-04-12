@@ -1,4 +1,4 @@
-Basic Usage
+Basic usage
 ===========
 
 After installing django-organizations you can make basic use of the accounts

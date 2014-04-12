@@ -1,3 +1,4 @@
+====================================
 Invitation and Registration Backends
 ====================================
 
@@ -31,13 +32,13 @@ method:::
 .. _registration-backend:
 
 Registration Backend
---------------------
+====================
 
 The registration backend is used for creating new users with new organizations,
 e.g. new user sign up.
 
 Attributes
-~~~~~~~~~~
+----------
 
 .. attribute:: RegistrationBackend.activation_subject
 
@@ -73,15 +74,13 @@ Attributes
 .. _invitation-backend:
 
 Invitation backend
-------------------
+==================
 
 The invitation backend is used for adding new users to an *existing
 organization*.
 
-When 
-
 Attributes
-~~~~~~~~~~
+----------
 
 .. attribute:: InvitationBackend.invitation_subject
 
@@ -115,7 +114,7 @@ Attributes
       form_class = UserRegistrationForm
 
 Methods
-~~~~~~~
+-------
 
 The primary methods of interest are the `invite_by_email` method and the
 `get_success_url` method.

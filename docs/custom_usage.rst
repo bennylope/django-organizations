@@ -1,5 +1,6 @@
-Customizing usage
-=================
+==============================
+Customizing your organizations
+==============================
 
 The use cases from which django-organizations originated included more complex
 ways of determining access to the views as well as additional relationships to
@@ -8,7 +9,7 @@ organizations. The application is extensible with these use cases in mind.
 .. _custom-organization-model:
 
 Custom organization models
---------------------------
+==========================
 
 Let's say you had an Account model in your app, which defined a group account
 to which multiple users could belong, and also had its own logo, a foreign key
@@ -41,7 +42,7 @@ OrganizationUser and OrganizationOwner tables are still linked to.
 .. _custom-user-model:
 
 Custom user model
------------------
+=================
 
 By default django-organizations will map User objects from django's
 `contrib.auth` application to an Organization. However you can change this by
@@ -59,10 +60,14 @@ or::
     If it differs from the `auth.User` API you will likely need to use an
     extended backend, if you are not already.
 
+This is worth noting here because Django Organizations is compatible with
+different user models in Django 1.4, which preceds the official swappable users
+feature in Django 1.4.
+
 .. _mixins:
 
 View mixins
------------
+===========
 
 Common use cases for extending the views include updating context variable
 names, adding project specific functionality, or updating access controls based
@@ -139,3 +144,67 @@ ot identify.
     The view mixins expressly allow superusers to access organization
     resources. If this is undesired behavior you will need to use your own
     mixins.
+
+
+User registration and invitations
+=================================
+
+User registration and invitation plays an important role in how you will actually use
+Django Organizations, but it is a relatively minor aspect of the app. The default backends
+for both registration and invitation try to provide as little functionality to
+accomplish the task for most scenarios. These can be extended and customized in
+your own project provided that you expose a few consistent interfaces.
+
+Creating the backend
+--------------------
+
+Here we'll create a slightly modified invitation backend. The default backend
+presumes that your user model has a `username` attribute. If you're simply
+using the email address as your user identifier with a custom user model, this
+field might be missing.
+
+The default `invite_by_email` method - which is part of
+the exposed interface - sends an invitation to the user based on the email
+address, and creates an inactive user account if there is no matching user. It
+satisfies the `auth.User` username's not null condition by filling the field
+with the contents of a freshly generated UUID.
+
+In the example accounts app you would create a file named `backends.py`.::
+
+    from organizations.backends.defaults import InvitationBackend
+
+
+    class CustomInvitations(InvitationBackend):
+        def invite_by_email(self, email, sender=None, request=None, **kwargs):
+          try:
+              user = self.user_model.objects.get(email=email)
+          except self.user_model.DoesNotExist:
+              user = self.user_model.objects.create(email=email,
+                      password=self.user_model.objects.make_random_password())
+              user.is_active = False
+              user.save()
+          self.send_invitation(user, sender, **kwargs)
+          return user
+
+
+This removes the username from the `create` method.
+
+Configuring the backend
+-----------------------
+
+In your settings file you will need to specify that your backend should be
+used::
+
+    INVITATION_BACKEND = 'accounts.backends.CustomInvitations'
+
+Your URLs can be configured as normal::
+
+    from organizations.backends import invitation_backend
+
+    urlpatterns = patterns('',
+        ...
+        url(r'^invite/', include(invitation_backend().get_urls())),
+    )
+
+The `invitation_backend` function simply returns the URL patterns from the
+`get_urls` method of the specified backend.
