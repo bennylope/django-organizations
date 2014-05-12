@@ -62,9 +62,7 @@ class Organization(OrganizationBase, TimeStampedModel):
                     organization_user=org_user)
         return org_user
 
-    # TODO make `is_admin` part of a kwargs splat so that any other defaults
-    # can be provided for other users. Then this method can be simply extended.
-    def get_or_add_user(self, user, is_admin=False):
+    def get_or_add_user(self, user, **kwargs):
         """
         Adds a new user to the organization, and if it's the first user makes
         the user an admin and the owner. Uses the `get_or_create` method to
@@ -76,6 +74,7 @@ class Organization(OrganizationBase, TimeStampedModel):
         `OrganizationUser` and a boolean value indicating whether the
         OrganizationUser was created or not.
         """
+        is_admin = kwargs.pop('is_admin', False)
         users_count = self.users.all().count()
         if users_count == 0:
             is_admin = True
