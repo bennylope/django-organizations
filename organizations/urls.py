@@ -1,7 +1,7 @@
 from django.conf.urls import patterns, url
 from django.contrib.auth.decorators import login_required
 
-from organizations.views import (OrganizationList, OrganizationDetail,
+from .views import (OrganizationList, OrganizationDetail,
         OrganizationUpdate, OrganizationDelete, OrganizationCreate,
         OrganizationUserList, OrganizationUserDetail, OrganizationUserUpdate,
         OrganizationUserCreate, OrganizationUserRemind, OrganizationUserDelete)

@@ -1,4 +1,4 @@
-from organizations.models import (Organization, OrganizationUser,
+from .models import (Organization, OrganizationUser,
         OrganizationOwner)
 
 
@@ -11,7 +11,7 @@ def create_organization(user, name, slug, is_active=True,
     The specific models can be specified if a custom organization app is used.
     The simplest way would be to use a partial.
 
-    >>> from organizations.utils import create_organization
+    >>> from .utils import create_organization
     >>> from myapp.models import Account, AccountUser
     >>> from functools import partial
     >>> create_account = partial(create_organization,

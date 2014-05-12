@@ -2,7 +2,7 @@ from django.http import HttpResponseForbidden
 from django.shortcuts import get_object_or_404
 from django.utils.translation import ugettext_lazy as _
 
-from organizations.models import Organization, OrganizationUser
+from .models import Organization, OrganizationUser
 
 
 class OrganizationMixin(object):

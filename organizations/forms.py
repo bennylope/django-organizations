@@ -2,9 +2,9 @@ from django import forms
 from django.contrib.sites.models import get_current_site
 from django.utils.translation import ugettext_lazy as _
 
-from organizations.models import Organization, OrganizationUser, get_user_model
-from organizations.utils import create_organization
-from organizations.backends import invitation_backend
+from .models import Organization, OrganizationUser, get_user_model
+from .utils import create_organization
+from .backends import invitation_backend
 
 
 class OrganizationForm(forms.ModelForm):

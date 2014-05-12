@@ -6,13 +6,13 @@ from django.utils.translation import ugettext as _
 from django.views.generic import (ListView, DetailView, UpdateView, CreateView,
         DeleteView, FormView)
 
-from organizations.models import Organization
-from organizations.mixins import (OrganizationMixin, OrganizationUserMixin,
-        MembershipRequiredMixin, AdminRequiredMixin, OwnerRequiredMixin)
-from organizations.forms import (OrganizationForm, OrganizationUserForm,
+from .backends import invitation_backend, registration_backend
+from .forms import (OrganizationForm, OrganizationUserForm,
         OrganizationUserAddForm, OrganizationAddForm, SignUpForm)
-from organizations.utils import create_organization
-from organizations.backends import invitation_backend, registration_backend
+from .mixins import (OrganizationMixin, OrganizationUserMixin,
+        MembershipRequiredMixin, AdminRequiredMixin, OwnerRequiredMixin)
+from .models import Organization
+from .utils import create_organization
 
 
 class BaseOrganizationList(ListView):

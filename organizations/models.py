@@ -6,9 +6,9 @@ from django.utils.translation import ugettext_lazy as _
 
 from django_extensions.db.fields import AutoSlugField
 from django_extensions.db.models import TimeStampedModel
-from organizations.managers import OrgManager, ActiveOrgManager
 
 from .base import OrganizationBase, OrganizationUserBase, OrganizationOwnerBase
+from .managers import OrgManager, ActiveOrgManager
 
 USER_MODEL = getattr(settings, 'AUTH_USER_MODEL', 'auth.User')
 
