@@ -10,12 +10,12 @@ from django.shortcuts import render, redirect
 from django.template import Context, loader
 from django.utils.translation import ugettext as _
 
-from organizations.backends.tokens import RegistrationTokenGenerator
-from organizations.backends.forms import (UserRegistrationForm,
+from ..models import get_user_model
+from ..utils import create_organization
+from ..utils import model_field_attr
+from .tokens import RegistrationTokenGenerator
+from .forms import (UserRegistrationForm,
         OrganizationRegistrationForm)
-from organizations.models import get_user_model
-from organizations.utils import create_organization
-from organizations.utils import model_field_attr
 
 
 # Backend classes should provide common interface

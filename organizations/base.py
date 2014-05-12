@@ -6,7 +6,7 @@ from django.db.models import get_model
 from django.db.models.base import ModelBase
 from django.utils.translation import ugettext_lazy as _
 
-from organizations.managers import OrgManager, ActiveOrgManager
+from .managers import OrgManager, ActiveOrgManager
 
 USER_MODEL = getattr(settings, 'AUTH_USER_MODEL', 'auth.User')
 
@@ -48,39 +48,52 @@ class OrgMeta(ModelBase):
                 cls.OrgOwnerModel = model
 
         if all([cls.OrgModel, cls.OrgUserModel, cls.OrgOwnerModel]):
-            # Organization
-            try:
-                cls.OrgModel._meta.get_field("users")
-            except FieldDoesNotExist:
-                cls.OrgModel.add_to_class("users",
-                    models.ManyToManyField(USER_MODEL, through=cls.OrgUserModel.__name__))
+            model.update_org()
+            model.update_org_users()
+            model.update_org_owner()
 
-            # OrganizationUser
-            try:
-                cls.OrgUserModel._meta.get_field("user")
-            except FieldDoesNotExist:
-                cls.OrgUserModel.add_to_class("user",
-                    models.ForeignKey(USER_MODEL, related_name="organization_users"))  # TODO add dynamic related name
-            try:
-                cls.OrgUserModel._meta.get_field("organization")
-            except FieldDoesNotExist:
-                cls.OrgUserModel.add_to_class("organization",
-                    models.ForeignKey(cls.OrgModel, related_name="organization_users"))  # TODO add dynamic related name
-
-            # OrganizationOwner
-            try:
-                cls.OrgOwnerModel._meta.get_field("organization_user")
-            except FieldDoesNotExist:
-                cls.OrgOwnerModel.add_to_class("organization_user",
-                    models.OneToOneField(cls.OrgUserModel))  # TODO add dynamic related name
-            try:
-                cls.OrgOwnerModel._meta.get_field("organization")
-            except FieldDoesNotExist:
-                cls.OrgOwnerModel.add_to_class("organization",
-                    models.OneToOneField(cls.OrgModel, related_name="owner"))  # TODO add dynamic related name
-
-            # TODO add managers
         return model
+
+    def update_org(cls):
+        """
+        Adds the `users` field to the organization model
+        """
+        try:
+            cls.OrgModel._meta.get_field("users")
+        except FieldDoesNotExist:
+            cls.OrgModel.add_to_class("users",
+                models.ManyToManyField(USER_MODEL, through=cls.OrgUserModel.__name__))
+
+    def update_org_users(cls):
+        """
+        Adds the `user` field to the organization user model and the link to
+        the specific organization model.
+        """
+        try:
+            cls.OrgUserModel._meta.get_field("user")
+        except FieldDoesNotExist:
+            cls.OrgUserModel.add_to_class("user",
+                models.ForeignKey(USER_MODEL, related_name="organization_users"))
+        try:
+            cls.OrgUserModel._meta.get_field("organization")
+        except FieldDoesNotExist:
+            cls.OrgUserModel.add_to_class("organization",
+                models.ForeignKey(cls.OrgModel, related_name="organization_users"))
+
+    def update_org_owner(cls):
+        """
+        Creates the links to the organization and organization user for the owner.
+        """
+        try:
+            cls.OrgOwnerModel._meta.get_field("organization_user")
+        except FieldDoesNotExist:
+            cls.OrgOwnerModel.add_to_class("organization_user",
+                models.OneToOneField(cls.OrgUserModel))
+        try:
+            cls.OrgOwnerModel._meta.get_field("organization")
+        except FieldDoesNotExist:
+            cls.OrgOwnerModel.add_to_class("organization",
+                models.OneToOneField(cls.OrgModel, related_name="owner"))
 
 
 class OrganizationBase(models.Model):
