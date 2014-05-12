@@ -62,7 +62,8 @@ class OrgMeta(ModelBase):
             cls.OrgModel._meta.get_field("users")
         except FieldDoesNotExist:
             cls.OrgModel.add_to_class("users",
-                models.ManyToManyField(USER_MODEL, through=cls.OrgUserModel.__name__))
+                models.ManyToManyField(USER_MODEL, through=cls.OrgUserModel.__name__,
+                                      related_name="%(app_label)s_%(class)s"))
 
     def update_org_users(cls):
         """
@@ -73,7 +74,7 @@ class OrgMeta(ModelBase):
             cls.OrgUserModel._meta.get_field("user")
         except FieldDoesNotExist:
             cls.OrgUserModel.add_to_class("user",
-                models.ForeignKey(USER_MODEL, related_name="organization_users"))
+                models.ForeignKey(USER_MODEL, related_name="%(app_label)s_%(class)s"))
         try:
             cls.OrgUserModel._meta.get_field("organization")
         except FieldDoesNotExist:

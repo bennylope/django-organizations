@@ -134,6 +134,7 @@ INSTALLED_APPS = (
     'django.contrib.admindocs',
     #'organizations',
     'accounts',
+    'vendors',
 )
 
 
