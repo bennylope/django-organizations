@@ -144,7 +144,7 @@ class OrganizationUserBase(models.Model):
         abstract = True
 
     def __unicode__(self):
-        return u"{0} ({1})".format(self.name if self.user.is_active else
+        return u"{0} ({1})".format(self.user.get_full_name() if self.user.is_active else
                 self.user.email, self.organization.name)
 
 
