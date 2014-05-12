@@ -32,69 +32,84 @@ class OrgMeta(ModelBase):
     multitable inheritence and also add additional attributes to the
     organization users, in particular.
 
+    The `module_registry` dictionary is used to track the architecture across
+    different Django apps. If more than one application makes use of these
+    base models, the extended models will share class relationships, which is
+    clearly undesirable. This ensures that the relationships between models
+    within a module using these base classes are from other organization models.
+
     """
-    OrgModel = None
-    OrgUserModel = None
-    OrgOwnerModel = None
+    module_registry = {}
 
     def __new__(cls, name, bases, attrs):
+        base_classes = ['OrgModel', 'OrgUserModel', 'OrgOwnerModel']
         model = super(OrgMeta, cls).__new__(cls, name, bases, attrs)
+        module = model.__module__
+        if not cls.module_registry.get(module):
+            cls.module_registry[module] = {
+                'OrgModel': None,
+                'OrgUserModel': None,
+                'OrgOwnerModel': None,
+            }
         for b in bases:
             if b.__name__ == "OrganizationBase":
-                cls.OrgModel = model
+                cls.module_registry[module]['OrgModel'] = model
             elif b.__name__ == "OrganizationUserBase":
-                cls.OrgUserModel = model
+                cls.module_registry[module]['OrgUserModel'] = model
             elif b.__name__ == "OrganizationOwnerBase":
-                cls.OrgOwnerModel = model
+                cls.module_registry[module]['OrgOwnerModel'] = model
 
-        if all([cls.OrgModel, cls.OrgUserModel, cls.OrgOwnerModel]):
-            model.update_org()
-            model.update_org_users()
-            model.update_org_owner()
+        if all([cls.module_registry[module][klass] for klass in base_classes]):
+            model.update_org(module)
+            model.update_org_users(module)
+            model.update_org_owner(module)
 
         return model
 
-    def update_org(cls):
+    def update_org(cls, module):
         """
         Adds the `users` field to the organization model
         """
         try:
-            cls.OrgModel._meta.get_field("users")
+            cls.module_registry[module]['OrgModel']._meta.get_field("users")
         except FieldDoesNotExist:
-            cls.OrgModel.add_to_class("users",
-                models.ManyToManyField(USER_MODEL, through=cls.OrgUserModel.__name__,
-                                      related_name="%(app_label)s_%(class)s"))
+            cls.module_registry[module]['OrgModel'].add_to_class("users",
+                models.ManyToManyField(USER_MODEL,
+                        through=cls.module_registry[module]['OrgUserModel'].__name__,
+                        related_name="%(app_label)s_%(class)s"))
 
-    def update_org_users(cls):
+    def update_org_users(cls, module):
         """
         Adds the `user` field to the organization user model and the link to
         the specific organization model.
         """
         try:
-            cls.OrgUserModel._meta.get_field("user")
+            cls.module_registry[module]['OrgUserModel']._meta.get_field("user")
         except FieldDoesNotExist:
-            cls.OrgUserModel.add_to_class("user",
+            cls.module_registry[module]['OrgUserModel'].add_to_class("user",
                 models.ForeignKey(USER_MODEL, related_name="%(app_label)s_%(class)s"))
         try:
-            cls.OrgUserModel._meta.get_field("organization")
+            cls.module_registry[module]['OrgUserModel']._meta.get_field("organization")
         except FieldDoesNotExist:
-            cls.OrgUserModel.add_to_class("organization",
-                models.ForeignKey(cls.OrgModel, related_name="organization_users"))
+            cls.module_registry[module]['OrgUserModel'].add_to_class("organization",
+                models.ForeignKey(cls.module_registry[module]['OrgModel'],
+                        related_name="organization_users"))
 
-    def update_org_owner(cls):
+    def update_org_owner(cls, module):
         """
         Creates the links to the organization and organization user for the owner.
         """
         try:
-            cls.OrgOwnerModel._meta.get_field("organization_user")
+            cls.module_registry[module]['OrgOwnerModel']._meta.get_field("organization_user")
         except FieldDoesNotExist:
-            cls.OrgOwnerModel.add_to_class("organization_user",
-                models.OneToOneField(cls.OrgUserModel))
+            cls.module_registry[module]['OrgOwnerModel'].add_to_class("organization_user",
+                models.OneToOneField(cls.module_registry[module]['OrgUserModel']))
         try:
-            cls.OrgOwnerModel._meta.get_field("organization")
+            cls.module_registry[module]['OrgOwnerModel']._meta.get_field("organization")
         except FieldDoesNotExist:
-            cls.OrgOwnerModel.add_to_class("organization",
-                models.OneToOneField(cls.OrgModel, related_name="owner"))
+            cls.module_registry[module]['OrgOwnerModel'].add_to_class("organization",
+                models.OneToOneField(cls.module_registry[module]['OrgModel'],
+                        related_name="owner"))
 
 
 class OrganizationBase(models.Model):
