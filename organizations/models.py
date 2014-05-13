@@ -35,8 +35,8 @@ class Organization(OrganizationBase, TimeStampedModel):
 
     class Meta:
         ordering = ['name']
-        verbose_name = _("organization")  # TODO make this dynamic
-        verbose_name_plural = _("organizations")  # TODO make this dynamic
+        verbose_name = _("organization")
+        verbose_name_plural = _("organizations")
 
     def __unicode__(self):
         return self.name
@@ -98,9 +98,8 @@ class Organization(OrganizationBase, TimeStampedModel):
 class OrganizationUser(OrganizationUserBase, TimeStampedModel):
     is_admin = models.BooleanField(default=False)
 
-    class Meta:
+    class Meta(OrganizationUserBase.Meta):
         ordering = ['organization', 'user']
-        unique_together = ('user', 'organization')
         verbose_name = _("organization user")
         verbose_name_plural = _("organization users")
 

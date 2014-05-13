@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
+from django.db import IntegrityError
+from django.contrib.auth.models import User
 from django.test import TestCase
 from django.test.utils import override_settings
-from django.contrib.auth.models import User
-from django.db import IntegrityError
 
 from organizations.models import (Organization, OrganizationUser,
         OrganizationOwner)

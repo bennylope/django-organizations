@@ -131,6 +131,7 @@ class OrganizationBase(models.Model):
 
     class Meta:
         abstract = True
+        ordering = ['name']
 
     def __unicode__(self):
         return self.name
@@ -158,6 +159,8 @@ class OrganizationUserBase(models.Model):
 
     class Meta:
         abstract = True
+        ordering = ['organization', 'user']
+        unique_together = ('user', 'organization')
 
     def __unicode__(self):
         return u"{0} ({1})".format(self.user.get_full_name() if self.user.is_active else
