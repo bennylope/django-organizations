@@ -15,7 +15,7 @@ USER_MODEL = getattr(settings, 'AUTH_USER_MODEL', 'auth.User')
 def get_user_model():
     """
     Returns the chosen user model as a class. This functionality won't be
-    built-in until Django 1.5.
+    builtin until Django 1.5.
     """
     try:
         klass = get_model(USER_MODEL.split('.')[0], USER_MODEL.split('.')[1])
@@ -33,8 +33,7 @@ class Organization(OrganizationBase, TimeStampedModel):
             populate_from='name', unique=True,
             help_text=_("The name in all lowercase, suitable for URL identification"))
 
-    class Meta:
-        ordering = ['name']
+    class Meta(OrganizationBase.Meta):
         verbose_name = _("organization")
         verbose_name_plural = _("organizations")
 
@@ -88,9 +87,6 @@ class Organization(OrganizationBase, TimeStampedModel):
 
         return org_user, created
 
-    def is_member(self, user):
-        return True if user in self.users.all() else False
-
     def is_admin(self, user):
         return True if self.organization_users.filter(user=user, is_admin=True) else False
 
@@ -99,7 +95,6 @@ class OrganizationUser(OrganizationUserBase, TimeStampedModel):
     is_admin = models.BooleanField(default=False)
 
     class Meta(OrganizationUserBase.Meta):
-        ordering = ['organization', 'user']
         verbose_name = _("organization user")
         verbose_name_plural = _("organization users")
 
@@ -129,21 +124,12 @@ class OrganizationUser(OrganizationUserBase, TimeStampedModel):
         return ('organization_user_detail', (),
                 {'organization_pk': self.organization.pk, 'user_pk': self.user.pk})
 
-    @property
-    def name(self):
-        if hasattr(self.user, 'get_full_name'):
-            return self.user.get_full_name()
-        return "{0}".format(self.user)
-
 
 class OrganizationOwner(OrganizationOwnerBase, TimeStampedModel):
 
     class Meta:
         verbose_name = _("organization owner")
         verbose_name_plural = _("organization owners")
-
-    def __unicode__(self):
-        return u"{0}: {1}".format(self.organization, self.organization_user)
 
     def save(self, *args, **kwargs):
         """

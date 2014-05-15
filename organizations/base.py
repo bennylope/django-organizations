@@ -1,27 +1,12 @@
 from django.conf import settings
-from django.core.exceptions import ImproperlyConfigured
 from django.db import models
 from django.db.models.fields import FieldDoesNotExist
-from django.db.models import get_model
 from django.db.models.base import ModelBase
 from django.utils.translation import ugettext_lazy as _
 
 from .managers import OrgManager, ActiveOrgManager
 
 USER_MODEL = getattr(settings, 'AUTH_USER_MODEL', 'auth.User')
-
-
-def get_user_model():
-    """
-    Returns the chosen user model as a class. This functionality is not
-    available in Django 1.4.x.
-    """
-    try:
-        klass = get_model(USER_MODEL.split('.')[0], USER_MODEL.split('.')[1])
-    except:
-        raise ImproperlyConfigured("Your user class, {0},"
-                " is improperly defined".format(USER_MODEL))
-    return klass
 
 
 class OrgMeta(ModelBase):
@@ -139,9 +124,6 @@ class OrganizationBase(models.Model):
     def is_member(self, user):
         return True if user in self.users.all() else False
 
-    def is_admin(self, user):
-        return True if self.organization_users.filter(user=user, is_admin=True) else False
-
 
 class OrganizationUserBase(models.Model):
     """
@@ -166,6 +148,16 @@ class OrganizationUserBase(models.Model):
         return u"{0} ({1})".format(self.user.get_full_name() if self.user.is_active else
                 self.user.email, self.organization.name)
 
+    @property
+    def name(self):
+        """
+        Returns the connected user's full name or string representation if the
+        full name method is unavailable (e.g. on a custom user class).
+        """
+        if hasattr(self.user, 'get_full_name'):
+            return self.user.get_full_name()
+        return "{0}".format(self.user)
+
 
 class OrganizationOwnerBase(models.Model):
     """Each organization must have one and only one organization owner."""
@@ -173,3 +165,6 @@ class OrganizationOwnerBase(models.Model):
 
     class Meta:
         abstract = True
+
+    def __unicode__(self):
+        return u"{0}: {1}".format(self.organization, self.organization_user)

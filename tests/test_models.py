@@ -7,6 +7,7 @@ from django.test.utils import override_settings
 
 from organizations.models import (Organization, OrganizationUser,
         OrganizationOwner)
+from test_accounts.models import Account
 
 
 @override_settings(USE_TZ=True)
@@ -118,3 +119,22 @@ class OrgDeleteTests(TestCase):
                 organization__name="Nirvana", user=krist)
         org_user.delete()
         self.assertTrue(krist.pk)
+
+
+class CustomModelTests(TestCase):
+
+    # Load the world as we know it.
+    fixtures = ['users.json', 'orgs.json']
+
+    def setUp(self):
+        self.kurt = User.objects.get(username="kurt")
+        self.dave = User.objects.get(username="dave")
+        self.krist = User.objects.get(username="krist")
+        self.duder = User.objects.get(username="duder")
+        self.red_account = Account.objects.create(
+                name="Red Account",
+                monthly_subscription=1200,
+        )
+
+    def test_org_string(self):
+        self.assertEqual(self.red_account.__str__(), "Red Account")

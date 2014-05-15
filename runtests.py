@@ -19,6 +19,12 @@ try:
             "django.contrib.auth",
             "django.contrib.contenttypes",
             "django.contrib.sites",
+            # The ordering here, the apps using the organization base models
+            # first and *then* the organizations app itself is an implicit test
+            # that the organizations app need not be installed in order to use
+            # its base models.
+            "test_accounts",
+            "test_vendors",
             "organizations",
         ],
         SITE_ID=1,
