@@ -46,7 +46,7 @@ class CreateOrgTests(TestCase):
     def test_backwards_compat(self):
         """Ensure old optional arguments still work"""
         # TODO check old style arguments
-        # org_model, org_user_model, is_admin, is_active, slug
+        # org_model, org_user_model, is_active, slug
         pass
 
 

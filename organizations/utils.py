@@ -19,8 +19,8 @@ def create_organization(user, name,
     # TODO try to add in backwards compatability
     org_model = kwargs.pop('model', None) or kwargs.pop('org_model', None) or Organization
     kwargs.pop('org_user_model', None)  # Discard deprecated argument
-    org_user_klass = org_model.organization_users.related.model
-    org_owner_klass = org_model.owner.related.model
+    org_user_model = org_model.organization_users.related.model
+    org_owner_model = org_model.owner.related.model
 
     #if slug is not None:
     #    org_defaults.update({'slug': slug})
@@ -30,9 +30,9 @@ def create_organization(user, name,
     #    org_user_defaults.update({'is_admin': is_admin})
 
     organization = org_model.objects.create(name=name, **org_defaults)
-    new_user = org_user_klass.objects.create(organization=organization,
+    new_user = org_user_model.objects.create(organization=organization,
             user=user, **org_user_defaults)
-    org_owner_klass.objects.create(organization=organization,
+    org_owner_model.objects.create(organization=organization,
             organization_user=new_user)
     return organization
 
