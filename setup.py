@@ -22,7 +22,7 @@ setup(
     author="Ben Lopatin",
     author_email="ben@wellfire.co",
     name='django-organizations',
-    version='0.1.10',
+    version='0.2.0',
     description='Group accounts for Django',
     long_description=readme + '\n\n' + history,
     url='https://github.com/wellfire/django-organizations/',

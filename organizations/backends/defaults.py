@@ -13,9 +13,9 @@ from django.utils.translation import ugettext as _
 from ..models import get_user_model
 from ..utils import create_organization
 from ..utils import model_field_attr
-from .tokens import RegistrationTokenGenerator
 from .forms import (UserRegistrationForm,
         OrganizationRegistrationForm)
+from .tokens import RegistrationTokenGenerator
 
 
 # Backend classes should provide common interface
@@ -86,6 +86,7 @@ class BaseBackend(object):
         self._send_email(user, self.reminder_subject, self.reminder_body,
                 sender, **kwargs)
 
+    # TODO replace with _send_message, channel agnostic?
     def _send_email(self, user, subject_template, body_template,
             sender=None, **kwargs):
         """Utility method for sending emails to new users"""
@@ -202,9 +203,11 @@ class InvitationBackend(BaseBackend):
     form_class = UserRegistrationForm
 
     def get_success_url(self):
+        # TODO get this url name from an attribute
         return reverse('organization_list')
 
     def get_urls(self):
+        # TODO enable naming based on a model?
         return patterns('',
             url(r'^(?P<user_id>[\d]+)-(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
                 view=self.activate_view, name="invitations_register"),

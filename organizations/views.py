@@ -16,6 +16,7 @@ from .utils import create_organization
 
 
 class BaseOrganizationList(ListView):
+    # TODO change this to query on the specified model
     queryset = Organization.active.all()
     context_object_name = "organizations"
 
