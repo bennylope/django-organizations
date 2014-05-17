@@ -1,3 +1,5 @@
+.. _cookbook:
+
 =================================
 Cooking with Django Organizations
 =================================
@@ -240,6 +242,8 @@ organization classes if need be.::
 As in this example you can add them in the same app although it probably makes
 more sense to add them in their own apps.
 
+.. _cookbook-advanced:
+
 Advanced customization
 ======================
 
@@ -275,7 +279,7 @@ and only this organization model.
     Unlike in the example of multi-table inheritence, you cannot add more than
     one custom organization model to an individual app. Each additional
     organization class you want must be defined in its own app.
-    Only one org set per app (module, stricly speaking)
+    Only one organization set per app.
 
 Difference between default models
 ---------------------------------
