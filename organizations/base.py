@@ -38,7 +38,7 @@ class OrgMeta(ModelBase):
     """
     module_registry = {}
 
-    def __new__(cls, name, bases, attrs):
+    def __new__(cls, name, bases, attrs):  # noqa
         # Borrowed from Django-polymorphic
         # Workaround compatibility issue with six.with_metaclass() and custom
         # Django model metaclasses:
