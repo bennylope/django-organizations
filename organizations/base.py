@@ -1,3 +1,5 @@
+import django
+
 from django.conf import settings
 from django.db import models
 from django.db.models.fields import FieldDoesNotExist
@@ -37,6 +39,17 @@ class OrgMeta(ModelBase):
     module_registry = {}
 
     def __new__(cls, name, bases, attrs):
+        # Borrowed from Django-polymorphic
+        # Workaround compatibility issue with six.with_metaclass() and custom
+        # Django model metaclasses:
+        if not attrs and name == 'NewBase':
+            if django.VERSION < (1, 5):
+                # Let Django fully ignore the class which is inserted in between.
+                # Django 1.5 fixed this, see https://code.djangoproject.com/ticket/19688
+                attrs['__module__'] = 'django.utils.six'
+                attrs['Meta'] = type('Meta', (), {'abstract': True})
+            return super(OrgMeta, cls).__new__(cls, name, bases, attrs)
+
         base_classes = ['OrgModel', 'OrgUserModel', 'OrgOwnerModel']
         model = super(OrgMeta, cls).__new__(cls, name, bases, attrs)
         module = model.__module__
