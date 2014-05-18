@@ -3,6 +3,13 @@
 History
 =======
 
+0.2.0
+-----
+
+* Abstract base models. These allow for custom organization models
+  without relying on mulit-table inheritence, as well as custom
+  organization user models, all on an app-by-app basis.
+
 0.1.10
 ------
 
