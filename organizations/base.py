@@ -2,11 +2,21 @@ from django.conf import settings
 from django.db import models
 from django.db.models.fields import FieldDoesNotExist
 from django.db.models.base import ModelBase
+from django.utils import six
 from django.utils.translation import ugettext_lazy as _
 
 from .managers import OrgManager, ActiveOrgManager
 
 USER_MODEL = getattr(settings, 'AUTH_USER_MODEL', 'auth.User')
+
+
+class UnicodeMixin(object):
+    """
+    """
+    if six.PY3:
+        __str__ = lambda x: x.__unicode__()
+    else:
+        __str__ = lambda x: unicode(x).encode('utf-8')
 
 
 class OrgMeta(ModelBase):
@@ -97,15 +107,13 @@ class OrgMeta(ModelBase):
                         related_name="owner"))
 
 
-class OrganizationBase(models.Model):
+class OrganizationBase(six.with_metaclass(OrgMeta, UnicodeMixin, models.Model)):
     """
     The umbrella object with which users can be associated.
 
     An organization can have multiple users but only one who can be designated
     the owner user.
-
     """
-    __metaclass__ = OrgMeta
 
     name = models.CharField(max_length=200,
             help_text=_("The name of the organization"))
@@ -125,7 +133,7 @@ class OrganizationBase(models.Model):
         return True if user in self.users.all() else False
 
 
-class OrganizationUserBase(models.Model):
+class OrganizationUserBase(six.with_metaclass(OrgMeta, UnicodeMixin, models.Model)):
     """
     ManyToMany through field relating Users to Organizations.
 
@@ -135,9 +143,7 @@ class OrganizationUserBase(models.Model):
 
     Authentication and general user information is handled by the User class
     and the contrib.auth application.
-
     """
-    __metaclass__ = OrgMeta
 
     class Meta:
         abstract = True
@@ -159,9 +165,10 @@ class OrganizationUserBase(models.Model):
         return "{0}".format(self.user)
 
 
-class OrganizationOwnerBase(models.Model):
-    """Each organization must have one and only one organization owner."""
-    __metaclass__ = OrgMeta
+class OrganizationOwnerBase(six.with_metaclass(OrgMeta, UnicodeMixin, models.Model)):
+    """
+    Each organization must have one and only one organization owner.
+    """
 
     class Meta:
         abstract = True

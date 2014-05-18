@@ -45,9 +45,11 @@ class CreateOrgTests(TestCase):
 
     def test_backwards_compat(self):
         """Ensure old optional arguments still work"""
-        # TODO check old style arguments
-        # org_model, org_user_model, is_active, slug
-        pass
+        org = create_organization(self.user, "Is Admin", "my-slug", is_active=False)
+        self.assertFalse(org.is_active)
+
+        custom = create_organization(self.user, "Custom org", org_model=Account)
+        self.assertTrue(isinstance(custom, Account))
 
 
 class AttributeUtilTests(TestCase):
