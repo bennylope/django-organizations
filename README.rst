@@ -3,7 +3,7 @@ django-organizations
 ====================
 
 :Info: Groups and multi-user account management
-:Version: 0.1.9
+:Version: 0.2.0
 :Status: beta
 :Author: Ben Lopatin (http://benlopatin.com)
 
@@ -80,8 +80,6 @@ model name of your custom user model, following the procedure in Django 1.5::
 
     AUTH_USER_MODEL = 'myuserapp.MyUser'
 
-**This is still experimental and your user model's API should hew close to that
-of the `auth.User` class.**
 
 Usage Overview
 ==============
@@ -120,14 +118,14 @@ The underlying organizations API is simple::
     >>> audioslave.add_user(tom, is_admin=True)
     <OrganizationUser: Tom Morello>
 
+Custom models
+-------------
 
-Overview
---------
-
-Each organization can have only one owner, however a site user can be a member
-of multiple organizations, or own multiple organizations. The OrganizationUser
-model servers as an intermediary between the `Organization` and the `Users` to
-allow this.
+Django-organizations can act as a base library (not installed in your project)
+and used to create unique organization model sets using custom tables. See the
+`Cooking with Django Organizations
+<http://django-organizations.readthedocs.org/en/latest/cookbook.html#advanced-customization>`_
+section in the documentation for advice on proceeding.
 
 Development & Contributing
 ==========================
