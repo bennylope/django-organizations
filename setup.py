@@ -22,7 +22,7 @@ setup(
     author="Ben Lopatin",
     author_email="ben@wellfire.co",
     name='django-organizations',
-    version='0.1.10',
+    version='0.2.0',
     description='Group accounts for Django',
     long_description=readme + '\n\n' + history,
     url='https://github.com/wellfire/django-organizations/',
@@ -41,7 +41,7 @@ setup(
         'Framework :: Django',
     ],
     install_requires=[
-        'Django>=1.4',
+        'Django>=1.4.2',
         'django-extensions>=0.9',
     ],
     test_suite='tests',

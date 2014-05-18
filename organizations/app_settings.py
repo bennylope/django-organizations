@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.contrib.auth.models import User
 
-from organizations.utils import model_field_attr
+from .utils import model_field_attr
 
 
 ORGS_INVITATION_BACKEND = getattr(settings, 'INVITATION_BACKEND',

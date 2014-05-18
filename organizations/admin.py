@@ -1,7 +1,6 @@
 from django.contrib import admin
 
-from organizations.models import (Organization, OrganizationUser,
-        OrganizationOwner)
+from .models import Organization, OrganizationUser, OrganizationOwner
 
 
 class OwnerInline(admin.StackedInline):

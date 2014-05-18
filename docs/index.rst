@@ -14,6 +14,7 @@ Contents:
     getting_started
     usage
     custom_usage
+    cookbook
     reference/index
 
 

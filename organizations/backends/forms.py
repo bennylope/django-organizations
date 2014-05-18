@@ -1,6 +1,6 @@
 from django import forms
 
-from organizations.models import Organization, get_user_model
+from ..models import Organization, get_user_model
 
 
 class UserRegistrationForm(forms.ModelForm):

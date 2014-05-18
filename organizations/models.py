@@ -6,8 +6,8 @@ from django.utils.translation import ugettext_lazy as _
 
 from django_extensions.db.fields import AutoSlugField
 from django_extensions.db.models import TimeStampedModel
-from organizations.managers import OrgManager, ActiveOrgManager
 
+from .base import OrganizationBase, OrganizationUserBase, OrganizationOwnerBase
 
 USER_MODEL = getattr(settings, 'AUTH_USER_MODEL', 'auth.User')
 
@@ -15,7 +15,7 @@ USER_MODEL = getattr(settings, 'AUTH_USER_MODEL', 'auth.User')
 def get_user_model():
     """
     Returns the chosen user model as a class. This functionality won't be
-    built-in until Django 1.5.
+    builtin until Django 1.5.
     """
     try:
         klass = get_model(USER_MODEL.split('.')[0], USER_MODEL.split('.')[1])
@@ -25,27 +25,15 @@ def get_user_model():
     return klass
 
 
-class Organization(TimeStampedModel):
+class Organization(OrganizationBase, TimeStampedModel):
     """
-    The umbrella object with which users can be associated.
-
-    An organization can have multiple users but only one who can be designated
-    the owner user.
-
+    Default Organization model.
     """
-    name = models.CharField(max_length=200,
-            help_text=_("The name of the organization"))
     slug = AutoSlugField(max_length=200, blank=False, editable=True,
             populate_from='name', unique=True,
             help_text=_("The name in all lowercase, suitable for URL identification"))
-    users = models.ManyToManyField(USER_MODEL, through="OrganizationUser")
-    is_active = models.BooleanField(default=True)
 
-    objects = OrgManager()
-    active = ActiveOrgManager()
-
-    class Meta:
-        ordering = ['name']
+    class Meta(OrganizationBase.Meta):
         verbose_name = _("organization")
         verbose_name_plural = _("organizations")
 
@@ -64,14 +52,16 @@ class Organization(TimeStampedModel):
         users_count = self.users.all().count()
         if users_count == 0:
             is_admin = True
+        # TODO get specific org user?
         org_user = OrganizationUser.objects.create(user=user,
                 organization=self, is_admin=is_admin)
         if users_count == 0:
+            # TODO get specific org user?
             OrganizationOwner.objects.create(organization=self,
                     organization_user=org_user)
         return org_user
 
-    def get_or_add_user(self, user, is_admin=False):
+    def get_or_add_user(self, user, **kwargs):
         """
         Adds a new user to the organization, and if it's the first user makes
         the user an admin and the owner. Uses the `get_or_create` method to
@@ -83,6 +73,7 @@ class Organization(TimeStampedModel):
         `OrganizationUser` and a boolean value indicating whether the
         OrganizationUser was created or not.
         """
+        is_admin = kwargs.pop('is_admin', False)
         users_count = self.users.all().count()
         if users_count == 0:
             is_admin = True
@@ -96,33 +87,14 @@ class Organization(TimeStampedModel):
 
         return org_user, created
 
-    def is_member(self, user):
-        return True if user in self.users.all() else False
-
     def is_admin(self, user):
         return True if self.organization_users.filter(user=user, is_admin=True) else False
 
 
-class OrganizationUser(TimeStampedModel):
-    """
-    ManyToMany through field relating Users to Organizations.
-
-    It is possible for a User to be a member of multiple organizations, so this
-    class relates the OrganizationUser to the User model using a ForeignKey
-    relationship, rather than a OneToOne relationship.
-
-    Authentication and general user information is handled by the User class
-    and the contrib.auth application.
-
-    """
-    user = models.ForeignKey(USER_MODEL, related_name="organization_users")
-    organization = models.ForeignKey(Organization,
-            related_name="organization_users")
+class OrganizationUser(OrganizationUserBase, TimeStampedModel):
     is_admin = models.BooleanField(default=False)
 
-    class Meta:
-        ordering = ['organization', 'user']
-        unique_together = ('user', 'organization')
+    class Meta(OrganizationUserBase.Meta):
         verbose_name = _("organization user")
         verbose_name_plural = _("organization users")
 
@@ -142,35 +114,22 @@ class OrganizationUser(TimeStampedModel):
             if self.organization.owner.organization_user.id == self.id:
                 raise OwnershipRequired(_("Cannot delete organization owner "
                     "before organization or transferring ownership."))
+        # TODO This line presumes that OrgOwner model can't be modified
         except OrganizationOwner.DoesNotExist:
             pass
-        super(OrganizationUser, self).delete(using=using)
+        super(OrganizationUserBase, self).delete(using=using)
 
     @permalink
     def get_absolute_url(self):
         return ('organization_user_detail', (),
                 {'organization_pk': self.organization.pk, 'user_pk': self.user.pk})
 
-    @property
-    def name(self):
-        if hasattr(self.user, 'get_full_name'):
-            return self.user.get_full_name()
-        return "{0}".format(self.user)
 
-
-class OrganizationOwner(TimeStampedModel):
-    """Each organization must have one and only one organization owner."""
-
-    organization = models.OneToOneField(Organization, related_name="owner")
-    organization_user = models.OneToOneField(OrganizationUser,
-            related_name="owned_organization")
+class OrganizationOwner(OrganizationOwnerBase, TimeStampedModel):
 
     class Meta:
         verbose_name = _("organization owner")
         verbose_name_plural = _("organization owners")
-
-    def __unicode__(self):
-        return u"{0}: {1}".format(self.organization, self.organization_user)
 
     def save(self, *args, **kwargs):
         """
@@ -182,4 +141,4 @@ class OrganizationOwner(TimeStampedModel):
         if self.organization_user.organization != self.organization:
             raise OrganizationMismatch
         else:
-            super(OrganizationOwner, self).save(*args, **kwargs)
+            super(OrganizationOwnerBase, self).save(*args, **kwargs)
