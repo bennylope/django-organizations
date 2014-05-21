@@ -31,6 +31,7 @@ setup(
     platforms=['OS Independent'],
     packages=[
         'organizations',
+        'organizations.backends',
     ],
     classifiers=[
         'Development Status :: 4 - Beta',
@@ -42,7 +43,7 @@ setup(
         'Framework :: Django',
     ],
     install_requires=[
-        'Django>=1.4.2',
+        'Django>=1.4.2,<1.7',
         'django-extensions>=0.9',
     ],
     test_suite='tests',
