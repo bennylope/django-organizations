@@ -3,6 +3,11 @@
 History
 =======
 
+0.2.1
+-----
+
+* Packaging fix
+
 0.2.0
 -----
 
@@ -13,7 +18,7 @@ History
 0.1.10
 ------
 
-* Packing fix.
+* Packaging fix
 
 0.1.9
 -----
