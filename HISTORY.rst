@@ -3,6 +3,12 @@
 History
 =======
 
+0.2.3
+-----
+
+* Fix issue validating organziation ownership for custom organization models
+  inheriting directly from the `Organization` class.
+
 0.2.2
 -----
 
