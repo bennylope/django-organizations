@@ -3,6 +3,22 @@
 History
 =======
 
+0.2.3
+-----
+
+* Fix issue validating organziation ownership for custom organization models
+  inheriting directly from the `Organization` class.
+
+0.2.2
+-----
+
+* Packaging fix
+
+0.2.1
+-----
+
+* Packaging fix
+
 0.2.0
 -----
 
@@ -13,7 +29,7 @@ History
 0.1.10
 ------
 
-* Packing fix.
+* Packaging fix
 
 0.1.9
 -----

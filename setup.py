@@ -3,7 +3,7 @@
 
 import os
 import sys
-
+import organizations
 
 try:
     from setuptools import setup
@@ -23,7 +23,7 @@ setup(
     author="Ben Lopatin",
     author_email="ben@wellfire.co",
     name='django-organizations',
-    version='0.3.0',
+    version=organizations.__version__,
     description='Group accounts for Django',
     long_description=readme + '\n\n' + history,
     url='https://github.com/wellfire/django-organizations/',
@@ -31,6 +31,9 @@ setup(
     platforms=['OS Independent'],
     packages=[
         'organizations',
+        'organizations.backends',
+        'organizations.migrations',
+        'organizations.templatetags',
     ],
     classifiers=[
         'Development Status :: 4 - Beta',
@@ -42,7 +45,7 @@ setup(
         'Framework :: Django',
     ],
     install_requires=[
-        'Django>=1.4.2',
+        'Django>=1.4.2,<1.7',
         'django-extensions>=0.9',
     ],
     test_suite='tests',
