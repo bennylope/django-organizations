@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+from functools import partial
+
 from django.db import IntegrityError
 from django.contrib.auth.models import User
 from django.test import TestCase
@@ -7,7 +9,9 @@ from django.test.utils import override_settings
 
 from organizations.models import (Organization, OrganizationUser,
         OrganizationOwner)
+from organizations.utils import create_organization
 from test_accounts.models import Account
+from test_custom.models import Team
 
 
 @override_settings(USE_TZ=True)
@@ -138,3 +142,11 @@ class CustomModelTests(TestCase):
 
     def test_org_string(self):
         self.assertEqual(self.red_account.__str__(), "Red Account")
+
+    def test_change_user(self):
+        """Ensure custom organizations validate in owner change"""
+        create_team = partial(create_organization, model=Team)
+        hometeam = create_team(self.dave, "Hometeam")
+        duder_org_user = hometeam.add_user(self.duder)
+        hometeam.owner.organization_user = duder_org_user
+        hometeam.owner.save()

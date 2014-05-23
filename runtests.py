@@ -26,6 +26,7 @@ try:
             "test_accounts",
             "test_vendors",
             "organizations",
+            "test_custom",
         ],
         SITE_ID=1,
         NOSE_ARGS=['-s'],
