@@ -3,6 +3,11 @@
 History
 =======
 
+0.3.0
+-----
+
+* Initial Django 1.7 compatability release
+
 0.2.3
 -----
 
