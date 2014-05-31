@@ -1,0 +1,4 @@
+# Requirements used for managing tests, builds, documentation
+Sphinx
+tox
+wheel

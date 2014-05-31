@@ -3,7 +3,7 @@ Contributing
 ============
 
 Contributions are welcome, and they are greatly appreciated! Every
-little bit helps, and credit will always be given. 
+little bit helps, and credit will always be given.
 
 You can contribute in many ways:
 
@@ -66,7 +66,7 @@ Ready to contribute? Here's how to set up `django-organizations` for local devel
 
     $ mkvirtualenv django-organizations
     $ cd django-organizations/
-    $ pip install -r requirements.txt
+    $ pip install -r requirements-dev.txt
 
 4. Create a branch for local development::
 

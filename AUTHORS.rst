@@ -8,3 +8,4 @@ Contributors:
 * `Paul Backhouse <https://github.com/powlo>`_
 * `Phil McMahon <https://github.com/philmcmahon>`_
 * `Aaron Krill <https://github.com/krillr>`_
+* `Mauricio de Abreu Antunes <https://github.com/mauricioabreu>`_

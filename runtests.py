@@ -39,7 +39,7 @@ try:
 
     from django_nose import NoseTestSuiteRunner
 except ImportError:
-    raise ImportError("To fix this error, run: pip install -r requirements-test.txt")
+    raise ImportError("Ensure this is run in an environment with Django and test requirements installed.")
 
 
 def run_tests(*test_args):
