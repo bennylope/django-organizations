@@ -32,7 +32,8 @@ try:
         ],
         SITE_ID=1,
         NOSE_ARGS=['-s'],
-        FIXTURE_DIRS=['tests/fixtures']
+        FIXTURE_DIRS=['tests/fixtures'],
+        ORGS_TIMESTAMPED_MODEL='django_extensions.db.models.TimeStampedModel',
     )
     if hasattr(django, 'setup'):
         django.setup()
