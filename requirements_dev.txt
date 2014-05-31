@@ -1,0 +1,6 @@
+Django>=1.4.2,<1.8
+django-extensions>=0.9
+django-nose==1.2
+flake8==2.1.0
+tox==1.7.1
+mock>=1.0.1
