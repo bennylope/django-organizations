@@ -36,8 +36,8 @@ is open to whoever wants to implement it.
 Write Documentation
 ~~~~~~~~~~~~~~~~~~~
 
-Py-Geocod.io could always use more documentation, whether as part of the 
-official Py-Geocod.io docs, in docstrings, or even on the web in blog posts,
+Django-organizations could always use more documentation, whether as part of the 
+official Django-organizations docs, in docstrings, or even on the web in blog posts,
 articles, and such.
 
 Submit Feedback
@@ -66,7 +66,7 @@ Ready to contribute? Here's how to set up `django-organizations` for local devel
 
     $ mkvirtualenv django-organizations
     $ cd django-organizations/
-    $ python setup.py develop
+    $ pip install -r requirements.txt
 
 4. Create a branch for local development::
 
