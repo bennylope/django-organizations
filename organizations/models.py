@@ -10,7 +10,8 @@ from django_extensions.db.fields import AutoSlugField
 from .base import OrganizationBase, OrganizationUserBase, OrganizationOwnerBase
 
 USER_MODEL = getattr(settings, 'AUTH_USER_MODEL', 'auth.User')
-ORGS_TIMESTAMPED_MODEL = getattr(settings, 'ORGS_TIMESTAMPED_MODEL')
+ORGS_TIMESTAMPED_MODEL = getattr(settings, 'ORGS_TIMESTAMPED_MODEL',
+        'django_extensions.db.models.TimeStampedModel')
 
 
 try:
