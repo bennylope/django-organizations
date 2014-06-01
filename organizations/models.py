@@ -20,8 +20,11 @@ def get_user_model():
     try:
         klass = get_model(USER_MODEL.split('.')[0], USER_MODEL.split('.')[1])
     except:
-        raise ImproperlyConfigured("Your user class, {0},"
+        raise ImproperlyConfigured("Your AUTH_USER_MODEL class '{0}'"
                 " is improperly defined".format(USER_MODEL))
+    if klass is None:
+        raise ImproperlyConfigured("Your AUTH_USER_MODEL class '{0}'"
+                " is not installed".format(USER_MODEL))
     return klass
 
 
