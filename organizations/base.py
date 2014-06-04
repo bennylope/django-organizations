@@ -14,6 +14,7 @@ USER_MODEL = getattr(settings, 'AUTH_USER_MODEL', 'auth.User')
 
 class UnicodeMixin(object):
     """
+    Python 2 and 3 string representation support.
     """
     if six.PY3:
         __str__ = lambda x: x.__unicode__()
@@ -27,7 +28,7 @@ class OrgMeta(ModelBase):
 
     This is particularly useful for custom organizations that can avoid
     multitable inheritence and also add additional attributes to the
-    organization users, in particular.
+    organization users especially.
 
     The `module_registry` dictionary is used to track the architecture across
     different Django apps. If more than one application makes use of these
