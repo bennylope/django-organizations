@@ -53,6 +53,9 @@ You can specify a different model in your settings using the
 You can use this setting to configure a custom user model or to refer to a
 profile model if your project is using Django 1.4.
 
+URLs
+----
+
 If you plan on using the default URLs, hook the application URLs into your main
 application URL configuration in `urls.py`. If you plan on using the
 invitation/registration system, set your backend URLs, too::
@@ -64,11 +67,40 @@ invitation/registration system, set your backend URLs, too::
         url(r'^invitations/', include(invitation_backend().get_urls())),
     )
 
+Registration & invitation
+-------------------------
+
 You can specify a different :ref:`invitation backend <invitation-backend>` in
 your project settings, and the `invitation_backend` function will provide the
-URLs defined by that backend::
+URLs defined by that backend. You can do the same with the
+:ref:`registration backend <registration-backend>`::
 
     ORGS_INVITATION_BACKEND = 'myapp.backends.MyInvitationBackend'
+    ORGS_REGISTRATION_BACKEND = 'myapp.backends.MyRegistrationBackend'
+
+Timestamp model and slug field
+------------------------------
+
+Historically Django-Organizations relied on `django-extensions
+<http://django-extensions.readthedocs.org/en/latest/>`_ for the base
+`TimeStampedModel
+<http://django-extensions.readthedocs.org/en/latest/model_extensions.html>`_
+and `AutoSlugField
+<http://django-extensions.readthedocs.org/en/latest/field_extensions.html>`_.
+While these work great, this does require that every project install
+django-extensions for two small features.
+
+If you decide to use the default django-organization models by adding
+`organizations` to your INSTALLED_APPS, you can choose a different
+TimeStampedModel base and AutoSlugField. Just specify the full dotted path like so::
+
+    ORGS_SLUGFIELD = 'django_extensions.db.fields.AutoSlugField'
+    ORGS_TIMESTAMPED_MODEL = 'django_extensions.db.models.TimeStampedModel'
+
+While you can specify the source of these classes, **their interfaces must be
+consistent.** The TimeStampedModel should have two timestamp fields
+(`DateTimeField`) named `created` and `modified`, respectively. The SlugField
+must accept the `populate_from` keyword argument.
 
 Users and multi-account membership
 ==================================
