@@ -5,14 +5,21 @@ from django.db.models import permalink, get_model
 from django.utils.importlib import import_module
 from django.utils.translation import ugettext_lazy as _
 
-from django_extensions.db.fields import AutoSlugField
-
 from .base import OrganizationBase, OrganizationUserBase, OrganizationOwnerBase
 
 USER_MODEL = getattr(settings, 'AUTH_USER_MODEL', 'auth.User')
+ORGS_SLUGFIELD = getattr(settings, 'ORGS_SLUGFIELD',
+        'django_extensions.db.fields.AutoSlugField')
 ORGS_TIMESTAMPED_MODEL = getattr(settings, 'ORGS_TIMESTAMPED_MODEL',
         'django_extensions.db.models.TimeStampedModel')
 
+
+try:
+    module, klass = ORGS_SLUGFIELD.rsplit('.', 1)
+    SlugField = getattr(import_module(module), klass)
+except:
+    raise ImproperlyConfigured("Your SlugField class, {0},"
+            " is improperly defined".format(ORGS_SLUGFIELD))
 
 try:
     module, klass = ORGS_TIMESTAMPED_MODEL.rsplit('.', 1)
@@ -42,7 +49,7 @@ class Organization(OrganizationBase, TimeStampedModel):
     """
     Default Organization model.
     """
-    slug = AutoSlugField(max_length=200, blank=False, editable=True,
+    slug = SlugField(max_length=200, blank=False, editable=True,
             populate_from='name', unique=True,
             help_text=_("The name in all lowercase, suitable for URL identification"))
 
