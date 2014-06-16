@@ -49,6 +49,10 @@ class OrgModelTests(TestCase):
         self.assertTrue("{0}".format(self.foo.owner))
         self.assertTrue("{0}".format(self.foo.owner.organization_user))
 
+    def test_relation_name(self):
+        """Ensure user-related name is accessible from common attribute"""
+        self.assertEqual(self.foo.user_relation_name, "organizations_organization")
+
     def test_duplicate_members(self):
         """Ensure that a User can only have one OrganizationUser object"""
         self.assertRaises(IntegrityError, self.nirvana.add_user, self.dave)
@@ -142,6 +146,11 @@ class CustomModelTests(TestCase):
 
     def test_org_string(self):
         self.assertEqual(self.red_account.__str__(), "Red Account")
+
+    def test_relation_name(self):
+        """Ensure user-related name is accessible from common attribute"""
+        self.assertEqual(self.red_account.user_relation_name,
+                "test_accounts_account")
 
     def test_change_user(self):
         """Ensure custom organizations validate in owner change"""

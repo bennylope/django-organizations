@@ -143,6 +143,17 @@ class OrganizationBase(six.with_metaclass(OrgMeta, UnicodeMixin, models.Model)):
     def __unicode__(self):
         return self.name
 
+    @property
+    def user_relation_name(self):
+        """
+        Returns the string name of the related name to the user.
+
+        This provides a consistent interface across different organization
+        model classes.
+        """
+        return "{0}_{1}".format(self._meta.app_label.lower(),
+                self.__class__.__name__.lower())
+
     def is_member(self, user):
         return True if user in self.users.all() else False
 
