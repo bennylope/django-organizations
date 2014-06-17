@@ -13,8 +13,7 @@ from django.utils.translation import ugettext as _
 from ..models import get_user_model
 from ..utils import create_organization
 from ..utils import model_field_attr
-from .forms import (UserRegistrationForm,
-        OrganizationRegistrationForm)
+from .forms import UserRegistrationForm, OrganizationRegistrationForm
 from .tokens import RegistrationTokenGenerator
 
 
@@ -25,9 +24,11 @@ class BaseBackend(object):
     """
     Base backend class for registering and inviting users to an organization
     """
+    org_model = None
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, org_model=None, *args, **kwargs):
         self.user_model = get_user_model()
+        self.org_model = org_model
 
     def get_urls(self):
         raise NotImplementedError
@@ -47,8 +48,27 @@ class BaseBackend(object):
         return RegistrationTokenGenerator().make_token(user)
 
     def get_username(self):
-        """Returns a UUID based 'random' and unique username"""
+        """Returns a UUID-based 'random' and unique username"""
         return str(uuid.uuid4())[:model_field_attr(self.user_model, 'username', 'max_length')]
+
+    def activate_organizations(self, user):
+        """
+        Activates the related organizations for the user.
+
+        It only activates the related organizations by model type - that is, if
+        there are multiple types of organizations then only organizations in
+        the provided model class are activated.
+        """
+        try:
+            relation_name = self.org_model().user_relation_name
+        except TypeError:
+            # No org_model specified, raises a TypeError because NoneType is
+            # not callable. Thiis the most sensible default
+            relation_name = "organizations_organization"
+        organization_set = getattr(user, relation_name)
+        for org in organization_set.filter(is_active=False):
+            org.is_active = True
+            org.save()
 
     def activate_view(self, request, user_id, token):
         """
@@ -67,9 +87,7 @@ class BaseBackend(object):
             user = form.save()
             user.set_password(form.cleaned_data['password'])
             user.save()
-            for org in user.organization_set.filter(is_active=False):
-                org.is_active = True
-                org.save()
+            self.activate_organizations(user)
             user = authenticate(username=form.cleaned_data['username'],
                     password=form.cleaned_data['password'])
             login(request, user)

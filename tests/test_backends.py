@@ -6,9 +6,12 @@ from django.test import TestCase
 from django.test.client import RequestFactory
 from django.test.utils import override_settings
 
+from test_vendors.models import Vendor
+
 from organizations.backends.defaults import (BaseBackend, InvitationBackend,
         RegistrationBackend)
 from organizations.backends.tokens import RegistrationTokenGenerator
+from organizations.models import Organization
 from .utils import request_factory_login
 
 
@@ -137,3 +140,26 @@ class RegistrationTests(TestCase):
         self.assertEqual(200, RegistrationBackend().activate_view(request,
             self.pending_user.id,
             self.tokenizer.make_token(self.pending_user)).status_code)
+
+    def test_activate_orgs(self):
+        """Ensure method activates organizations and w/o specified org_model"""
+        org = Organization.objects.create(name="Test", slug="kjadkjkaj", is_active=False)
+        org.add_user(self.user)
+        self.assertFalse(org.is_active)
+        backend = InvitationBackend()
+        backend.activate_organizations(self.user)
+        refreshed_org = Organization.objects.get(pk=org.pk)
+        self.assertTrue(refreshed_org.is_active)
+
+
+class CustomModelBackend(TestCase):
+    """
+    The default backend should provide the same basic functionality
+    irrespective of the organization model.
+    """
+
+    def test_activate_orgs(self):
+        """Ensure no errors raised because correct relation name used"""
+        user = User.objects.create(username="183jkjd", email="akjdkj@kjdk.com")
+        backend = InvitationBackend(org_model=Vendor)
+        backend.activate_organizations(user)
