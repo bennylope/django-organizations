@@ -4,8 +4,13 @@ from ..models import Organization, get_user_model
 
 
 class UserRegistrationForm(forms.ModelForm):
-    """Form class for completing a user's registration and activating the
-    User."""
+    """
+    Form class for completing a user's registration and activating the
+    User.
+
+    The class operates on a user model which is assumed to have the required
+    fields of a BaseUserModel
+    """
     first_name = forms.CharField(max_length=30)
     last_name = forms.CharField(max_length=30)
     password = forms.CharField(max_length=30, widget=forms.PasswordInput)

@@ -1,3 +1,6 @@
+"""Backend classes should provide common interface
+"""
+
 import uuid
 
 from django.conf import settings
@@ -15,9 +18,6 @@ from ..utils import create_organization
 from ..utils import model_field_attr
 from .forms import UserRegistrationForm, OrganizationRegistrationForm
 from .tokens import RegistrationTokenGenerator
-
-
-# Backend classes should provide common interface
 
 
 class BaseBackend(object):
@@ -48,7 +48,11 @@ class BaseBackend(object):
         return RegistrationTokenGenerator().make_token(user)
 
     def get_username(self):
-        """Returns a UUID-based 'random' and unique username"""
+        """
+        Returns a UUID-based 'random' and unique username.
+
+        This is required data for user models with a username field.
+        """
         return str(uuid.uuid4())[:model_field_attr(self.user_model, 'username', 'max_length')]
 
     def activate_organizations(self, user):
@@ -72,8 +76,8 @@ class BaseBackend(object):
 
     def activate_view(self, request, user_id, token):
         """
-        Activates the given User by setting `is_active` to true if the provided
-        information is verified.
+        View function that activates the given User by setting `is_active` to
+        true if the provided information is verified.
         """
         try:
             user = self.user_model.objects.get(id=user_id, is_active=False)
@@ -104,7 +108,8 @@ class BaseBackend(object):
         self._send_email(user, self.reminder_subject, self.reminder_body,
                 sender, **kwargs)
 
-    # TODO replace with _send_message, channel agnostic?
+    # This could be replaced with a more channel agnostic function, most likely
+    # in a custom backend.
     def _send_email(self, user, subject_template, body_template,
             sender=None, **kwargs):
         """Utility method for sending emails to new users"""
