@@ -77,7 +77,7 @@ class OrgModelTests(TestCase):
     def test_remove_user(self):
         new_guy = self.foo.add_user(self.krist)
         self.foo.remove_user(self.krist)
-        self.assertFalse(self.foo.users.filter(pk=self.krist).exists())
+        self.assertFalse(self.foo.users.filter(pk=self.krist.pk).exists())
         
 
     def test_get_or_add_user(self):
