@@ -81,6 +81,14 @@ class Organization(OrganizationBase, TimeStampedModel):
                     organization_user=org_user)
         return org_user
 
+    def remove_user(self, user):
+        """
+        Deletes a user from an organization.
+        """
+        org_user = OrganizationUser.objects.get(user=user,
+                                                organization=self)
+        org_user.delete()
+
     def get_or_add_user(self, user, **kwargs):
         """
         Adds a new user to the organization, and if it's the first user makes

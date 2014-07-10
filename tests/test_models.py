@@ -73,6 +73,12 @@ class OrgModelTests(TestCase):
         new_guy = self.foo.add_user(self.krist)
         self.assertTrue(isinstance(new_guy, OrganizationUser))
         self.assertEqual(new_guy.organization, self.foo)
+        
+    def test_remove_user(self):
+        new_guy = self.foo.add_user(self.krist)
+        self.foo.remove_user(self.krist)
+        self.assertFalse(self.foo.users.filter(pk=self.krist.pk).exists())
+        
 
     def test_get_or_add_user(self):
         """Ensure `get_or_add_user` adds a user IFF it exists"""
