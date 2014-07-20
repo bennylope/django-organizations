@@ -3,12 +3,12 @@ django-organizations
 ====================
 
 :Info: Groups and multi-user account management
-:Version: 0.4.0
+:Version: 0.4.1
 :Author: Ben Lopatin (http://benlopatin.com)
 
-.. image:: https://secure.travis-ci.org/wellfire/django-organizations.png?branch=master
+.. image:: https://secure.travis-ci.org/bennylope/django-organizations.png?branch=master
     :alt: Build Status
-    :target: http://travis-ci.org/wellfire/django-organizations
+    :target: http://travis-ci.org/bennylope/django-organizations
 
 .. image:: https://pypip.in/v/django-organizations/badge.png
     :alt: Current PyPI release
@@ -43,6 +43,12 @@ First add the application to your Python path. The easiest way is to use
 You should install by downloading the source and running::
 
     $ python setup.py install
+
+.. note::
+    If you are using Django<=1.4.10, or >=1.5.0,<1.5.5, you
+    will need to install an up-to-date version of the `six` package. Previous
+    Django versions included an older version of `six` with which Django
+    Organizations is incompatible.
 
 Configuring
 -----------
@@ -179,7 +185,7 @@ reviewed and make it into the project:
 
 Code contributions are expected to pass in all target environments, and
 pull requests should be made from branches with passing builds on `Travis
-CI <https://travis-ci.org/wellfire/django-organizations>`_.
+CI <https://travis-ci.org/bennylope/django-organizations>`_.
 
 Project goals
 -------------
