@@ -24,6 +24,12 @@ First add the application to your Python path. The easiest way is to use
 
     pip install django-organizations
 
+.. note::
+    If you are using Django<=1.4.10, or Django >=1.5.0,<1.5.5, you
+    will need to install an up-to-date version of the `six` package. Previous
+    Django versions included an older version of `six` with which Django
+    Organizations is incompatible.
+
 Ensure that you have a user system in place to connect to your organizations.
 django-organizations will work with the `django.contrib.auth` package or custom
 user models (see configuration below).

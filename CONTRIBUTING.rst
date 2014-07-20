@@ -13,7 +13,7 @@ Types of Contributions
 Report Bugs
 ~~~~~~~~~~~
 
-Report bugs at https://github.com/wellfire/django-organizations/issues.
+Report bugs at https://github.com/bennylope/django-organizations/issues.
 
 If you are reporting a bug, please include:
 
@@ -43,7 +43,7 @@ articles, and such.
 Submit Feedback
 ~~~~~~~~~~~~~~~
 
-The best way to send feedback is to file an issue at https://github.com/wellfire/django-organizations/issues.
+The best way to send feedback is to file an issue at https://github.com/bennylope/django-organizations/issues.
 
 If you are proposing a feature:
 
@@ -78,7 +78,7 @@ Ready to contribute? Here's how to set up `django-organizations` for local devel
 
     $ tox
 
-   To get flake8 and tox, just pip install them into your virtualenv. 
+   To get flake8 and tox, just pip install them into your virtualenv.
 
 6. Commit your changes and push your branch to GitHub::
 
@@ -99,7 +99,7 @@ Before you submit a pull request, check that it meets these guidelines:
    feature to the list in README.rst. Any new functionality should align with
    the project goals (see README).
 3. The pull request should work for Python 2.6, 2.7, and 3.3, and for PyPy. Check 
-   https://travis-ci.org/wellfire/django-organizations/pull_requests
+   https://travis-ci.org/bennylope/django-organizations/pull_requests
    and make sure that the tests pass for all supported Python versions.
 4. Please try to follow `Django coding style
    <https://docs.djangoproject.com/en/1.4/internals/contributing/writing-code/coding-style/>`_.

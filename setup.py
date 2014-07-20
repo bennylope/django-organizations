@@ -26,7 +26,7 @@ setup(
     version=organizations.__version__,
     description='Group accounts for Django',
     long_description=readme + '\n\n' + history,
-    url='https://github.com/wellfire/django-organizations/',
+    url='https://github.com/bennylope/django-organizations/',
     license='BSD License',
     platforms=['OS Independent'],
     packages=[
