@@ -6,28 +6,32 @@ django-organizations
 :Version: 0.4.1
 :Author: Ben Lopatin (http://benlopatin.com)
 
-.. image:: https://secure.travis-ci.org/bennylope/django-organizations.png?branch=master
+.. image:: https://secure.travis-ci.org/bennylope/django-organizations.svg?branch=master
     :alt: Build Status
     :target: http://travis-ci.org/bennylope/django-organizations
 
-.. image:: https://pypip.in/v/django-organizations/badge.png
+.. image:: https://pypip.in/v/django-organizations/badge.svg
     :alt: Current PyPI release
     :target: https://crate.io/packages/django-organizations
 
-.. image:: https://pypip.in/d/django-organizations/badge.png
+.. image:: https://pypip.in/d/django-organizations/badge.svg
     :alt: Download count
     :target: https://crate.io/packages/django-organizations
 
-Add user-managed, multi-user groups to your Django project. Use
-django-organizations whether your site needs organizations that function like
+Separate individual user identity from accounts and subscriptions. Django
+Organizations adds user-managed, multi-user groups to your Django project. Use
+Django Organizations whether your site needs organizations that function like
 social groups or multi-user account objects to provide account and subscription
 functionality beyond the individual user.
 
-* Relies on `django.contrib.auth` and does not add or require additional user
-  or authentication functionality
+* Works with your existing user model, whether
+  `django.contrib.auth` or a custom model. No additional user
+  or authentication functionality required.
 * Users can be belong to and own more than one organization (account, group)
-* Invitation and registration functionality is designed to be flexible to allow
-  you to integrate existing invitation and registration apps
+* Invitation and registration functionality works out of the box for many
+  situations and can be extended as need to fit specific requirements.
+* Start with the base models or use your own for greater customization.
+  
 
 Documentation is on `Read the Docs
 <http://django-organizations.readthedocs.org/en/latest/index.html>`_
