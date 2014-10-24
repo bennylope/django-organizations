@@ -1,0 +1,4 @@
+[run]
+branch = True
+source = organizations
+omit = organizations/migrations/*

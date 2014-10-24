@@ -3,6 +3,22 @@
 History
 =======
 
+0.4.2
+-----
+
+* Various related name fixes in models, registration backends
+
+0.4.1
+-----
+
+* Support for older Django versions with outdated versions of `six`
+
+0.4.0
+-----
+
+* Allows for configurable TimeStampModel (base mixin for default Organization
+  model) and AutoSlugField (field on default Organization model).
+
 0.3.0
 -----
 
