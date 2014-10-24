@@ -30,6 +30,13 @@ First add the application to your Python path. The easiest way is to use
     Django versions included an older version of `six` with which Django
     Organizations is incompatible.
 
+.. note::
+
+    If you are using South you must use 1.0. Django Organizations is
+    incompatible with earlier versions of South, as this project uses the
+    `south_migrations` folder for schema migrations in order to maintain Django
+    1.7 compatability.
+
 Ensure that you have a user system in place to connect to your organizations.
 django-organizations will work with the `django.contrib.auth` package or custom
 user models (see configuration below).

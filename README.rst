@@ -3,7 +3,7 @@ django-organizations
 ====================
 
 :Info: Groups and multi-user account management
-:Version: 0.4.1
+:Version: 0.4.2
 :Author: Ben Lopatin (http://benlopatin.com)
 
 .. image:: https://secure.travis-ci.org/bennylope/django-organizations.svg?branch=master
@@ -31,7 +31,6 @@ functionality beyond the individual user.
 * Invitation and registration functionality works out of the box for many
   situations and can be extended as need to fit specific requirements.
 * Start with the base models or use your own for greater customization.
-  
 
 Documentation is on `Read the Docs
 <http://django-organizations.readthedocs.org/en/latest/index.html>`_
@@ -53,6 +52,13 @@ You should install by downloading the source and running::
     will need to install an up-to-date version of the `six` package. Previous
     Django versions included an older version of `six` with which Django
     Organizations is incompatible.
+
+.. note::
+
+    If you are using South you must use 1.0. Django Organizations is
+    incompatible with earlier versions of South, as this project uses the
+    `south_migrations` folder for schema migrations in order to maintain Django
+    1.7 compatability.
 
 Configuring
 -----------
@@ -206,5 +212,5 @@ Etc.
 License
 =======
 
-Anyone is free to use or modify this software under ther terms of the BSD
+Anyone is free to use or modify this software under the terms of the BSD
 license.
