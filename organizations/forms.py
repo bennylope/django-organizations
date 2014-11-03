@@ -78,7 +78,8 @@ class OrganizationUserAddForm(forms.ModelForm):
             user = invitation_backend().invite_by_email(
                     self.cleaned_data['email'],
                     **{'domain': get_current_site(self.request),
-                        'organization': self.organization})
+                        'organization': self.organization,
+                        'sender': self.request.user})
         return OrganizationUser.objects.create(user=user,
                 organization=self.organization,
                 is_admin=self.cleaned_data['is_admin'])

@@ -2,7 +2,8 @@ from django.test import TestCase
 from django.test.client import RequestFactory
 from django.test.utils import override_settings
 
-from organizations.forms import OrganizationForm, OrganizationUserForm
+from organizations.forms import (OrganizationForm, OrganizationUserForm,
+        OrganizationUserAddForm)
 from organizations.models import Organization
 from .utils import request_factory_login
 
@@ -63,5 +64,13 @@ class OrgFormTests(TestCase):
     def test_save_user_form(self):
         form = OrganizationUserForm(instance=self.owner,
                 data={'is_admin': True})
+        self.assertTrue(form.is_valid())
+        form.save()
+
+    def test_save_org_user_add_form(self):
+        request = request_factory_login(self.factory, self.owner.user)
+        form = OrganizationUserAddForm(request=request, organization=self.org, data={
+                'email': 'test_email@example.com',
+                'is_admin': False})
         self.assertTrue(form.is_valid())
         form.save()
