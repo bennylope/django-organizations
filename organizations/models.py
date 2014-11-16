@@ -6,6 +6,7 @@ from django.utils.importlib import import_module
 from django.utils.translation import ugettext_lazy as _
 
 from .base import OrganizationBase, OrganizationUserBase, OrganizationOwnerBase
+from .signals import user_added, user_removed, owner_changed
 
 USER_MODEL = getattr(settings, 'AUTH_USER_MODEL', 'auth.User')
 ORGS_SLUGFIELD = getattr(settings, 'ORGS_SLUGFIELD',
@@ -79,6 +80,9 @@ class Organization(OrganizationBase, TimeStampedModel):
             # TODO get specific org user?
             OrganizationOwner.objects.create(organization=self,
                     organization_user=org_user)
+
+        # User added signal
+        user_added.send(sender=self, user=user)
         return org_user
 
     def remove_user(self, user):
@@ -88,6 +92,9 @@ class Organization(OrganizationBase, TimeStampedModel):
         org_user = OrganizationUser.objects.get(user=user,
                                                 organization=self)
         org_user.delete()
+
+        # User removed signal
+        user_removed.send(sender=self, user=user)
 
     def get_or_add_user(self, user, **kwargs):
         """
@@ -113,7 +120,21 @@ class Organization(OrganizationBase, TimeStampedModel):
             OrganizationOwner.objects.create(organization=self,
                     organization_user=org_user)
 
+        if created:
+            # User added signal
+            user_added.send(sender=self, user=user)
         return org_user, created
+
+    def change_owner(self, new_owner):
+        """
+        Changes ownership of an organization.
+        """
+        old_owner = self.owner.organization_user
+        self.owner.organization_user = new_owner
+        self.owner.save()
+
+        # Owner changed signal
+        owner_changed.send(sender=self, old=old_owner, new=new_owner)
 
     def is_admin(self, user):
         return True if self.organization_users.filter(user=user, is_admin=True) else False

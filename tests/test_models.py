@@ -96,6 +96,12 @@ class OrgModelTests(TestCase):
         owner = self.nirvana.owner.organization_user
         self.assertRaises(OwnershipRequired, owner.delete)
 
+    def test_change_owner(self):
+        admin = self.nirvana.organization_users.get(user__username="krist")
+        self.nirvana.change_owner(admin)
+        owner = self.nirvana.owner.organization_user
+        self.assertEqual(owner, admin)
+
     def test_delete_missing_owner(self):
         """Ensure an org user can be deleted when there is no owner"""
         org = Organization.objects.create(name="Some test", slug="some-test")
