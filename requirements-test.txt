@@ -6,3 +6,6 @@ django-nose>=1.2
 
 # Required to test default models
 django-extensions>=0.9
+
+# Required for mocking signals
+mock-django>=0.6.5
