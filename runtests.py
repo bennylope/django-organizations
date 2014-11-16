@@ -30,6 +30,7 @@ try:
             "organizations",
             "test_custom",
         ],
+        MIDDLEWARE_CLASSES=(),  # Silence Django 1.7 warnings
         SITE_ID=1,
         NOSE_ARGS=['-s'],
         FIXTURE_DIRS=['tests/fixtures'],

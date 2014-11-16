@@ -1,7 +1,8 @@
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
+from django.core.urlresolvers import reverse
 from django.db import models
-from django.db.models import permalink, get_model
+from django.db.models import get_model
 from django.utils.importlib import import_module
 from django.utils.translation import ugettext_lazy as _
 
@@ -61,9 +62,8 @@ class Organization(OrganizationBase, TimeStampedModel):
     def __unicode__(self):
         return self.name
 
-    @permalink
     def get_absolute_url(self):
-        return ('organization_detail', (), {'organization_pk': self.pk})
+        return reverse('organization_detail', kwargs={'organization_pk': self.pk})
 
     def add_user(self, user, is_admin=False):
         """
@@ -168,10 +168,9 @@ class OrganizationUser(OrganizationUserBase, TimeStampedModel):
             pass
         super(OrganizationUserBase, self).delete(using=using)
 
-    @permalink
     def get_absolute_url(self):
-        return ('organization_user_detail', (),
-                {'organization_pk': self.organization.pk, 'user_pk': self.user.pk})
+        return reverse('organization_user_detail', kwargs={
+            'organization_pk': self.organization.pk, 'user_pk': self.user.pk})
 
 
 class OrganizationOwner(OrganizationOwnerBase, TimeStampedModel):
