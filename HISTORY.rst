@@ -3,6 +3,11 @@
 History
 =======
 
+0.4.3
+-----
+
+* Adds app specific signals
+
 0.4.2
 -----
 
