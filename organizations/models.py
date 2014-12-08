@@ -137,7 +137,12 @@ class Organization(OrganizationBase, TimeStampedModel):
         owner_changed.send(sender=self, old=old_owner, new=new_owner)
 
     def is_admin(self, user):
+        ''' Returns True is user is an admin in the organization, otherwise false '''
         return True if self.organization_users.filter(user=user, is_admin=True) else False
+        
+    def is_owner(self, user):
+        ''' Returns True is user is the organization's owner, otherwise false '''
+        return self.owner.organization_user.user == user
 
 
 class OrganizationUser(OrganizationUserBase, TimeStampedModel):
