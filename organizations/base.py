@@ -19,10 +19,11 @@ class UnicodeMixin(object):
     """
     Python 2 and 3 string representation support.
     """
-    if six.PY3:
-        __str__ = lambda x: x.__unicode__()
-    else:
-        __str__ = lambda x: unicode(x).encode('utf-8')
+    def __str__(self):
+        if six.PY3:
+            return self.__unicode__()
+        else:
+            return unicode(self).encode('utf-8')
 
 
 class OrgMeta(ModelBase):
