@@ -127,7 +127,7 @@ class OrganizationAddForm(forms.ModelForm):
 
 class SignUpForm(forms.Form):
     """
-    From class for signing up a new user and new account.
+    Form class for signing up a new user and new account.
     """
     name = forms.CharField(max_length=50,
             help_text=_("The name of the organization"))
