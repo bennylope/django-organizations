@@ -248,7 +248,7 @@ Advanced customization
 ======================
 
 As of version 0.2.0 you can add your own fully customized models using unique
-table sets, i.e. single table inheritence. In order to do do this your app
+table sets, i.e. single table inheritence. In order to do this, your app
 should define an organization model, an organization user model, and an
 organization owner model, each inheriting from one of the base classes as
 follows. Here's an example from an `accounts` app::
