@@ -119,7 +119,7 @@ There are three models:
 The underlying organizations API is simple::
 
     >>> chris = User.objects.get(username="chris")
-    >>> soundgarden = create_organization(chris, "Soundgarden")
+    >>> soundgarden = create_organization(chris, "Soundgarden", org_user_defaults={'is_admin': True})
     >>> soundgarden.is_member(chris)
     True
     >>> soundgarden.is_admin(chris)
