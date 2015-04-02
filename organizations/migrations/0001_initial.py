@@ -71,7 +71,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='organizationowner',
             name='organization_user',
-            fiel=models.OneToOneField(to='organizations.OrganizationUser'),
+            field=models.OneToOneField(to='organizations.OrganizationUser'),
             preserve_default=True,
         ),
         migrations.AddField(
