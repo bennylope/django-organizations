@@ -22,7 +22,7 @@ class Migration(migrations.Migration):
                 ('is_active', models.BooleanField(default=True)),
                 ('created', models.DateTimeField(verbose_name='created', blank=True, default=django.utils.timezone.now, editable=False)),
                 ('modified', models.DateTimeField(verbose_name='modified', blank=True, default=django.utils.timezone.now, editable=False)),
-                ('slug', models.SlugField(unique=True, blank=True, populate_from='name', help_text='The name in all lowercase, suitable for URL identification', max_length=200, editable=False)),
+                ('slug', models.SlugField(unique=True, blank=True, help_text='The name in all lowercase, suitable for URL identification', max_length=200, editable=False)),
             ],
             options={
                 'verbose_name': 'organization',
