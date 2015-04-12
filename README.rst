@@ -3,7 +3,7 @@ django-organizations
 ====================
 
 :Info: Groups and multi-user account management
-:Version: 0.4.3
+:Version: 0.5.0
 :Author: Ben Lopatin (http://benlopatin.com)
 
 .. image:: https://secure.travis-ci.org/bennylope/django-organizations.svg?branch=master
@@ -48,10 +48,9 @@ You should install by downloading the source and running::
     $ python setup.py install
 
 .. note::
-    If you are using Django<=1.4.10, or >=1.5.0,<1.5.5, you
-    will need to install an up-to-date version of the `six` package. Previous
-    Django versions included an older version of `six` with which Django
-    Organizations is incompatible.
+    If you are using Django<=1.4.10, you will need to install an up-to-date version
+    of the `six` package. Previous Django versions included an older version of
+    `six` with which Django Organizations is incompatible.
 
 .. note::
 
@@ -89,12 +88,6 @@ backend::
 
     ORGS_INVITATION_BACKEND = 'myapp.backends.MyInvitationBackend'
 
-There is also a lightly tested way to use your own user model, rather than the
-default `auth.User` model. Set the `AUTH_USER_MODEL` setting to the dotted
-model name of your custom user model, following the procedure in Django 1.5::
-
-    AUTH_USER_MODEL = 'myuserapp.MyUser'
-
 
 Usage Overview
 ==============
@@ -117,9 +110,9 @@ There are three models:
   easy to enforce ownership from within the organization's membership.
 
 The underlying organizations API is simple::
-
+    >>> from organizations.utils import create_organization
     >>> chris = User.objects.get(username="chris")
-    >>> soundgarden = create_organization(chris, "Soundgarden")
+    >>> soundgarden = create_organization(chris, "Soundgarden", org_user_defaults={'is_admin': True})
     >>> soundgarden.is_member(chris)
     True
     >>> soundgarden.is_admin(chris)
@@ -167,9 +160,9 @@ Targets & testing
 
 The codebase is targeted at tested against:
 
-* Django 1.4.x against Python 2.6 and Python 2.7
-* Django 1.5.x against Python 2.6, Python 2.7, and Python 3.3
-* Django 1.6.x against Python 2.7 and Python 3.3
+* Django 1.4.x against Python 2.7
+* Django 1.7.x against Python 2.7, 3.3, 3.4
+* Django 1.8.x against Python 2.7, 3.3, 3.4
 
 To run the tests against all target environments, install `tox
 <https://testrun.org/tox/latest/>`_ and then execute the command:
@@ -184,7 +177,7 @@ reviewed and make it into the project:
 
 * Ensure they match the project goals and are sufficiently generalized
 * Please try to follow `Django coding style
-  <https://docs.djangoproject.com/en/1.4/internals/contributing/writing-code/coding-style/>`_.
+  <https://docs.djangoproject.com/en/1.8/internals/contributing/writing-code/coding-style/>`_.
   The code base style isn't all up to par, but I'd like it to move in that
   direction
 * Also please try to include `good commit log messages

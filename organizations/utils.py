@@ -1,3 +1,28 @@
+# -*- coding: utf-8 -*-
+
+# Copyright (c) 2012-2015, Ben Lopatin and contributors
+# All rights reserved.
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are met:
+#
+# Redistributions of source code must retain the above copyright notice, this
+# list of conditions and the following disclaimer.  Redistributions in binary
+# form must reproduce the above copyright notice, this list of conditions and the
+# following disclaimer in the documentation and/or other materials provided with
+# the distribution
+#
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+# ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+# WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+# DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+# FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+# DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+# SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+# CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+# OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+# OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
 from .models import Organization
 
 
@@ -18,8 +43,18 @@ def create_organization(user, name, slug=None, is_active=None,
     """
     org_model = kwargs.pop('model', None) or kwargs.pop('org_model', None) or Organization
     kwargs.pop('org_user_model', None)  # Discard deprecated argument
-    org_user_model = org_model.organization_users.related.model
-    org_owner_model = org_model.owner.related.model
+
+    # Django 1.8 introduced the `related_model` attribute. Previously the
+    # `related.model` attribute referred to model B as pointed to by model A.
+    # In Django 1.8 that refers back to model A. Instead
+    # `related.related_model` is used to point to model B, which is what we
+    # want here.
+    try:
+        org_user_model = org_model.organization_users.related.related_model
+        org_owner_model = org_model.owner.related.related_model
+    except AttributeError:
+        org_user_model = org_model.organization_users.related.model
+        org_owner_model = org_model.owner.related.model
 
     if org_defaults is None:
         org_defaults = {}
@@ -31,9 +66,12 @@ def create_organization(user, name, slug=None, is_active=None,
     if is_active is not None:
         org_defaults.update({'is_active': is_active})
 
-    organization = org_model.objects.create(name=name, **org_defaults)
-    new_user = org_user_model.objects.create(organization=organization,
-            user=user, **org_user_defaults)
+    org_defaults.update({'name': name})
+    organization = org_model.objects.create(**org_defaults)
+
+    org_user_defaults.update({'organization': organization, 'user': user})
+    new_user = org_user_model.objects.create(**org_user_defaults)
+
     org_owner_model.objects.create(organization=organization,
             organization_user=new_user)
     return organization

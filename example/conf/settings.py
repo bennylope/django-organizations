@@ -1,4 +1,5 @@
 import os
+import django
 # Django settings for conf project.
 
 settings_dir = os.path.dirname(__file__)
@@ -15,8 +16,8 @@ MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'test.sqlite',                      # Or path to database file if using sqlite3.
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'test.sqlite',
     }
 }
 
@@ -129,7 +130,12 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.admin',
-    'south',
+)
+
+if django.VERSION[1] < 7:
+    INSTALLED_APPS += ('south',)
+
+INSTALLED_APPS += (
     'accounts',
     'vendors',
 )

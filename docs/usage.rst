@@ -47,5 +47,6 @@ token generating mechanism as Django's password reset functionality.
 Changing ownership
 ------------------
 
-.. note::
-    This is a to-do item, and an opportunity to contribute to the project!
+Changing ownership of an organization is as simple as updating the
+`OrganizationOwner` such that it points to the new user. There is as of yet no
+out of the box view to do this, but adding your own will be trivial.
