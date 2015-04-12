@@ -26,7 +26,7 @@
 
 __author__ = 'Ben Lopatin'
 __email__ = 'ben@wellfire.co'
-__version__ = '0.4.3'
+__version__ = '0.5.0'
 
 
 default_app_config = 'organizations.apps.OrganizationsConfig'
