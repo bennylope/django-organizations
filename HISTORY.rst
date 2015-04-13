@@ -3,6 +3,13 @@
 History
 =======
 
+0.5.0
+-----
+
+* Drops testing support for Django 1.5 and Django 1.6
+* Adds native Django database migrations
+* Adds tested support for Django 1.7 and Django 1.8
+
 0.4.3
 -----
 
