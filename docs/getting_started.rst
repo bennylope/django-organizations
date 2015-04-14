@@ -31,7 +31,7 @@ First add the application to your Python path. The easiest way is to use
 
 .. note::
 
-    If you are using South you must use 1.0. Django Organizations is
+    If you are using South you must use 1.0+. Django Organizations is
     incompatible with earlier versions of South, as this project uses the
     `south_migrations` folder for schema migrations in order to maintain Django
     1.7 compatability.

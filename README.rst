@@ -43,9 +43,13 @@ First add the application to your Python path. The easiest way is to use
 
     pip install django-organizations
 
-You should install by downloading the source and running::
+You can also install by downloading the source and running::
 
     $ python setup.py install
+
+By default you will need to install `django-extensions` or comparable libraries
+if you plan on adding Django Organizations as an installed app to your Django
+project. See below on configuring.
 
 .. note::
     If you are using Django<=1.4.10, you will need to install an up-to-date version
@@ -53,11 +57,10 @@ You should install by downloading the source and running::
     `six` with which Django Organizations is incompatible.
 
 .. note::
-
-    If you are using South you must use 1.0. Django Organizations is
+    If you are using South you must use 1.0+. Django Organizations is
     incompatible with earlier versions of South, as this project uses the
-    `south_migrations` folder for schema migrations in order to maintain Django
-    1.7 compatability.
+    `south_migrations` folder for South schema migrations in order to maintain
+    Django native migrations compatability.
 
 Configuring
 -----------
@@ -81,6 +84,30 @@ main application URL conf as well as your chosen invitation backend URLs::
         url(r'^accounts/', include('organizations.urls')),
         url(r'^invitations/', include(invitation_backend().get_urls())),
     )
+
+Timestamped models and auto slug fields
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The standard way of using Django Organizations is to use it as an installed app
+in your Django project. Django Organizations will need to use a
+`TimeStampedModel` and an auto slug field which are not included. By default it
+will try to import these from django-extensions, but you can configure your own
+in settings. The defaults::
+
+    ORGS_SLUGFIELD = 'django_extensions.db.fields.AutoSlugField'
+    ORGS_TIMESTAMPED_MODEL = 'django_extensions.db.models.TimeStampedModel'
+
+Alternatives::
+
+    ORGS_SLUGFIELD = 'autoslug.fields.AutoSlugField'
+    ORGS_TIMESTAMPED_MODEL = 'model_utils.models.TimeStampedModels'
+
+- `django-extensions <http://django-extensions.readthedocs.org/en/latest/>`_
+- `Django Autoslug <https://pythonhosted.org/django-autoslug/>`_
+- `django-model-utils <https://django-model-utils.readthedocs.org/en/latest/>`_
+
+Registration & invitation backends
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can specify a different invitation backend in your project settings, and
 the `invitation_backend` function will provide the URLs defined by that

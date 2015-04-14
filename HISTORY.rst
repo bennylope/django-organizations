@@ -3,6 +3,11 @@
 History
 =======
 
+0.5.1
+-----
+
+* Cleaned up installation instructions
+
 0.5.0
 -----
 

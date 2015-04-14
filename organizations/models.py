@@ -40,20 +40,22 @@ ORGS_SLUGFIELD = getattr(settings, 'ORGS_SLUGFIELD',
 ORGS_TIMESTAMPED_MODEL = getattr(settings, 'ORGS_TIMESTAMPED_MODEL',
         'django_extensions.db.models.TimeStampedModel')
 
+ERR_MSG = """You may need to install django-extensions or similar library. See
+the documentation."""
 
 try:
     module, klass = ORGS_SLUGFIELD.rsplit('.', 1)
     SlugField = getattr(import_module(module), klass)
 except:
-    raise ImproperlyConfigured("Your SlugField class, {0},"
-            " is improperly defined".format(ORGS_SLUGFIELD))
+    raise ImproperlyConfigured("Your SlugField class, '{0}',"
+            " is improperly defined. {1}".format(ORGS_SLUGFIELD, ERR_MSG))
 
 try:
     module, klass = ORGS_TIMESTAMPED_MODEL.rsplit('.', 1)
     TimeStampedModel = getattr(import_module(module), klass)
 except:
-    raise ImproperlyConfigured("Your TimeStampedBaseModel class, {0},"
-            " is improperly defined".format(ORGS_TIMESTAMPED_MODEL))
+    raise ImproperlyConfigured("Your TimeStampedBaseModel class, '{0}',"
+            " is improperly defined. {1}".format(ORGS_TIMESTAMPED_MODEL, ERR_MSG))
 
 
 def get_user_model():
