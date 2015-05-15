@@ -1,0 +1,104 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-05-14 20:09-0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: organizations/backends/defaults.py:68
+msgid "You must define a form_class"
+msgstr ""
+
+#: organizations/backends/defaults.py:110
+#: organizations/backends/defaults.py:112
+msgid "Your URL may have expired."
+msgstr ""
+
+#: organizations/base.py:162 organizations/forms.py:158
+msgid "The name of the organization"
+msgstr "The name of the organisation"
+
+#: organizations/forms.py:59
+msgid "Only the organization owner can change ownerhip"
+msgstr "Only the organisation owner can change ownerhip"
+
+#: organizations/forms.py:73
+msgid "The organization owner must be an admin"
+msgstr "The organisation owner must be an admin"
+
+#: organizations/forms.py:100
+msgid "This email address has been used multiple times."
+msgstr ""
+
+#: organizations/forms.py:114
+msgid "There is already an organization member with this email address!"
+msgstr "There is already an organisation member with this email address!"
+
+#: organizations/forms.py:125
+msgid "The email address for the account owner"
+msgstr ""
+
+#: organizations/forms.py:160 organizations/models.py:83
+msgid "The name in all lowercase, suitable for URL identification"
+msgstr ""
+
+#: organizations/mixins.py:94
+msgid "Wrong organization"
+msgstr "Wrong organisation"
+
+#: organizations/mixins.py:109
+msgid "Sorry, admins only"
+msgstr ""
+
+#: organizations/mixins.py:124
+msgid "You are not the organization owner"
+msgstr "You are not the organisation owner"
+
+#: organizations/models.py:86
+msgid "organization"
+msgstr "organisation"
+
+#: organizations/models.py:87
+msgid "organizations"
+msgstr "organisations"
+
+#: organizations/models.py:183
+msgid "organization user"
+msgstr "organisation user"
+
+#: organizations/models.py:184
+msgid "organization users"
+msgstr "organisation users"
+
+#: organizations/models.py:200
+msgid ""
+"Cannot delete organization owner before organization or transferring "
+"ownership."
+msgstr ""
+"Cannot delete organisation owner before organisation or transferring "
+"ownership."
+
+#: organizations/models.py:215
+msgid "organization owner"
+msgstr "organisation owner"
+
+#: organizations/models.py:216
+msgid "organization owners"
+msgstr "organisation owners"
+
+#: organizations/views.py:133
+msgid "Already active"
+msgstr ""
