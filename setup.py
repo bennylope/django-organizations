@@ -32,6 +32,7 @@ setup(
     packages=[
         'organizations',
         'organizations.backends',
+        'organizations.migrations',
         'organizations.south_migrations',
         'organizations.templatetags',
     ],

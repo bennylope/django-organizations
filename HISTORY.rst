@@ -3,6 +3,11 @@
 History
 =======
 
+0.5.2
+-----
+
+* Fixes packaging bug
+
 0.5.1
 -----
 
