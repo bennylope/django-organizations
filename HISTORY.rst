@@ -3,6 +3,11 @@
 History
 =======
 
+0.5.3
+-----
+
+* Fixes migrations problem in build
+
 0.5.2
 -----
 
