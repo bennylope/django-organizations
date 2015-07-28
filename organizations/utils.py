@@ -69,7 +69,7 @@ def create_organization(user, name, slug=None, is_active=None,
     org_defaults.update({'name': name})
     organization = org_model.objects.create(**org_defaults)
 
-    org_user_defaults.update({'organization': organization, 'user': user})
+    org_user_defaults.update({'organization': organization, 'user': user, 'is_admin': True})
     new_user = org_user_model.objects.create(**org_user_defaults)
 
     org_owner_model.objects.create(organization=organization,
