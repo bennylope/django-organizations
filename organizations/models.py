@@ -23,12 +23,12 @@
 # OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+from importlib import import_module
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.db.models import get_model
-from django.utils.importlib import import_module
 from django.utils.translation import ugettext_lazy as _
 
 from .base import OrganizationBase, OrganizationUserBase, OrganizationOwnerBase
