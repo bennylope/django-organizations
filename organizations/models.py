@@ -24,11 +24,11 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 from importlib import import_module
+from django.apps import apps
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
 from django.core.urlresolvers import reverse
 from django.db import models
-from django.db.models import get_model
 from django.utils.translation import ugettext_lazy as _
 
 from .base import OrganizationBase, OrganizationUserBase, OrganizationOwnerBase
@@ -64,7 +64,7 @@ def get_user_model():
     builtin until Django 1.5.
     """
     try:
-        klass = get_model(USER_MODEL.split('.')[0], USER_MODEL.split('.')[1])
+        klass = apps.get_model(USER_MODEL.split('.')[0], USER_MODEL.split('.')[1])
     except:
         raise ImproperlyConfigured("Your AUTH_USER_MODEL class '{0}'"
                 " is improperly defined".format(USER_MODEL))
