@@ -8,4 +8,4 @@ git+git://github.com/django-nose/django-nose.git#egg=django-nose
 django-extensions>=0.9
 
 # Required for mocking signals
-mock-django>=0.6.5
+git+git://github.com/bennylope/mock-django.git@5d3b6955f58db07e3096c9bd60b213a246c3ed4f#egg=mock-django
