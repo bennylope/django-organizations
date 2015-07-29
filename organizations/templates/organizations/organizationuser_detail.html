@@ -1,5 +1,4 @@
 {% extends "organizations_base.html" %}
-{% load url from future %}
 {% block content %}
 <h1> {{ organization_user }} @ {{ organization }}</h1>
 {% if user == organization_user.user %}This is you!{% endif %}
