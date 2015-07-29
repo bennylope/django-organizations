@@ -44,17 +44,13 @@ def create_organization(user, name, slug=None, is_active=None,
     org_model = kwargs.pop('model', None) or kwargs.pop('org_model', None) or Organization
     kwargs.pop('org_user_model', None)  # Discard deprecated argument
 
-    # Django 1.8 introduced the `related_model` attribute. Previously the
-    # `related.model` attribute referred to model B as pointed to by model A.
-    # In Django 1.8 that refers back to model A. Instead
-    # `related.related_model` is used to point to model B, which is what we
-    # want here.
+    org_owner_model = org_model.owner.related.related_model
     try:
-        org_user_model = org_model.organization_users.related.related_model
-        org_owner_model = org_model.owner.related.related_model
+        # Django 1.9
+        org_user_model = org_model.organization_users.rel.related_model
     except AttributeError:
-        org_user_model = org_model.organization_users.related.model
-        org_owner_model = org_model.owner.related.model
+        # Django 1.8
+        org_user_model = org_model.organization_users.related.related_model
 
     if org_defaults is None:
         org_defaults = {}
