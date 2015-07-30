@@ -36,8 +36,7 @@ try:
         FIXTURE_DIRS=['tests/fixtures'],
         ORGS_TIMESTAMPED_MODEL='django_extensions.db.models.TimeStampedModel',
     )
-    if hasattr(django, 'setup'):
-        django.setup()
+    django.setup()
 
     from django_nose import NoseTestSuiteRunner
 except ImportError:

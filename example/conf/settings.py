@@ -132,8 +132,6 @@ INSTALLED_APPS = (
     'django.contrib.admin',
 )
 
-if django.VERSION[1] < 7:
-    INSTALLED_APPS += ('south',)
 
 INSTALLED_APPS += (
     'accounts',

@@ -23,8 +23,6 @@
 # OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-import django
-
 from django.conf import settings
 from django.db import models
 from django.db.models.fields import FieldDoesNotExist
@@ -73,11 +71,6 @@ class OrgMeta(ModelBase):
         # Workaround compatibility issue with six.with_metaclass() and custom
         # Django model metaclasses:
         if not attrs and name == 'NewBase':
-            if django.VERSION < (1, 5):
-                # Let Django fully ignore the class which is inserted in between.
-                # Django 1.5 fixed this, see https://code.djangoproject.com/ticket/19688
-                attrs['__module__'] = 'django.utils.six'
-                attrs['Meta'] = type('Meta', (), {'abstract': True})
             return super(OrgMeta, cls).__new__(cls, name, bases, attrs)
 
         base_classes = ['OrgModel', 'OrgUserModel', 'OrgOwnerModel']
