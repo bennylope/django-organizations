@@ -107,9 +107,9 @@ class BaseBackend(object):
         try:
             user = self.user_model.objects.get(id=user_id, is_active=False)
         except self.user_model.DoesNotExist:
-            raise HttpResponseForbidden(_("Your URL may have expired."))
+            return HttpResponseForbidden(_("Your URL may have expired."))
         if not RegistrationTokenGenerator().check_token(user, token):
-            raise HttpResponseForbidden(_("Your URL may have expired."))
+            return HttpResponseForbidden(_("Your URL may have expired."))
         form = self.get_form(data=request.POST or None, instance=user)
         if form.is_valid():
             form.instance.is_active = True
