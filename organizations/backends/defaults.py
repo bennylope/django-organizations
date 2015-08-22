@@ -33,7 +33,7 @@ from django.conf.urls import patterns, url
 from django.contrib.auth import authenticate, login
 from django.core.urlresolvers import reverse
 from django.core.mail import EmailMessage
-from django.http import Http404
+from django.http import HttpResponseForbidden
 from django.shortcuts import render, redirect
 from django.template import Context, loader
 from django.utils.translation import ugettext as _
@@ -107,9 +107,9 @@ class BaseBackend(object):
         try:
             user = self.user_model.objects.get(id=user_id, is_active=False)
         except self.user_model.DoesNotExist:
-            raise Http404(_("Your URL may have expired."))
+            raise HttpResponseForbidden(_("Your URL may have expired."))
         if not RegistrationTokenGenerator().check_token(user, token):
-            raise Http404(_("Your URL may have expired."))
+            raise HttpResponseForbidden(_("Your URL may have expired."))
         form = self.get_form(data=request.POST or None, instance=user)
         if form.is_valid():
             form.instance.is_active = True
