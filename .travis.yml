@@ -7,8 +7,6 @@ env:
   - TOX_ENV=py27-django18
   - TOX_ENV=pypy-django19
   - TOX_ENV=pypy-django18
-  - TOX_ENV=pypy3-django19
-  - TOX_ENV=pypy3-django18
   - TOX_ENV=flake8
 install:
   - pip install tox
