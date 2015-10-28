@@ -222,7 +222,7 @@ context variable names by adding a view attributes in your own class or in the
         org_model = Team
         org_context_name = 'team'
 
-Mutliple organizations with simple inheritence
+Multiple organizations with simple inheritence
 ==============================================
 
 You can take the inheritence strategy one step further and add additional
