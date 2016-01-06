@@ -3,7 +3,7 @@ django-organizations
 ====================
 
 :Info: Groups and multi-user account management
-:Version: 0.5.1
+:Version: 0.6.0
 :Author: Ben Lopatin (http://benlopatin.com)
 
 .. image:: https://secure.travis-ci.org/bennylope/django-organizations.svg?branch=master
@@ -176,8 +176,8 @@ Targets & testing
 
 The codebase is targeted at tested against:
 
-* Django 1.8.x against Python 2.7, 3.4
-* Django 1.9.x against Python 2.7, 3.4
+* Django 1.8.x against Python 2.7, 3.4, 3.5
+* Django 1.9.x against Python 2.7, 3.4, 3.5
 
 To run the tests against all target environments, install `tox
 <https://testrun.org/tox/latest/>`_ and then execute the command:
