@@ -10,13 +10,13 @@ django-organizations
     :alt: Build Status
     :target: http://travis-ci.org/bennylope/django-organizations
 
-.. image:: https://pypip.in/v/django-organizations/badge.svg
-    :alt: Current PyPI release
-    :target: https://crate.io/packages/django-organizations
+.. image:: https://img.shields.io/pypi/v/django-organizations.svg
+    :alt: PyPI relesae
+    :target: https://pypi.python.org/pypi/django-organizations
 
-.. image:: https://pypip.in/d/django-organizations/badge.svg
-    :alt: Download count
-    :target: https://crate.io/packages/django-organizations
+.. image:: https://img.shields.io/pypi/dw/django-organizations.svg
+    :alt: PyPI downloads:
+    :target: https://pypi.python.org/pypi/django-organizations
 
 Separate individual user identity from accounts and subscriptions. Django
 Organizations adds user-managed, multi-user groups to your Django project. Use
