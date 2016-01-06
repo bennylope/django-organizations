@@ -23,9 +23,9 @@
 # OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-from django.contrib.sites.models import get_current_site
+from django.contrib.sites.shortcuts import get_current_site
 from django.core.urlresolvers import reverse
-from django.http import Http404
+from django.http import HttpResponseBadRequest
 from django.shortcuts import render, redirect
 from django.utils.translation import ugettext as _
 from django.views.generic import (ListView, DetailView, UpdateView, CreateView,
@@ -130,7 +130,7 @@ class BaseOrganizationUserRemind(OrganizationUserMixin, DetailView):
     def get_object(self, **kwargs):
         self.organization_user = super(BaseOrganizationUserRemind, self).get_object()
         if self.organization_user.user.is_active:
-            raise Http404(_("Already active"))  # TODO add better error
+            raise HttpResponseBadRequest(_("User is already active"))
         return self.organization_user
 
     def post(self, request, *args, **kwargs):

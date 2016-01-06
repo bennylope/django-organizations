@@ -3,7 +3,7 @@ django-organizations
 ====================
 
 :Info: Groups and multi-user account management
-:Version: 0.5.1
+:Version: 0.6.0
 :Author: Ben Lopatin (http://benlopatin.com)
 
 .. image:: https://secure.travis-ci.org/bennylope/django-organizations.svg?branch=master
@@ -50,17 +50,6 @@ You can also install by downloading the source and running::
 By default you will need to install `django-extensions` or comparable libraries
 if you plan on adding Django Organizations as an installed app to your Django
 project. See below on configuring.
-
-.. note::
-    If you are using Django<=1.4.10, you will need to install an up-to-date version
-    of the `six` package. Previous Django versions included an older version of
-    `six` with which Django Organizations is incompatible.
-
-.. note::
-    If you are using South you must use 1.0+. Django Organizations is
-    incompatible with earlier versions of South, as this project uses the
-    `south_migrations` folder for South schema migrations in order to maintain
-    Django native migrations compatability.
 
 Configuring
 -----------
@@ -187,9 +176,8 @@ Targets & testing
 
 The codebase is targeted at tested against:
 
-* Django 1.4.x against Python 2.7
-* Django 1.7.x against Python 2.7, 3.3, 3.4
-* Django 1.8.x against Python 2.7, 3.3, 3.4
+* Django 1.8.x against Python 2.7, 3.4, 3.5
+* Django 1.9.x against Python 2.7, 3.4, 3.5
 
 To run the tests against all target environments, install `tox
 <https://testrun.org/tox/latest/>`_ and then execute the command:

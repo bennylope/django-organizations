@@ -222,7 +222,7 @@ context variable names by adding a view attributes in your own class or in the
         org_model = Team
         org_context_name = 'team'
 
-Mutliple organizations with simple inheritence
+Multiple organizations with simple inheritence
 ==============================================
 
 You can take the inheritence strategy one step further and add additional
@@ -233,7 +233,7 @@ organization classes if need be.::
     from sports.models import Sport
 
     class Association(Organization):
-        sport = models.ForeignKey(Sport, related_name="teams")
+        sport = models.ForeignKey(Sport, related_name="associations")
 
     class Team(Organization):
         association = models.ForeignKey(Association, related_name="teams")
@@ -290,5 +290,5 @@ timestamps, a slug field on the organization, and an `is_admin` field on the
 organization user. The first two are implemented with additional dependencies.
 
 If you want a slug field or timestamps on your models, you'll need to add those
-in. However you can do so however you want. And if you don't any of those
+in. However you can do so however you want. And if you don't want any of those
 fields, you don't have to take them.

@@ -1,16 +1,15 @@
 language: python
 python: 2.7
 env:
+  - TOX_ENV=py34-django19
   - TOX_ENV=py34-django18
-  - TOX_ENV=py34-django17
-  - TOX_ENV=py33-django18
-  - TOX_ENV=py33-django17
+  - TOX_ENV=py27-django19
   - TOX_ENV=py27-django18
-  - TOX_ENV=py27-django17
+  - TOX_ENV=pypy-django19
   - TOX_ENV=pypy-django18
-  - TOX_ENV=pypy3-django18
   - TOX_ENV=flake8
 install:
   - pip install tox
 script:
   - tox -e $TOX_ENV
+sudo: false

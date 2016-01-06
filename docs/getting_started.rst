@@ -28,18 +28,6 @@ First add the application to your Python path. The easiest way is to use
 
     pip install django-organizations
 
-.. note::
-    If you are using Django<=1.4.10 you will need to install an up-to-date
-    version of the `six` package. Previous Django versions included an older
-    version of `six` with which Django Organizations is incompatible.
-
-.. note::
-
-    If you are using South you must use 1.0+. Django Organizations is
-    incompatible with earlier versions of South, as this project uses the
-    `south_migrations` folder for schema migrations in order to maintain Django
-    1.7 compatability.
-
 Upgrading Django for existing installations
 -------------------------------------------
 

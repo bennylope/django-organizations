@@ -3,6 +3,16 @@
 History
 =======
 
+0.6.0
+-----
+
+* Adds Django 1.9 support
+* Drops support for Django 1.7
+* Fixes migration issue related to incomplete support for configurable model
+  fields and base model. If you are upgrading (especially from a fork of the
+  development version of django-organization) you may have an extra migration,
+  0002_auto_20151005_1823, which has been removed.
+
 0.5.3
 -----
 
