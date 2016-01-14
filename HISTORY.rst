@@ -3,6 +3,11 @@
 History
 =======
 
+0.6.1
+-----
+
+* Fixes email parsing from settings
+
 0.6.0
 -----
 

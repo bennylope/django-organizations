@@ -12,3 +12,4 @@ Contributors:
 * `Omer Katz <https://github.com/thedrow>`_
 * `Andrew Velis <https://github.com/avelis>`_
 * `Tom Davis <https://github.com/tdavis>`_
+* `Nicolas Noirbent <https://github.com/noirbee>`_
