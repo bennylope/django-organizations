@@ -26,6 +26,7 @@
 """Backend classes should provide common interface
 """
 
+import email.utils
 import uuid
 
 from django.conf import settings
@@ -140,7 +141,7 @@ class BaseBackend(object):
         """Utility method for sending emails to new users"""
         if sender:
             from_email = "%s %s <%s>" % (sender.first_name, sender.last_name,
-                    settings.DEFAULT_FROM_EMAIL)
+                    email.utils.parseaddr(settings.DEFAULT_FROM_EMAIL)[1])
             reply_to = "%s %s <%s>" % (sender.first_name, sender.last_name,
                     sender.email)
         else:
