@@ -82,7 +82,7 @@ on your project::
             self.service_provider = self.organization.provider
             if not self.organization.is_admin(request.user) and not \
                     self.service_provider.is_member(request.user):
-                return HttpResponseForbidden(_("Sorry, admins only"))
+                raise PermissionDenied(_("Sorry, admins only"))
             return super(AdminRequiredMixin, self).dispatch(request, *args,
                     **kwargs)
 
@@ -118,7 +118,7 @@ verbosity::
             self.service_provider = self.organization.provider
             if not self.organization.is_admin(request.user) and not \
                     self.service_provider.is_member(request.user):
-                return HttpResponseForbidden(_("Sorry, admins only"))
+                raise PermissionDenied(_("Sorry, admins only"))
             return super(AdminRequiredMixin, self).dispatch(request, *args,
                     **kwargs)
 

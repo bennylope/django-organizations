@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from django.core.exceptions import PermissionDenied
 from django.http import HttpResponse
 from django.test import TestCase
 from django.test.client import RequestFactory
@@ -85,8 +86,9 @@ class AccessMixinTests(TestCase):
             organization_pk=self.nirvana.pk).status_code)
         self.assertEqual(200, MemberView().dispatch(self.dave_request,
             organization_pk=self.nirvana.pk).status_code)
-        self.assertEqual(403, MemberView().dispatch(self.dummy_request,
-            organization_pk=self.nirvana.pk).status_code)
+        with self.assertRaises(PermissionDenied):
+            MemberView().dispatch(self.dummy_request,
+                                  organization_pk=self.nirvana.pk)
 
     def test_admin_access(self):
         class AdminView(AdminRequiredMixin, OrgView):
@@ -98,18 +100,21 @@ class AccessMixinTests(TestCase):
         # Superuser
         self.assertEqual(200, AdminView().dispatch(self.dave_request,
             organization_pk=self.nirvana.pk).status_code)
-        self.assertEqual(403, AdminView().dispatch(self.dummy_request,
-            organization_pk=self.nirvana.pk).status_code)
+        with self.assertRaises(PermissionDenied):
+            AdminView().dispatch(self.dummy_request,
+                                 organization_pk=self.nirvana.pk)
 
     def test_owner_access(self):
         class OwnerView(OwnerRequiredMixin, OrgView):
             pass
         self.assertEqual(200, OwnerView().dispatch(self.kurt_request,
             organization_pk=self.nirvana.pk).status_code)
-        self.assertEqual(403, OwnerView().dispatch(self.krist_request,
-            organization_pk=self.nirvana.pk).status_code)
+        with self.assertRaises(PermissionDenied):
+            OwnerView().dispatch(self.krist_request,
+                                 organization_pk=self.nirvana.pk)
         # Superuser
         self.assertEqual(200, OwnerView().dispatch(self.dave_request,
             organization_pk=self.nirvana.pk).status_code)
-        self.assertEqual(403, OwnerView().dispatch(self.dummy_request,
-            organization_pk=self.nirvana.pk).status_code)
+        with self.assertRaises(PermissionDenied):
+            OwnerView().dispatch(self.dummy_request,
+                                 organization_pk=self.nirvana.pk)
