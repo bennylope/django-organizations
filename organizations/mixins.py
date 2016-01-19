@@ -22,8 +22,7 @@
 # CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 # OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
-from django.http import HttpResponseForbidden
+from django.core.exceptions import PermissionDenied
 from django.shortcuts import get_object_or_404
 from django.utils.translation import ugettext_lazy as _
 
@@ -91,7 +90,7 @@ class MembershipRequiredMixin(object):
         self.organization = self.get_organization()
         if not self.organization.is_member(request.user) and not \
                 request.user.is_superuser:
-            return HttpResponseForbidden(_("Wrong organization"))
+            raise PermissionDenied(_("Wrong organization"))
         return super(MembershipRequiredMixin, self).dispatch(request, *args,
                 **kwargs)
 
@@ -106,7 +105,7 @@ class AdminRequiredMixin(object):
         self.organization = self.get_organization()
         if not self.organization.is_admin(request.user) and not \
                 request.user.is_superuser:
-            return HttpResponseForbidden(_("Sorry, admins only"))
+            raise PermissionDenied(_("Sorry, admins only"))
         return super(AdminRequiredMixin, self).dispatch(request, *args,
                 **kwargs)
 
@@ -121,6 +120,6 @@ class OwnerRequiredMixin(object):
         self.organization = self.get_organization()
         if self.organization.owner.organization_user.user != request.user \
                 and not request.user.is_superuser:
-            return HttpResponseForbidden(_("You are not the organization owner"))
+            raise PermissionDenied(_("You are not the organization owner"))
         return super(OwnerRequiredMixin, self).dispatch(request, *args,
                 **kwargs)
