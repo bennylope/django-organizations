@@ -32,7 +32,7 @@ from .views import (OrganizationList, OrganizationDetail,
         OrganizationUserCreate, OrganizationUserRemind, OrganizationUserDelete)
 
 
-urlpatterns = patterns('',
+urlpatterns = [
     # Organization URLs
     url(r'^$', view=login_required(OrganizationList.as_view()),
         name="organization_list"),
@@ -67,4 +67,4 @@ urlpatterns = patterns('',
     url(r'^(?P<organization_pk>[\d]+)/people/(?P<user_pk>[\d]+)/delete/$',
         view=login_required(OrganizationUserDelete.as_view()),
         name="organization_user_delete"),
-)
+]
