@@ -69,20 +69,20 @@ Model admin definitions
     class AccountUserAdmin(admin.ModelAdmin):
         form = UserAdminForm()
 
-    admin.site.unregsiter(Organization)
-    admin.site.unregsiter(OrganizationUser)
-    admin.site.unregsiter(OrganizationOwner)
+    admin.site.unregister(Organization)
+    admin.site.unregister(OrganizationUser)
+    admin.site.unregister(OrganizationOwner)
     admin.site.register(Account)
     admin.site.register(AccountUser, AccountUserAdmin)
 
-It's very simle. All it does is ensure that the default Organization model
+It's very simple. All it does is ensure that the default Organization model
 interfaces are hidden and then substitute the form class on the AccountUser
 admin.
 
 That form is where the business all happens
 
 The admin form class
-~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~
 
 We'll go through this piece by piece, but here's the full class::
 
@@ -187,7 +187,7 @@ this, of course.::
 
 .. TODO add backend specs
 
-Custom org with simple inheritence
+Custom org with simple inheritance
 ==================================
 
 Simply extending the organization model with your own requires the least amount
@@ -222,10 +222,10 @@ context variable names by adding a view attributes in your own class or in the
         org_model = Team
         org_context_name = 'team'
 
-Multiple organizations with simple inheritence
+Multiple organizations with simple inheritance
 ==============================================
 
-You can take the inheritence strategy one step further and add additional
+You can take the inheritance strategy one step further and add additional
 organization classes if need be.::
 
     from django.db import models
@@ -248,7 +248,7 @@ Advanced customization
 ======================
 
 As of version 0.2.0 you can add your own fully customized models using unique
-table sets, i.e. single table inheritence. In order to do this, your app
+table sets, i.e. single table inheritance. In order to do this, your app
 should define an organization model, an organization user model, and an
 organization owner model, each inheriting from one of the base classes as
 follows. Here's an example from an `accounts` app::
@@ -276,7 +276,7 @@ The `accounts_account` table will include all of the necessary fields for this
 and only this organization model.
 
 .. note::
-    Unlike in the example of multi-table inheritence, you cannot add more than
+    Unlike in the example of multi-table inheritance, you cannot add more than
     one custom organization model to an individual app. Each additional
     organization class you want must be defined in its own app.
     Only one organization set per app.
@@ -285,7 +285,7 @@ Difference between default models
 ---------------------------------
 
 The abstract base models provide the almost-bare minimum fields required to
-manage organizations. The default models are faily spare, but include
+manage organizations. The default models are fairly spare, but include
 timestamps, a slug field on the organization, and an `is_admin` field on the
 organization user. The first two are implemented with additional dependencies.
 
