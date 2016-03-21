@@ -31,7 +31,7 @@ import uuid
 
 from django.conf import settings
 from django.conf.urls import patterns, url
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, get_user_model
 from django.core.urlresolvers import reverse
 from django.core.mail import EmailMessage
 from django.http import Http404
@@ -39,7 +39,6 @@ from django.shortcuts import render, redirect
 from django.template import Context, loader
 from django.utils.translation import ugettext as _
 
-from ..models import get_user_model
 from ..utils import create_organization
 from ..utils import model_field_attr
 from .forms import UserRegistrationForm, OrganizationRegistrationForm

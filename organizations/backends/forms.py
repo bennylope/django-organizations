@@ -24,8 +24,9 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 from django import forms
+from django.contrib.auth import get_user_model
 
-from ..models import Organization, get_user_model
+from ..models import Organization
 
 
 class UserRegistrationForm(forms.ModelForm):

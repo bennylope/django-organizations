@@ -58,22 +58,6 @@ except:
             " is improperly defined. {1}".format(ORGS_TIMESTAMPED_MODEL, ERR_MSG))
 
 
-def get_user_model():
-    """
-    Returns the chosen user model as a class. This functionality won't be
-    builtin until Django 1.5.
-    """
-    try:
-        klass = apps.get_model(USER_MODEL.split('.')[0], USER_MODEL.split('.')[1])
-    except:
-        raise ImproperlyConfigured("Your AUTH_USER_MODEL class '{0}'"
-                " is improperly defined".format(USER_MODEL))
-    if klass is None:
-        raise ImproperlyConfigured("Your AUTH_USER_MODEL class '{0}'"
-                " is not installed".format(USER_MODEL))
-    return klass
-
-
 class Organization(OrganizationBase, TimeStampedModel):
     """
     Default Organization model.
