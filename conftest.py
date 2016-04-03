@@ -29,10 +29,10 @@ def pytest_configure():
             "organizations",
             "test_custom",
         ],
-        MIDDLEWARE_CLASSES=(),  # Silence Django 1.7 warnings
+        MIDDLEWARE_CLASSES=[],
         SITE_ID=1,
         FIXTURE_DIRS=['tests/fixtures'],
-        ORGS_TIMESTAMPED_MODEL='django_extensions.db.models.TimeStampedModel',
+        ORGS_SLUGFIELD='autoslug.AutoSlugField',
         ROOT_URLCONF="tests.urls",
     )
     django.setup()

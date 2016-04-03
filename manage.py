@@ -34,7 +34,8 @@ settings.configure(
     MIDDLEWARE_CLASSES=(),  # Silence Django 1.7 warnings
     SITE_ID=1,
     FIXTURE_DIRS=['tests/fixtures'],
-    ORGS_TIMESTAMPED_MODEL='django_extensions.db.models.TimeStampedModel',
+    ORGS_SLUGFIELD='autoslug.AutoSlugField',
+    # ORGS_SLUGFIELD='django_extensions.db.fields.AutoSlugField',
     INSTALLED_APPS=INSTALLED_APPS,
     ROOT_URLCONF="tests.urls",
 )

@@ -23,7 +23,8 @@
 # OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-from importlib import import_module
+import warnings
+
 from django.apps import apps
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
@@ -32,30 +33,23 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 from .base import OrganizationBase, OrganizationUserBase, OrganizationOwnerBase
+from .fields import SlugField, AutoCreatedField, AutoLastModifiedField
 from .signals import user_added, user_removed, owner_changed
 
 USER_MODEL = getattr(settings, 'AUTH_USER_MODEL', 'auth.User')
-ORGS_SLUGFIELD = getattr(settings, 'ORGS_SLUGFIELD',
-        'django_extensions.db.fields.AutoSlugField')
-ORGS_TIMESTAMPED_MODEL = getattr(settings, 'ORGS_TIMESTAMPED_MODEL',
-        'django_extensions.db.models.TimeStampedModel')
+ORGS_TIMESTAMPED_MODEL = getattr(settings, 'ORGS_TIMESTAMPED_MODEL', None)
 
-ERR_MSG = """You may need to install django-extensions or similar library. See
-the documentation."""
+if ORGS_TIMESTAMPED_MODEL:
+    warnings.warn("Configured TimestampModel has been replaced and is now ignored.",
+                  DeprecationWarning)
 
-try:
-    module, klass = ORGS_SLUGFIELD.rsplit('.', 1)
-    SlugField = getattr(import_module(module), klass)
-except:
-    raise ImproperlyConfigured("Your SlugField class, '{0}',"
-            " is improperly defined. {1}".format(ORGS_SLUGFIELD, ERR_MSG))
 
-try:
-    module, klass = ORGS_TIMESTAMPED_MODEL.rsplit('.', 1)
-    TimeStampedModel = getattr(import_module(module), klass)
-except:
-    raise ImproperlyConfigured("Your TimeStampedBaseModel class, '{0}',"
-            " is improperly defined. {1}".format(ORGS_TIMESTAMPED_MODEL, ERR_MSG))
+class TimeStampedModel(models.Model):
+    created = AutoCreatedField()
+    modified = AutoLastModifiedField()
+
+    class Meta:
+        abstract = True
 
 
 class Organization(OrganizationBase, TimeStampedModel):
