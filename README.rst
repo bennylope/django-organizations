@@ -3,7 +3,7 @@ django-organizations
 ====================
 
 :Info: Groups and multi-user account management
-:Version: 0.6.0
+:Version: 0.7.0
 :Author: Ben Lopatin (http://benlopatin.com)
 
 .. image:: https://secure.travis-ci.org/bennylope/django-organizations.svg?branch=master
@@ -74,26 +74,26 @@ main application URL conf as well as your chosen invitation backend URLs::
         url(r'^invitations/', include(invitation_backend().get_urls())),
     )
 
-Timestamped models and auto slug fields
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Auto slug field
+~~~~~~~~~~~~~~~
 
 The standard way of using Django Organizations is to use it as an installed app
-in your Django project. Django Organizations will need to use a
-`TimeStampedModel` and an auto slug field which are not included. By default it
-will try to import these from django-extensions, but you can configure your own
-in settings. The defaults::
+in your Django project. Django Organizations will need to use an auto slug
+field which are not included. By default it will try to import these from
+django-extensions, but you can configure your own in settings. The default::
 
     ORGS_SLUGFIELD = 'django_extensions.db.fields.AutoSlugField'
-    ORGS_TIMESTAMPED_MODEL = 'django_extensions.db.models.TimeStampedModel'
 
-Alternatives::
+Alternative::
 
     ORGS_SLUGFIELD = 'autoslug.fields.AutoSlugField'
-    ORGS_TIMESTAMPED_MODEL = 'model_utils.models.TimeStampedModels'
+
+Previous versions allowed you to specify an `ORGS_TIMESTAMPED_MODEL` path. This
+is now ignored and the functionality satisifed by a vendored solution. A
+warning will be given but this *should not* have any effect on your code.
 
 - `django-extensions <http://django-extensions.readthedocs.org/en/latest/>`_
 - `Django Autoslug <https://pythonhosted.org/django-autoslug/>`_
-- `django-model-utils <https://django-model-utils.readthedocs.org/en/latest/>`_
 
 Registration & invitation backends
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

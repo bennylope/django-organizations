@@ -3,6 +3,19 @@
 History
 =======
 
+0.7.0
+-----
+
+Fixes some issues which may require some users to clear out extraneous
+migrations produced by using configurable base classes.
+
+* Fixes condition where `create_organization` produces an owner who is not an
+  admin user.
+* Fixes issue in slug field import resulting in spurious migrations.
+* Immediately deprecates configurable TimeStampedModel import. This caused
+  serious problems with Django's migration library which were not easily
+  resolved for a feature that added little value.
+
 0.6.1
 -----
 

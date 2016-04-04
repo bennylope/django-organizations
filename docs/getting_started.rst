@@ -82,28 +82,25 @@ URLs defined by that backend. You can do the same with the
     ORGS_INVITATION_BACKEND = 'myapp.backends.MyInvitationBackend'
     ORGS_REGISTRATION_BACKEND = 'myapp.backends.MyRegistrationBackend'
 
-Timestamp model and slug field
-------------------------------
+Auto slug field
+---------------
 
 Historically Django-Organizations relied on `django-extensions
 <http://django-extensions.readthedocs.org/en/latest/>`_ for the base
-`TimeStampedModel
-<http://django-extensions.readthedocs.org/en/latest/model_extensions.html>`_
-and `AutoSlugField
+`AutoSlugField
 <http://django-extensions.readthedocs.org/en/latest/field_extensions.html>`_.
-While these work great, this does require that every project install
-django-extensions for two small features.
+While django-extensions is great, this does require that every project install
+django-extensions for this one small feature.
 
 If you decide to use the default django-organization models by adding
 `organizations` to your INSTALLED_APPS, you can choose a different
-TimeStampedModel base and AutoSlugField. Just specify the full dotted path like so::
+AutoSlugField. Just specify the full dotted path like so::
 
     ORGS_SLUGFIELD = 'django_extensions.db.fields.AutoSlugField'
-    ORGS_TIMESTAMPED_MODEL = 'django_extensions.db.models.TimeStampedModel'
 
-While you can specify the source of these classes, **their interfaces must be
-consistent.** The TimeStampedModel should have two timestamp fields
-(`DateTimeField`) named `created` and `modified`, respectively. The SlugField
+While you can specify the source of this class, **its interfaces must be
+consistent**, including keyword arguments. Otherwise you will end up generating
+extraneous and possibly conflicting migrations in your own app. The SlugField
 must accept the `populate_from` keyword argument.
 
 Users and multi-account membership
