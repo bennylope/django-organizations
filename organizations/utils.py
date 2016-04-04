@@ -55,7 +55,10 @@ def create_organization(user, name, slug=None, is_active=None,
     if org_defaults is None:
         org_defaults = {}
     if org_user_defaults is None:
-        org_user_defaults = {}
+        if 'is_admin' in org_user_model._meta.get_all_field_names():
+            org_user_defaults = {'is_admin': True}
+        else:
+            org_user_defaults = {}
 
     if slug is not None:
         org_defaults.update({'slug': slug})

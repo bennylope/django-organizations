@@ -21,6 +21,7 @@ class CreateOrgTests(TestCase):
         acme = create_organization(self.user, "Acme", org_defaults={"slug": "acme-slug"})
         self.assertTrue(isinstance(acme, Organization))
         self.assertEqual(self.user, acme.owner.organization_user.user)
+        self.assertTrue(acme.owner.organization_user.is_admin)
 
     def test_create_custom_org(self):
         custom = create_organization(self.user, "Custom", model=Account)
