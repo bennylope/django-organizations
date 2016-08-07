@@ -87,6 +87,14 @@ class Organization(OrganizationBase, TimeStampedModel):
         # User added signal
         user_added.send(sender=self, user=user)
         return org_user
+        
+    def remove_user(self, user):
+        """
+        Deletes a user from an organization.
+        """
+        org_user = OrganizationUser.objects.get(user=user,
+                                                organization=self)
+        org_user.delete()
 
     def remove_user(self, user):
         """
