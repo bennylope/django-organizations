@@ -68,11 +68,11 @@ main application URL conf as well as your chosen invitation backend URLs::
 
     from organizations.backends import invitation_backend
 
-    urlpatterns = patterns('',
+    urlpatterns = [
         ...
         url(r'^accounts/', include('organizations.urls')),
         url(r'^invitations/', include(invitation_backend().get_urls())),
-    )
+    ]
 
 Auto slug field
 ~~~~~~~~~~~~~~~

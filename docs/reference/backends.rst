@@ -25,9 +25,9 @@ method:::
 
     from organizations.backends import invitation_backend
 
-    urlpatterns = patterns('',
+    urlpatterns = [
         url(r'^invitations/', include(invitation_backend().get_urls())),
-     )
+     ]
 
 .. _registration-backend:
 

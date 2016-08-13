@@ -30,7 +30,7 @@ import email.utils
 import uuid
 
 from django.conf import settings
-from django.conf.urls import patterns, url
+from django.conf.urls import url
 from django.contrib.auth import authenticate, login, get_user_model
 from django.core.urlresolvers import reverse
 from django.core.mail import EmailMessage
@@ -176,13 +176,13 @@ class RegistrationBackend(BaseBackend):
         return reverse('registration_success')
 
     def get_urls(self):
-        return patterns('',
+        return [
             url(r'^complete/$', view=self.success_view,
                 name="registration_success"),
             url(r'^(?P<user_id>[\d]+)-(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
                 view=self.activate_view, name="registration_register"),
             url(r'^$', view=self.create_view, name="registration_create"),
-        )
+        ]
 
     def register_by_email(self, email, sender=None, request=None, **kwargs):
         """
@@ -256,10 +256,10 @@ class InvitationBackend(BaseBackend):
 
     def get_urls(self):
         # TODO enable naming based on a model?
-        return patterns('',
+        return [
             url(r'^(?P<user_id>[\d]+)-(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
                 view=self.activate_view, name="invitations_register"),
-        )
+        ]
 
     def invite_by_email(self, email, sender=None, request=None, **kwargs):
         """Creates an inactive user with the information we know and then sends

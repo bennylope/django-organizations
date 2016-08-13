@@ -201,10 +201,10 @@ Your URLs can be configured as normal::
 
     from organizations.backends import invitation_backend
 
-    urlpatterns = patterns('',
+    urlpatterns = [
         ...
         url(r'^invite/', include(invitation_backend().get_urls())),
-    )
+    ]
 
 The `invitation_backend` function simply returns the URL patterns from the
 `get_urls` method of the specified backend.
