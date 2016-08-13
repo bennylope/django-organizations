@@ -23,7 +23,22 @@
 # OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+from itertools import chain
+
 from .models import Organization
+
+
+def model_field_names(model):
+    """
+    Returns a list of field names in the model
+
+    Direct from Django upgrade migration guide.
+    """
+    return list(set(chain.from_iterable(
+        (field.name, field.attname) if hasattr(field, 'attname') else (field.name,)
+        for field in model._meta.get_fields()
+        if not (field.many_to_one and field.related_model is None)
+    )))
 
 
 def create_organization(user, name, slug=None, is_active=None,
@@ -55,7 +70,7 @@ def create_organization(user, name, slug=None, is_active=None,
     if org_defaults is None:
         org_defaults = {}
     if org_user_defaults is None:
-        if 'is_admin' in org_user_model._meta.get_all_field_names():
+        if 'is_admin' in model_field_names(org_user_model):
             org_user_defaults = {'is_admin': True}
         else:
             org_user_defaults = {}
