@@ -3,6 +3,11 @@
 History
 =======
 
+0.8.0
+-----
+
+* Adds Django 1.10 support
+
 0.7.0
 -----
 
