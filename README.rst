@@ -126,6 +126,7 @@ There are three models:
   easy to enforce ownership from within the organization's membership.
 
 The underlying organizations API is simple::
+
     >>> from organizations.utils import create_organization
     >>> chris = User.objects.get(username="chris")
     >>> soundgarden = create_organization(chris, "Soundgarden", org_user_defaults={'is_admin': True})
