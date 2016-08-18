@@ -14,10 +14,6 @@ django-organizations
     :alt: PyPI relesae
     :target: https://pypi.python.org/pypi/django-organizations
 
-.. image:: https://img.shields.io/pypi/dw/django-organizations.svg
-    :alt: PyPI downloads:
-    :target: https://pypi.python.org/pypi/django-organizations
-
 Separate individual user identity from accounts and subscriptions. Django
 Organizations adds user-managed, multi-user groups to your Django project. Use
 Django Organizations whether your site needs organizations that function like
