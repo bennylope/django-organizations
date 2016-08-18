@@ -60,15 +60,18 @@ test-coverage: clean-test
 test-all:
 	tox
 
+
 check: clean-build clean-pyc clean-test lint test-coverage
 
-release: clean
-	python setup.py sdist upload
-	python setup.py bdist_wheel upload
+build: clean  ## Create distribution files for release
+	python setup.py sdist bdist_wheel
 
-dist: clean
+release: build  ## Create distribution files and publish to PyPI
+	python setup.py check -r -s
+	twine upload dist/*
+
+sdist: clean  ##sdist Create source distribution only
 	python setup.py sdist
-	python setup.py bdist_wheel
 	ls -l dist
 
 docs:
