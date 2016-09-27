@@ -4,7 +4,7 @@
 Cooking with Django Organizations
 =================================
 
-This section aims to provide some clear examples of how to use build your
+This section aims to provide some clear examples of how to build your
 application with Django organizations. The out-of-the-box setup works but is
 unlikely to meet your needs without some further customization.
 
