@@ -37,6 +37,8 @@ class OrganizationAdmin(admin.ModelAdmin):
     inlines = [OwnerInline]
     list_display = ['name', 'is_active']
     prepopulated_fields = {"slug": ("name",)}
+    search_fields = ['name']
+    list_filter = ('is_active',)
 
 
 class OrganizationUserAdmin(admin.ModelAdmin):
