@@ -47,6 +47,13 @@ class UserRegistrationForm(forms.ModelForm):
         super(UserRegistrationForm, self).__init__(*args, **kwargs)
         self.initial['username'] = ''
 
+    def clean(self):
+        password = self.cleaned_data.get("password")
+        password_confirm = self.cleaned_data.get("password_confirm")
+        if password != password_confirm or not password:
+            raise forms.ValidationError("Your password entries must match")
+        return super(UserRegistrationForm, self).clean()
+
     class Meta:
         model = get_user_model()
         exclude = ('is_staff', 'is_superuser', 'is_active', 'last_login',
