@@ -171,10 +171,11 @@ requests/suggestions.
 Targets & testing
 -----------------
 
-The codebase is targeted at tested against:
+The codebase is targeted and tested against:
 
-* Django 1.8.x against Python 2.7, 3.4, 3.5
-* Django 1.9.x against Python 2.7, 3.4, 3.5
+* Django 1.8.x against Python 2.7, 3.4, 3.5, and PyPy
+* Django 1.9.x against Python 2.7, 3.4, 3.5, and PyPy
+* Django 1.10.x against Python 2.7, 3.4, 3.5, and PyPy
 
 To run the tests against all target environments, install `tox
 <https://testrun.org/tox/latest/>`_ and then execute the command:
