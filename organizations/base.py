@@ -46,7 +46,7 @@ class UnicodeMixin(object):
         if six.PY3:
             return self.__unicode__()
         else:
-            return unicode(self).encode('utf-8')
+            return unicode(self).encode('utf-8')                # noqa
 
 
 class OrgMeta(ModelBase):
