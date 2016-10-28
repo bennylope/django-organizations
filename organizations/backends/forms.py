@@ -25,6 +25,7 @@
 
 from django import forms
 from django.contrib.auth import get_user_model
+from django.utils.translation import ugettext_lazy as _
 
 from ..models import Organization
 
@@ -46,6 +47,13 @@ class UserRegistrationForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(UserRegistrationForm, self).__init__(*args, **kwargs)
         self.initial['username'] = ''
+
+    def clean(self):
+        password = self.cleaned_data.get("password")
+        password_confirm = self.cleaned_data.get("password_confirm")
+        if password != password_confirm or not password:
+            raise forms.ValidationError(_("Your password entries must match"))
+        return super(UserRegistrationForm, self).clean()
 
     class Meta:
         model = get_user_model()
