@@ -2,17 +2,45 @@
 django-organizations
 ====================
 
-:Info: Groups and multi-user account management
-:Version: 0.8.1
-:Author: Ben Lopatin (http://benlopatin.com)
+.. start-table
 
-.. image:: https://secure.travis-ci.org/bennylope/django-organizations.svg?branch=master
-    :alt: Build Status
-    :target: http://travis-ci.org/bennylope/django-organizations
+.. list-table::
+    :stub-columns: 1
 
-.. image:: https://img.shields.io/pypi/v/django-organizations.svg
-    :alt: PyPI relesae
+    * - Summary
+      - Groups and multi-user account management
+    * - Author
+      - Ben Lopatin (http://benlopatin.com / https://wellfire.co)
+    * - Status
+      - |docs| |travis| |version| |wheel| |supported-versions| |supported-implementations|
+
+.. |docs| image:: https://readthedocs.org/projects/django-organizations/badge/?style=flat
+    :target: https://readthedocs.org/projects/django-organizations
+    :alt: Documentation Status
+
+.. |travis| image:: https://travis-ci.org/bennylope/django-organizations.svg?branch=master
+    :alt: Travis-CI Build Status
+    :target: https://travis-ci.org/bennylope/django-organizations
+
+.. |version| image:: https://img.shields.io/pypi/v/django-organizations.svg?style=flat
+    :alt: PyPI Package latest release
     :target: https://pypi.python.org/pypi/django-organizations
+
+.. |wheel| image:: https://img.shields.io/pypi/wheel/django-organizations.svg?style=flat
+    :alt: PyPI Wheel
+    :target: https://pypi.python.org/pypi/django-organizations
+
+.. |supported-versions| image:: https://img.shields.io/pypi/pyversions/django-organizations.svg?style=flat
+    :alt: Supported versions
+    :target: https://pypi.python.org/pypi/django-organizations
+
+.. |supported-implementations| image:: https://img.shields.io/pypi/implementation/django-organizations.svg?style=flat
+    :alt: Supported implementations
+    :target: https://pypi.python.org/pypi/django-organizations
+
+
+.. end-table
+
 
 Separate individual user identity from accounts and subscriptions. Django
 Organizations adds user-managed, multi-user groups to your Django project. Use
