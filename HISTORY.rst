@@ -3,6 +3,11 @@
 History
 =======
 
+0.8.1
+-----
+
+* Fixes [lack of] validation bug in backend registration form
+
 0.8.0
 -----
 
