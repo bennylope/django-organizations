@@ -162,7 +162,7 @@ class OrganizationSignup(FormView):
     template_name = "organizations/signup_form.html"
     # TODO get success from backend, because some backends may do something
     # else, like require verification
-    backend = registration_backend()
+    backend = registration_backend
 
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated():
@@ -178,7 +178,7 @@ class OrganizationSignup(FormView):
     def form_valid(self, form):
         """
         """
-        user = self.backend.register_by_email(form.cleaned_data['email'])
+        user = self.backend().register_by_email(form.cleaned_data['email'])
         create_organization(user=user, name=form.cleaned_data['name'],
                 slug=form.cleaned_data['slug'], is_active=False)
         return redirect(self.get_success_url())
