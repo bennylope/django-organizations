@@ -1,0 +1,7 @@
+You've been added to the organization {{ organization|safe }} on {{ domain.name }} by {{ sender.first_name|safe }} {{ sender.last_name|safe }}.
+
+Follow the link below to view this organization.
+
+http://{{ domain.domain }}{% url "organization_detail" organization.pk %}
+
+If you are unsure about this link please contact the sender.

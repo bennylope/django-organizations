@@ -1,0 +1,1 @@
+{% spaceless %}You've been added to an organization{% endspaceless %}
