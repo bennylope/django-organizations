@@ -292,3 +292,89 @@ organization user. The first two are implemented with additional dependencies.
 If you want a slug field or timestamps on your models, you'll need to add those
 in. However you can do so however you want. And if you don't want any of those
 fields, you don't have to take them.
+
+Restricting and isolating resources
+===================================
+
+A fairly common use case for group accounts is to associate resources of one kind or
+another with that group account. Two questions arise next, how to associate this
+content with the accounts, and secondly how to restrict access to group members?
+
+Associating resources
+---------------------
+
+The simplest way to associate resources with an account is with a foreign key.::
+
+    class Account(Organization):
+        """We'll skip any other fields or methods for the example"""
+
+    class MeetingMinutes(models.Model):
+        """A representative resource model"""
+        account = models.ForeignKey('Account', related_name='meeting_minutes')
+
+We now have a definite way of linking our meeting minutes resource with an account.
+Accessing only those meeting minutes related to the account is straightforward using
+the related name.::
+
+    account = get_object_or_404(Account, pk=pk)
+    relevant_meeting_minutes = account.meeting_minutes.all()
+
+This works if the resource is defined in your project. If you're pulling this
+in from another app, e.g. a third party Django app, then you can't directly add
+a foreign key to the model. You can create a linking model which can be used in
+a similar fashion.::
+
+    from third_party_app.models import Document
+
+    class DocumentLink(models.Model):
+        account = models.ForeignKey('Account', related_name="document_links")
+        document = models.ForeignKey('Document', unique=True)
+
+The linking model should in *most scenarios* enforce uniquness against the linked resource
+model to prevent multiple organizations from having access to the resource.
+
+Providing access may be a little less straightforward. You can use the related name
+as before, however that will result in a queryset of `DocumentLink` objects, rather than
+`Document` as expected. This works, but for more foolproof results you might add a custom
+queryset method or define a `ManyToManyField` on your group account model if this makes
+sense with regard to your application hierarchy.::
+
+    class Account(Organization):
+        documents = models.ManyToManyField('third_party_app.Document', through='DocumentLink')
+
+Restricting access
+------------------
+
+Access restriction is based on two levels: managers (queryset) to limit the available
+data in a way that is easy to understand and work with, and view mixins or decorators to
+actually allow users (you can also use middleware in some implementations).
+
+Managers and querysets work as demonstrated above to provide a foolproof way of getting
+only the relevant resources for a given organization. Where you can, avoid explicit access filters
+in your views, forms, management commands, etc. Relying on the
+filters from related managers whenver possible reduces the room for mistakes with result in data leaks.
+
+The mixins in the django-organizations codebase provide a good starting point for additional
+restrictions. Note that you can also use decorators for functional views in the same way.
+
+As an example from directly within a simple view class, you might want to restrict access to a
+particular document based on the organization. The "one liner" solution is to check for a match
+using a filter against the user.::
+
+    @login_required
+    def document_view(request, document_pk):
+        doc = get_object_or_404(Document, pk=document_pk, account__users=request.user)
+        return render(request, "document.html", {"document": doc})
+
+An improvement for clarity is to define a manager method that encapsulates some of the logic.::
+
+    @login_required
+    def document_view(request, document_pk):
+        try:
+            doc = Document.objects.for_user(request.user).get(pk=document_pk)
+        except Document.DoesNotExist:
+            raise Http404
+        return render(request, "document.html", {"document": doc})
+
+The `for_user` method can then reduce the queryset to only documents belonging to *any*
+organization which the current user is a member of.
