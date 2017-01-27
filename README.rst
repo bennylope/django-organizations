@@ -210,6 +210,20 @@ To run the tests against all target environments, install `tox
 
     tox
 
+Fast testing
+------------
+
+Testing each change on all the environments takes some time, you may
+want to test faster and avoid slowing down development by using pytest
+against your current environment::
+
+    pip install -r requirements-test.txt
+    py.test
+
+Supply the ``-x`` option for **failfast** mode::
+
+    py.test -x
+
 Submitting
 ----------
 
