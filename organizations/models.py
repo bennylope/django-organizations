@@ -46,6 +46,20 @@ class TimeStampedModel(models.Model):
     created = AutoCreatedField()
     modified = AutoLastModifiedField()
 
+    @property
+    def _org_user_model(self):
+        model = self.__class__.module_registry[self.__class__.__module__]['OrgUserModel']
+        if model is None:
+            model = self.__class__.module_registry['organizations.models']['OrgUserModel']
+        return model
+
+    @property
+    def _org_owner_model(self):
+        model = self.__class__.module_registry[self.__class__.__module__]['OrgOwnerModel']
+        if model is None:
+            model = self.__class__.module_registry['organizations.models']['OrgOwnerModel']
+        return model
+
     class Meta:
         abstract = True
 
@@ -77,12 +91,13 @@ class Organization(OrganizationBase, TimeStampedModel):
         if users_count == 0:
             is_admin = True
         # TODO get specific org user?
-        org_user = OrganizationUser.objects.create(user=user,
-                organization=self, is_admin=is_admin)
+        org_user = self._org_user_model.objects.create(user=user,
+                                                       organization=self,
+                                                       is_admin=is_admin)
         if users_count == 0:
             # TODO get specific org user?
-            OrganizationOwner.objects.create(organization=self,
-                    organization_user=org_user)
+            self._org_owner_model.objects.create(organization=self,
+                                                 organization_user=org_user)
 
         # User added signal
         user_added.send(sender=self, user=user)
@@ -92,8 +107,8 @@ class Organization(OrganizationBase, TimeStampedModel):
         """
         Deletes a user from an organization.
         """
-        org_user = OrganizationUser.objects.get(user=user,
-                                                organization=self)
+        org_user = self._org_user_model.objects.get(user=user,
+                                                    organization=self)
         org_user.delete()
 
         # User removed signal
@@ -116,13 +131,13 @@ class Organization(OrganizationBase, TimeStampedModel):
         if users_count == 0:
             is_admin = True
 
-        org_user, created = OrganizationUser.objects.get_or_create(
-                organization=self, user=user, defaults={'is_admin': is_admin})
-
+        org_user, created = self._org_user_model.objects\
+                                .get_or_create(organization=self,
+                                               user=user,
+                                               defaults={'is_admin': is_admin})
         if users_count == 0:
-            OrganizationOwner.objects.create(organization=self,
-                    organization_user=org_user)
-
+            self._org_owner_model.objects\
+                .create(organization=self, organization_user=org_user)
         if created:
             # User added signal
             user_added.send(sender=self, user=user)
@@ -176,7 +191,7 @@ class OrganizationUser(OrganizationUserBase, TimeStampedModel):
                 raise OwnershipRequired(_("Cannot delete organization owner "
                     "before organization or transferring ownership."))
         # TODO This line presumes that OrgOwner model can't be modified
-        except OrganizationOwner.DoesNotExist:
+        except self._org_owner_model.DoesNotExist:
             pass
         super(OrganizationUserBase, self).delete(using=using)
 
