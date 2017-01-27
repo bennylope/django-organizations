@@ -143,7 +143,7 @@ class OrgMeta(ModelBase):
                         related_name="owner"))
 
 
-class OrganizationBase(six.with_metaclass(OrgMeta, UnicodeMixin, models.Model)):
+class _OrganizationBase(UnicodeMixin, models.Model):
     """
     The umbrella object with which users can be associated.
 
@@ -180,7 +180,12 @@ class OrganizationBase(six.with_metaclass(OrgMeta, UnicodeMixin, models.Model)):
         return True if user in self.users.all() else False
 
 
-class OrganizationUserBase(six.with_metaclass(OrgMeta, UnicodeMixin, models.Model)):
+class OrganizationBase(six.with_metaclass(OrgMeta, _OrganizationBase)):
+    class Meta(_OrganizationBase.Meta):
+        abstract = True
+
+
+class _OrganizationUserBase(UnicodeMixin, models.Model):
     """
     ManyToMany through field relating Users to Organizations.
 
@@ -212,7 +217,12 @@ class OrganizationUserBase(six.with_metaclass(OrgMeta, UnicodeMixin, models.Mode
         return "{0}".format(self.user)
 
 
-class OrganizationOwnerBase(six.with_metaclass(OrgMeta, UnicodeMixin, models.Model)):
+class OrganizationUserBase(six.with_metaclass(OrgMeta, _OrganizationUserBase)):
+    class Meta(_OrganizationUserBase.Meta):
+        abstract = True
+
+
+class _OrganizationOwnerBase(UnicodeMixin, models.Model):
     """
     Each organization must have one and only one organization owner.
     """
@@ -222,3 +232,8 @@ class OrganizationOwnerBase(six.with_metaclass(OrgMeta, UnicodeMixin, models.Mod
 
     def __unicode__(self):
         return u"{0}: {1}".format(self.organization, self.organization_user)
+
+
+class OrganizationOwnerBase(six.with_metaclass(OrgMeta, _OrganizationOwnerBase)):
+    class Meta(_OrganizationOwnerBase.Meta):
+        abstract = True
