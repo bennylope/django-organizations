@@ -25,29 +25,22 @@
 
 from django.contrib import admin
 
-from .base_admin import (BaseOwnerInline,
-                         BaseOrganizationAdmin,
-                         BaseOrganizationUserAdmin,
-                         BaseOrganizationOwnerAdmin)
-from .models import Organization, OrganizationUser, OrganizationOwner
+
+class BaseOwnerInline(admin.StackedInline):
+    raw_id_fields = ('organization_user',)
 
 
-class OwnerInline(BaseOwnerInline):
-    model = OrganizationOwner
+class BaseOrganizationAdmin(admin.ModelAdmin):
+    list_display = ['name', 'is_active']
+    prepopulated_fields = {"slug": ("name",)}
+    search_fields = ['name']
+    list_filter = ('is_active',)
 
 
-class OrganizationAdmin(BaseOrganizationAdmin):
-    inlines = [OwnerInline]
+class BaseOrganizationUserAdmin(admin.ModelAdmin):
+    list_display = ['user', 'organization', 'is_admin']
+    raw_id_fields = ('user', 'organization')
 
 
-class OrganizationUserAdmin(BaseOrganizationUserAdmin):
-    pass
-
-
-class OrganizationOwnerAdmin(BaseOrganizationOwnerAdmin):
-    pass
-
-
-admin.site.register(Organization, OrganizationAdmin)
-admin.site.register(OrganizationUser, OrganizationUserAdmin)
-admin.site.register(OrganizationOwner, OrganizationOwnerAdmin)
+class BaseOrganizationOwnerAdmin(admin.ModelAdmin):
+    raw_id_fields = ('organization_user', 'organization')
