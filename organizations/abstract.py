@@ -34,7 +34,7 @@ try:
 except ImportError:
     from django.utils import six
 
-from .base import OrgMeta, _OrganizationBase, _OrganizationUserBase, _OrganizationOwnerBase
+from .base import OrgMeta, AbstractBaseOrganization, AbstractBaseOrganizationUser, AbstractBaseOrganizationOwner
 from .fields import SlugField, AutoCreatedField, AutoLastModifiedField
 from .signals import user_added, user_removed, owner_changed
 
@@ -73,7 +73,7 @@ class SharedBaseModel(models.Model):
         abstract = True
 
 
-class OrganizationBase(six.with_metaclass(OrgMeta, SharedBaseModel, _OrganizationBase)):
+class AbstractOrganization(six.with_metaclass(OrgMeta, SharedBaseModel, AbstractBaseOrganization)):
     """
     Abstract Organization model.
     """
@@ -81,7 +81,7 @@ class OrganizationBase(six.with_metaclass(OrgMeta, SharedBaseModel, _Organizatio
             populate_from='name', unique=True,
             help_text=_("The name in all lowercase, suitable for URL identification"))
 
-    class Meta(_OrganizationBase.Meta):
+    class Meta(AbstractBaseOrganization.Meta):
         abstract = True
         verbose_name = _("organization")
         verbose_name_plural = _("organizations")
@@ -177,13 +177,13 @@ class OrganizationBase(six.with_metaclass(OrgMeta, SharedBaseModel, _Organizatio
         return self.owner.organization_user.user == user
 
 
-class OrganizationUserBase(six.with_metaclass(OrgMeta, SharedBaseModel, _OrganizationUserBase)):
+class AbstractOrganizationUser(six.with_metaclass(OrgMeta, SharedBaseModel, AbstractBaseOrganizationUser)):
     """
     Abstract OrganizationUser model
     """
     is_admin = models.BooleanField(default=False)
 
-    class Meta(_OrganizationUserBase.Meta):
+    class Meta(AbstractBaseOrganizationUser.Meta):
         abstract = True
         verbose_name = _("organization user")
         verbose_name_plural = _("organization users")
@@ -207,14 +207,14 @@ class OrganizationUserBase(six.with_metaclass(OrgMeta, SharedBaseModel, _Organiz
         # TODO This line presumes that OrgOwner model can't be modified
         except self._org_owner_model.DoesNotExist:
             pass
-        super(_OrganizationUserBase, self).delete(using=using)
+        super(AbstractBaseOrganizationUser, self).delete(using=using)
 
     def get_absolute_url(self):
         return reverse('organization_user_detail', kwargs={
             'organization_pk': self.organization.pk, 'user_pk': self.user.pk})
 
 
-class OrganizationOwnerBase(six.with_metaclass(OrgMeta, SharedBaseModel, _OrganizationOwnerBase)):
+class AbstractOrganizationOwner(six.with_metaclass(OrgMeta, SharedBaseModel, AbstractBaseOrganizationOwner)):
     """
     Abstract OrganizationOwner model
     """
@@ -238,4 +238,4 @@ class OrganizationOwnerBase(six.with_metaclass(OrgMeta, SharedBaseModel, _Organi
         if self.organization_user.organization.pk != self.organization.pk:
             raise OrganizationMismatch
         else:
-            super(_OrganizationOwnerBase, self).save(*args, **kwargs)
+            super(AbstractBaseOrganizationOwner, self).save(*args, **kwargs)

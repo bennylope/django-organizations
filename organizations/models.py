@@ -23,22 +23,30 @@
 # OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-from .abstract import OrganizationBase, OrganizationUserBase, OrganizationOwnerBase
+from .abstract import (AbstractOrganization,
+                       AbstractOrganizationUser,
+                       AbstractOrganizationOwner)
 
 
-class Organization(OrganizationBase):
+class Organization(AbstractOrganization):
     """
     Default Organization model.
     """
+    class Meta(AbstractOrganization.Meta):
+        abstract = False
 
 
-class OrganizationUser(OrganizationUserBase):
+class OrganizationUser(AbstractOrganizationUser):
     """
     Default OrganizationUser model.
     """
+    class Meta(AbstractOrganizationUser.Meta):
+        abstract = False
 
 
-class OrganizationOwner(OrganizationOwnerBase):
+class OrganizationOwner(AbstractOrganizationOwner):
     """
     Default OrganizationOwner model.
     """
+    class Meta(AbstractOrganizationOwner.Meta):
+        abstract = False
