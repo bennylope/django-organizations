@@ -324,6 +324,44 @@ if you want a slug field or timestamps on your models, you'll need to add those
 in. However you can do so however you want. And if you don't want any of those
 fields, you don't have to take them.
 
+Extending the base admin classes
+--------------------------------
+
+If you chose the "single table inheritance" approach, you may want to reuse
+the base admin classes too, in order to avoid having too much boilerplate
+code in your application, eg:
+
+.. code-block:: python
+
+    from django.contrib import admin
+
+    from .base_admin import (BaseOwnerInline,
+                             BaseOrganizationAdmin,
+                             BaseOrganizationUserAdmin,
+                             BaseOrganizationOwnerAdmin)
+    from .models import Organization, OrganizationUser, OrganizationOwner
+
+
+    class OwnerInline(BaseOwnerInline):
+        model = OrganizationOwner
+
+
+    class OrganizationAdmin(BaseOrganizationAdmin):
+        inlines = [OwnerInline]
+
+
+    class OrganizationUserAdmin(BaseOrganizationUserAdmin):
+        pass
+
+
+    class OrganizationOwnerAdmin(BaseOrganizationOwnerAdmin):
+        pass
+
+
+    admin.site.register(Organization, OrganizationAdmin)
+    admin.site.register(OrganizationUser, OrganizationUserAdmin)
+    admin.site.register(OrganizationOwner, OrganizationOwnerAdmin)
+
 Restricting and isolating resources
 ===================================
 
