@@ -244,26 +244,29 @@ more sense to add them in their own apps.
 
 .. _cookbook-advanced:
 
-Advanced customization
-======================
+Advanced customization using abstract models
+============================================
 
 As of version 0.2.0 you can add your own fully customized models using unique
 table sets, i.e. single table inheritance. In order to do this, your app
 should define an organization model, an organization user model, and an
-organization owner model, each inheriting from one of the base classes as
-follows. Here's an example from an `accounts` app::
+organization owner model, each inheriting from one of the abstract models
+provided in ``organizations.abstract``. Here's an example from an `accounts` app:
+
+.. code-block:: python
 
     from django.db import models
-    from organizations.base import (OrganizationBase, OrganizationUserBase,
-            OrganizationOwnerBase)
+    from organizations.abstract import (AbstractOrganization,
+                                        AbstractOrganizationUser,
+                                        AbstractOrganizationOwner)
 
-    class Account(OrganizationBase):
+    class Account(AbstractOrganization):
         monthly_subscription = models.IntegerField(default=1000)
 
-    class AccountUser(OrganizationUserBase):
+    class AccountUser(AbstractOrganizationUser):
         user_type = models.CharField(max_length=1, default='')
 
-    class AccountOwner(OrganizationOwnerBase):
+    class AccountOwner(AbstractOrganizationOwner):
         pass
 
 This will create the following tables:
@@ -281,15 +284,43 @@ and only this organization model.
     organization class you want must be defined in its own app.
     Only one organization set per app.
 
-Difference between default models
----------------------------------
+A more minimalistic approach using base models
+----------------------------------------------
 
-The abstract base models provide the almost-bare minimum fields required to
-manage organizations. The default models are fairly spare, but include
-timestamps, a slug field on the organization, and an `is_admin` field on the
-organization user. The first two are implemented with additional dependencies.
+The base models provided in ``organizations.base`` marked with the `Base` suffix
+provide the almost-bare minimum fields required to manage organizations.
+These models are very basic and can be used if your implementation must differ
+considerably from the default one.
 
-If you want a slug field or timestamps on your models, you'll need to add those
+Here's an example of a custom `accounts` inheriting the minimal `Base` models:
+
+.. code-block:: python
+
+    from django.db import models
+    from organizations.base import (OrganizationBase,
+                                    OrganizationUserBase,
+                                    OrganizationOwnerBase)
+
+    class Account(OrganizationBase):
+        monthly_subscription = models.IntegerField(default=1000)
+
+    class AccountUser(OrganizationUserBase):
+        user_type = models.CharField(max_length=1, default='')
+
+    class AccountOwner(OrganizationOwnerBase):
+        pass
+
+Difference between abstract and base models
+-------------------------------------------
+
+The **abstract models** (provided in ``organizations.abstract``) include timestamps,
+a slug field on the organization, and an ``is_admin`` field on the organization user.
+The first two are implemented with additional dependencies. Use these models
+if you are happy with the way this additional logic is implemented.
+
+The **base models** (provided in ``organizations.base``) instead provide only
+the bare minimum fields required to implement and manage organizations:
+if you want a slug field or timestamps on your models, you'll need to add those
 in. However you can do so however you want. And if you don't want any of those
 fields, you don't have to take them.
 
