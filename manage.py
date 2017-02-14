@@ -18,6 +18,7 @@ INSTALLED_APPS = [
     # that the organizations app need not be installed in order to use
     # its base models.
     "test_accounts",
+    "test_abstract",
     "test_vendors",
     "organizations",
     "test_custom",

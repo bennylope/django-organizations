@@ -7,6 +7,7 @@ from django.test.client import RequestFactory
 from django.test.utils import override_settings
 
 from test_vendors.models import Vendor
+from test_abstract.models import CustomOrganization
 
 from organizations.backends.defaults import (BaseBackend, InvitationBackend,
         RegistrationBackend)
@@ -158,8 +159,13 @@ class CustomModelBackend(TestCase):
     irrespective of the organization model.
     """
 
-    def test_activate_orgs(self):
+    def test_activate_orgs_vendor(self):
         """Ensure no errors raised because correct relation name used"""
         user = User.objects.create(username="183jkjd", email="akjdkj@kjdk.com")
         backend = InvitationBackend(org_model=Vendor)
+        backend.activate_organizations(user)
+
+    def test_activate_orgs_abstract(self):
+        user = User.objects.create(username="183jkjd", email="akjdkj@kjdk.com")
+        backend = InvitationBackend(org_model=CustomOrganization)
         backend.activate_organizations(user)
