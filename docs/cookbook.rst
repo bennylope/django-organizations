@@ -352,7 +352,7 @@ actually allow users (you can also use middleware in some implementations).
 Managers and querysets work as demonstrated above to provide a foolproof way of getting
 only the relevant resources for a given organization. Where you can, avoid explicit access filters
 in your views, forms, management commands, etc. Relying on the
-filters from related managers whenver possible reduces the room for mistakes with result in data leaks.
+filters from related managers whenever possible reduces the room for mistakes with result in data leaks.
 
 The mixins in the django-organizations codebase provide a good starting point for additional
 restrictions. Note that you can also use decorators for functional views in the same way.
