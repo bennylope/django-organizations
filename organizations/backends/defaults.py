@@ -244,6 +244,8 @@ class InvitationBackend(BaseBackend):
     A backend for inviting new users to join the site as members of an
     organization.
     """
+    notification_subject = 'organizations/email/notification_subject.txt'
+    notification_body = 'organizations/email/notification_body.html'
     invitation_subject = 'organizations/email/invitation_subject.txt'
     invitation_body = 'organizations/email/invitation_body.html'
     reminder_subject = 'organizations/email/reminder_subject.txt'
@@ -290,3 +292,18 @@ class InvitationBackend(BaseBackend):
         kwargs.update({'token': token})
         self._send_email(user, self.invitation_subject, self.invitation_body,
                 sender, **kwargs)
+
+    def send_notification(self, user, sender=None, **kwargs):
+        """
+        An intermediary function for sending an notification email informing
+        a pre-existing, active user that they have been added to a new
+        organization.
+        """
+        if not user.is_active:
+            return False
+        self._send_email(
+            user,
+            self.notification_subject,
+            self.notification_body,
+            sender,
+            **kwargs)

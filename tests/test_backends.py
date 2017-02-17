@@ -76,6 +76,38 @@ class InvitationTests(TestCase):
             self.pending_user.id,
             self.tokenizer.make_token(self.pending_user)).status_code)
 
+    def test_send_notification_inactive_user(self):
+        """
+        This test verifies that calling the send_notification function
+        from the OrganizationsCoreInvitationBackend with an inactive Django
+        user causes the function to return False without sending an email.
+        """
+        org = Organization.objects.create(name="Test Organization")
+        result = InvitationBackend().send_notification(
+            self.pending_user,
+            domain='example.com',
+            organization=org,
+            sender=self.user)
+        self.assertEqual(result, False)
+        self.assertEquals(0, len(mail.outbox))
+
+    def test_send_notification_active_user(self):
+        """
+        This test verifies that calling the send_notification function
+        from the OrganizationsCoreInvitationBackend with an active Django
+        user causes the function send an email to that user.
+        """
+        org = Organization.objects.create(name="Test Organization")
+        InvitationBackend().send_notification(
+            self.user,
+            domain='example.com',
+            organization=org,
+            sender=self.pending_user)
+        self.assertEquals(1, len(mail.outbox))
+        self.assertEquals(
+            mail.outbox[0].subject,
+            u"You've been added to an organization")
+
 
 @override_settings(USE_TZ=True)
 class RegistrationTests(TestCase):
