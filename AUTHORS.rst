@@ -15,6 +15,10 @@ Contributors:
 * `Nicolas Noirbent <https://github.com/noirbee>`_
 * `Samuel Bishop <https://github.com/techdragon>`_
 * `Eric Amador <https://github.com/amadornimbis>`_
+* `Jon Miller <https://github.com/jondelmil>`_
+* `Robert Christopher <https://github.com/RobertChristopher>`_
+* `Basil Shubin <https://github.com/bashu>`_
+* `Federico Capoano <https://github.com/nemesisdesign>`_
 
 If your name is missing as a contributor that's my oversight, let me know at
 ben@benlopatin.com
