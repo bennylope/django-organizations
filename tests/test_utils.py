@@ -7,6 +7,7 @@ from django.test.utils import override_settings
 from organizations.models import Organization
 from organizations.utils import create_organization, model_field_attr
 from test_accounts.models import Account
+from test_abstract.models import CustomOrganization
 
 
 @override_settings(USE_TZ=True)
@@ -26,6 +27,11 @@ class CreateOrgTests(TestCase):
     def test_create_custom_org(self):
         custom = create_organization(self.user, "Custom", model=Account)
         self.assertTrue(isinstance(custom, Account))
+        self.assertEqual(self.user, custom.owner.organization_user.user)
+
+    def test_create_custom_org_from_abstract(self):
+        custom = create_organization(self.user, "Custom", model=CustomOrganization)
+        self.assertTrue(isinstance(custom, CustomOrganization))
         self.assertEqual(self.user, custom.owner.organization_user.user)
 
     def test_defaults(self):

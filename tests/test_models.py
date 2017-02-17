@@ -12,6 +12,7 @@ from organizations.models import (Organization, OrganizationUser,
 from organizations.utils import create_organization
 from test_accounts.models import Account
 from test_custom.models import Team
+from test_abstract.models import CustomOrganization
 
 
 @override_settings(USE_TZ=True)
@@ -68,7 +69,7 @@ class OrgModelTests(TestCase):
         self.assertTrue(self.nirvana.is_admin(self.krist))
         self.assertFalse(self.nirvana.is_admin(self.dave))
         self.assertTrue(self.foo.is_admin(self.dave))
-        
+
     def test_is_owner(self):
         self.assertTrue(self.nirvana.is_owner(self.kurt))
         self.assertTrue(self.foo.is_owner(self.dave))
@@ -79,12 +80,12 @@ class OrgModelTests(TestCase):
         new_guy = self.foo.add_user(self.krist)
         self.assertTrue(isinstance(new_guy, OrganizationUser))
         self.assertEqual(new_guy.organization, self.foo)
-        
+
     def test_remove_user(self):
         new_guy = self.foo.add_user(self.krist)
         self.foo.remove_user(self.krist)
         self.assertFalse(self.foo.users.filter(pk=self.krist.pk).exists())
-        
+
 
     def test_get_or_add_user(self):
         """Ensure `get_or_add_user` adds a user IFF it exists"""
@@ -177,3 +178,14 @@ class CustomModelTests(TestCase):
         duder_org_user = hometeam.add_user(self.duder)
         hometeam.owner.organization_user = duder_org_user
         hometeam.owner.save()
+
+    def test_abstract_change_user(self):
+        """
+        Ensure custom organizations inheriting abstract model
+        validate in owner change
+        """
+        create_org = partial(create_organization, model=CustomOrganization)
+        org1 = create_org(self.dave, "Org1")
+        duder_org_user = org1.add_user(self.duder)
+        org1.owner.organization_user = duder_org_user
+        org1.owner.save()
