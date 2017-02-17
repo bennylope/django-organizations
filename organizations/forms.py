@@ -97,13 +97,6 @@ class OrganizationUserAddForm(forms.ModelForm):
         """
         try:
             user = get_user_model().objects.get(email__iexact=self.cleaned_data['email'])
-            # Send a notification email to this user to inform them that they
-            # have been added to a new organization.
-            invitation_backend().send_notification(
-                user,
-                **{'domain': get_current_site(self.request),
-                    'organization': self.organization,
-                    'sender': self.request.user})
         except get_user_model().MultipleObjectsReturned:
             raise forms.ValidationError(_("This email address has been used multiple times."))
         except get_user_model().DoesNotExist:
@@ -112,6 +105,13 @@ class OrganizationUserAddForm(forms.ModelForm):
                     **{'domain': get_current_site(self.request),
                         'organization': self.organization,
                         'sender': self.request.user})
+        # Send a notification email to this user to inform them that they
+        # have been added to a new organization.
+        invitation_backend().send_notification(user, **{
+            'domain': get_current_site(self.request),
+            'organization': self.organization,
+            'sender': self.request.user,
+        })
         return OrganizationUser.objects.create(user=user,
                 organization=self.organization,
                 is_admin=self.cleaned_data['is_admin'])
