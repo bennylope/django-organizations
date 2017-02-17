@@ -36,7 +36,7 @@ from django.core.urlresolvers import reverse
 from django.core.mail import EmailMessage
 from django.http import Http404
 from django.shortcuts import render, redirect
-from django.template import Context, loader
+from django.template import loader
 from django.utils.translation import ugettext as _
 
 from ..utils import create_organization
@@ -149,12 +149,11 @@ class BaseBackend(object):
 
         headers = {'Reply-To': reply_to}
         kwargs.update({'sender': sender, 'user': user})
-        ctx = Context(kwargs, autoescape=False)
 
         subject_template = loader.get_template(subject_template)
         body_template = loader.get_template(body_template)
-        subject = subject_template.render(ctx).strip()  # Remove stray newline characters
-        body = body_template.render(ctx)
+        subject = subject_template.render(kwargs).strip()  # Remove stray newline characters
+        body = body_template.render(kwargs)
         return EmailMessage(subject, body, from_email, [user.email],
                 headers=headers).send()
 
