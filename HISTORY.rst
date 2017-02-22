@@ -3,6 +3,11 @@
 History
 =======
 
+0.9.1
+-----
+
+* Fixes missing migration. Migration was created due to non-schema changes in models
+
 0.9.0
 -----
 
