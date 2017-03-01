@@ -51,6 +51,7 @@ setup(
     ],
     install_requires=[
         'Django>=1.8.0',
+        'django-extensions>=1.7.7',
     ],
     test_suite='tests',
     include_package_data=True,
