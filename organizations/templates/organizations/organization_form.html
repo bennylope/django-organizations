@@ -1,6 +1,11 @@
 {% extends "organizations_base.html" %}
 {% block content %}
-<h1>{{ organization }}</h1>
+
+{% if organization %}
+  <h1>{{ organization }}</h1>
+{% else %}
+  <h1>Create Organization</h1>
+{% endif %}
 <form action="." method="post">{% csrf_token %}
     {{ form }}
     <input type="submit" value="submit">
