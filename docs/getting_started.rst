@@ -49,6 +49,10 @@ settings file.::
         'organizations',
     )
 
+Run the migrations.::
+
+    python manage.py migrate
+
 This should work for the majority of cases, from either simple, out-of-the-box
 installations to custom organization models.
 
