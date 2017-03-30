@@ -1,7 +1,7 @@
 from django.core import mail
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
-from django.http import Http404, QueryDict
+from django.http import HttpResponseForbidden, QueryDict
 from django.test import TestCase
 from django.test.client import RequestFactory
 from django.test.utils import override_settings
@@ -69,9 +69,9 @@ class InvitationTests(TestCase):
 
     def test_activate_user(self):
         request = self.factory.request()
-        with self.assertRaises(Http404):
-            InvitationBackend().activate_view(request, self.user.id,
-                    self.tokenizer.make_token(self.user))
+        self.assertEqual(403, InvitationBackend().activate_view(request,
+            self.user.id,
+            self.tokenizer.make_token(self.user)).status_code)
         self.assertEqual(200, InvitationBackend().activate_view(request,
             self.pending_user.id,
             self.tokenizer.make_token(self.pending_user)).status_code)
@@ -167,9 +167,9 @@ class RegistrationTests(TestCase):
 
     def test_activate_user(self):
         request = self.factory.request()
-        with self.assertRaises(Http404):
-            RegistrationBackend().activate_view(request, self.user.id,
-                    self.tokenizer.make_token(self.user))
+        self.assertEqual(403, RegistrationBackend().activate_view(request,
+            self.user.id,
+            self.tokenizer.make_token(self.user)).status_code)
         self.assertEqual(200, RegistrationBackend().activate_view(request,
             self.pending_user.id,
             self.tokenizer.make_token(self.pending_user)).status_code)
