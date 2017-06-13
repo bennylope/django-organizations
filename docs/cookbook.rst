@@ -63,8 +63,8 @@ Model admin definitions
     from django.contrib import admin
     from organizations.models import (Organization, OrganizationUser,
         OrganizationOwner)
-    from .forms import UserAdminForm
-    from .models import Account, AccountUser
+    from myapp.forms import UserAdminForm
+    from myapp.models import Account, AccountUser
 
     class AccountUserAdmin(admin.ModelAdmin):
         form = UserAdminForm()
@@ -89,7 +89,7 @@ We'll go through this piece by piece, but here's the full class::
     from django import forms
     from django.conf import settings
     from django.contrib.sites.models import Site
-    from .models import AccountUser
+    from myapp.models import AccountUser
 
     class AccountUserForm(forms.ModelForm):
         """
@@ -161,7 +161,7 @@ this, of course.::
     from django.contrib.sites.models import Site
     from organizations.backends import invitation_backend
     from organizations.backends.forms import UserRegistrationForm
-    from .models import PartnerUser
+    from partners.models import PartnerUser
 
     class RegistrationForm(UserRegistrationForm):
         """
