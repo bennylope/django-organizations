@@ -79,8 +79,8 @@ your project settings, and the `invitation_backend` function will provide the
 URLs defined by that backend. You can do the same with the
 :ref:`registration backend <registration-backend>`::
 
-    ORGS_INVITATION_BACKEND = 'myapp.backends.MyInvitationBackend'
-    ORGS_REGISTRATION_BACKEND = 'myapp.backends.MyRegistrationBackend'
+    INVITATION_BACKEND = 'myapp.backends.MyInvitationBackend'
+    REGISTRATION_BACKEND = 'myapp.backends.MyRegistrationBackend'
 
 Auto slug field
 ---------------

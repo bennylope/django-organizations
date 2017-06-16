@@ -126,7 +126,7 @@ You can specify a different invitation backend in your project settings, and
 the `invitation_backend` function will provide the URLs defined by that
 backend::
 
-    ORGS_INVITATION_BACKEND = 'myapp.backends.MyInvitationBackend'
+    INVITATION_BACKEND = 'myapp.backends.MyInvitationBackend'
 
 
 Usage Overview
