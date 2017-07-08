@@ -4,13 +4,9 @@ from django.test import TestCase
 from django.test.client import RequestFactory
 from django.test.utils import override_settings
 
+from organizations import views
 from organizations.models import Organization
-from organizations.views import (BaseOrganizationList, BaseOrganizationDetail,
-        BaseOrganizationCreate, BaseOrganizationUpdate, BaseOrganizationDelete,
-        BaseOrganizationUserList, BaseOrganizationUserDetail,
-        BaseOrganizationUserCreate, BaseOrganizationUserUpdate,
-        BaseOrganizationUserDelete, OrganizationSignup)
-from .utils import request_factory_login
+from tests.utils import request_factory_login
 
 
 @override_settings(USE_TZ=True)
@@ -31,80 +27,80 @@ class BaseViewTests(TestCase):
 
     def test_org_list(self):
         """Ensure that the status code 200 is returned"""
-        self.assertEqual(200, BaseOrganizationList(
+        self.assertEqual(200, views.BaseOrganizationList(
                 request=self.kurt_request).get(self.kurt_request).status_code)
-        self.assertEqual(200, BaseOrganizationList(
+        self.assertEqual(200, views.BaseOrganizationList(
                 request=self.dave_request).get(self.dave_request).status_code)
 
     def test_org_list_queryset(self):
         """Ensure only active organizations belonging to the user are listed"""
-        self.assertEqual(1, BaseOrganizationList(
+        self.assertEqual(1, views.BaseOrganizationList(
                 request=self.kurt_request).get_queryset().count())
-        self.assertEqual(2, BaseOrganizationList(
+        self.assertEqual(2, views.BaseOrganizationList(
                 request=self.dave_request).get_queryset().count())
 
     def test_org_detail(self):
         kwargs = {'organization_pk': self.nirvana.pk}
-        self.assertEqual(200, BaseOrganizationDetail(
+        self.assertEqual(200, views.BaseOrganizationDetail(
             request=self.kurt_request, kwargs=kwargs).get(self.kurt_request,
                 **kwargs).status_code)
 
     def test_org_create(self):
-        self.assertEqual(200, BaseOrganizationCreate(
+        self.assertEqual(200, views.BaseOrganizationCreate(
             request=self.kurt_request).get(self.kurt_request).status_code)
 
     def test_org_update(self):
         kwargs = {'organization_pk': self.nirvana.pk}
-        self.assertEqual(200, BaseOrganizationUpdate(
+        self.assertEqual(200, views.BaseOrganizationUpdate(
             request=self.kurt_request, kwargs=kwargs).get(self.kurt_request,
                 **kwargs).status_code)
 
     def test_org_delete(self):
         kwargs = {'organization_pk': self.nirvana.pk}
-        self.assertEqual(200, BaseOrganizationDelete(
+        self.assertEqual(200, views.BaseOrganizationDelete(
             request=self.kurt_request, kwargs=kwargs).get(self.kurt_request,
                 **kwargs).status_code)
 
     def test_user_list(self):
         kwargs = {'organization_pk': self.nirvana.pk}
-        self.assertEqual(200, BaseOrganizationUserList(
+        self.assertEqual(200, views.BaseOrganizationUserList(
             request=self.kurt_request, kwargs=kwargs).get(self.kurt_request,
                 **kwargs).status_code)
 
     def test_user_detail(self):
         kwargs = {'organization_pk': self.nirvana.pk, 'user_pk': self.kurt.pk}
-        self.assertEqual(200, BaseOrganizationUserDetail(
+        self.assertEqual(200, views.BaseOrganizationUserDetail(
             request=self.kurt_request, kwargs=kwargs).get(self.kurt_request,
                 **kwargs).status_code)
 
     def test_bad_user_detail(self):
         kwargs = {'organization_pk': self.nirvana.pk, 'user_pk': self.dummy.pk}
-        self.assertRaises(Http404, BaseOrganizationUserDetail(
+        self.assertRaises(Http404, views.BaseOrganizationUserDetail(
             request=self.kurt_request, kwargs=kwargs).get, self.kurt_request,
                 **kwargs)
 
     def test_user_create(self):
         kwargs = {'organization_pk': self.nirvana.pk}
-        self.assertEqual(200, BaseOrganizationUserCreate(
+        self.assertEqual(200, views.BaseOrganizationUserCreate(
             request=self.kurt_request, kwargs=kwargs).get(self.kurt_request,
                 **kwargs).status_code)
 
     def test_user_update(self):
         kwargs = {'organization_pk': self.nirvana.pk, 'user_pk': self.kurt.pk}
-        self.assertEqual(200, BaseOrganizationUserUpdate(
+        self.assertEqual(200, views.BaseOrganizationUserUpdate(
             request=self.kurt_request, kwargs=kwargs).get(self.kurt_request,
                 **kwargs).status_code)
 
     def test_user_delete(self):
         kwargs = {'organization_pk': self.nirvana.pk, 'user_pk': self.kurt.pk}
-        self.assertEqual(200, BaseOrganizationUserDelete(
+        self.assertEqual(200, views.BaseOrganizationUserDelete(
             request=self.kurt_request, kwargs=kwargs).get(self.kurt_request,
                 **kwargs).status_code)
 
     def test_signup(self):
         """Ensure logged in users are redirected"""
         self.assertEqual(302,
-            OrganizationSignup(request=self.kurt_request).dispatch(
+            views.OrganizationSignup(request=self.kurt_request).dispatch(
                 self.kurt_request).status_code)
         self.assertEqual(200,
-            OrganizationSignup(request=self.anon_request).dispatch(self.anon_request).status_code)
+            views.OrganizationSignup(request=self.anon_request).dispatch(self.anon_request).status_code)

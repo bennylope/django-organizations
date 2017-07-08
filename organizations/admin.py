@@ -25,11 +25,13 @@
 
 from django.contrib import admin
 
-from .base_admin import (BaseOwnerInline,
-                         BaseOrganizationAdmin,
-                         BaseOrganizationUserAdmin,
-                         BaseOrganizationOwnerAdmin)
-from .models import Organization, OrganizationUser, OrganizationOwner
+from organizations.base_admin import BaseOrganizationAdmin
+from organizations.base_admin import BaseOrganizationOwnerAdmin
+from organizations.base_admin import BaseOrganizationUserAdmin
+from organizations.base_admin import BaseOwnerInline
+from organizations.models import Organization
+from organizations.models import OrganizationOwner
+from organizations.models import OrganizationUser
 
 
 class OwnerInline(BaseOwnerInline):

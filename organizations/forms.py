@@ -28,9 +28,10 @@ from django.contrib.auth import get_user_model
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.translation import ugettext_lazy as _
 
-from .models import Organization, OrganizationUser
-from .utils import create_organization
-from .backends import invitation_backend
+from organizations.backends import invitation_backend
+from organizations.models import Organization
+from organizations.models import OrganizationUser
+from organizations.utils import create_organization
 
 
 class OrganizationForm(forms.ModelForm):

@@ -26,18 +26,30 @@
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseBadRequest
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect
+from django.shortcuts import render
 from django.utils.translation import ugettext as _
-from django.views.generic import (ListView, DetailView, UpdateView, CreateView,
-        DeleteView, FormView)
+from django.views.generic import CreateView
+from django.views.generic import DeleteView
+from django.views.generic import DetailView
+from django.views.generic import FormView
+from django.views.generic import ListView
+from django.views.generic import UpdateView
 
-from .backends import invitation_backend, registration_backend
-from .forms import (OrganizationForm, OrganizationUserForm,
-        OrganizationUserAddForm, OrganizationAddForm, SignUpForm)
-from .mixins import (OrganizationMixin, OrganizationUserMixin,
-        MembershipRequiredMixin, AdminRequiredMixin, OwnerRequiredMixin)
-from .models import Organization
-from .utils import create_organization
+from organizations.backends import invitation_backend
+from organizations.backends import registration_backend
+from organizations.forms import OrganizationAddForm
+from organizations.forms import OrganizationForm
+from organizations.forms import OrganizationUserAddForm
+from organizations.forms import OrganizationUserForm
+from organizations.forms import SignUpForm
+from organizations.mixins import AdminRequiredMixin
+from organizations.mixins import MembershipRequiredMixin
+from organizations.mixins import OrganizationMixin
+from organizations.mixins import OrganizationUserMixin
+from organizations.mixins import OwnerRequiredMixin
+from organizations.models import Organization
+from organizations.utils import create_organization
 
 
 class BaseOrganizationList(ListView):

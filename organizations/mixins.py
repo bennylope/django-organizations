@@ -27,7 +27,8 @@ from django.core.exceptions import PermissionDenied
 from django.shortcuts import get_object_or_404
 from django.utils.translation import ugettext_lazy as _
 
-from .models import Organization, OrganizationUser
+from organizations.models import Organization
+from organizations.models import OrganizationUser
 
 
 class OrganizationMixin(object):

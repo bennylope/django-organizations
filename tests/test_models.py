@@ -2,17 +2,18 @@
 
 from functools import partial
 
-from django.db import IntegrityError
 from django.contrib.auth.models import User
+from django.db import IntegrityError
 from django.test import TestCase
 from django.test.utils import override_settings
 
-from organizations.models import (Organization, OrganizationUser,
-        OrganizationOwner)
+from organizations.models import Organization
+from organizations.models import OrganizationOwner
+from organizations.models import OrganizationUser
 from organizations.utils import create_organization
+from test_abstract.models import CustomOrganization
 from test_accounts.models import Account
 from test_custom.models import Team
-from test_abstract.models import CustomOrganization
 
 
 @override_settings(USE_TZ=True)

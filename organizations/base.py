@@ -25,15 +25,17 @@
 
 from django.conf import settings
 from django.db import models
-from django.db.models.fields import FieldDoesNotExist
 from django.db.models.base import ModelBase
+from django.db.models.fields import FieldDoesNotExist
+
 try:
     import six
 except ImportError:
     from django.utils import six
 from django.utils.translation import ugettext_lazy as _
 
-from .managers import OrgManager, ActiveOrgManager
+from organizations.managers import ActiveOrgManager
+from organizations.managers import OrgManager
 
 USER_MODEL = getattr(settings, 'AUTH_USER_MODEL', 'auth.User')
 

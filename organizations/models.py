@@ -23,9 +23,9 @@
 # OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-from .abstract import (AbstractOrganization,
-                       AbstractOrganizationUser,
-                       AbstractOrganizationOwner)
+from organizations.abstract import AbstractOrganization
+from organizations.abstract import AbstractOrganizationOwner
+from organizations.abstract import AbstractOrganizationUser
 
 
 class Organization(AbstractOrganization):

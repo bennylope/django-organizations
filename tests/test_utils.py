@@ -1,13 +1,14 @@
 from functools import partial
 
-from django.test import TestCase
 from django.contrib.auth.models import User
+from django.test import TestCase
 from django.test.utils import override_settings
 
 from organizations.models import Organization
-from organizations.utils import create_organization, model_field_attr
-from test_accounts.models import Account
+from organizations.utils import create_organization
+from organizations.utils import model_field_attr
 from test_abstract.models import CustomOrganization
+from test_accounts.models import Account
 
 
 @override_settings(USE_TZ=True)

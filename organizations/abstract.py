@@ -29,14 +29,22 @@ from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+
 try:
     import six
 except ImportError:
     from django.utils import six
 
-from .base import OrgMeta, AbstractBaseOrganization, AbstractBaseOrganizationUser, AbstractBaseOrganizationOwner
-from .fields import SlugField, AutoCreatedField, AutoLastModifiedField
-from .signals import user_added, user_removed, owner_changed
+from organizations.base import OrgMeta
+from organizations.base import AbstractBaseOrganization
+from organizations.base import AbstractBaseOrganizationUser
+from organizations.base import AbstractBaseOrganizationOwner
+from organizations.fields import SlugField
+from organizations.fields import AutoCreatedField
+from organizations.fields import AutoLastModifiedField
+from organizations.signals import user_added
+from organizations.signals import user_removed
+from organizations.signals import owner_changed
 
 USER_MODEL = getattr(settings, 'AUTH_USER_MODEL', 'auth.User')
 ORGS_TIMESTAMPED_MODEL = getattr(settings, 'ORGS_TIMESTAMPED_MODEL', None)

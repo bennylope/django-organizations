@@ -1,13 +1,13 @@
-from mock import call
-from mock_django.signals import mock_signal_receiver
-
 from django.contrib.auth.models import User
 from django.test import TestCase
 from django.test.utils import override_settings
+from mock import call
+from mock_django.signals import mock_signal_receiver
 
 from organizations.models import Organization
-from organizations.signals import (user_added, user_removed,
-                                   owner_changed)
+from organizations.signals import owner_changed
+from organizations.signals import user_added
+from organizations.signals import user_removed
 
 
 @override_settings(USE_TZ=True)

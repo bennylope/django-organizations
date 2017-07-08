@@ -5,10 +5,14 @@ from django.test import TestCase
 from django.test.client import RequestFactory
 from django.test.utils import override_settings
 
-from organizations.models import Organization, OrganizationUser
-from organizations.mixins import (OrganizationMixin, OrganizationUserMixin,
-        MembershipRequiredMixin, AdminRequiredMixin, OwnerRequiredMixin)
-from .utils import request_factory_login
+from organizations.mixins import AdminRequiredMixin
+from organizations.mixins import MembershipRequiredMixin
+from organizations.mixins import OrganizationMixin
+from organizations.mixins import OrganizationUserMixin
+from organizations.mixins import OwnerRequiredMixin
+from organizations.models import Organization
+from organizations.models import OrganizationUser
+from tests.utils import request_factory_login
 
 
 class ViewStub(object):

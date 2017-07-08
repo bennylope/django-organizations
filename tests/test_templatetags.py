@@ -1,6 +1,6 @@
-from django.test import TestCase
-from django.template import Template, Context
 from django.contrib.auth.models import User
+from django.template import Template, Context
+from django.test import TestCase
 from django.test.utils import override_settings
 
 from organizations.models import Organization
