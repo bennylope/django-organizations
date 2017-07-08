@@ -289,6 +289,7 @@ class InvitationBackend(BaseBackend):
         token = self.get_token(user)
         kwargs.update({'token': token})
         self._send_email(user, self.invitation_subject, self.invitation_body, sender, **kwargs)
+        return True
 
     def send_notification(self, user, sender=None, **kwargs):
         """
@@ -299,3 +300,4 @@ class InvitationBackend(BaseBackend):
         if not user.is_active:
             return False
         self._send_email(user, self.notification_subject, self.notification_body, sender, **kwargs)
+        return True
