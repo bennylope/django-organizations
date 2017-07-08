@@ -25,7 +25,11 @@
 
 from itertools import chain
 
-from .models import Organization
+
+def default_org_model():
+    """Encapsulates importing the concrete model"""
+    from organizations.models import Organization
+    return Organization
 
 
 def model_field_names(model):
@@ -41,8 +45,7 @@ def model_field_names(model):
     )))
 
 
-def create_organization(user, name, slug=None, is_active=None,
-        org_defaults=None, org_user_defaults=None, **kwargs):
+def create_organization(user, name, slug=None, is_active=None, org_defaults=None, org_user_defaults=None, **kwargs):
     """
     Returns a new organization, also creating an initial organization user who
     is the owner.
@@ -56,7 +59,7 @@ def create_organization(user, name, slug=None, is_active=None,
     >>> create_account = partial(create_organization, model=Account)
 
     """
-    org_model = kwargs.pop('model', None) or kwargs.pop('org_model', None) or Organization
+    org_model = kwargs.pop('model', None) or kwargs.pop('org_model', None) or default_org_model()
     kwargs.pop('org_user_model', None)  # Discard deprecated argument
 
     org_owner_model = org_model.owner.related.related_model

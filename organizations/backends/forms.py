@@ -27,8 +27,6 @@ from django import forms
 from django.contrib.auth import get_user_model
 from django.utils.translation import ugettext_lazy as _
 
-from ..models import Organization
-
 
 class UserRegistrationForm(forms.ModelForm):
     """
@@ -61,14 +59,21 @@ class UserRegistrationForm(forms.ModelForm):
                 'date_joined', 'groups', 'user_permissions')
 
 
-class OrganizationRegistrationForm(forms.ModelForm):
-    """Form class for creating new organizations owned by new users."""
-    email = forms.EmailField()
+def org_registration_form(org_model):
+    """
+    Generates a registration ModelForm for the given organization model class
+    """
 
-    class Meta:
-        model = Organization
-        exclude = ('is_active', 'users')
+    class OrganizationRegistrationForm(forms.ModelForm):
+        """Form class for creating new organizations owned by new users."""
+        email = forms.EmailField()
 
-    def save(self, *args, **kwargs):
-        self.instance.is_active = False
-        super(OrganizationRegistrationForm, self).save(*args, **kwargs)
+        class Meta:
+            model = org_model
+            exclude = ('is_active', 'users')
+
+        def save(self, *args, **kwargs):
+            self.instance.is_active = False
+            super(OrganizationRegistrationForm, self).save(*args, **kwargs)
+
+    return OrganizationRegistrationForm

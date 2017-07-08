@@ -31,29 +31,32 @@ import uuid
 
 from django.conf import settings
 from django.conf.urls import url
-from django.contrib.auth import authenticate, login, get_user_model
-from django.core.urlresolvers import reverse
+from django.contrib.auth import authenticate
+from django.contrib.auth import get_user_model
+from django.contrib.auth import login
 from django.core.mail import EmailMessage
+from django.core.urlresolvers import reverse
 from django.http import Http404
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect
+from django.shortcuts import render
 from django.template import loader
 from django.utils.translation import ugettext as _
 
-from ..utils import create_organization
-from ..utils import model_field_attr
-from .forms import UserRegistrationForm, OrganizationRegistrationForm
-from .tokens import RegistrationTokenGenerator
+from organizations.backends.forms import UserRegistrationForm
+from organizations.backends.forms import org_registration_form
+from organizations.backends.tokens import RegistrationTokenGenerator
+from organizations.utils import create_organization
+from organizations.utils import default_org_model
+from organizations.utils import model_field_attr
 
 
 class BaseBackend(object):
     """
     Base backend class for registering and inviting users to an organization
     """
-    org_model = None
-
-    def __init__(self, org_model=None, *args, **kwargs):
+    def __init__(self, org_model=None):
         self.user_model = get_user_model()
-        self.org_model = org_model
+        self.org_model = org_model or default_org_model()
 
     def get_urls(self):
         raise NotImplementedError
@@ -92,7 +95,7 @@ class BaseBackend(object):
             relation_name = self.org_model().user_relation_name
         except TypeError:
             # No org_model specified, raises a TypeError because NoneType is
-            # not callable. Thiis the most sensible default
+            # not callable. This the most sensible default:
             relation_name = "organizations_organization"
         organization_set = getattr(user, relation_name)
         for org in organization_set.filter(is_active=False):
@@ -215,7 +218,7 @@ class RegistrationBackend(BaseBackend):
         """
         if request.user.is_authenticated():
             return redirect("organization_add")
-        form = OrganizationRegistrationForm(request.POST or None)
+        form = org_registration_form(self.org_model)(request.POST or None)
         if form.is_valid():
             try:
                 user = self.user_model.objects.get(email=form.cleaned_data['email'])

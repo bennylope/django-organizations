@@ -25,8 +25,8 @@
 
 from importlib import import_module
 
-from organizations.app_settings import (ORGS_INVITATION_BACKEND,
-        ORGS_REGISTRATION_BACKEND)
+from organizations.app_settings import ORGS_INVITATION_BACKEND
+from organizations.app_settings import ORGS_REGISTRATION_BACKEND
 
 
 def invitation_backend():

@@ -1,19 +1,20 @@
+from django.contrib.auth.models import User
 from django.core import mail
 from django.core.urlresolvers import reverse
-from django.contrib.auth.models import User
-from django.http import Http404, QueryDict
+from django.http import Http404
+from django.http import QueryDict
 from django.test import TestCase
 from django.test.client import RequestFactory
 from django.test.utils import override_settings
 
-from test_vendors.models import Vendor
-from test_abstract.models import CustomOrganization
-
-from organizations.backends.defaults import (BaseBackend, InvitationBackend,
-        RegistrationBackend)
+from organizations.backends.defaults import BaseBackend
+from organizations.backends.defaults import InvitationBackend
+from organizations.backends.defaults import RegistrationBackend
 from organizations.backends.tokens import RegistrationTokenGenerator
 from organizations.models import Organization
-from .utils import request_factory_login
+from test_abstract.models import CustomOrganization
+from test_vendors.models import Vendor
+from tests.utils import request_factory_login
 
 
 @override_settings(USE_TZ=True)
@@ -21,6 +22,22 @@ class BaseTests(TestCase):
 
     def test_generate_username(self):
         self.assertTrue(BaseBackend().get_username())
+
+
+@override_settings(INSTALLED_APPS=["django.contrib.auth", "django.contrib.contenttypes",
+                                   "django.contrib.sites", "test_accounts"], USE_TZ=True)
+class TestSansOrganizations(TestCase):
+
+    def test_verify_the_world(self):
+        """Verify the test environment is set up correctly"""
+        from django.conf import settings
+        self.assertFalse('organizations' in settings.INSTALLED_APPS)
+
+    def test_generate_username(self):
+        self.assertTrue(BaseBackend().get_username())
+
+    def test_backend_urls(self):
+        self.assertTrue(InvitationBackend().get_urls())
 
 
 @override_settings(USE_TZ=True)
