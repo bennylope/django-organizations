@@ -3,6 +3,11 @@
 History
 =======
 
+0.9.2
+-----
+
+* Decouple concrete organizations.Organization model from the invitation/registration backends
+
 0.9.1
 -----
 
