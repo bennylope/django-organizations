@@ -142,6 +142,16 @@ class BaseBackend(object):
     def _send_email(self, user, subject_template, body_template,
             sender=None, **kwargs):
         """Utility method for sending emails to new users"""
+        email = self._email_message(user, subject_template, body_template, sender, **kwargs)
+        return email.send()
+
+    def _email_message(self, user, subject_template, body_template,
+            sender=None, message_class=EmailMessage, **kwargs):
+        """
+        Returns an email message for a new user. This can be easily overriden.
+        For instance, to send an HTML message, use the EmailMultiAlternatives message_class
+        and attach the additional conent.
+        """
         if sender:
             from_email = "%s %s <%s>" % (sender.first_name, sender.last_name,
                     email.utils.parseaddr(settings.DEFAULT_FROM_EMAIL)[1])
@@ -157,7 +167,7 @@ class BaseBackend(object):
         body_template = loader.get_template(body_template)
         subject = subject_template.render(kwargs).strip()  # Remove stray newline characters
         body = body_template.render(kwargs)
-        return EmailMessage(subject, body, from_email, [user.email], headers=headers).send()
+        return message_class(subject, body, from_email, [user.email], headers=headers)
 
 
 class RegistrationBackend(BaseBackend):
