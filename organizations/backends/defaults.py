@@ -135,13 +135,15 @@ class BaseBackend(object):
             return False
         token = RegistrationTokenGenerator().make_token(user)
         kwargs.update({'token': token})
-        self._send_email(user, self.reminder_subject, self.reminder_body, sender, **kwargs)
+        self.email_message(user, self.reminder_subject, self.reminder_body, sender, **kwargs).send()
 
-    # This could be replaced with a more channel agnostic function, most likely
-    # in a custom backend.
-    def _send_email(self, user, subject_template, body_template,
-            sender=None, **kwargs):
-        """Utility method for sending emails to new users"""
+    def email_message(self, user, subject_template, body_template,
+            sender=None, message_class=EmailMessage, **kwargs):
+        """
+        Returns an email message for a new user. This can be easily overriden.
+        For instance, to send an HTML message, use the EmailMultiAlternatives message_class
+        and attach the additional conent.
+        """
         if sender:
             from_email = "%s %s <%s>" % (sender.first_name, sender.last_name,
                     email.utils.parseaddr(settings.DEFAULT_FROM_EMAIL)[1])
@@ -157,7 +159,7 @@ class BaseBackend(object):
         body_template = loader.get_template(body_template)
         subject = subject_template.render(kwargs).strip()  # Remove stray newline characters
         body = body_template.render(kwargs)
-        return EmailMessage(subject, body, from_email, [user.email], headers=headers).send()
+        return message_class(subject, body, from_email, [user.email], headers=headers)
 
 
 class RegistrationBackend(BaseBackend):
@@ -208,7 +210,7 @@ class RegistrationBackend(BaseBackend):
             return False
         token = self.get_token(user)
         kwargs.update({'token': token})
-        self._send_email(user, self.activation_subject, self.activation_body, sender, **kwargs)
+        self.email_message(user, self.activation_subject, self.activation_body, sender, **kwargs).send()
 
     def create_view(self, request):
         """
@@ -288,7 +290,7 @@ class InvitationBackend(BaseBackend):
             return False
         token = self.get_token(user)
         kwargs.update({'token': token})
-        self._send_email(user, self.invitation_subject, self.invitation_body, sender, **kwargs)
+        self.email_message(user, self.invitation_subject, self.invitation_body, sender, **kwargs).send()
         return True
 
     def send_notification(self, user, sender=None, **kwargs):
@@ -299,5 +301,5 @@ class InvitationBackend(BaseBackend):
         """
         if not user.is_active:
             return False
-        self._send_email(user, self.notification_subject, self.notification_body, sender, **kwargs)
+        self.email_message(user, self.notification_subject, self.notification_body, sender, **kwargs).send()
         return True
