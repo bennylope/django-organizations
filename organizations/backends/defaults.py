@@ -135,17 +135,9 @@ class BaseBackend(object):
             return False
         token = RegistrationTokenGenerator().make_token(user)
         kwargs.update({'token': token})
-        self._send_email(user, self.reminder_subject, self.reminder_body, sender, **kwargs)
+        self.email_message(user, self.reminder_subject, self.reminder_body, sender, **kwargs).send()
 
-    # This could be replaced with a more channel agnostic function, most likely
-    # in a custom backend.
-    def _send_email(self, user, subject_template, body_template,
-            sender=None, **kwargs):
-        """Utility method for sending emails to new users"""
-        email = self._email_message(user, subject_template, body_template, sender, **kwargs)
-        return email.send()
-
-    def _email_message(self, user, subject_template, body_template,
+    def email_message(self, user, subject_template, body_template,
             sender=None, message_class=EmailMessage, **kwargs):
         """
         Returns an email message for a new user. This can be easily overriden.
@@ -218,7 +210,7 @@ class RegistrationBackend(BaseBackend):
             return False
         token = self.get_token(user)
         kwargs.update({'token': token})
-        self._send_email(user, self.activation_subject, self.activation_body, sender, **kwargs)
+        self.email_message(user, self.activation_subject, self.activation_body, sender, **kwargs).send()
 
     def create_view(self, request):
         """
@@ -298,7 +290,7 @@ class InvitationBackend(BaseBackend):
             return False
         token = self.get_token(user)
         kwargs.update({'token': token})
-        self._send_email(user, self.invitation_subject, self.invitation_body, sender, **kwargs)
+        self.email_message(user, self.invitation_subject, self.invitation_body, sender, **kwargs).send()
         return True
 
     def send_notification(self, user, sender=None, **kwargs):
@@ -309,5 +301,5 @@ class InvitationBackend(BaseBackend):
         """
         if not user.is_active:
             return False
-        self._send_email(user, self.notification_subject, self.notification_body, sender, **kwargs)
+        self.email_message(user, self.notification_subject, self.notification_body, sender, **kwargs).send()
         return True
