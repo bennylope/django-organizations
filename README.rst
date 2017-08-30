@@ -203,7 +203,8 @@ The codebase is targeted and tested against:
 
 * Django 1.8.x against Python 2.7, 3.4, 3.5, and PyPy
 * Django 1.9.x against Python 2.7, 3.4, 3.5, and PyPy
-* Django 1.10.x against Python 2.7, 3.4, 3.5, and PyPy
+* Django 1.10.x against Python 2.7, 3.4, 3.5, 3.6, and PyPy
+* Django 1.11.x against Python 2.7, 3.4, 3.5, 3.6, and PyPy
 
 To run the tests against all target environments, install `tox
 <https://testrun.org/tox/latest/>`_ and then execute the command::
@@ -232,7 +233,7 @@ reviewed and make it into the project:
 
 * Ensure they match the project goals and are sufficiently generalized
 * Please try to follow `Django coding style
-  <https://docs.djangoproject.com/en/1.8/internals/contributing/writing-code/coding-style/>`_.
+  <https://docs.djangoproject.com/en/stable/internals/contributing/writing-code/coding-style/>`_.
   The code base style isn't all up to par, but I'd like it to move in that
   direction
 * Also please try to include `good commit log messages

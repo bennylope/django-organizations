@@ -116,13 +116,13 @@ Before you submit a pull request, check that it meets these guidelines:
    your new functionality into a function with a docstring, and add the
    feature to the list in README.rst. Any new functionality should align with
    the project goals (see README).
-3. The pull request should work for Python 2.6, 2.7, and 3.3, and for PyPy. Check
-   https://travis-ci.org/bennylope/django-organizations/pull_requests
+3. The pull request should work on all Python & Django versions listed in `README
+   <https://github.com/bennylope/django-organizations/blob/dev/README.rst#targets--testing>`_.
+   Check https://travis-ci.org/bennylope/django-organizations/pull_requests
    and make sure that the tests pass for all supported Python versions.
-4. The pull request must also work with Django 1.4-1.7.
-5. Please try to follow `Django coding style
-   <https://docs.djangoproject.com/en/1.7/internals/contributing/writing-code/coding-style/>`_.
-6. Pull requests should include an amount of code and commits that are
+4. Please try to follow `Django coding style
+   <https://docs.djangoproject.com/en/stable/internals/contributing/writing-code/coding-style/>`_.
+5. Pull requests should include an amount of code and commits that are
    reasonable to review, are **logically grouped**, and based off clean feature
    branches. Commits should be identifiable to the original author by
    name/username and email.

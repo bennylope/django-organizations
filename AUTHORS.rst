@@ -19,6 +19,7 @@ Contributors:
 * `Robert Christopher <https://github.com/RobertChristopher>`_
 * `Basil Shubin <https://github.com/bashu>`_
 * `Federico Capoano <https://github.com/nemesisdesign>`_
+* `Justin Mayer <https://github.com/justinmayer>`_
 
 If your name is missing as a contributor that's my oversight, let me know at
 ben@benlopatin.com
