@@ -22,7 +22,8 @@ delete account organizations, as well as users for those accounts.
 Proxy models for convenience
 ----------------------------
 
-This can be accomplished with proxy models in your models module.::
+This can be accomplished with proxy models in your models module (e.g.,
+``models.py``)::
 
     from organizations.models import Organization, OrganizationUser
 
@@ -58,16 +59,16 @@ account user form.
 Model admin definitions
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-::
+In the admin module (e.g., ``admin.py``)::
 
     from django.contrib import admin
     from organizations.models import (Organization, OrganizationUser,
         OrganizationOwner)
-    from myapp.forms import UserAdminForm
+    from myapp.forms import AccountUserForm
     from myapp.models import Account, AccountUser
 
     class AccountUserAdmin(admin.ModelAdmin):
-        form = UserAdminForm()
+        form = AccountUserForm
 
     admin.site.unregister(Organization)
     admin.site.unregister(OrganizationUser)
@@ -79,16 +80,18 @@ It's very simple. All it does is ensure that the default Organization model
 interfaces are hidden and then substitute the form class on the AccountUser
 admin.
 
-That form is where the business all happens
+That form is where the business all happens.
 
 The admin form class
 ~~~~~~~~~~~~~~~~~~~~
 
-We'll go through this piece by piece, but here's the full class::
+We'll go through this piece by piece, but here's the full class (e.g., in
+``forms.py``)::
 
     from django import forms
     from django.conf import settings
     from django.contrib.sites.models import Site
+    from organizations.backends import invitation_backend
     from myapp.models import AccountUser
 
     class AccountUserForm(forms.ModelForm):
