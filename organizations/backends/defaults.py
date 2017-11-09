@@ -27,6 +27,7 @@
 """
 
 import email.utils
+import inspect
 import uuid
 
 from django.conf import settings
@@ -274,8 +275,12 @@ class InvitationBackend(BaseBackend):
             user = self.user_model.objects.get(email=email)
         except self.user_model.DoesNotExist:
             # TODO break out user creation process
-            user = self.user_model.objects.create(username=self.get_username(),
-                    email=email, password=self.user_model.objects.make_random_password())
+            if 'username' in inspect.getargspec(self.user_model.objects.create_user).args:
+                user = self.user_model.objects.create(username=self.get_username(),
+                        email=email, password=self.user_model.objects.make_random_password())
+            else:
+                user = self.user_model.objects.create(email=email,
+                        password=self.user_model.objects.make_random_password())
             user.is_active = False
             user.save()
         self.send_invitation(user, sender, **kwargs)
