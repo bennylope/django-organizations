@@ -3,6 +3,11 @@
 History
 =======
 
+0.9.3
+-----
+
+* Create username value for user if username field exists (custom user models) 
+
 0.9.2
 -----
 
