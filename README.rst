@@ -108,7 +108,7 @@ django-extensions, but you can configure your own in settings. The default::
 
     ORGS_SLUGFIELD = 'django_extensions.db.fields.AutoSlugField'
 
-Alternative::
+Alternative (note: this is not compatible with Django 2.0)::
 
     ORGS_SLUGFIELD = 'autoslug.fields.AutoSlugField'
 
@@ -205,6 +205,7 @@ The codebase is targeted and tested against:
 * Django 1.9.x against Python 2.7, 3.4, 3.5, and PyPy
 * Django 1.10.x against Python 2.7, 3.4, 3.5, 3.6, and PyPy
 * Django 1.11.x against Python 2.7, 3.4, 3.5, 3.6, and PyPy
+* Django 2.0.x against Python 3.6  
 
 To run the tests against all target environments, install `tox
 <https://testrun.org/tox/latest/>`_ and then execute the command::

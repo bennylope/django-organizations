@@ -3,6 +3,7 @@ Configuration file for py.test
 """
 
 import django
+import os.path
 
 
 def pytest_configure():
@@ -33,7 +34,7 @@ def pytest_configure():
         MIDDLEWARE_CLASSES=[],
         SITE_ID=1,
         FIXTURE_DIRS=['tests/fixtures'],
-        ORGS_SLUGFIELD='autoslug.AutoSlugField',
+        ORGS_SLUGFIELD='django_extensions.db.fields.AutoSlugField',
         ROOT_URLCONF="tests.urls",
         TEMPLATES = [
             {
