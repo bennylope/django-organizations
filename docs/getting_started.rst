@@ -85,7 +85,7 @@ URLs defined by that backend. You can do the same with the
 Auto slug field
 ---------------
 
-Historically Django-Organizations relied on `django-extensions
+Django-Organizations relies on `django-extensions
 <http://django-extensions.readthedocs.org/en/latest/>`_ for the base
 `AutoSlugField
 <http://django-extensions.readthedocs.org/en/latest/field_extensions.html>`_.

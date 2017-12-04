@@ -26,7 +26,8 @@
 from django.conf import settings
 from django.db import models
 from django.db.models.base import ModelBase
-from django.db.models.fields import FieldDoesNotExist
+# from django.db.models.fields import FieldDoesNotExist
+from django.core.exceptions import FieldDoesNotExist
 
 try:
     import six
@@ -48,7 +49,7 @@ class UnicodeMixin(object):
         if six.PY3:
             return self.__unicode__()
         else:
-            return unicode(self).encode('utf-8')
+            return unicode(self).encode('utf-8') # noqa
 
 
 class OrgMeta(ModelBase):
@@ -123,13 +124,14 @@ class OrgMeta(ModelBase):
             cls.module_registry[module]['OrgUserModel']._meta.get_field("user")
         except FieldDoesNotExist:
             cls.module_registry[module]['OrgUserModel'].add_to_class("user",
-                models.ForeignKey(USER_MODEL, related_name="%(app_label)s_%(class)s"))
+                models.ForeignKey(USER_MODEL, related_name="%(app_label)s_%(class)s",
+                        on_delete=models.CASCADE))
         try:
             cls.module_registry[module]['OrgUserModel']._meta.get_field("organization")
         except FieldDoesNotExist:
             cls.module_registry[module]['OrgUserModel'].add_to_class("organization",
                 models.ForeignKey(cls.module_registry[module]['OrgModel'],
-                        related_name="organization_users"))
+                        related_name="organization_users", on_delete=models.CASCADE))
 
     def update_org_owner(cls, module):
         """
@@ -139,13 +141,14 @@ class OrgMeta(ModelBase):
             cls.module_registry[module]['OrgOwnerModel']._meta.get_field("organization_user")
         except FieldDoesNotExist:
             cls.module_registry[module]['OrgOwnerModel'].add_to_class("organization_user",
-                models.OneToOneField(cls.module_registry[module]['OrgUserModel']))
+                models.OneToOneField(cls.module_registry[module]['OrgUserModel'],
+                        on_delete=models.CASCADE))
         try:
             cls.module_registry[module]['OrgOwnerModel']._meta.get_field("organization")
         except FieldDoesNotExist:
             cls.module_registry[module]['OrgOwnerModel'].add_to_class("organization",
                 models.OneToOneField(cls.module_registry[module]['OrgModel'],
-                        related_name="owner"))
+                        related_name="owner", on_delete=models.CASCADE))
 
 
 class AbstractBaseOrganization(UnicodeMixin, models.Model):

@@ -1,6 +1,11 @@
 from django.contrib.auth.models import User
 from django.core import mail
-from django.core.urlresolvers import reverse
+
+try:
+    from django.core.urlresolvers import reverse
+except ImportError:
+    from django.urls import reverse
+
 from django.http import Http404
 from django.http import QueryDict
 from django.test import TestCase
