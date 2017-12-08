@@ -24,7 +24,12 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 from django.contrib.sites.shortcuts import get_current_site
-from django.core.urlresolvers import reverse
+
+try:
+    from django.core.urlresolvers import reverse
+except ImportError:
+    from django.urls import reverse
+
 from django.http import HttpResponseBadRequest
 from django.shortcuts import redirect
 from django.shortcuts import render
@@ -177,8 +182,12 @@ class OrganizationSignup(FormView):
     backend = registration_backend()
 
     def dispatch(self, request, *args, **kwargs):
-        if request.user.is_authenticated():
-            return redirect('organization_add')
+        try:
+            if request.user.is_authenticated():
+                return redirect('organization_add')
+        except TypeError:
+            if request.user.is_authenticated:
+                return redirect('organization_add')
         return super(OrganizationSignup, self).dispatch(request, *args,
                 **kwargs)
 

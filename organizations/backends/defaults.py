@@ -36,7 +36,12 @@ from django.contrib.auth import authenticate
 from django.contrib.auth import get_user_model
 from django.contrib.auth import login
 from django.core.mail import EmailMessage
-from django.core.urlresolvers import reverse
+
+try:
+    from django.core.urlresolvers import reverse
+except ImportError:
+    from django.urls import reverse
+
 from django.http import Http404
 from django.shortcuts import redirect
 from django.shortcuts import render
@@ -217,8 +222,12 @@ class RegistrationBackend(BaseBackend):
         """
         Initiates the organization and user account creation process
         """
-        if request.user.is_authenticated():
-            return redirect("organization_add")
+        try:
+            if request.user.is_authenticated():
+                return redirect("organization_add")
+        except TypeError:
+            if request.user.is_authenticated:
+                return redirect("organization_add")
         form = org_registration_form(self.org_model)(request.POST or None)
         if form.is_valid():
             try:

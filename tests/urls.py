@@ -7,7 +7,7 @@ admin.autodiscover()
 
 
 urlpatterns = [
-    url(r'^admin/', include(admin.site.urls)),
+    url(r'^admin/', admin.site.urls),
     url(r'^organizations/', include('organizations.urls')),
     url(r'^invite/', include(invitation_backend().get_urls())),
     url(r'^register/', include(registration_backend().get_urls())),
