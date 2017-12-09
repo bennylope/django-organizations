@@ -36,12 +36,6 @@ from django.contrib.auth import authenticate
 from django.contrib.auth import get_user_model
 from django.contrib.auth import login
 from django.core.mail import EmailMessage
-
-try:
-    from django.core.urlresolvers import reverse
-except ImportError:
-    from django.urls import reverse
-
 from django.http import Http404
 from django.shortcuts import redirect
 from django.shortcuts import render
@@ -51,6 +45,7 @@ from django.utils.translation import ugettext as _
 from organizations.backends.forms import UserRegistrationForm
 from organizations.backends.forms import org_registration_form
 from organizations.backends.tokens import RegistrationTokenGenerator
+from organizations.compat import reverse
 from organizations.utils import create_organization
 from organizations.utils import default_org_model
 from organizations.utils import model_field_attr

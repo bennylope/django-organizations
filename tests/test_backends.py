@@ -1,11 +1,5 @@
 from django.contrib.auth.models import User
 from django.core import mail
-
-try:
-    from django.core.urlresolvers import reverse
-except ImportError:
-    from django.urls import reverse
-
 from django.http import Http404
 from django.http import QueryDict
 from django.test import TestCase
@@ -16,6 +10,7 @@ from organizations.backends.defaults import BaseBackend
 from organizations.backends.defaults import InvitationBackend
 from organizations.backends.defaults import RegistrationBackend
 from organizations.backends.tokens import RegistrationTokenGenerator
+from organizations.compat import reverse
 from organizations.models import Organization
 from test_abstract.models import CustomOrganization
 from test_vendors.models import Vendor

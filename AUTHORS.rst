@@ -20,6 +20,7 @@ Contributors:
 * `Basil Shubin <https://github.com/bashu>`_
 * `Federico Capoano <https://github.com/nemesisdesign>`_
 * `Justin Mayer <https://github.com/justinmayer>`_
+* `Alan Zhu <https://github.com/AZtheAsian>`_
 
 If your name is missing as a contributor that's my oversight, let me know at
 ben@benlopatin.com

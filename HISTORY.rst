@@ -3,6 +3,11 @@
 History
 =======
 
+1.0.0
+-----
+
+* Django 2 compatability
+
 0.9.3
 -----
 
