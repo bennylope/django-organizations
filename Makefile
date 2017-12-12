@@ -49,10 +49,10 @@ lint:
 	flake8 organizations
 
 test:
-	py.test ${TEST_FLAGS}
+	pytest ${TEST_FLAGS}
 
 test-coverage: clean-test
-	-py.test ${COVER_FLAGS} ${TEST_FLAGS}
+	-pytest ${COVER_FLAGS} ${TEST_FLAGS}
 	@exit_code=$?
 	@-coverage html
 	@exit ${exit_code}
