@@ -6,7 +6,9 @@ History
 1.0.0
 -----
 
-* Django 2 compatability
+* Django 2 compatibility.
+
+At this point it seems reasonable to bump to version 1.
 
 0.9.3
 -----

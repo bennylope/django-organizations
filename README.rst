@@ -117,7 +117,10 @@ is now ignored and the functionality satisifed by a vendored solution. A
 warning will be given but this *should not* have any effect on your code.
 
 - `django-extensions <http://django-extensions.readthedocs.org/en/latest/>`_
-- `Django Autoslug <https://pythonhosted.org/django-autoslug/>`_
+- `Django Autoslug <http://django-autoslug.readthedocs.io/en/latest/>`_
+- `django-slugger <https://gitlab.com/dspechnikov/django-slugger/>`_
+
+Note that as of django-autoslug 1.9.3. it is incompatible with Django 2.x
 
 Registration & invitation backends
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
