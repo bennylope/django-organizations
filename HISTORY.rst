@@ -3,6 +3,15 @@
 History
 =======
 
+1.1.0
+-----
+
+* Migrations fix
+
+Switching default slug fields resulted in some migration issues. This stemmed from
+relying on a library no longer supported (django-autoslug). A supported fork is
+used instead.
+
 1.0.0
 -----
 

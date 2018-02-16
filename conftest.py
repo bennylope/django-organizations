@@ -34,7 +34,8 @@ def pytest_configure():
         MIDDLEWARE_CLASSES=[],
         SITE_ID=1,
         FIXTURE_DIRS=['tests/fixtures'],
-        ORGS_SLUGFIELD='django_extensions.db.fields.AutoSlugField',
+        # ORGS_SLUGFIELD='django_extensions.db.fields.AutoSlugField',
+        ORGS_SLUGFIELD='autoslug.AutoSlugField',
         ROOT_URLCONF="tests.urls",
         TEMPLATES = [
             {
