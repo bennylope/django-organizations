@@ -13,7 +13,9 @@ At this point it seems reasonable to bump to version 1.
 0.9.3
 -----
 
-* Create username value for user if username field exists (custom user models) 
+* Create username value for user if username field exists (custom user models)
+* Replaced BaseBackend._send_email with BaseBackend.email_message. email_message() should return
+  the message without actually doing the send.
 
 0.9.2
 -----
