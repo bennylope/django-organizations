@@ -26,6 +26,7 @@
 from organizations.abstract import AbstractOrganization
 from organizations.abstract import AbstractOrganizationOwner
 from organizations.abstract import AbstractOrganizationUser
+from organizations.abstract import AbstractOrganizationInvitation
 
 
 class Organization(AbstractOrganization):
@@ -48,5 +49,10 @@ class OrganizationOwner(AbstractOrganizationOwner):
     """
     Default OrganizationOwner model.
     """
+    class Meta(AbstractOrganizationOwner.Meta):
+        abstract = False
+
+
+class OrganizationInvitation(AbstractOrganizationInvitation):
     class Meta(AbstractOrganizationOwner.Meta):
         abstract = False
