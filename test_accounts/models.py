@@ -10,7 +10,7 @@ class Account(OrganizationBase):
 
 
 class AccountUser(OrganizationUserBase):
-    user_type = models.CharField(max_length=1, default='')
+    user_type = models.CharField(max_length=1, default="")
 
 
 class AccountOwner(OrganizationOwnerBase):

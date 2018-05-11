@@ -33,6 +33,7 @@ class Organization(AbstractOrganization):
     """
     Default Organization model.
     """
+
     class Meta(AbstractOrganization.Meta):
         abstract = False
 
@@ -41,6 +42,7 @@ class OrganizationUser(AbstractOrganizationUser):
     """
     Default OrganizationUser model.
     """
+
     class Meta(AbstractOrganizationUser.Meta):
         abstract = False
 
@@ -49,10 +51,12 @@ class OrganizationOwner(AbstractOrganizationOwner):
     """
     Default OrganizationOwner model.
     """
+
     class Meta(AbstractOrganizationOwner.Meta):
         abstract = False
 
 
 class OrganizationInvitation(AbstractOrganizationInvitation):
+
     class Meta(AbstractOrganizationOwner.Meta):
         abstract = False

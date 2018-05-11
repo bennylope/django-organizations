@@ -58,29 +58,31 @@ class BaseOrganizationList(ListView):
     context_object_name = "organizations"
 
     def get_queryset(self):
-        return super(BaseOrganizationList,
-                self).get_queryset().filter(users=self.request.user)
+        return super(BaseOrganizationList, self).get_queryset().filter(
+            users=self.request.user
+        )
 
 
 class BaseOrganizationDetail(OrganizationMixin, DetailView):
+
     def get_context_data(self, **kwargs):
         context = super(BaseOrganizationDetail, self).get_context_data(**kwargs)
-        context['organization_users'] = self.organization.organization_users.all()
-        context['organization'] = self.organization
+        context["organization_users"] = self.organization.organization_users.all()
+        context["organization"] = self.organization
         return context
 
 
 class BaseOrganizationCreate(CreateView):
     model = Organization
     form_class = OrganizationAddForm
-    template_name = 'organizations/organization_form.html'
+    template_name = "organizations/organization_form.html"
 
     def get_success_url(self):
         return reverse("organization_list")
 
     def get_form_kwargs(self):
         kwargs = super(BaseOrganizationCreate, self).get_form_kwargs()
-        kwargs.update({'request': self.request})
+        kwargs.update({"request": self.request})
         return kwargs
 
 
@@ -89,22 +91,26 @@ class BaseOrganizationUpdate(OrganizationMixin, UpdateView):
 
     def get_form_kwargs(self):
         kwargs = super(BaseOrganizationUpdate, self).get_form_kwargs()
-        kwargs.update({'request': self.request})
+        kwargs.update({"request": self.request})
         return kwargs
 
 
 class BaseOrganizationDelete(OrganizationMixin, DeleteView):
+
     def get_success_url(self):
         return reverse("organization_list")
 
 
 class BaseOrganizationUserList(OrganizationMixin, ListView):
+
     def get(self, request, *args, **kwargs):
         self.organization = self.get_organization()
         self.object_list = self.organization.organization_users.all()
-        context = self.get_context_data(object_list=self.object_list,
-                organization_users=self.object_list,
-                organization=self.organization)
+        context = self.get_context_data(
+            object_list=self.object_list,
+            organization_users=self.object_list,
+            organization=self.organization,
+        )
         return self.render_to_response(context)
 
 
@@ -114,16 +120,17 @@ class BaseOrganizationUserDetail(OrganizationUserMixin, DetailView):
 
 class BaseOrganizationUserCreate(OrganizationMixin, CreateView):
     form_class = OrganizationUserAddForm
-    template_name = 'organizations/organizationuser_form.html'
+    template_name = "organizations/organizationuser_form.html"
 
     def get_success_url(self):
-        return reverse('organization_user_list',
-                kwargs={'organization_pk': self.object.organization.pk})
+        return reverse(
+            "organization_user_list",
+            kwargs={"organization_pk": self.object.organization.pk},
+        )
 
     def get_form_kwargs(self):
         kwargs = super(BaseOrganizationUserCreate, self).get_form_kwargs()
-        kwargs.update({'organization': self.organization,
-            'request': self.request})
+        kwargs.update({"organization": self.organization, "request": self.request})
         return kwargs
 
     def get(self, request, *args, **kwargs):
@@ -136,7 +143,7 @@ class BaseOrganizationUserCreate(OrganizationMixin, CreateView):
 
 
 class BaseOrganizationUserRemind(OrganizationUserMixin, DetailView):
-    template_name = 'organizations/organizationuser_remind.html'
+    template_name = "organizations/organizationuser_remind.html"
     # TODO move to invitations backend?
 
     def get_object(self, **kwargs):
@@ -147,9 +154,14 @@ class BaseOrganizationUserRemind(OrganizationUserMixin, DetailView):
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
-        invitation_backend().send_reminder(self.object.user,
-                **{'domain': get_current_site(self.request),
-                    'organization': self.organization, 'sender': request.user})
+        invitation_backend().send_reminder(
+            self.object.user,
+            **{
+                "domain": get_current_site(self.request),
+                "organization": self.organization,
+                "sender": request.user,
+            }
+        )
         return redirect(self.object)
 
 
@@ -158,9 +170,12 @@ class BaseOrganizationUserUpdate(OrganizationUserMixin, UpdateView):
 
 
 class BaseOrganizationUserDelete(OrganizationUserMixin, DeleteView):
+
     def get_success_url(self):
-        return reverse('organization_user_list',
-                kwargs={'organization_pk': self.object.organization.pk})
+        return reverse(
+            "organization_user_list",
+            kwargs={"organization_pk": self.object.organization.pk},
+        )
 
 
 class OrganizationSignup(FormView):
@@ -179,24 +194,27 @@ class OrganizationSignup(FormView):
     def dispatch(self, request, *args, **kwargs):
         try:
             if request.user.is_authenticated():
-                return redirect('organization_add')
+                return redirect("organization_add")
         except TypeError:
             if request.user.is_authenticated:
-                return redirect('organization_add')
-        return super(OrganizationSignup, self).dispatch(request, *args,
-                **kwargs)
+                return redirect("organization_add")
+        return super(OrganizationSignup, self).dispatch(request, *args, **kwargs)
 
     def get_success_url(self):
-        if hasattr(self, 'success_url'):
+        if hasattr(self, "success_url"):
             return self.success_url
-        return reverse('organization_signup_success')
+        return reverse("organization_signup_success")
 
     def form_valid(self, form):
         """
         """
-        user = self.backend.register_by_email(form.cleaned_data['email'])
-        create_organization(user=user, name=form.cleaned_data['name'],
-                slug=form.cleaned_data['slug'], is_active=False)
+        user = self.backend.register_by_email(form.cleaned_data["email"])
+        create_organization(
+            user=user,
+            name=form.cleaned_data["name"],
+            slug=form.cleaned_data["slug"],
+            is_active=False,
+        )
         return redirect(self.get_success_url())
 
 

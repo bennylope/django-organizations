@@ -24,9 +24,9 @@
 # OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-__author__ = 'Ben Lopatin'
-__email__ = 'ben@wellfire.co'
-__version__ = '1.1.1'
+__author__ = "Ben Lopatin"
+__email__ = "ben@wellfire.co"
+__version__ = "1.1.0"
 
 
-default_app_config = 'organizations.apps.OrganizationsConfig'
+default_app_config = "organizations.apps.OrganizationsConfig"

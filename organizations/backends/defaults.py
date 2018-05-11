@@ -55,8 +55,8 @@ class BaseBackend(object):
     """
     Base backend class for registering and inviting users to an organization
     """
-    registration_form_template = 'organizations/register_form.html'
-    activation_success_template = 'organizations/register_success.html'
+    registration_form_template = "organizations/register_form.html"
+    activation_success_template = "organizations/register_success.html"
 
     def __init__(self, org_model=None):
         self.user_model = get_user_model()
@@ -71,7 +71,7 @@ class BaseBackend(object):
 
     def get_form(self, **kwargs):
         """Returns the form for registering or inviting a user"""
-        if not hasattr(self, 'form_class'):
+        if not hasattr(self, "form_class"):
             raise AttributeError(_("You must define a form_class"))
         return self.form_class(**kwargs)
 
@@ -85,7 +85,9 @@ class BaseBackend(object):
 
         This is required data for user models with a username field.
         """
-        return str(uuid.uuid4())[:model_field_attr(self.user_model, 'username', 'max_length')]
+        return str(uuid.uuid4())[
+            :model_field_attr(self.user_model, "username", "max_length")
+        ]
 
     def activate_organizations(self, user):
         """
@@ -121,25 +123,36 @@ class BaseBackend(object):
         if form.is_valid():
             form.instance.is_active = True
             user = form.save()
-            user.set_password(form.cleaned_data['password'])
+            user.set_password(form.cleaned_data["password"])
             user.save()
             self.activate_organizations(user)
-            user = authenticate(username=form.cleaned_data['username'],
-                    password=form.cleaned_data['password'])
+            user = authenticate(
+                username=form.cleaned_data["username"],
+                password=form.cleaned_data["password"],
+            )
             login(request, user)
             return redirect(self.get_success_url())
-        return render(request, self.registration_form_template, {'form': form})
+        return render(request, self.registration_form_template, {"form": form})
 
     def send_reminder(self, user, sender=None, **kwargs):
         """Sends a reminder email to the specified user"""
         if user.is_active:
             return False
         token = RegistrationTokenGenerator().make_token(user)
-        kwargs.update({'token': token})
-        self.email_message(user, self.reminder_subject, self.reminder_body, sender, **kwargs).send()
+        kwargs.update({"token": token})
+        self.email_message(
+            user, self.reminder_subject, self.reminder_body, sender, **kwargs
+        ).send()
 
-    def email_message(self, user, subject_template, body_template,
-            sender=None, message_class=EmailMessage, **kwargs):
+    def email_message(
+        self,
+        user,
+        subject_template,
+        body_template,
+        sender=None,
+        message_class=EmailMessage,
+        **kwargs
+    ):
         """
         Returns an email message for a new user. This can be easily overriden.
         For instance, to send an HTML message, use the EmailMultiAlternatives message_class
@@ -157,12 +170,14 @@ class BaseBackend(object):
             from_email = settings.DEFAULT_FROM_EMAIL
             reply_to = from_email
 
-        headers = {'Reply-To': reply_to}
-        kwargs.update({'sender': sender, 'user': user})
+        headers = {"Reply-To": reply_to}
+        kwargs.update({"sender": sender, "user": user})
 
         subject_template = loader.get_template(subject_template)
         body_template = loader.get_template(body_template)
-        subject = subject_template.render(kwargs).strip()  # Remove stray newline characters
+        subject = subject_template.render(
+            kwargs
+        ).strip()  # Remove stray newline characters
         body = body_template.render(kwargs)
         return message_class(subject, body, from_email, [user.email], headers=headers)
 
@@ -174,22 +189,24 @@ class RegistrationBackend(BaseBackend):
     """
     # NOTE this backend stands to be simplified further, as email verification
     # should be beyond the purview of this app
-    activation_subject = 'organizations/email/activation_subject.txt'
-    activation_body = 'organizations/email/activation_body.html'
-    reminder_subject = 'organizations/email/reminder_subject.txt'
-    reminder_body = 'organizations/email/reminder_body.html'
+    activation_subject = "organizations/email/activation_subject.txt"
+    activation_body = "organizations/email/activation_body.html"
+    reminder_subject = "organizations/email/reminder_subject.txt"
+    reminder_body = "organizations/email/reminder_body.html"
     form_class = UserRegistrationForm
 
     def get_success_url(self):
-        return reverse('registration_success')
+        return reverse("registration_success")
 
     def get_urls(self):
         return [
-            url(r'^complete/$', view=self.success_view,
-                name="registration_success"),
-            url(r'^(?P<user_id>[\d]+)-(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
-                view=self.activate_view, name="registration_register"),
-            url(r'^$', view=self.create_view, name="registration_create"),
+            url(r"^complete/$", view=self.success_view, name="registration_success"),
+            url(
+                r"^(?P<user_id>[\d]+)-(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$",
+                view=self.activate_view,
+                name="registration_register",
+            ),
+            url(r"^$", view=self.create_view, name="registration_create"),
         ]
 
     def register_by_email(self, email, sender=None, request=None, **kwargs):
@@ -200,8 +217,11 @@ class RegistrationBackend(BaseBackend):
         try:
             user = self.user_model.objects.get(email=email)
         except self.user_model.DoesNotExist:
-            user = self.user_model.objects.create(username=self.get_username(),
-                    email=email, password=self.user_model.objects.make_random_password())
+            user = self.user_model.objects.create(
+                username=self.get_username(),
+                email=email,
+                password=self.user_model.objects.make_random_password(),
+            )
             user.is_active = False
             user.save()
         self.send_activation(user, sender, **kwargs)
@@ -214,8 +234,10 @@ class RegistrationBackend(BaseBackend):
         if user.is_active:
             return False
         token = self.get_token(user)
-        kwargs.update({'token': token})
-        self.email_message(user, self.activation_subject, self.activation_body, sender, **kwargs).send()
+        kwargs.update({"token": token})
+        self.email_message(
+            user, self.activation_subject, self.activation_body, sender, **kwargs
+        ).send()
 
     def create_view(self, request):
         """
@@ -230,19 +252,29 @@ class RegistrationBackend(BaseBackend):
         form = org_registration_form(self.org_model)(request.POST or None)
         if form.is_valid():
             try:
-                user = self.user_model.objects.get(email=form.cleaned_data['email'])
+                user = self.user_model.objects.get(email=form.cleaned_data["email"])
             except self.user_model.DoesNotExist:
-                user = self.user_model.objects.create(username=self.get_username(),
-                        email=form.cleaned_data['email'],
-                        password=self.user_model.objects.make_random_password())
+                user = self.user_model.objects.create(
+                    username=self.get_username(),
+                    email=form.cleaned_data["email"],
+                    password=self.user_model.objects.make_random_password(),
+                )
                 user.is_active = False
                 user.save()
             else:
                 return redirect("organization_add")
-            organization = create_organization(user, form.cleaned_data['name'],
-                    form.cleaned_data['slug'], is_active=False)
-            return render(request, self.activation_success_template, {'user': user, 'organization': organization})
-        return render(request, self.registration_form_template, {'form': form})
+            organization = create_organization(
+                user,
+                form.cleaned_data["name"],
+                form.cleaned_data["slug"],
+                is_active=False,
+            )
+            return render(
+                request,
+                self.activation_success_template,
+                {"user": user, "organization": organization},
+            )
+        return render(request, self.registration_form_template, {"form": form})
 
     def success_view(self, request):
         return render(request, self.activation_success_template, {})
@@ -253,23 +285,26 @@ class InvitationBackend(BaseBackend):
     A backend for inviting new users to join the site as members of an
     organization.
     """
-    notification_subject = 'organizations/email/notification_subject.txt'
-    notification_body = 'organizations/email/notification_body.html'
-    invitation_subject = 'organizations/email/invitation_subject.txt'
-    invitation_body = 'organizations/email/invitation_body.html'
-    reminder_subject = 'organizations/email/reminder_subject.txt'
-    reminder_body = 'organizations/email/reminder_body.html'
+    notification_subject = "organizations/email/notification_subject.txt"
+    notification_body = "organizations/email/notification_body.html"
+    invitation_subject = "organizations/email/invitation_subject.txt"
+    invitation_body = "organizations/email/invitation_body.html"
+    reminder_subject = "organizations/email/reminder_subject.txt"
+    reminder_body = "organizations/email/reminder_body.html"
     form_class = UserRegistrationForm
 
     def get_success_url(self):
         # TODO get this url name from an attribute
-        return reverse('organization_list')
+        return reverse("organization_list")
 
     def get_urls(self):
         # TODO enable naming based on a model?
         return [
-            url(r'^(?P<user_id>[\d]+)-(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
-                view=self.activate_view, name="invitations_register"),
+            url(
+                r"^(?P<user_id>[\d]+)-(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$",
+                view=self.activate_view,
+                name="invitations_register",
+            )
         ]
 
     def invite_by_email(self, email, sender=None, request=None, **kwargs):
@@ -283,12 +318,18 @@ class InvitationBackend(BaseBackend):
             user = self.user_model.objects.get(email=email)
         except self.user_model.DoesNotExist:
             # TODO break out user creation process
-            if 'username' in inspect.getargspec(self.user_model.objects.create_user).args:
-                user = self.user_model.objects.create(username=self.get_username(),
-                        email=email, password=self.user_model.objects.make_random_password())
+            if "username" in inspect.getargspec(
+                self.user_model.objects.create_user
+            ).args:
+                user = self.user_model.objects.create(
+                    username=self.get_username(),
+                    email=email,
+                    password=self.user_model.objects.make_random_password(),
+                )
             else:
-                user = self.user_model.objects.create(email=email,
-                        password=self.user_model.objects.make_random_password())
+                user = self.user_model.objects.create(
+                    email=email, password=self.user_model.objects.make_random_password()
+                )
             user.is_active = False
             user.save()
         self.send_invitation(user, sender, **kwargs)
@@ -302,8 +343,10 @@ class InvitationBackend(BaseBackend):
         if user.is_active:
             return False
         token = self.get_token(user)
-        kwargs.update({'token': token})
-        self.email_message(user, self.invitation_subject, self.invitation_body, sender, **kwargs).send()
+        kwargs.update({"token": token})
+        self.email_message(
+            user, self.invitation_subject, self.invitation_body, sender, **kwargs
+        ).send()
         return True
 
     def send_notification(self, user, sender=None, **kwargs):
@@ -314,5 +357,7 @@ class InvitationBackend(BaseBackend):
         """
         if not user.is_active:
             return False
-        self.email_message(user, self.notification_subject, self.notification_body, sender, **kwargs).send()
+        self.email_message(
+            user, self.notification_subject, self.notification_body, sender, **kwargs
+        ).send()
         return True

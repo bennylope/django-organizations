@@ -8,12 +8,12 @@ from organizations.abstract import AbstractOrganizationUser
 
 
 class CustomOrganization(AbstractOrganization):
-    street_address = models.CharField(max_length=100, default='')
-    city = models.CharField(max_length=100, default='')
+    street_address = models.CharField(max_length=100, default="")
+    city = models.CharField(max_length=100, default="")
 
 
 class CustomUser(AbstractOrganizationUser):
-    user_type = models.CharField(max_length=1, default='')
+    user_type = models.CharField(max_length=1, default="")
     permissions = models.ManyToManyField(Permission, blank=True)
 
 

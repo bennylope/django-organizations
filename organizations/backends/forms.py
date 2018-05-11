@@ -39,12 +39,11 @@ class UserRegistrationForm(forms.ModelForm):
     first_name = forms.CharField(max_length=30)
     last_name = forms.CharField(max_length=30)
     password = forms.CharField(max_length=30, widget=forms.PasswordInput)
-    password_confirm = forms.CharField(max_length=30,
-            widget=forms.PasswordInput)
+    password_confirm = forms.CharField(max_length=30, widget=forms.PasswordInput)
 
     def __init__(self, *args, **kwargs):
         super(UserRegistrationForm, self).__init__(*args, **kwargs)
-        self.initial['username'] = ''
+        self.initial["username"] = ""
 
     def clean(self):
         password = self.cleaned_data.get("password")
@@ -55,8 +54,15 @@ class UserRegistrationForm(forms.ModelForm):
 
     class Meta:
         model = get_user_model()
-        exclude = ('is_staff', 'is_superuser', 'is_active', 'last_login',
-                'date_joined', 'groups', 'user_permissions')
+        exclude = (
+            "is_staff",
+            "is_superuser",
+            "is_active",
+            "last_login",
+            "date_joined",
+            "groups",
+            "user_permissions",
+        )
 
 
 def org_registration_form(org_model):
@@ -70,7 +76,7 @@ def org_registration_form(org_model):
 
         class Meta:
             model = org_model
-            exclude = ('is_active', 'users')
+            exclude = ("is_active", "users")
 
         def save(self, *args, **kwargs):
             self.instance.is_active = False

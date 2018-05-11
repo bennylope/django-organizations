@@ -3,3 +3,4 @@ Sphinx
 tox
 wheel
 twine
+black
