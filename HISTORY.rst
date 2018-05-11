@@ -12,6 +12,16 @@ Switching default slug fields resulted in some migration issues. This stemmed fr
 relying on a library no longer supported (django-autoslug). A supported fork is
 used instead.
 
+1.1.0
+-----
+
+* Migrations and slug related fixup
+
+This is a small but significant change. A change introduced in version 1.0.0 due to
+incompatability with an unmaintained default dependency yielded migration issues for
+many users. This release switches *back* to a *fork* of the original dependency
+to revert the default changes.
+
 1.0.0
 -----
 
