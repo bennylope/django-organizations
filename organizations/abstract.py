@@ -43,12 +43,14 @@ from organizations.signals import owner_changed
 from organizations.signals import user_added
 from organizations.signals import user_removed
 
-USER_MODEL = getattr(settings, 'AUTH_USER_MODEL', 'auth.User')
-ORGS_TIMESTAMPED_MODEL = getattr(settings, 'ORGS_TIMESTAMPED_MODEL', None)
+USER_MODEL = getattr(settings, "AUTH_USER_MODEL", "auth.User")
+ORGS_TIMESTAMPED_MODEL = getattr(settings, "ORGS_TIMESTAMPED_MODEL", None)
 
 if ORGS_TIMESTAMPED_MODEL:
-    warnings.warn("Configured TimestampModel has been replaced and is now ignored.",
-                  DeprecationWarning)
+    warnings.warn(
+        "Configured TimestampModel has been replaced and is now ignored.",
+        DeprecationWarning,
+    )
 
 
 class SharedBaseModel(models.Model):
@@ -62,29 +64,44 @@ class SharedBaseModel(models.Model):
 
     @property
     def _org_user_model(self):
-        model = self.__class__.module_registry[self.__class__.__module__]['OrgUserModel']
+        model = self.__class__.module_registry[self.__class__.__module__][
+            "OrgUserModel"
+        ]
         if model is None:
-            model = self.__class__.module_registry['organizations.models']['OrgUserModel']
+            model = self.__class__.module_registry["organizations.models"][
+                "OrgUserModel"
+            ]
         return model
 
     @property
     def _org_owner_model(self):
-        model = self.__class__.module_registry[self.__class__.__module__]['OrgOwnerModel']
+        model = self.__class__.module_registry[self.__class__.__module__][
+            "OrgOwnerModel"
+        ]
         if model is None:
-            model = self.__class__.module_registry['organizations.models']['OrgOwnerModel']
+            model = self.__class__.module_registry["organizations.models"][
+                "OrgOwnerModel"
+            ]
         return model
 
     class Meta:
         abstract = True
 
 
-class AbstractOrganization(six.with_metaclass(OrgMeta, SharedBaseModel, AbstractBaseOrganization)):
+class AbstractOrganization(
+    six.with_metaclass(OrgMeta, SharedBaseModel, AbstractBaseOrganization)
+):
     """
     Abstract Organization model.
     """
-    slug = SlugField(max_length=200, blank=False, editable=True,
-            populate_from='name', unique=True,
-            help_text=_("The name in all lowercase, suitable for URL identification"))
+    slug = SlugField(
+        max_length=200,
+        blank=False,
+        editable=True,
+        populate_from="name",
+        unique=True,
+        help_text=_("The name in all lowercase, suitable for URL identification"),
+    )
 
     class Meta(AbstractBaseOrganization.Meta):
         abstract = True
@@ -95,7 +112,7 @@ class AbstractOrganization(six.with_metaclass(OrgMeta, SharedBaseModel, Abstract
         return self.name
 
     def get_absolute_url(self):
-        return reverse('organization_detail', kwargs={'organization_pk': self.pk})
+        return reverse("organization_detail", kwargs={"organization_pk": self.pk})
 
     def add_user(self, user, is_admin=False):
         """
@@ -106,13 +123,14 @@ class AbstractOrganization(six.with_metaclass(OrgMeta, SharedBaseModel, Abstract
         if users_count == 0:
             is_admin = True
         # TODO get specific org user?
-        org_user = self._org_user_model.objects.create(user=user,
-                                                       organization=self,
-                                                       is_admin=is_admin)
+        org_user = self._org_user_model.objects.create(
+            user=user, organization=self, is_admin=is_admin
+        )
         if users_count == 0:
             # TODO get specific org user?
-            self._org_owner_model.objects.create(organization=self,
-                                                 organization_user=org_user)
+            self._org_owner_model.objects.create(
+                organization=self, organization_user=org_user
+            )
 
         # User added signal
         user_added.send(sender=self, user=user)
@@ -122,8 +140,7 @@ class AbstractOrganization(six.with_metaclass(OrgMeta, SharedBaseModel, Abstract
         """
         Deletes a user from an organization.
         """
-        org_user = self._org_user_model.objects.get(user=user,
-                                                    organization=self)
+        org_user = self._org_user_model.objects.get(user=user, organization=self)
         org_user.delete()
 
         # User removed signal
@@ -141,18 +158,18 @@ class AbstractOrganization(six.with_metaclass(OrgMeta, SharedBaseModel, Abstract
         `OrganizationUser` and a boolean value indicating whether the
         OrganizationUser was created or not.
         """
-        is_admin = kwargs.pop('is_admin', False)
+        is_admin = kwargs.pop("is_admin", False)
         users_count = self.users.all().count()
         if users_count == 0:
             is_admin = True
 
-        org_user, created = self._org_user_model.objects\
-                                .get_or_create(organization=self,
-                                               user=user,
-                                               defaults={'is_admin': is_admin})
+        org_user, created = self._org_user_model.objects.get_or_create(
+            organization=self, user=user, defaults={"is_admin": is_admin}
+        )
         if users_count == 0:
-            self._org_owner_model.objects\
-                .create(organization=self, organization_user=org_user)
+            self._org_owner_model.objects.create(
+                organization=self, organization_user=org_user
+            )
         if created:
             # User added signal
             user_added.send(sender=self, user=user)
@@ -173,7 +190,9 @@ class AbstractOrganization(six.with_metaclass(OrgMeta, SharedBaseModel, Abstract
         """
         Returns True is user is an admin in the organization, otherwise false
         """
-        return True if self.organization_users.filter(user=user, is_admin=True) else False
+        return True if self.organization_users.filter(
+            user=user, is_admin=True
+        ) else False
 
     def is_owner(self, user):
         """
@@ -182,7 +201,9 @@ class AbstractOrganization(six.with_metaclass(OrgMeta, SharedBaseModel, Abstract
         return self.owner.organization_user.user == user
 
 
-class AbstractOrganizationUser(six.with_metaclass(OrgMeta, SharedBaseModel, AbstractBaseOrganizationUser)):
+class AbstractOrganizationUser(
+    six.with_metaclass(OrgMeta, SharedBaseModel, AbstractBaseOrganizationUser)
+):
     """
     Abstract OrganizationUser model
     """
@@ -194,8 +215,10 @@ class AbstractOrganizationUser(six.with_metaclass(OrgMeta, SharedBaseModel, Abst
         verbose_name_plural = _("organization users")
 
     def __unicode__(self):
-        return u"{0} ({1})".format(self.name if self.user.is_active else
-                self.user.email, self.organization.name)
+        return u"{0} ({1})".format(
+            self.name if self.user.is_active else self.user.email,
+            self.organization.name,
+        )
 
     def delete(self, using=None):
         """
@@ -205,24 +228,34 @@ class AbstractOrganizationUser(six.with_metaclass(OrgMeta, SharedBaseModel, Abst
         If there is no owner then the deletion should proceed.
         """
         from organizations.exceptions import OwnershipRequired
+
         try:
             if self.organization.owner.organization_user.id == self.id:
-                raise OwnershipRequired(_("Cannot delete organization owner "
-                    "before organization or transferring ownership."))
+                raise OwnershipRequired(
+                    _(
+                        "Cannot delete organization owner "
+                        "before organization or transferring ownership."
+                    )
+                )
         # TODO This line presumes that OrgOwner model can't be modified
         except self._org_owner_model.DoesNotExist:
             pass
         super(AbstractBaseOrganizationUser, self).delete(using=using)
 
     def get_absolute_url(self):
-        return reverse('organization_user_detail', kwargs={
-            'organization_pk': self.organization.pk, 'user_pk': self.user.pk})
+        return reverse(
+            "organization_user_detail",
+            kwargs={"organization_pk": self.organization.pk, "user_pk": self.user.pk},
+        )
 
 
-class AbstractOrganizationOwner(six.with_metaclass(OrgMeta, SharedBaseModel, AbstractBaseOrganizationOwner)):
+class AbstractOrganizationOwner(
+    six.with_metaclass(OrgMeta, SharedBaseModel, AbstractBaseOrganizationOwner)
+):
     """
     Abstract OrganizationOwner model
     """
+
     class Meta:
         abstract = True
         verbose_name = _("organization owner")
@@ -240,13 +273,16 @@ class AbstractOrganizationOwner(six.with_metaclass(OrgMeta, SharedBaseModel, Abs
 
         """
         from organizations.exceptions import OrganizationMismatch
+
         if self.organization_user.organization.pk != self.organization.pk:
             raise OrganizationMismatch
         else:
             super(AbstractBaseOrganizationOwner, self).save(*args, **kwargs)
 
 
-class AbstractOrganizationInvitation(six.with_metaclass(OrgMeta, SharedBaseModel, AbstractBaseInvitation)):
+class AbstractOrganizationInvitation(
+    six.with_metaclass(OrgMeta, SharedBaseModel, AbstractBaseInvitation)
+):
     """
     Abstract OrganizationInvitationBase model
     """

@@ -33,18 +33,19 @@ from organizations.compat import six
 from organizations.managers import ActiveOrgManager
 from organizations.managers import OrgManager
 
-USER_MODEL = getattr(settings, 'AUTH_USER_MODEL', 'auth.User')
+USER_MODEL = getattr(settings, "AUTH_USER_MODEL", "auth.User")
 
 
 class UnicodeMixin(object):
     """
     Python 2 and 3 string representation support.
     """
+
     def __str__(self):
         if six.PY3:
             return self.__unicode__()
         else:
-            return unicode(self).encode('utf-8') # noqa
+            return unicode(self).encode("utf-8")  # noqa
 
 
 class OrgMeta(ModelBase):
@@ -68,29 +69,31 @@ class OrgMeta(ModelBase):
         # Borrowed from Django-polymorphic
         # Workaround compatibility issue with six.with_metaclass() and custom
         # Django model metaclasses:
-        if not attrs and name == 'NewBase':
+        if not attrs and name == "NewBase":
             return super(OrgMeta, cls).__new__(cls, name, bases, attrs)
 
-        base_classes = ['OrgModel', 'OrgUserModel', 'OrgOwnerModel', 'OrgInviteModel']
+        base_classes = ["OrgModel", "OrgUserModel", "OrgOwnerModel", "OrgInviteModel"]
         model = super(OrgMeta, cls).__new__(cls, name, bases, attrs)
         module = model.__module__
         if not cls.module_registry.get(module):
             cls.module_registry[module] = {
-                'OrgModel': None,
-                'OrgUserModel': None,
-                'OrgOwnerModel': None,
-                'OrgInviteModel': None,
+                "OrgModel": None,
+                "OrgUserModel": None,
+                "OrgOwnerModel": None,
+                "OrgInviteModel": None,
             }
         for b in bases:
             key = None
             if b.__name__ in ["AbstractOrganization", "OrganizationBase"]:
-                key = 'OrgModel'
+                key = "OrgModel"
             elif b.__name__ in ["AbstractOrganizationUser", "OrganizationUserBase"]:
-                key = 'OrgUserModel'
+                key = "OrgUserModel"
             elif b.__name__ in ["AbstractOrganizationOwner", "OrganizationOwnerBase"]:
-                key = 'OrgOwnerModel'
-            elif b.__name__ in ["AbstractOrganizationInvitation", "OrganizationInvitationBase"]:
-                key = 'OrgInviteModel'
+                key = "OrgOwnerModel"
+            elif b.__name__ in [
+                "AbstractOrganizationInvitation", "OrganizationInvitationBase"
+            ]:
+                key = "OrgInviteModel"
             if key:
                 cls.module_registry[module][key] = model
 
@@ -102,18 +105,21 @@ class OrgMeta(ModelBase):
 
         return model
 
-
     def update_org(cls, module):
         """
         Adds the `users` field to the organization model
         """
         try:
-            cls.module_registry[module]['OrgModel']._meta.get_field("users")
+            cls.module_registry[module]["OrgModel"]._meta.get_field("users")
         except FieldDoesNotExist:
-            cls.module_registry[module]['OrgModel'].add_to_class("users",
-                models.ManyToManyField(USER_MODEL,
-                        through=cls.module_registry[module]['OrgUserModel'].__name__,
-                        related_name="%(app_label)s_%(class)s"))
+            cls.module_registry[module]["OrgModel"].add_to_class(
+                "users",
+                models.ManyToManyField(
+                    USER_MODEL,
+                    through=cls.module_registry[module]["OrgUserModel"].__name__,
+                    related_name="%(app_label)s_%(class)s",
+                ),
+            )
 
     def update_org_users(cls, module):
         """
@@ -121,52 +127,86 @@ class OrgMeta(ModelBase):
         the specific organization model.
         """
         try:
-            cls.module_registry[module]['OrgUserModel']._meta.get_field("user")
+            cls.module_registry[module]["OrgUserModel"]._meta.get_field("user")
         except FieldDoesNotExist:
-            cls.module_registry[module]['OrgUserModel'].add_to_class("user",
-                models.ForeignKey(USER_MODEL, related_name="%(app_label)s_%(class)s",
-                        on_delete=models.CASCADE))
+            cls.module_registry[module]["OrgUserModel"].add_to_class(
+                "user",
+                models.ForeignKey(
+                    USER_MODEL,
+                    related_name="%(app_label)s_%(class)s",
+                    on_delete=models.CASCADE,
+                ),
+            )
         try:
-            cls.module_registry[module]['OrgUserModel']._meta.get_field("organization")
+            cls.module_registry[module]["OrgUserModel"]._meta.get_field("organization")
         except FieldDoesNotExist:
-            cls.module_registry[module]['OrgUserModel'].add_to_class("organization",
-                models.ForeignKey(cls.module_registry[module]['OrgModel'],
-                        related_name="organization_users", on_delete=models.CASCADE))
+            cls.module_registry[module]["OrgUserModel"].add_to_class(
+                "organization",
+                models.ForeignKey(
+                    cls.module_registry[module]["OrgModel"],
+                    related_name="organization_users",
+                    on_delete=models.CASCADE,
+                ),
+            )
 
     def update_org_owner(cls, module):
         """
         Creates the links to the organization and organization user for the owner.
         """
         try:
-            cls.module_registry[module]['OrgOwnerModel']._meta.get_field("organization_user")
+            cls.module_registry[module]["OrgOwnerModel"]._meta.get_field(
+                "organization_user"
+            )
         except FieldDoesNotExist:
-            cls.module_registry[module]['OrgOwnerModel'].add_to_class("organization_user",
-                models.OneToOneField(cls.module_registry[module]['OrgUserModel'],
-                        on_delete=models.CASCADE))
+            cls.module_registry[module]["OrgOwnerModel"].add_to_class(
+                "organization_user",
+                models.OneToOneField(
+                    cls.module_registry[module]["OrgUserModel"],
+                    on_delete=models.CASCADE,
+                ),
+            )
         try:
-            cls.module_registry[module]['OrgOwnerModel']._meta.get_field("organization")
+            cls.module_registry[module]["OrgOwnerModel"]._meta.get_field("organization")
         except FieldDoesNotExist:
-            cls.module_registry[module]['OrgOwnerModel'].add_to_class("organization",
-                models.OneToOneField(cls.module_registry[module]['OrgModel'],
-                        related_name="owner", on_delete=models.CASCADE))
+            cls.module_registry[module]["OrgOwnerModel"].add_to_class(
+                "organization",
+                models.OneToOneField(
+                    cls.module_registry[module]["OrgModel"],
+                    related_name="owner",
+                    on_delete=models.CASCADE,
+                ),
+            )
 
     def update_org_invite(cls, module):
         """
         Adds the links to the organization and to the organization user
         """
         try:
-            cls.module_registry[module]['OrgInviteModel']._meta.get_field("organization_user")
+            cls.module_registry[module]["OrgInviteModel"]._meta.get_field(
+                "organization_user"
+            )
         except FieldDoesNotExist:
-            cls.module_registry[module]['OrgInviteModel'].add_to_class("organization_user",
-                   models.ForeignKey(cls.module_registry[module]['OrgUserModel'],
-                                     related_name="%(app_label)s_%(class)s",
-                                        on_delete=models.CASCADE))
+            cls.module_registry[module]["OrgInviteModel"].add_to_class(
+                "organization_user",
+                models.ForeignKey(
+                    cls.module_registry[module]["OrgUserModel"],
+                    related_name="%(app_label)s_%(class)s",
+                    on_delete=models.CASCADE,
+                ),
+            )
         try:
-            cls.module_registry[module]['OrgInviteModel']._meta.get_field("organization")
+            cls.module_registry[module]["OrgInviteModel"]._meta.get_field(
+                "organization"
+            )
         except FieldDoesNotExist:
-            cls.module_registry[module]['OrgInviteModel'].add_to_class("organization",
-               models.ForeignKey(cls.module_registry[module]['OrgModel'],
-                                 related_name="organization_invites", on_delete=models.CASCADE))
+            cls.module_registry[module]["OrgInviteModel"].add_to_class(
+                "organization",
+                models.ForeignKey(
+                    cls.module_registry[module]["OrgModel"],
+                    related_name="organization_invites",
+                    on_delete=models.CASCADE,
+                ),
+            )
 
 
 class AbstractBaseOrganization(UnicodeMixin, models.Model):
@@ -177,8 +217,7 @@ class AbstractBaseOrganization(UnicodeMixin, models.Model):
     the owner user.
     """
 
-    name = models.CharField(max_length=200,
-            help_text=_("The name of the organization"))
+    name = models.CharField(max_length=200, help_text=_("The name of the organization"))
     is_active = models.BooleanField(default=True)
 
     objects = OrgManager()
@@ -186,7 +225,7 @@ class AbstractBaseOrganization(UnicodeMixin, models.Model):
 
     class Meta:
         abstract = True
-        ordering = ['name']
+        ordering = ["name"]
 
     def __unicode__(self):
         return self.name
@@ -199,14 +238,16 @@ class AbstractBaseOrganization(UnicodeMixin, models.Model):
         This provides a consistent interface across different organization
         model classes.
         """
-        return "{0}_{1}".format(self._meta.app_label.lower(),
-                self.__class__.__name__.lower())
+        return "{0}_{1}".format(
+            self._meta.app_label.lower(), self.__class__.__name__.lower()
+        )
 
     def is_member(self, user):
         return True if user in self.users.all() else False
 
 
 class OrganizationBase(six.with_metaclass(OrgMeta, AbstractBaseOrganization)):
+
     class Meta(AbstractBaseOrganization.Meta):
         abstract = True
 
@@ -225,12 +266,14 @@ class AbstractBaseOrganizationUser(UnicodeMixin, models.Model):
 
     class Meta:
         abstract = True
-        ordering = ['organization', 'user']
-        unique_together = ('user', 'organization')
+        ordering = ["organization", "user"]
+        unique_together = ("user", "organization")
 
     def __unicode__(self):
-        return u"{0} ({1})".format(self.user.get_full_name() if self.user.is_active else
-                self.user.email, self.organization.name)
+        return u"{0} ({1})".format(
+            self.user.get_full_name() if self.user.is_active else self.user.email,
+            self.organization.name,
+        )
 
     @property
     def name(self):
@@ -238,12 +281,13 @@ class AbstractBaseOrganizationUser(UnicodeMixin, models.Model):
         Returns the connected user's full name or string representation if the
         full name method is unavailable (e.g. on a custom user class).
         """
-        if hasattr(self.user, 'get_full_name'):
+        if hasattr(self.user, "get_full_name"):
             return self.user.get_full_name()
         return "{0}".format(self.user)
 
 
 class OrganizationUserBase(six.with_metaclass(OrgMeta, AbstractBaseOrganizationUser)):
+
     class Meta(AbstractBaseOrganizationUser.Meta):
         abstract = True
 
@@ -261,6 +305,7 @@ class AbstractBaseOrganizationOwner(UnicodeMixin, models.Model):
 
 
 class OrganizationOwnerBase(six.with_metaclass(OrgMeta, AbstractBaseOrganizationOwner)):
+
     class Meta(AbstractBaseOrganizationOwner.Meta):
         abstract = True
 
@@ -278,5 +323,6 @@ class AbstractBaseInvitation(UnicodeMixin, models.Model):
 
 
 class OrganizationInvitationBase(six.with_metaclass(OrgMeta, AbstractBaseInvitation)):
+
     class Meta(AbstractBaseOrganizationOwner.Meta):
         abstract = True

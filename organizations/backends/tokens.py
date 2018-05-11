@@ -29,7 +29,7 @@ from django.utils.crypto import constant_time_compare
 from django.utils.http import base36_to_int
 
 
-REGISTRATION_TIMEOUT_DAYS = getattr(settings, 'REGISTRATION_TIMEOUT_DAYS', 15)
+REGISTRATION_TIMEOUT_DAYS = getattr(settings, "REGISTRATION_TIMEOUT_DAYS", 15)
 
 
 class RegistrationTokenGenerator(PasswordResetTokenGenerator):

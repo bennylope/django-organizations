@@ -29,7 +29,7 @@ from django.db import models
 class OrgManager(models.Manager):
 
     def get_for_user(self, user):
-        if hasattr(self, 'get_queryset'):
+        if hasattr(self, "get_queryset"):
             return self.get_queryset().filter(users=user)
         else:
             # Deprecated method for older versions of Django
@@ -44,10 +44,9 @@ class ActiveOrgManager(OrgManager):
 
     def get_queryset(self):
         try:
-            return super(ActiveOrgManager,
-                    self).get_queryset().filter(is_active=True)
+            return super(ActiveOrgManager, self).get_queryset().filter(is_active=True)
         except AttributeError:
             # Deprecated method for older versions of Django.
-            return super(ActiveOrgManager,
-                    self).get_query_set().filter(is_active=True)
+            return super(ActiveOrgManager, self).get_query_set().filter(is_active=True)
+
     get_query_set = get_queryset

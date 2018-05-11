@@ -41,24 +41,27 @@ class OrganizationForm(forms.ModelForm):
     def __init__(self, request, *args, **kwargs):
         self.request = request
         super(OrganizationForm, self).__init__(*args, **kwargs)
-        self.fields['owner'].queryset = self.instance.organization_users.filter(
-                is_admin=True, user__is_active=True)
-        self.fields['owner'].initial = self.instance.owner.organization_user
+        self.fields["owner"].queryset = self.instance.organization_users.filter(
+            is_admin=True, user__is_active=True
+        )
+        self.fields["owner"].initial = self.instance.owner.organization_user
 
     class Meta:
         model = Organization
-        exclude = ('users', 'is_active')
+        exclude = ("users", "is_active")
 
     def save(self, commit=True):
-        if self.instance.owner.organization_user != self.cleaned_data['owner']:
-            self.instance.change_owner(self.cleaned_data['owner'])
+        if self.instance.owner.organization_user != self.cleaned_data["owner"]:
+            self.instance.change_owner(self.cleaned_data["owner"])
         return super(OrganizationForm, self).save(commit=commit)
 
     def clean_owner(self):
-        owner = self.cleaned_data['owner']
+        owner = self.cleaned_data["owner"]
         if owner != self.instance.owner.organization_user:
             if self.request.user != self.instance.owner.organization_user.user:
-                raise forms.ValidationError(_("Only the organization owner can change ownerhip"))
+                raise forms.ValidationError(
+                    _("Only the organization owner can change ownerhip")
+                )
         return owner
 
 
@@ -67,11 +70,14 @@ class OrganizationUserForm(forms.ModelForm):
 
     class Meta:
         model = OrganizationUser
-        exclude = ('organization', 'user')
+        exclude = ("organization", "user")
 
     def clean_is_admin(self):
-        is_admin = self.cleaned_data['is_admin']
-        if self.instance.organization.owner.organization_user == self.instance and not is_admin:
+        is_admin = self.cleaned_data["is_admin"]
+        if (
+            self.instance.organization.owner.organization_user == self.instance
+            and not is_admin
+        ):
             raise forms.ValidationError(_("The organization owner must be an admin"))
         return is_admin
 
@@ -87,7 +93,7 @@ class OrganizationUserAddForm(forms.ModelForm):
 
     class Meta:
         model = OrganizationUser
-        exclude = ('user', 'organization')
+        exclude = ("user", "organization")
 
     def save(self, *args, **kwargs):
         """
@@ -97,31 +103,44 @@ class OrganizationUserAddForm(forms.ModelForm):
         order to link it to the Organization.
         """
         try:
-            user = get_user_model().objects.get(email__iexact=self.cleaned_data['email'])
+            user = get_user_model().objects.get(
+                email__iexact=self.cleaned_data["email"]
+            )
         except get_user_model().MultipleObjectsReturned:
-            raise forms.ValidationError(_("This email address has been used multiple times."))
+            raise forms.ValidationError(
+                _("This email address has been used multiple times.")
+            )
         except get_user_model().DoesNotExist:
             user = invitation_backend().invite_by_email(
-                    self.cleaned_data['email'],
-                    **{'domain': get_current_site(self.request),
-                        'organization': self.organization,
-                        'sender': self.request.user})
+                self.cleaned_data["email"],
+                **{
+                    "domain": get_current_site(self.request),
+                    "organization": self.organization,
+                    "sender": self.request.user,
+                }
+            )
         # Send a notification email to this user to inform them that they
         # have been added to a new organization.
-        invitation_backend().send_notification(user, **{
-            'domain': get_current_site(self.request),
-            'organization': self.organization,
-            'sender': self.request.user,
-        })
-        return OrganizationUser.objects.create(user=user,
-                organization=self.organization,
-                is_admin=self.cleaned_data['is_admin'])
+        invitation_backend().send_notification(
+            user,
+            **{
+                "domain": get_current_site(self.request),
+                "organization": self.organization,
+                "sender": self.request.user,
+            }
+        )
+        return OrganizationUser.objects.create(
+            user=user,
+            organization=self.organization,
+            is_admin=self.cleaned_data["is_admin"],
+        )
 
     def clean_email(self):
-        email = self.cleaned_data['email']
+        email = self.cleaned_data["email"]
         if self.organization.users.filter(email=email):
-            raise forms.ValidationError(_("There is already an organization "
-                                          "member with this email address!"))
+            raise forms.ValidationError(
+                _("There is already an organization " "member with this email address!")
+            )
         return email
 
 
@@ -130,8 +149,9 @@ class OrganizationAddForm(forms.ModelForm):
     Form class for creating a new organization, complete with new owner, including a
     User instance, OrganizationUser instance, and OrganizationOwner instance.
     """
-    email = forms.EmailField(max_length=75,
-            help_text=_("The email address for the account owner"))
+    email = forms.EmailField(
+        max_length=75, help_text=_("The email address for the account owner")
+    )
 
     def __init__(self, request, *args, **kwargs):
         self.request = request
@@ -139,7 +159,7 @@ class OrganizationAddForm(forms.ModelForm):
 
     class Meta:
         model = Organization
-        exclude = ('users', 'is_active')
+        exclude = ("users", "is_active")
 
     def save(self, **kwargs):
         """
@@ -147,24 +167,33 @@ class OrganizationAddForm(forms.ModelForm):
         """
         is_active = True
         try:
-            user = get_user_model().objects.get(email=self.cleaned_data['email'])
+            user = get_user_model().objects.get(email=self.cleaned_data["email"])
         except get_user_model().DoesNotExist:
             user = invitation_backend().invite_by_email(
-                    self.cleaned_data['email'],
-                    **{'domain': get_current_site(self.request),
-                        'organization': self.cleaned_data['name'],
-                        'sender': self.request.user, 'created': True})
+                self.cleaned_data["email"],
+                **{
+                    "domain": get_current_site(self.request),
+                    "organization": self.cleaned_data["name"],
+                    "sender": self.request.user,
+                    "created": True,
+                }
+            )
             is_active = False
-        return create_organization(user, self.cleaned_data['name'],
-                self.cleaned_data['slug'], is_active=is_active)
+        return create_organization(
+            user,
+            self.cleaned_data["name"],
+            self.cleaned_data["slug"],
+            is_active=is_active,
+        )
 
 
 class SignUpForm(forms.Form):
     """
     Form class for signing up a new user and new account.
     """
-    name = forms.CharField(max_length=50,
-            help_text=_("The name of the organization"))
-    slug = forms.SlugField(max_length=50,
-            help_text=_("The name in all lowercase, suitable for URL identification"))
+    name = forms.CharField(max_length=50, help_text=_("The name of the organization"))
+    slug = forms.SlugField(
+        max_length=50,
+        help_text=_("The name in all lowercase, suitable for URL identification"),
+    )
     email = forms.EmailField()
