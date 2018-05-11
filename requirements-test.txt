@@ -7,7 +7,7 @@ flake8>=2.4.1
 
 # Required to test default models
 django-extensions>=1.6.0
-django-autoslug-iplweb>=1.9.4.dev0
+django-autoslugged>=2.0.0.dev0
 
 # Required for mocking signals
 mock-django==0.6.9

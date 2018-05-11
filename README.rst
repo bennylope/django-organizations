@@ -117,12 +117,12 @@ is now ignored and the functionality satisifed by a vendored solution. A
 warning will be given but this *should not* have any effect on your code.
 
 - `django-extensions <http://django-extensions.readthedocs.org/en/latest/>`_
-- `Django Autoslug (active fork) <https://github.com/iplweb/django-autoslug-iplweb>`_
+- `Django Autoslugged <https://github.com/mbourqui/django-autoslugged/>`_
 - `django-slugger <https://gitlab.com/dspechnikov/django-slugger/>`_
 
 Note that as of django-autoslug 1.9.3. it is incompatible with Django 2.x Instead
 it is recommended at this time to use one of the supported forks, e.g.
-`django-autoslug-iplweb <https://github.com/iplweb/django-autoslug-iplweb>`_.
+`django-autoslugged <https://github.com/mbourqui/django-autoslugged/>`_
 
 Registration & invitation backends
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
