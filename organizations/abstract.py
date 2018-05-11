@@ -32,6 +32,7 @@ from django.utils.translation import ugettext_lazy as _
 from organizations.base import AbstractBaseOrganization
 from organizations.base import AbstractBaseOrganizationOwner
 from organizations.base import AbstractBaseOrganizationUser
+from organizations.base import AbstractBaseInvitation
 from organizations.base import OrgMeta
 from organizations.compat import reverse
 from organizations.compat import six
@@ -243,3 +244,12 @@ class AbstractOrganizationOwner(six.with_metaclass(OrgMeta, SharedBaseModel, Abs
             raise OrganizationMismatch
         else:
             super(AbstractBaseOrganizationOwner, self).save(*args, **kwargs)
+
+
+class AbstractOrganizationInvitation(six.with_metaclass(OrgMeta, SharedBaseModel, AbstractBaseInvitation)):
+    """
+    Abstract OrganizationInvitationBase model
+    """
+
+    class Meta:
+        abstract = True

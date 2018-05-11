@@ -1,7 +1,9 @@
 from django.contrib.auth.models import Permission
 from django.db import models
-from organizations.base import (OrganizationBase, OrganizationUserBase,
-                                OrganizationOwnerBase)
+from organizations.base import OrganizationBase
+from organizations.base import OrganizationUserBase
+from organizations.base import OrganizationOwnerBase
+from organizations.base import OrganizationInvitationBase
 
 
 class Vendor(OrganizationBase):
@@ -15,4 +17,8 @@ class VendorUser(OrganizationUserBase):
 
 
 class VendorOwner(OrganizationOwnerBase):
+    pass
+
+
+class VendorInvitation(OrganizationInvitationBase):
     pass

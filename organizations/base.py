@@ -71,7 +71,7 @@ class OrgMeta(ModelBase):
         if not attrs and name == 'NewBase':
             return super(OrgMeta, cls).__new__(cls, name, bases, attrs)
 
-        base_classes = ['OrgModel', 'OrgUserModel', 'OrgOwnerModel']
+        base_classes = ['OrgModel', 'OrgUserModel', 'OrgOwnerModel', 'OrgInviteModel']
         model = super(OrgMeta, cls).__new__(cls, name, bases, attrs)
         module = model.__module__
         if not cls.module_registry.get(module):
@@ -79,6 +79,7 @@ class OrgMeta(ModelBase):
                 'OrgModel': None,
                 'OrgUserModel': None,
                 'OrgOwnerModel': None,
+                'OrgInviteModel': None,
             }
         for b in bases:
             key = None
@@ -88,6 +89,8 @@ class OrgMeta(ModelBase):
                 key = 'OrgUserModel'
             elif b.__name__ in ["AbstractOrganizationOwner", "OrganizationOwnerBase"]:
                 key = 'OrgOwnerModel'
+            elif b.__name__ in ["AbstractOrganizationInvitation", "OrganizationInvitationBase"]:
+                key = 'OrgInviteModel'
             if key:
                 cls.module_registry[module][key] = model
 
@@ -95,8 +98,10 @@ class OrgMeta(ModelBase):
             model.update_org(module)
             model.update_org_users(module)
             model.update_org_owner(module)
+            model.update_org_invite(module)
 
         return model
+
 
     def update_org(cls, module):
         """
@@ -144,6 +149,24 @@ class OrgMeta(ModelBase):
             cls.module_registry[module]['OrgOwnerModel'].add_to_class("organization",
                 models.OneToOneField(cls.module_registry[module]['OrgModel'],
                         related_name="owner", on_delete=models.CASCADE))
+
+    def update_org_invite(cls, module):
+        """
+        Adds the links to the organization and to the organization user
+        """
+        try:
+            cls.module_registry[module]['OrgInviteModel']._meta.get_field("organization_user")
+        except FieldDoesNotExist:
+            cls.module_registry[module]['OrgInviteModel'].add_to_class("organization_user",
+                   models.ForeignKey(cls.module_registry[module]['OrgUserModel'],
+                                     related_name="%(app_label)s_%(class)s",
+                                        on_delete=models.CASCADE))
+        try:
+            cls.module_registry[module]['OrgInviteModel']._meta.get_field("organization")
+        except FieldDoesNotExist:
+            cls.module_registry[module]['OrgInviteModel'].add_to_class("organization",
+               models.ForeignKey(cls.module_registry[module]['OrgModel'],
+                                 related_name="organization_invites", on_delete=models.CASCADE))
 
 
 class AbstractBaseOrganization(UnicodeMixin, models.Model):
@@ -238,5 +261,22 @@ class AbstractBaseOrganizationOwner(UnicodeMixin, models.Model):
 
 
 class OrganizationOwnerBase(six.with_metaclass(OrgMeta, AbstractBaseOrganizationOwner)):
+    class Meta(AbstractBaseOrganizationOwner.Meta):
+        abstract = True
+
+
+class AbstractBaseInvitation(UnicodeMixin, models.Model):
+    """
+    Each organization must have one and only one organization owner.
+    """
+
+    class Meta:
+        abstract = True
+
+    def __unicode__(self):
+        return u"{0}: {1}".format(self.organization, self.organization_user)
+
+
+class OrganizationInvitationBase(six.with_metaclass(OrgMeta, AbstractBaseInvitation)):
     class Meta(AbstractBaseOrganizationOwner.Meta):
         abstract = True

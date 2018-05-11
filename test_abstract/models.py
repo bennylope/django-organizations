@@ -1,8 +1,10 @@
 from django.contrib.auth.models import Permission
 from django.db import models
-from organizations.abstract import (AbstractOrganization,
-                                    AbstractOrganizationUser,
-                                    AbstractOrganizationOwner)
+
+from organizations.abstract import AbstractOrganization
+from organizations.abstract import AbstractOrganizationInvitation
+from organizations.abstract import AbstractOrganizationOwner
+from organizations.abstract import AbstractOrganizationUser
 
 
 class CustomOrganization(AbstractOrganization):
@@ -16,4 +18,8 @@ class CustomUser(AbstractOrganizationUser):
 
 
 class CustomOwner(AbstractOrganizationOwner):
+    pass
+
+
+class CustomInvitation(AbstractOrganizationInvitation):
     pass
