@@ -10,9 +10,11 @@ from django.test.utils import override_settings
 from organizations.models import Organization
 from organizations.models import OrganizationOwner
 from organizations.models import OrganizationUser
+from organizations.models import OrganizationInvitation
 from organizations.utils import create_organization
 from test_abstract.models import CustomOrganization
 from test_accounts.models import Account
+from test_accounts.models import AccountInvitation
 from test_custom.models import Team
 
 
@@ -43,6 +45,9 @@ class OrgModelTests(TestCase):
         self.duder = User.objects.get(username="duder")
         self.nirvana = Organization.objects.get(name="Nirvana")
         self.foo = Organization.objects.get(name="Foo Fighters")
+
+    def test_invitation_model(self):
+        assert Organization.invitation_model == OrganizationInvitation
 
     def test_org_string_representation(self):
         """Ensure that models' string representation are error free"""
@@ -163,6 +168,9 @@ class CustomModelTests(TestCase):
                 name="Red Account",
                 monthly_subscription=1200,
         )
+
+    def test_invitation_model(self):
+        assert Account.invitation_model == AccountInvitation
 
     def test_org_string(self):
         self.assertEqual(self.red_account.__str__(), "Red Account")

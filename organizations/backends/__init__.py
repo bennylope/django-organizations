@@ -23,20 +23,49 @@
 # OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+from typing import Optional  # noqa
+from typing import Text  # noqa
+
 from importlib import import_module
 
 from organizations.app_settings import ORGS_INVITATION_BACKEND
 from organizations.app_settings import ORGS_REGISTRATION_BACKEND
+from organizations.backends.defaults import BaseBackend  # noqa
 
 
-def invitation_backend():
-    # TODO exception handling
-    class_module, class_name = ORGS_INVITATION_BACKEND.rsplit(".", 1)
+def invitation_backend(backend=None, namespace=None):
+    # type: (Optional[Text], Optional[Text]) -> BaseBackend
+    """
+    Returns a specified invitation backend
+
+    Args:
+        backend: dotted path to the invitation backend class
+        namespace: URL namespace to use
+
+    Returns:
+        an instance of an InvitationBackend
+
+    """
+    backend = backend or ORGS_INVITATION_BACKEND
+    class_module, class_name = backend.rsplit(".", 1)
     mod = import_module(class_module)
-    return getattr(mod, class_name)()
+    return getattr(mod, class_name)(namespace=namespace)
 
 
-def registration_backend():
-    class_module, class_name = ORGS_REGISTRATION_BACKEND.rsplit(".", 1)
+def registration_backend(backend=None, namespace=None):
+    # type: (Optional[Text], Optional[Text]) -> BaseBackend
+    """
+    Returns a specified registration backend
+
+    Args:
+        backend: dotted path to the registration backend class
+        namespace: URL namespace to use
+
+    Returns:
+        an instance of an RegistrationBackend
+
+    """
+    backend = backend or ORGS_REGISTRATION_BACKEND
+    class_module, class_name = backend.rsplit(".", 1)
     mod = import_module(class_module)
-    return getattr(mod, class_name)()
+    return getattr(mod, class_name)(namespace=namespace)

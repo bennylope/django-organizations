@@ -24,12 +24,12 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 from organizations.models import Organization
-from organizations.views.base import BaseViews
+from organizations.views.base import ViewFactory
 from organizations.views.mixins import AdminRequiredMixin
 from organizations.views.mixins import MembershipRequiredMixin
 from organizations.views.mixins import OwnerRequiredMixin
 
-bases = BaseViews(Organization)
+bases = ViewFactory(Organization)
 
 
 class OrganizationList(bases.OrganizationList):
