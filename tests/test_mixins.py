@@ -5,11 +5,11 @@ from django.test import TestCase
 from django.test.client import RequestFactory
 from django.test.utils import override_settings
 
-from organizations.mixins import AdminRequiredMixin
-from organizations.mixins import MembershipRequiredMixin
-from organizations.mixins import OrganizationMixin
-from organizations.mixins import OrganizationUserMixin
-from organizations.mixins import OwnerRequiredMixin
+from organizations.views.mixins import AdminRequiredMixin
+from organizations.views.mixins import MembershipRequiredMixin
+from organizations.views.mixins import OrganizationMixin
+from organizations.views.mixins import OrganizationUserMixin
+from organizations.views.mixins import OwnerRequiredMixin
 from organizations.models import Organization
 from organizations.models import OrganizationUser
 from tests.utils import request_factory_login
