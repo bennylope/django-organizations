@@ -223,56 +223,67 @@ class ViewFactory(object):
     def __init__(self, org_model):
         self.org_model = org_model
 
+    @property
     def OrganizationList(self):
         klass = BaseOrganizationList
         klass.org_model = self.org_model
         return klass
 
+    @property
     def OrganizationDetail(self):
         klass = BaseOrganizationDetail
         klass.org_model = self.org_model
         return klass
 
+    @property
     def OrganizationCreate(self):
         klass = BaseOrganizationCreate
         klass.org_model = self.org_model
         return klass
 
+    @property
     def OrganizationUpdate(self):
         klass = BaseOrganizationUpdate
         klass.org_model = self.org_model
         return klass
 
+    @property
     def OrganizationDelete(self):
         klass = BaseOrganizationDelete
         klass.org_model = self.org_model
         return klass
 
+    @property
     def OrganizationUserList(self):
         klass = BaseOrganizationUserList
         klass.org_model = self.org_model
         return klass
 
+    @property
     def OrganizationUserDetail(self):
         klass = BaseOrganizationUserList
         klass.org_model = self.org_model
         return klass
 
+    @property
     def OrganizationUserUpdate(self):
         klass = BaseOrganizationUserList
         klass.org_model = self.org_model
         return klass
 
+    @property
     def OrganizationUserCreate(self):
         klass = BaseOrganizationUserList
         klass.org_model = self.org_model
         return klass
 
+    @property
     def OrganizationUserDelete(self):
         klass = BaseOrganizationUserList
         klass.org_model = self.org_model
         return klass
 
+    @property
     def OrganizationUserRemind(self):
         klass = BaseOrganizationUserList
         klass.org_model = self.org_model
