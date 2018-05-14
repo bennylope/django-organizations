@@ -45,6 +45,9 @@ clean-test:
 clean-test-all: clean-test
 	rm -rf .tox/
 
+format:
+	black organizations tests
+
 lint:
 	flake8 organizations
 
