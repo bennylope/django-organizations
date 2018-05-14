@@ -10,64 +10,113 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-        migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-    ]
+    dependencies = [migrations.swappable_dependency(settings.AUTH_USER_MODEL)]
 
     operations = [
         migrations.CreateModel(
-            name='Vendor',
+            name="Vendor",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(help_text='The name of the organization', max_length=200)),
-                ('is_active', models.BooleanField(default=True)),
-                ('street_address', models.CharField(default='', max_length=100)),
-                ('city', models.CharField(default='', max_length=100)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "name",
+                    models.CharField(
+                        help_text="The name of the organization", max_length=200
+                    ),
+                ),
+                ("is_active", models.BooleanField(default=True)),
+                ("street_address", models.CharField(default="", max_length=100)),
+                ("city", models.CharField(default="", max_length=100)),
             ],
-            options={
-                'ordering': ['name'],
-                'abstract': False,
-            },
+            options={"ordering": ["name"], "abstract": False},
             bases=(organizations.base.UnicodeMixin, models.Model),
         ),
         migrations.CreateModel(
-            name='VendorOwner',
+            name="VendorOwner",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('organization', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, related_name='owner', to='test_vendors.Vendor')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "organization",
+                    models.OneToOneField(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="owner",
+                        to="test_vendors.Vendor",
+                    ),
+                ),
             ],
-            options={
-                'abstract': False,
-            },
+            options={"abstract": False},
             bases=(organizations.base.UnicodeMixin, models.Model),
         ),
         migrations.CreateModel(
-            name='VendorUser',
+            name="VendorUser",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('user_type', models.CharField(default='', max_length=1)),
-                ('organization', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='organization_users', to='test_vendors.Vendor')),
-                ('permissions', models.ManyToManyField(blank=True, to='auth.Permission')),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='test_vendors_vendoruser', to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("user_type", models.CharField(default="", max_length=1)),
+                (
+                    "organization",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="organization_users",
+                        to="test_vendors.Vendor",
+                    ),
+                ),
+                (
+                    "permissions",
+                    models.ManyToManyField(blank=True, to="auth.Permission"),
+                ),
+                (
+                    "user",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="test_vendors_vendoruser",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
-            options={
-                'ordering': ['organization', 'user'],
-                'abstract': False,
-            },
+            options={"ordering": ["organization", "user"], "abstract": False},
             bases=(organizations.base.UnicodeMixin, models.Model),
         ),
         migrations.AddField(
-            model_name='vendorowner',
-            name='organization_user',
-            field=models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to='test_vendors.VendorUser'),
+            model_name="vendorowner",
+            name="organization_user",
+            field=models.OneToOneField(
+                on_delete=django.db.models.deletion.CASCADE,
+                to="test_vendors.VendorUser",
+            ),
         ),
         migrations.AddField(
-            model_name='vendor',
-            name='users',
-            field=models.ManyToManyField(related_name='test_vendors_vendor', through='test_vendors.VendorUser', to=settings.AUTH_USER_MODEL),
+            model_name="vendor",
+            name="users",
+            field=models.ManyToManyField(
+                related_name="test_vendors_vendor",
+                through="test_vendors.VendorUser",
+                to=settings.AUTH_USER_MODEL,
+            ),
         ),
         migrations.AlterUniqueTogether(
-            name='vendoruser',
-            unique_together={('user', 'organization')},
+            name="vendoruser", unique_together={("user", "organization")}
         ),
     ]

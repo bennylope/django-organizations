@@ -8,23 +8,31 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-        ('organizations', '0001_initial'),
-    ]
+    dependencies = [("organizations", "0001_initial")]
 
     operations = [
         migrations.CreateModel(
-            name='Team',
+            name="Team",
             fields=[
-                ('organization_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='organizations.Organization')),
-                ('sport', models.CharField(blank=True, max_length=100, null=True)),
+                (
+                    "organization_ptr",
+                    models.OneToOneField(
+                        auto_created=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        parent_link=True,
+                        primary_key=True,
+                        serialize=False,
+                        to="organizations.Organization",
+                    ),
+                ),
+                ("sport", models.CharField(blank=True, max_length=100, null=True)),
             ],
             options={
-                'verbose_name': 'organization',
-                'verbose_name_plural': 'organizations',
-                'ordering': ['name'],
-                'abstract': False,
+                "verbose_name": "organization",
+                "verbose_name_plural": "organizations",
+                "ordering": ["name"],
+                "abstract": False,
             },
-            bases=('organizations.organization',),
-        ),
+            bases=("organizations.organization",),
+        )
     ]

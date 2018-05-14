@@ -10,62 +10,108 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-        migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-    ]
+    dependencies = [migrations.swappable_dependency(settings.AUTH_USER_MODEL)]
 
     operations = [
         migrations.CreateModel(
-            name='Account',
+            name="Account",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(help_text='The name of the organization', max_length=200)),
-                ('is_active', models.BooleanField(default=True)),
-                ('monthly_subscription', models.IntegerField(default=1000)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "name",
+                    models.CharField(
+                        help_text="The name of the organization", max_length=200
+                    ),
+                ),
+                ("is_active", models.BooleanField(default=True)),
+                ("monthly_subscription", models.IntegerField(default=1000)),
             ],
-            options={
-                'ordering': ['name'],
-                'abstract': False,
-            },
+            options={"ordering": ["name"], "abstract": False},
             bases=(organizations.base.UnicodeMixin, models.Model),
         ),
         migrations.CreateModel(
-            name='AccountOwner',
+            name="AccountOwner",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('organization', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, related_name='owner', to='test_accounts.Account')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "organization",
+                    models.OneToOneField(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="owner",
+                        to="test_accounts.Account",
+                    ),
+                ),
             ],
-            options={
-                'abstract': False,
-            },
+            options={"abstract": False},
             bases=(organizations.base.UnicodeMixin, models.Model),
         ),
         migrations.CreateModel(
-            name='AccountUser',
+            name="AccountUser",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('user_type', models.CharField(default='', max_length=1)),
-                ('organization', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='organization_users', to='test_accounts.Account')),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='test_accounts_accountuser', to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("user_type", models.CharField(default="", max_length=1)),
+                (
+                    "organization",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="organization_users",
+                        to="test_accounts.Account",
+                    ),
+                ),
+                (
+                    "user",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="test_accounts_accountuser",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
-            options={
-                'ordering': ['organization', 'user'],
-                'abstract': False,
-            },
+            options={"ordering": ["organization", "user"], "abstract": False},
             bases=(organizations.base.UnicodeMixin, models.Model),
         ),
         migrations.AddField(
-            model_name='accountowner',
-            name='organization_user',
-            field=models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to='test_accounts.AccountUser'),
+            model_name="accountowner",
+            name="organization_user",
+            field=models.OneToOneField(
+                on_delete=django.db.models.deletion.CASCADE,
+                to="test_accounts.AccountUser",
+            ),
         ),
         migrations.AddField(
-            model_name='account',
-            name='users',
-            field=models.ManyToManyField(related_name='test_accounts_account', through='test_accounts.AccountUser', to=settings.AUTH_USER_MODEL),
+            model_name="account",
+            name="users",
+            field=models.ManyToManyField(
+                related_name="test_accounts_account",
+                through="test_accounts.AccountUser",
+                to=settings.AUTH_USER_MODEL,
+            ),
         ),
         migrations.AlterUniqueTogether(
-            name='accountuser',
-            unique_together={('user', 'organization')},
+            name="accountuser", unique_together={("user", "organization")}
         ),
     ]
