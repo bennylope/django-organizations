@@ -46,7 +46,7 @@ clean-test-all: clean-test
 	rm -rf .tox/
 
 format:
-	black organizations tests
+	black organizations tests example test_abstract test_accounts test_custom test_vendors
 
 lint:
 	flake8 organizations
