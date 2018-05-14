@@ -53,9 +53,7 @@ class BaseOrganizationList(ListView):
     context_object_name = "organizations"
 
     def get_queryset(self):
-        return self.org_model.active.filter(
-            users=self.request.user
-        )
+        return self.org_model.active.filter(users=self.request.user)
 
 
 class BaseOrganizationDetail(OrganizationMixin, DetailView):

@@ -75,7 +75,9 @@ class ModelInvitation(InvitationBackend):
         except self.user_model.DoesNotExist:
             invitee = None
 
-        user_invitation = self.invitation_model(invitee=invitee, invitee_identifier=email, invited_by=user)
+        user_invitation = self.invitation_model(
+            invitee=invitee, invitee_identifier=email, invited_by=user
+        )
         self.send_invitation(user_invitation)
         return user_invitation
 
@@ -112,9 +114,7 @@ class ModelInvitation(InvitationBackend):
             sender.last_name,
             email.utils.parseaddr(settings.DEFAULT_FROM_EMAIL)[1],
         )
-        reply_to = "%s %s <%s>" % (
-            sender.first_name, sender.last_name, sender.email
-        )
+        reply_to = "%s %s <%s>" % (sender.first_name, sender.last_name, sender.email)
 
         headers = {"Reply-To": reply_to}
         kwargs.update({"sender": sender, "user": user})
