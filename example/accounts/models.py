@@ -1,6 +1,9 @@
 from django.db import models
-from organizations.base import (OrganizationBase, OrganizationUserBase,
-                                OrganizationOwnerBase)
+from organizations.base import (
+    OrganizationBase,
+    OrganizationUserBase,
+    OrganizationOwnerBase,
+)
 
 
 class Account(OrganizationBase):
@@ -8,7 +11,7 @@ class Account(OrganizationBase):
 
 
 class AccountUser(OrganizationUserBase):
-    user_type = models.CharField(max_length=1, default='')
+    user_type = models.CharField(max_length=1, default="")
 
 
 class AccountOwner(OrganizationOwnerBase):
