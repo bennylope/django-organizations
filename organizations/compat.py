@@ -1,3 +1,7 @@
+"""
+One module to handle inter-version Django compatibility
+"""
+
 
 try:
     from django.urls import reverse  # noqa
