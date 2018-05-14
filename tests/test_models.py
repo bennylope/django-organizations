@@ -21,7 +21,7 @@ from test_custom.models import Team
 @override_settings(USE_TZ=True)
 class ActiveManagerTests(TestCase):
 
-    fixtures = ['users.json', 'orgs.json']
+    fixtures = ["users.json", "orgs.json"]
 
     def test_active(self):
         self.assertEqual(3, Organization.objects.all().count())
@@ -36,7 +36,7 @@ class ActiveManagerTests(TestCase):
 @override_settings(USE_TZ=True)
 class OrgModelTests(TestCase):
 
-    fixtures = ['users.json', 'orgs.json']
+    fixtures = ["users.json", "orgs.json"]
 
     def setUp(self):
         self.kurt = User.objects.get(username="kurt")
@@ -92,7 +92,6 @@ class OrgModelTests(TestCase):
         self.foo.remove_user(self.krist)
         self.assertFalse(self.foo.users.filter(pk=self.krist.pk).exists())
 
-
     def test_get_or_add_user(self):
         """Ensure `get_or_add_user` adds a user IFF it exists"""
         new_guy, created = self.foo.get_or_add_user(self.duder)
@@ -106,6 +105,7 @@ class OrgModelTests(TestCase):
 
     def test_delete_owner(self):
         from organizations.exceptions import OwnershipRequired
+
         owner = self.nirvana.owner.organization_user
         self.assertRaises(OwnershipRequired, owner.delete)
 
@@ -119,13 +119,13 @@ class OrgModelTests(TestCase):
         """Ensure an org user can be deleted when there is no owner"""
         org = Organization.objects.create(name="Some test", slug="some-test")
         # Avoid the Organization.add_user method which would make an owner
-        org_user = OrganizationUser.objects.create(user=self.kurt,
-                organization=org)
+        org_user = OrganizationUser.objects.create(user=self.kurt, organization=org)
         # Just make sure it doesn't raise an error
         org_user.delete()
 
     def test_nonmember_owner(self):
         from organizations.exceptions import OrganizationMismatch
+
         foo_user = self.foo.owner
         self.nirvana.owner = foo_user
         self.assertRaises(OrganizationMismatch, self.nirvana.owner.save)
@@ -134,7 +134,7 @@ class OrgModelTests(TestCase):
 @override_settings(USE_TZ=True)
 class OrgDeleteTests(TestCase):
 
-    fixtures = ['users.json', 'orgs.json']
+    fixtures = ["users.json", "orgs.json"]
 
     def test_delete_account(self):
         """Ensure Users are not deleted on the cascade"""
@@ -149,7 +149,8 @@ class OrgDeleteTests(TestCase):
         """Ensure the user is not deleted on the cascade"""
         krist = User.objects.get(username="krist")
         org_user = OrganizationUser.objects.filter(
-                organization__name="Nirvana", user=krist)
+            organization__name="Nirvana", user=krist
+        )
         org_user.delete()
         self.assertTrue(krist.pk)
 
@@ -157,7 +158,7 @@ class OrgDeleteTests(TestCase):
 class CustomModelTests(TestCase):
 
     # Load the world as we know it.
-    fixtures = ['users.json', 'orgs.json']
+    fixtures = ["users.json", "orgs.json"]
 
     def setUp(self):
         self.kurt = User.objects.get(username="kurt")
@@ -165,8 +166,7 @@ class CustomModelTests(TestCase):
         self.krist = User.objects.get(username="krist")
         self.duder = User.objects.get(username="duder")
         self.red_account = Account.objects.create(
-                name="Red Account",
-                monthly_subscription=1200,
+            name="Red Account", monthly_subscription=1200
         )
 
     def test_invitation_model(self):
@@ -177,8 +177,7 @@ class CustomModelTests(TestCase):
 
     def test_relation_name(self):
         """Ensure user-related name is accessible from common attribute"""
-        self.assertEqual(self.red_account.user_relation_name,
-                "test_accounts_account")
+        self.assertEqual(self.red_account.user_relation_name, "test_accounts_account")
 
     def test_change_user(self):
         """Ensure custom organizations validate in owner change"""

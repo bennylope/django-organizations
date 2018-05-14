@@ -12,7 +12,7 @@ from tests.utils import request_factory_login
 @override_settings(USE_TZ=True)
 class OrgFormTests(TestCase):
 
-    fixtures = ['users.json', 'orgs.json']
+    fixtures = ["users.json", "orgs.json"]
 
     def setUp(self):
         self.factory = RequestFactory()
@@ -23,55 +23,64 @@ class OrgFormTests(TestCase):
     def test_admin_edits_org(self):
         user = self.admin.user
         request = request_factory_login(self.factory, user)
-        form = OrganizationForm(request, instance=self.org, data={
-            'name': self.org.name, 'slug': self.org.slug,
-            'owner': self.owner.id})
+        form = OrganizationForm(
+            request,
+            instance=self.org,
+            data={"name": self.org.name, "slug": self.org.slug, "owner": self.owner.id},
+        )
         self.assertTrue(form.is_valid())
-        form = OrganizationForm(request, instance=self.org, data={
-            'name': self.org.name, 'slug': self.org.slug,
-            'owner': self.admin.id})
+        form = OrganizationForm(
+            request,
+            instance=self.org,
+            data={"name": self.org.name, "slug": self.org.slug, "owner": self.admin.id},
+        )
         self.assertFalse(form.is_valid())
 
     def test_owner_edits_org(self):
         user = self.owner.user
         request = request_factory_login(self.factory, user)
-        form = OrganizationForm(request, instance=self.org, data={
-            'name': self.org.name, 'slug': self.org.slug,
-            'owner': self.owner.id})
+        form = OrganizationForm(
+            request,
+            instance=self.org,
+            data={"name": self.org.name, "slug": self.org.slug, "owner": self.owner.id},
+        )
         self.assertTrue(form.is_valid())
-        form = OrganizationForm(request, instance=self.org, data={
-            'name': self.org.name, 'slug': self.org.slug,
-            'owner': self.admin.id})
+        form = OrganizationForm(
+            request,
+            instance=self.org,
+            data={"name": self.org.name, "slug": self.org.slug, "owner": self.admin.id},
+        )
         self.assertTrue(form.is_valid())
         form.save()
         self.assertEqual(self.org.owner.organization_user, self.admin)
 
     def test_edit_owner_user(self):
-        form = OrganizationUserForm(instance=self.owner,
-                data={'is_admin': True})
+        form = OrganizationUserForm(instance=self.owner, data={"is_admin": True})
         self.assertTrue(form.is_valid())
-        form = OrganizationUserForm(instance=self.owner,
-                data={'is_admin': False})
+        form = OrganizationUserForm(instance=self.owner, data={"is_admin": False})
         self.assertFalse(form.is_valid())
 
     def test_save_org_form(self):
         request = request_factory_login(self.factory, self.owner.user)
-        form = OrganizationForm(request, instance=self.org, data={
-                'name': self.org.name, 'slug': self.org.slug,
-                'owner': self.owner.id})
+        form = OrganizationForm(
+            request,
+            instance=self.org,
+            data={"name": self.org.name, "slug": self.org.slug, "owner": self.owner.id},
+        )
         self.assertTrue(form.is_valid())
         form.save()
 
     def test_save_user_form(self):
-        form = OrganizationUserForm(instance=self.owner,
-                data={'is_admin': True})
+        form = OrganizationUserForm(instance=self.owner, data={"is_admin": True})
         self.assertTrue(form.is_valid())
         form.save()
 
     def test_save_org_user_add_form(self):
         request = request_factory_login(self.factory, self.owner.user)
-        form = OrganizationUserAddForm(request=request, organization=self.org, data={
-                'email': 'test_email@example.com',
-                'is_admin': False})
+        form = OrganizationUserAddForm(
+            request=request,
+            organization=self.org,
+            data={"email": "test_email@example.com", "is_admin": False},
+        )
         self.assertTrue(form.is_valid())
         form.save()

@@ -11,4 +11,4 @@ from django.core.management import call_command
 def test_no_missing_migrations():
     """Check no model changes have been made since the last `./manage.py makemigrations`.
     """
-    call_command('makemigrations', check=True, dry_run=True)
+    call_command("makemigrations", check=True, dry_run=True)

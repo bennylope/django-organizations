@@ -14,13 +14,15 @@ from test_accounts.models import Account
 @override_settings(USE_TZ=True)
 class CreateOrgTests(TestCase):
 
-    fixtures = ['users.json', 'orgs.json']
+    fixtures = ["users.json", "orgs.json"]
 
     def setUp(self):
         self.user = User.objects.get(username="dave")
 
     def test_create_organization(self):
-        acme = create_organization(self.user, "Acme", org_defaults={"slug": "acme-slug"})
+        acme = create_organization(
+            self.user, "Acme", org_defaults={"slug": "acme-slug"}
+        )
         self.assertTrue(isinstance(acme, Organization))
         self.assertEqual(self.user, acme.owner.organization_user.user)
         self.assertTrue(acme.owner.organization_user.is_admin)
@@ -38,16 +40,22 @@ class CreateOrgTests(TestCase):
     def test_defaults(self):
         """Ensure models are created with defaults as specified"""
         # Default models
-        org = create_organization(self.user, "Is Admin",
-                org_defaults={"slug": "is-admin-212", "is_active": False},
-                org_user_defaults={"is_admin": False})
+        org = create_organization(
+            self.user,
+            "Is Admin",
+            org_defaults={"slug": "is-admin-212", "is_active": False},
+            org_user_defaults={"is_admin": False},
+        )
         self.assertFalse(org.is_active)
         self.assertFalse(org.owner.organization_user.is_admin)
 
         # Custom models
-        create_account = partial(create_organization, model=Account,
-                org_defaults={'monthly_subscription': 99},
-                org_user_defaults={'user_type': 'B'})
+        create_account = partial(
+            create_organization,
+            model=Account,
+            org_defaults={"monthly_subscription": 99},
+            org_user_defaults={"user_type": "B"},
+        )
         myaccount = create_account(self.user, name="My New Account")
         self.assertEqual(myaccount.monthly_subscription, 99)
 
@@ -63,12 +71,12 @@ class CreateOrgTests(TestCase):
 class AttributeUtilTests(TestCase):
 
     def test_present_field(self):
-        self.assertTrue(model_field_attr(User, 'username', 'max_length'))
+        self.assertTrue(model_field_attr(User, "username", "max_length"))
 
     def test_absent_field(self):
-        self.assertRaises(KeyError, model_field_attr, User, 'blahblah',
-            'max_length')
+        self.assertRaises(KeyError, model_field_attr, User, "blahblah", "max_length")
 
     def test_absent_attr(self):
-        self.assertRaises(AttributeError, model_field_attr, User, 'username',
-            'mariopoints')
+        self.assertRaises(
+            AttributeError, model_field_attr, User, "username", "mariopoints"
+        )
