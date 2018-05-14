@@ -215,45 +215,67 @@ class OrganizationSignup(FormView):
         return render(request, "organizations/signup_success.html", {})
 
 
-class BaseViews(object):
+class ViewFactory(object):
+    """
+    A class that can create a faked 'module' with model specific views
+
+    These views have NO access control applied.
+    """
+
     def __init__(self, org_model):
         self.org_model = org_model
-
-        for klass in [
-            BaseOrganizationList,
-        BaseOrganizationCreate,
-        BaseOrganizationDelete,
-        BaseOrganizationDetail,
-        BaseOrganizationUpdate,
-        BaseOrganizationUserList,
-        BaseOrganizationUserDetail,
-        BaseOrganizationUserDetail,
-        BaseOrganizationUserUpdate,
-        BaseOrganizationUserCreate,
-        BaseOrganizationUserRemind,
-        BaseOrganizationUserDelete]:
-            temp = klass
-            temp.org_model = self.org_model
-            setattr(self, klass.__name__[4:], temp)
 
     def OrganizationList(self):
         klass = BaseOrganizationList
         klass.org_model = self.org_model
         return klass
 
+    def OrganizationDetail(self):
+        klass = BaseOrganizationDetail
+        klass.org_model = self.org_model
+        return klass
+
+    def OrganizationCreate(self):
+        klass = BaseOrganizationCreate
+        klass.org_model = self.org_model
+        return klass
+
+    def OrganizationUpdate(self):
+        klass = BaseOrganizationUpdate
+        klass.org_model = self.org_model
+        return klass
+
+    def OrganizationDelete(self):
+        klass = BaseOrganizationDelete
+        klass.org_model = self.org_model
+        return klass
+
     def OrganizationUserList(self):
         klass = BaseOrganizationUserList
         klass.org_model = self.org_model
+        return klass
 
-        # self.OrganizationList = BaseOrganizationList(org_model=self.org_model)
-        # self.OrganizationCreate = BaseOrganizationCreate(org_model=self.org_model)
-        # self.OrganizationDelete = BaseOrganizationDelete(org_model=self.org_model)
-        # self.OrganizationDetail = BaseOrganizationDetail(org_model=self.org_model)
-        # self.OrganizationUpdate = BaseOrganizationUpdate(org_model=self.org_model)
-        # self.OrganizationUserList = BaseOrganizationUserList(org_model=self.org_model)
-        # self.OrganizationUserDetail = BaseOrganizationUserDetail(org_model=self.org_model)
-        # self.OrganizationUserDetail = BaseOrganizationUserDetail(org_model=self.org_model)
-        # self.OrganizationUserUpdate = BaseOrganizationUserUpdate(org_model=self.org_model)
-        # self.OrganizationUserCreate = BaseOrganizationUserCreate(org_model=self.org_model)
-        # self.OrganizationUserRemind = BaseOrganizationUserRemind(org_model=self.org_model)
-        # self.OrganizationUserDelete = BaseOrganizationUserDelete(org_model=self.org_model)
+    def OrganizationUserDetail(self):
+        klass = BaseOrganizationUserList
+        klass.org_model = self.org_model
+        return klass
+
+    def OrganizationUserUpdate(self):
+        klass = BaseOrganizationUserList
+        klass.org_model = self.org_model
+        return klass
+
+    def OrganizationUserCreate(self):
+        klass = BaseOrganizationUserList
+        klass.org_model = self.org_model
+        return klass
+
+    def OrganizationUserDelete(self):
+        klass = BaseOrganizationUserList
+        klass.org_model = self.org_model
+        return klass
+
+    def OrganizationUserRemind(self):
+        klass = BaseOrganizationUserList
+        klass.org_model = self.org_model
+        return klass

@@ -9,7 +9,9 @@ from django.test.utils import override_settings
 from organizations.backends.defaults import BaseBackend
 from organizations.backends.defaults import InvitationBackend
 from organizations.backends.defaults import RegistrationBackend
+from organizations.backends.modeled import ModelInvitation
 from organizations.backends.tokens import RegistrationTokenGenerator
+from organizations.base import OrganizationInvitationBase
 from organizations.compat import reverse
 from organizations.models import Organization
 from test_abstract.models import CustomOrganization
@@ -218,3 +220,15 @@ class CustomModelBackend(TestCase):
         user = User.objects.create(username="183jkjd", email="akjdkj@kjdk.com")
         backend = InvitationBackend(org_model=CustomOrganization)
         backend.activate_organizations(user)
+
+
+class TestInvitationModelBackend(TestCase):
+    """
+    Tests the backend using InvitationModels
+    """
+
+    def test_invite_returns_invitation(self):
+        user = User.objects.create(username="183jkjd", email="akjdkj@kjdk.com")
+        backend = ModelInvitation(org_model=Vendor)
+        result = backend.invite_by_email("bob@newuser.com", user=user)
+        assert isinstance(result, OrganizationInvitationBase)

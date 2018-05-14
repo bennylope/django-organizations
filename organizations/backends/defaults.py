@@ -29,6 +29,9 @@
 import email.utils
 import inspect
 import uuid
+from typing import ClassVar  # noqa
+from typing import Optional  # noqa
+from typing import Text  # noqa
 
 from django.conf import settings
 from django.conf.urls import url
@@ -58,9 +61,14 @@ class BaseBackend(object):
     registration_form_template = "organizations/register_form.html"
     activation_success_template = "organizations/register_success.html"
 
-    def __init__(self, org_model=None):
+    def __init__(self, org_model=None, namespace=None):
+        # type: (Optional[ClassVar], Optional[Text]) -> None
         self.user_model = get_user_model()
         self.org_model = org_model or default_org_model()
+        self.namespace = namespace
+
+    def namespace_preface(self):
+        return "" if not self.namespace else "{}:".format(self.namespace)
 
     def get_urls(self):
         raise NotImplementedError
@@ -154,7 +162,7 @@ class BaseBackend(object):
         **kwargs
     ):
         """
-        Returns an email message for a new user. This can be easily overriden.
+        Returns an email message for a new user. This can be easily overridden.
         For instance, to send an HTML message, use the EmailMultiAlternatives message_class
         and attach the additional conent.
         """

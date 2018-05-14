@@ -3,6 +3,16 @@
 History
 =======
 
+2.0.0
+-----
+
+Invitations use models now to track invitations
+
+- add typing for older versions and start using Python 2 compat type hinting
+- registration/inviation backends take an optional namepsace argument on initialization. The use
+  case is if you want to namespace the URLs
+- can provide a dotted path to `invitation_backend` and `registration_backend` functions
+
 1.1.1
 -----
 

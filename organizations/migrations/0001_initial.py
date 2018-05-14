@@ -7,78 +7,172 @@ import django.utils.timezone
 import organizations.base
 import organizations.fields
 
+
 class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-        migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-    ]
+    dependencies = [migrations.swappable_dependency(settings.AUTH_USER_MODEL)]
 
     operations = [
         migrations.CreateModel(
-            name='Organization',
+            name="Organization",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(help_text='The name of the organization', max_length=200)),
-                ('is_active', models.BooleanField(default=True)),
-                ('created', organizations.fields.AutoCreatedField(default=django.utils.timezone.now, editable=False)),
-                ('modified', organizations.fields.AutoLastModifiedField(default=django.utils.timezone.now, editable=False)),
-                ('slug', organizations.fields.SlugField(editable=True, help_text='The name in all lowercase, suitable for URL identification', max_length=200, populate_from='name', unique=True)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "name",
+                    models.CharField(
+                        help_text="The name of the organization", max_length=200
+                    ),
+                ),
+                ("is_active", models.BooleanField(default=True)),
+                (
+                    "created",
+                    organizations.fields.AutoCreatedField(
+                        default=django.utils.timezone.now, editable=False
+                    ),
+                ),
+                (
+                    "modified",
+                    organizations.fields.AutoLastModifiedField(
+                        default=django.utils.timezone.now, editable=False
+                    ),
+                ),
+                (
+                    "slug",
+                    organizations.fields.SlugField(
+                        editable=True,
+                        help_text="The name in all lowercase, suitable for URL identification",
+                        max_length=200,
+                        populate_from="name",
+                        unique=True,
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'organization',
-                'verbose_name_plural': 'organizations',
-                'ordering': ['name'],
-                'abstract': False,
+                "verbose_name": "organization",
+                "verbose_name_plural": "organizations",
+                "ordering": ["name"],
+                "abstract": False,
             },
             bases=(organizations.base.UnicodeMixin, models.Model),
         ),
         migrations.CreateModel(
-            name='OrganizationOwner',
+            name="OrganizationOwner",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('created', organizations.fields.AutoCreatedField(default=django.utils.timezone.now, editable=False)),
-                ('modified', organizations.fields.AutoLastModifiedField(default=django.utils.timezone.now, editable=False)),
-                ('organization', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, related_name='owner', to='organizations.Organization')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "created",
+                    organizations.fields.AutoCreatedField(
+                        default=django.utils.timezone.now, editable=False
+                    ),
+                ),
+                (
+                    "modified",
+                    organizations.fields.AutoLastModifiedField(
+                        default=django.utils.timezone.now, editable=False
+                    ),
+                ),
+                (
+                    "organization",
+                    models.OneToOneField(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="owner",
+                        to="organizations.Organization",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'organization owner',
-                'verbose_name_plural': 'organization owners',
-                'abstract': False,
+                "verbose_name": "organization owner",
+                "verbose_name_plural": "organization owners",
+                "abstract": False,
             },
             bases=(organizations.base.UnicodeMixin, models.Model),
         ),
         migrations.CreateModel(
-            name='OrganizationUser',
+            name="OrganizationUser",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('created', organizations.fields.AutoCreatedField(default=django.utils.timezone.now, editable=False)),
-                ('modified', organizations.fields.AutoLastModifiedField(default=django.utils.timezone.now, editable=False)),
-                ('is_admin', models.BooleanField(default=False)),
-                ('organization', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='organization_users', to='organizations.Organization')),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='organizations_organizationuser', to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "created",
+                    organizations.fields.AutoCreatedField(
+                        default=django.utils.timezone.now, editable=False
+                    ),
+                ),
+                (
+                    "modified",
+                    organizations.fields.AutoLastModifiedField(
+                        default=django.utils.timezone.now, editable=False
+                    ),
+                ),
+                ("is_admin", models.BooleanField(default=False)),
+                (
+                    "organization",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="organization_users",
+                        to="organizations.Organization",
+                    ),
+                ),
+                (
+                    "user",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="organizations_organizationuser",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'organization user',
-                'verbose_name_plural': 'organization users',
-                'ordering': ['organization', 'user'],
-                'abstract': False,
+                "verbose_name": "organization user",
+                "verbose_name_plural": "organization users",
+                "ordering": ["organization", "user"],
+                "abstract": False,
             },
             bases=(organizations.base.UnicodeMixin, models.Model),
         ),
         migrations.AddField(
-            model_name='organizationowner',
-            name='organization_user',
-            field=models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to='organizations.OrganizationUser'),
+            model_name="organizationowner",
+            name="organization_user",
+            field=models.OneToOneField(
+                on_delete=django.db.models.deletion.CASCADE,
+                to="organizations.OrganizationUser",
+            ),
         ),
         migrations.AddField(
-            model_name='organization',
-            name='users',
-            field=models.ManyToManyField(related_name='organizations_organization', through='organizations.OrganizationUser', to=settings.AUTH_USER_MODEL),
+            model_name="organization",
+            name="users",
+            field=models.ManyToManyField(
+                related_name="organizations_organization",
+                through="organizations.OrganizationUser",
+                to=settings.AUTH_USER_MODEL,
+            ),
         ),
         migrations.AlterUniqueTogether(
-            name='organizationuser',
-            unique_together={('user', 'organization')},
+            name="organizationuser", unique_together={("user", "organization")}
         ),
     ]

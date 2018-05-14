@@ -121,6 +121,12 @@ class OrgMeta(ModelBase):
                 ),
             )
 
+        cls.module_registry[module]["OrgModel"].invitation_model = cls.module_registry[
+            module
+        ][
+            "OrgInviteModel"
+        ]
+
     def update_org_users(cls, module):
         """
         Adds the `user` field to the organization user model and the link to
@@ -182,15 +188,25 @@ class OrgMeta(ModelBase):
         Adds the links to the organization and to the organization user
         """
         try:
-            cls.module_registry[module]["OrgInviteModel"]._meta.get_field(
-                "organization_user"
-            )
+            cls.module_registry[module]["OrgInviteModel"]._meta.get_field("invited_by")
         except FieldDoesNotExist:
             cls.module_registry[module]["OrgInviteModel"].add_to_class(
-                "organization_user",
+                "invited_by",
                 models.ForeignKey(
-                    cls.module_registry[module]["OrgUserModel"],
-                    related_name="%(app_label)s_%(class)s",
+                    USER_MODEL,
+                    related_name="%(app_label)s_%(class)s_sent_invitations",
+                    on_delete=models.CASCADE,
+                ),
+            )
+        try:
+            cls.module_registry[module]["OrgInviteModel"]._meta.get_field("invitee")
+        except FieldDoesNotExist:
+            cls.module_registry[module]["OrgInviteModel"].add_to_class(
+                "invitee",
+                models.ForeignKey(
+                    USER_MODEL,
+                    null=True,
+                    related_name="%(app_label)s_%(class)s_invitations",
                     on_delete=models.CASCADE,
                 ),
             )
@@ -312,14 +328,33 @@ class OrganizationOwnerBase(six.with_metaclass(OrgMeta, AbstractBaseOrganization
 
 class AbstractBaseInvitation(UnicodeMixin, models.Model):
     """
-    Each organization must have one and only one organization owner.
+    Tracks invitations to organizations
+
+    This tracks *users* specifically, rather than OrganizationUsers, as it's
+    considered *more critical* to know who invited or joined even if they
+    are no longer members of the organization.
     """
+    guid = models.UUIDField()
+    invitee_identifier = models.CharField(
+        max_length=1000,
+        help_text=_(
+            "The contact identifier for the invitee, email, phone number, social media handle, etc."
+        ),
+    )
 
     class Meta:
         abstract = True
 
     def __unicode__(self):
-        return u"{0}: {1}".format(self.organization, self.organization_user)
+        return u"{0}: {1}".format(self.organization, self.invitee_identifier)
+
+    def invitation_token(self):
+        """
+        Returns a unique token for the user
+
+        Hash based on identification, account id, time invitited, and secret key of site
+        """
+        raise NotImplementedError
 
 
 class OrganizationInvitationBase(six.with_metaclass(OrgMeta, AbstractBaseInvitation)):
