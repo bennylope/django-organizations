@@ -4,6 +4,7 @@ mock>=1.0.1
 pytest-django>=3.0.0
 pytest-cov>=2.4.0
 flake8>=2.4.1
+typing>=3.6.4
 
 # Required to test default models
 django-extensions>=1.6.0
