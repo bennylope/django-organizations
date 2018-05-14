@@ -23,4 +23,57 @@
 # OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-from organizations.views.default import *  # noqa  TODO don't do this!
+from organizations.models import Organization
+from organizations.views.base import BaseViews
+from organizations.views.mixins import AdminRequiredMixin
+from organizations.views.mixins import MembershipRequiredMixin
+from organizations.views.mixins import OwnerRequiredMixin
+
+bases = BaseViews(Organization)
+
+
+class OrganizationList(bases.OrganizationList):
+    pass
+
+
+class OrganizationCreate(bases.OrganizationCreate):
+    """
+    Allows any user to create a new organization.
+    """
+    pass
+
+
+class OrganizationDetail(MembershipRequiredMixin, bases.OrganizationDetail):
+    pass
+
+
+class OrganizationUpdate(AdminRequiredMixin, bases.OrganizationUpdate):
+    pass
+
+
+class OrganizationDelete(OwnerRequiredMixin, bases.OrganizationDelete):
+    pass
+
+
+class OrganizationUserList(MembershipRequiredMixin, bases.OrganizationUserList):
+    pass
+
+
+class OrganizationUserDetail(AdminRequiredMixin, bases.OrganizationUserDetail):
+    pass
+
+
+class OrganizationUserUpdate(AdminRequiredMixin, bases.OrganizationUserUpdate):
+    pass
+
+
+class OrganizationUserCreate(AdminRequiredMixin, bases.OrganizationUserCreate):
+    pass
+
+
+class OrganizationUserRemind(AdminRequiredMixin, bases.OrganizationUserRemind):
+    pass
+
+
+class OrganizationUserDelete(AdminRequiredMixin, bases.OrganizationUserDelete):
+    pass
