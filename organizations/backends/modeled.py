@@ -36,7 +36,7 @@ from django.core.mail import EmailMessage
 from django.template import loader
 
 from organizations.backends.defaults import InvitationBackend
-from organizations.base import OrganizationInvitationBase
+from organizations.base import OrganizationInvitationBase  # noqa
 
 
 class ModelInvitation(InvitationBackend):

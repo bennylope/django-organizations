@@ -29,7 +29,12 @@
 import email.utils
 import inspect
 import uuid
-from typing import ClassVar  # noqa
+
+try:
+    from typing import ClassVar  # noqa
+except ImportError:
+    # thanks Python 3.5
+    from typing import Any as ClassVar  # noqa
 from typing import Optional  # noqa
 from typing import Text  # noqa
 
