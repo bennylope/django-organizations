@@ -13,7 +13,7 @@ from organizations.signals import user_removed
 @override_settings(USE_TZ=True)
 class SignalsTestCase(TestCase):
 
-    fixtures = ['users.json', 'orgs.json']
+    fixtures = ["users.json", "orgs.json"]
 
     def setUp(self):
         self.kurt = User.objects.get(username="kurt")
@@ -30,16 +30,18 @@ class SignalsTestCase(TestCase):
         with mock_signal_receiver(user_added) as add_receiver:
             self.foo.add_user(self.krist)
 
-            self.assertEqual(add_receiver.call_args_list, [
-                call(signal=user_added, sender=self.foo, user=self.krist),
-            ])
+            self.assertEqual(
+                add_receiver.call_args_list,
+                [call(signal=user_added, sender=self.foo, user=self.krist)],
+            )
 
         with mock_signal_receiver(user_added) as add_receiver:
             self.foo.get_or_add_user(self.duder)
 
-            self.assertEqual(add_receiver.call_args_list, [
-                call(signal=user_added, sender=self.foo, user=self.duder),
-            ])
+            self.assertEqual(
+                add_receiver.call_args_list,
+                [call(signal=user_added, sender=self.foo, user=self.duder)],
+            )
 
     def test_user_added_not_called(self):
 
@@ -54,16 +56,24 @@ class SignalsTestCase(TestCase):
             self.foo.add_user(self.krist)
             self.foo.remove_user(self.krist)
 
-            self.assertEqual(remove_receiver.call_args_list, [
-                call(signal=user_removed, sender=self.foo, user=self.krist),
-            ])
+            self.assertEqual(
+                remove_receiver.call_args_list,
+                [call(signal=user_removed, sender=self.foo, user=self.krist)],
+            )
 
     def test_owner_changed_called(self):
 
         with mock_signal_receiver(owner_changed) as changed_receiver:
             self.org.change_owner(self.admin)
 
-            self.assertEqual(changed_receiver.call_args_list, [
-                call(signal=owner_changed, sender=self.org,
-                     old=self.owner, new=self.admin),
-            ])
+            self.assertEqual(
+                changed_receiver.call_args_list,
+                [
+                    call(
+                        signal=owner_changed,
+                        sender=self.org,
+                        old=self.owner,
+                        new=self.admin,
+                    )
+                ],
+            )

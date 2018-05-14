@@ -26,14 +26,22 @@ class BaseTests(TestCase):
         self.assertTrue(BaseBackend().get_username())
 
 
-@override_settings(INSTALLED_APPS=["django.contrib.auth", "django.contrib.contenttypes",
-                                   "django.contrib.sites", "test_accounts"], USE_TZ=True)
+@override_settings(
+    INSTALLED_APPS=[
+        "django.contrib.auth",
+        "django.contrib.contenttypes",
+        "django.contrib.sites",
+        "test_accounts",
+    ],
+    USE_TZ=True,
+)
 class TestSansOrganizations(TestCase):
 
     def test_verify_the_world(self):
         """Verify the test environment is set up correctly"""
         from django.conf import settings
-        self.assertFalse('organizations' in settings.INSTALLED_APPS)
+
+        self.assertFalse("organizations" in settings.INSTALLED_APPS)
 
     def test_generate_username(self):
         self.assertTrue(BaseBackend().get_username())
@@ -45,20 +53,22 @@ class TestSansOrganizations(TestCase):
 @override_settings(USE_TZ=True)
 class InvitationTests(TestCase):
 
-    fixtures = ['users.json', 'orgs.json']
+    fixtures = ["users.json", "orgs.json"]
 
     def setUp(self):
         mail.outbox = []
         self.factory = RequestFactory()
         self.tokenizer = RegistrationTokenGenerator()
         self.user = User.objects.get(username="krist")
-        self.pending_user = User.objects.create_user(username="theresa",
-                email="t@example.com", password="test")
+        self.pending_user = User.objects.create_user(
+            username="theresa", email="t@example.com", password="test"
+        )
         self.pending_user.is_active = False
         self.pending_user.save()
 
     def test_backend_definition(self):
         from organizations.backends import invitation_backend
+
         self.assertTrue(isinstance(invitation_backend(), InvitationBackend))
 
     def test_create_user(self):
@@ -82,18 +92,28 @@ class InvitationTests(TestCase):
 
     def test_urls(self):
         """Ensure no error is raised"""
-        reverse('invitations_register', kwargs={
-            'user_id': self.pending_user.id,
-            'token': self.tokenizer.make_token(self.pending_user)})
+        reverse(
+            "invitations_register",
+            kwargs={
+                "user_id": self.pending_user.id,
+                "token": self.tokenizer.make_token(self.pending_user),
+            },
+        )
 
     def test_activate_user(self):
         request = self.factory.request()
         with self.assertRaises(Http404):
-            InvitationBackend().activate_view(request, self.user.id,
-                    self.tokenizer.make_token(self.user))
-        self.assertEqual(200, InvitationBackend().activate_view(request,
-            self.pending_user.id,
-            self.tokenizer.make_token(self.pending_user)).status_code)
+            InvitationBackend().activate_view(
+                request, self.user.id, self.tokenizer.make_token(self.user)
+            )
+        self.assertEqual(
+            200,
+            InvitationBackend().activate_view(
+                request,
+                self.pending_user.id,
+                self.tokenizer.make_token(self.pending_user),
+            ).status_code,
+        )
 
     def test_send_notification_inactive_user(self):
         """
@@ -103,10 +123,8 @@ class InvitationTests(TestCase):
         """
         org = Organization.objects.create(name="Test Organization")
         result = InvitationBackend().send_notification(
-            self.pending_user,
-            domain='example.com',
-            organization=org,
-            sender=self.user)
+            self.pending_user, domain="example.com", organization=org, sender=self.user
+        )
         self.assertEqual(result, False)
         self.assertEquals(0, len(mail.outbox))
 
@@ -118,33 +136,33 @@ class InvitationTests(TestCase):
         """
         org = Organization.objects.create(name="Test Organization")
         InvitationBackend().send_notification(
-            self.user,
-            domain='example.com',
-            organization=org,
-            sender=self.pending_user)
+            self.user, domain="example.com", organization=org, sender=self.pending_user
+        )
         self.assertEquals(1, len(mail.outbox))
         self.assertEquals(
-            mail.outbox[0].subject,
-            u"You've been added to an organization")
+            mail.outbox[0].subject, u"You've been added to an organization"
+        )
 
 
 @override_settings(USE_TZ=True)
 class RegistrationTests(TestCase):
 
-    fixtures = ['users.json', 'orgs.json']
+    fixtures = ["users.json", "orgs.json"]
 
     def setUp(self):
         mail.outbox = []
         self.factory = RequestFactory()
         self.tokenizer = RegistrationTokenGenerator()
         self.user = User.objects.get(username="krist")
-        self.pending_user = User.objects.create_user(username="theresa",
-                email="t@example.com", password="test")
+        self.pending_user = User.objects.create_user(
+            username="theresa", email="t@example.com", password="test"
+        )
         self.pending_user.is_active = False
         self.pending_user.save()
 
     def test_backend_definition(self):
         from organizations.backends import registration_backend
+
         self.assertTrue(isinstance(registration_backend(), RegistrationBackend))
 
     def test_register_authenticated(self):
@@ -180,22 +198,34 @@ class RegistrationTests(TestCase):
         mail.outbox = []
 
     def test_urls(self):
-        reverse('registration_register', kwargs={
-            'user_id': self.pending_user.id,
-            'token': self.tokenizer.make_token(self.pending_user)})
+        reverse(
+            "registration_register",
+            kwargs={
+                "user_id": self.pending_user.id,
+                "token": self.tokenizer.make_token(self.pending_user),
+            },
+        )
 
     def test_activate_user(self):
         request = self.factory.request()
         with self.assertRaises(Http404):
-            RegistrationBackend().activate_view(request, self.user.id,
-                    self.tokenizer.make_token(self.user))
-        self.assertEqual(200, RegistrationBackend().activate_view(request,
-            self.pending_user.id,
-            self.tokenizer.make_token(self.pending_user)).status_code)
+            RegistrationBackend().activate_view(
+                request, self.user.id, self.tokenizer.make_token(self.user)
+            )
+        self.assertEqual(
+            200,
+            RegistrationBackend().activate_view(
+                request,
+                self.pending_user.id,
+                self.tokenizer.make_token(self.pending_user),
+            ).status_code,
+        )
 
     def test_activate_orgs(self):
         """Ensure method activates organizations and w/o specified org_model"""
-        org = Organization.objects.create(name="Test", slug="kjadkjkaj", is_active=False)
+        org = Organization.objects.create(
+            name="Test", slug="kjadkjkaj", is_active=False
+        )
         org.add_user(self.user)
         self.assertFalse(org.is_active)
         backend = InvitationBackend()
