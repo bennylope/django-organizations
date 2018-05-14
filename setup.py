@@ -10,6 +10,8 @@ try:
 except ImportError:
     from distutils.core import setup
 
+py_version = sys.version_info
+
 if sys.argv[-1] == 'publish':
     os.system('python setup.py sdist upload')
     os.system('python setup.py bdist_wheel upload')
@@ -17,6 +19,12 @@ if sys.argv[-1] == 'publish':
 
 readme = open('README.rst').read()
 history = open('HISTORY.rst').read().replace('.. :changelog:', '')
+
+
+dependencies = [
+    'Django>=1.8.0',
+    'typing>=3.6.4',
+]
 
 
 setup(
@@ -50,9 +58,7 @@ setup(
         'Programming Language :: Python :: Implementation :: PyPy',
         'Framework :: Django',
     ],
-    install_requires=[
-        'Django>=1.8.0',
-    ],
+    install_requires=dependencies,
     test_suite='tests',
     include_package_data=True,
     zip_safe=False,
