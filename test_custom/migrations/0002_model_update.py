@@ -6,13 +6,15 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('test_custom', '0001_initial'),
-    ]
+    dependencies = [("test_custom", "0001_initial")]
 
     operations = [
         migrations.AlterModelOptions(
-            name='team',
-            options={'ordering': ['name'], 'verbose_name': 'organization', 'verbose_name_plural': 'organizations'},
-        ),
+            name="team",
+            options={
+                "ordering": ["name"],
+                "verbose_name": "organization",
+                "verbose_name_plural": "organizations",
+            },
+        )
     ]
