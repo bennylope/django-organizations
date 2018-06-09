@@ -222,6 +222,10 @@ class RegistrationBackend(BaseBackend):
             url(r"^$", view=self.create_view, name="registration_create"),
         ]
 
+    @property
+    def urls(self):
+        return self.get_urls(), self.namespace or '', 'registration'
+
     def register_by_email(self, email, sender=None, request=None, **kwargs):
         """
         Returns a User object filled with dummy data and not active, and sends

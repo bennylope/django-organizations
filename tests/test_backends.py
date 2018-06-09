@@ -234,6 +234,14 @@ class RegistrationTests(TestCase):
         self.assertTrue(refreshed_org.is_active)
 
 
+class TestBackendNamespacing(TestCase):
+
+    def test_registration_create(self):
+        assert reverse("registration_create")
+        # assert reverse("index")
+        assert reverse("test_accounts:registration_create")
+
+
 class CustomModelBackend(TestCase):
     """
     The default backend should provide the same basic functionality
