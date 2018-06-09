@@ -11,4 +11,5 @@ urlpatterns = [
     url(r"^organizations/", include("organizations.urls")),
     url(r"^invite/", include(invitation_backend().get_urls())),
     url(r"^register/", include(registration_backend().get_urls())),
+    url(r"^accounts/", include("test_accounts.urls", namespace="test_accounts")),
 ]
