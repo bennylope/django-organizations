@@ -25,6 +25,7 @@
 
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import get_object_or_404
+from django.utils.functional import cached_property
 from django.utils.translation import ugettext_lazy as _
 
 from organizations.models import Organization
@@ -41,16 +42,16 @@ class OrganizationMixin(object):
         return self.org_model
 
     def get_context_data(self, **kwargs):
-        kwargs.update({self.org_context_name: self.get_organization()})
+        kwargs.update({self.org_context_name: self.organization})
         return super(OrganizationMixin, self).get_context_data(**kwargs)
 
-    def get_object(self):
-        if hasattr(self, "organization"):
-            return self.organization
+    @cached_property
+    def organization(self):
         organization_pk = self.kwargs.get("organization_pk", None)
-        self.organization = get_object_or_404(self.get_org_model(), pk=organization_pk)
-        return self.organization
+        return get_object_or_404(self.get_org_model(), pk=organization_pk)
 
+    def get_object(self):
+        return self.organization
     get_organization = get_object  # Now available when `get_object` is overridden
 
 
@@ -96,7 +97,6 @@ class MembershipRequiredMixin(object):
         self.request = request
         self.args = args
         self.kwargs = kwargs
-        self.organization = self.get_organization()
         if (
             not self.organization.is_member(request.user)
             and not request.user.is_superuser
@@ -112,7 +112,6 @@ class AdminRequiredMixin(object):
         self.request = request
         self.args = args
         self.kwargs = kwargs
-        self.organization = self.get_organization()
         if (
             not self.organization.is_admin(request.user)
             and not request.user.is_superuser
@@ -128,7 +127,6 @@ class OwnerRequiredMixin(object):
         self.request = request
         self.args = args
         self.kwargs = kwargs
-        self.organization = self.get_organization()
         if (
             self.organization.owner.organization_user.user != request.user
             and not request.user.is_superuser
