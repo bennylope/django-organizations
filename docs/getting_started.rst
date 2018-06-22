@@ -52,10 +52,12 @@ settings file.::
 This should work for the majority of cases, from either simple, out-of-the-box
 installations to custom organization models.
 
-If however you want to use single-table customized organization models and/or
-custom organization user models, it may be best to treat Django organizations
-as a library and *not* install it in your Django project. See the
-:ref:`cookbook-advanced` section.
+.. note::
+
+    If however you want to use single-table customized organization models and/or
+    custom *organization user* models, it may be best to treat Django organizations
+    as a library and *not* install it in your Django project. See the
+    :ref:`cookbook-advanced` section.
 
 URLs
 ----

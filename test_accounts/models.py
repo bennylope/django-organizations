@@ -3,6 +3,7 @@ from organizations.base import OrganizationBase
 from organizations.base import OrganizationUserBase
 from organizations.base import OrganizationOwnerBase
 from organizations.base import OrganizationInvitationBase
+from django.shortcuts import reverse
 
 
 class Account(OrganizationBase):
@@ -18,4 +19,6 @@ class AccountOwner(OrganizationOwnerBase):
 
 
 class AccountInvitation(OrganizationInvitationBase):
-    pass
+    def get_absolute_url(self):
+        """Returns the invitation URL"""
+        return reverse("test_accounts:account_invitations:registration_create", kwargs={'guid': self.guid})
