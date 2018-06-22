@@ -129,7 +129,7 @@ Hooking the django-organizations URLs into your project provides a default set
 of views for accessing and updating organizations and organization membership.
 
 The included `class based views
-<https://docs.djangoproject.com/en/1.5/topics/class-based-views/>`_ are based on
+<https://docs.djangoproject.com/en/stable/topics/class-based-views/>`_ are based on
 a set of mixins that allow the views to limit access by a user's relationship
 to an organization and that query the appropriate organization or user based on
 URL keywords.
