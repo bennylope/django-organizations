@@ -23,9 +23,11 @@
 # OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+import uuid
 from django.conf import settings
 from django.core.exceptions import FieldDoesNotExist
 from django.db import models
+from django.urls import reverse
 from django.db.models.base import ModelBase
 from django.utils.translation import ugettext_lazy as _
 
@@ -267,6 +269,16 @@ class OrganizationBase(six.with_metaclass(OrgMeta, AbstractBaseOrganization)):
     class Meta(AbstractBaseOrganization.Meta):
         abstract = True
 
+    @property
+    def _org_user_model(self):
+        return self.__class__.module_registry[self.__class__.__module__][
+            "OrgUserModel"
+        ]
+
+    def add_user(self, user, **kwargs):
+        return self._org_user_model.objects.create(
+            user=user, organization=self, **kwargs
+        )
 
 class AbstractBaseOrganizationUser(UnicodeMixin, models.Model):
     """
@@ -348,6 +360,15 @@ class AbstractBaseInvitation(UnicodeMixin, models.Model):
     def __unicode__(self):
         return u"{0}: {1}".format(self.organization, self.invitee_identifier)
 
+    def save(self, **kwargs):
+        if not self.guid:
+            self.guid = str(uuid.uuid4()).replace("-", "")
+        return super(AbstractBaseInvitation, self).save(**kwargs)
+
+    def get_absolute_url(self):
+        """Returns the invitation URL"""
+        return reverse("invitations_register", kwargs={'guid': self.guid})
+
     def invitation_token(self):
         """
         Returns a unique token for the user
@@ -359,5 +380,5 @@ class AbstractBaseInvitation(UnicodeMixin, models.Model):
 
 class OrganizationInvitationBase(six.with_metaclass(OrgMeta, AbstractBaseInvitation)):
 
-    class Meta(AbstractBaseOrganizationOwner.Meta):
+    class Meta(AbstractBaseInvitation.Meta):
         abstract = True

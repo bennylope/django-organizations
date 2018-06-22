@@ -130,6 +130,7 @@ class BaseBackend(object):
             user = self.user_model.objects.get(id=user_id, is_active=False)
         except self.user_model.DoesNotExist:
             raise Http404(_("Your URL may have expired."))
+
         if not RegistrationTokenGenerator().check_token(user, token):
             raise Http404(_("Your URL may have expired."))
         form = self.get_form(data=request.POST or None, files=request.FILES or None, instance=user)
@@ -224,7 +225,7 @@ class RegistrationBackend(BaseBackend):
 
     @property
     def urls(self):
-        return self.get_urls(), self.namespace or '', 'registration'
+        return self.get_urls(), self.namespace or 'registration'
 
     def register_by_email(self, email, sender=None, request=None, **kwargs):
         """

@@ -5,8 +5,42 @@ Basic usage
 After installing django-organizations you can make basic use of the accounts
 with minimal configuration.
 
-Views
-=====
+.. note::
+
+    For custom usage, including custom account models, see the section on custom usage,
+    or for deeper customization including fully customized account and linking models,
+    see the cookbook.
+
+Model relationships
+===================
+
+One of the core benefits of using a multi user account is the ability to tie
+other objects to an account.
+
+Keep your organization models at the top of your *app hierarchy* and relate
+these models *back* to your organization model.::
+
+    class Product(models.Model):
+        account = models.ForeignKey(
+            'organizations.Organization',
+            related_name='products',
+        )
+
+
+You can simplify access checks with a queryset method.::
+
+    class ProductQuerySet(models.QuerySet):
+        def for_user(self, user):
+            return self.filter(account__users=user)
+
+Views & mixins
+==============
+
+The views in the rest of your application can then filter by account.::
+
+    class OrganizationMixin(object):
+
+
 
 The application's default views and URL configuration provide functionality for
 account creation, user registration, and account management.

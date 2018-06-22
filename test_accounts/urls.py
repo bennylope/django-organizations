@@ -1,7 +1,9 @@
+from django.conf.urls import include
 from django.conf.urls import url
 from django.contrib import admin
 
-from organizations.backends import registration_backend
+from organizations.backends.modeled import ModelInvitation
+from test_accounts.models import Account
 
 admin.autodiscover()
 
@@ -10,8 +12,9 @@ app_name = "test_accounts"
 urlpatterns = [
     url(
         r"^register/",
-        registration_backend(
-            backend="test_accounts.backends.AccountRegistration", namespace="test_accounts"
-        ).urls
+        include(
+            ModelInvitation(org_model=Account, namespace="invitations").urls,
+            namespace="account_invitations",
+        ),
     )
 ]
