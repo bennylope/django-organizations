@@ -150,9 +150,9 @@ class BaseBackend(object):
                 display_name = sender.get_full_name()
             else:
                 display_name = sender.get_username()
-            from_email = "%s %s <%s>" % (display_name,
+            from_email = "%s <%s>" % (display_name,
                     email.utils.parseaddr(settings.DEFAULT_FROM_EMAIL)[1])
-            reply_to = "%s %s <%s>" % (display_name, sender.email)
+            reply_to = "%s <%s>" % (display_name, sender.email)
         else:
             from_email = settings.DEFAULT_FROM_EMAIL
             reply_to = from_email
