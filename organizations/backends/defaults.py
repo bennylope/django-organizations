@@ -145,11 +145,11 @@ class BaseBackend(object):
         For instance, to send an HTML message, use the EmailMultiAlternatives message_class
         and attach the additional conent.
         """
-        if hasattr(sender, 'get_full_name') and callable(sender.get_full_name):
-            display_name = sender.get_full_name()
-        else:
-            display_name = sender.get_username()
         if sender:
+            if hasattr(sender, 'get_full_name') and callable(sender.get_full_name):
+                display_name = sender.get_full_name()
+            else:
+                display_name = sender.get_username()
             from_email = "%s %s <%s>" % (display_name,
                     email.utils.parseaddr(settings.DEFAULT_FROM_EMAIL)[1])
             reply_to = "%s %s <%s>" % (display_name, sender.email)
