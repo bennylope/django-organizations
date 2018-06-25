@@ -146,9 +146,13 @@ class BaseBackend(object):
         and attach the additional conent.
         """
         if sender:
-            from_email = "%s %s <%s>" % (sender.first_name, sender.last_name,
+            if hasattr(sender, 'get_full_name') and callable(sender.get_full_name):
+                display_name = sender.get_full_name()
+            else:
+                display_name = sender.get_username()
+            from_email = "%s <%s>" % (display_name,
                     email.utils.parseaddr(settings.DEFAULT_FROM_EMAIL)[1])
-            reply_to = "%s %s <%s>" % (sender.first_name, sender.last_name, sender.email)
+            reply_to = "%s <%s>" % (display_name, sender.email)
         else:
             from_email = settings.DEFAULT_FROM_EMAIL
             reply_to = from_email
