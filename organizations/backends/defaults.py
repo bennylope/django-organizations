@@ -146,9 +146,9 @@ class BaseBackend(object):
         and attach the additional conent.
         """
         if sender:
-            if hasattr(sender, 'get_full_name') and callable(sender.get_full_name):
+            try:
                 display_name = sender.get_full_name()
-            else:
+            except (AttributeError, TypeError):
                 display_name = sender.get_username()
             from_email = "%s <%s>" % (display_name,
                     email.utils.parseaddr(settings.DEFAULT_FROM_EMAIL)[1])
