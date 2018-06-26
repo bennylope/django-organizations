@@ -3,6 +3,12 @@
 History
 =======
 
+1.1.1
+-----
+
+* Fixes issue with default backend where users defined without first/last names
+  might not be represented
+
 1.1.0
 -----
 

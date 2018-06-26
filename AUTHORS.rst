@@ -21,6 +21,7 @@ Contributors:
 * `Federico Capoano <https://github.com/nemesisdesign>`_
 * `Justin Mayer <https://github.com/justinmayer>`_
 * `Alan Zhu <https://github.com/AZtheAsian>`_
+* `Samuel Spencer <https://github.com/LegoStormtroopr>`_
 
 If your name is missing as a contributor that's my oversight, let me know at
 ben@benlopatin.com
