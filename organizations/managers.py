@@ -37,5 +37,6 @@ class ActiveOrgManager(OrgManager):
     A more useful extension of the default manager which returns querysets
     including only active organizations
     """
+
     def get_queryset(self):
         return super(ActiveOrgManager, self).get_queryset().filter(is_active=True)
