@@ -27,17 +27,17 @@
 Invitations that use an invitation model
 """
 import email.utils
-from typing import List  # noq
-from typing import Optional  # noq
-from typing import Text  # noq
-from typing import Tuple  # noq
+from typing import List  # noqa
+from typing import Optional  # noqa
+from typing import Text  # noqa
+from typing import Tuple  # noqa
 
 from django.conf import settings
 from django.conf.urls import url
 from django.contrib.auth.models import AbstractUser  # noqa
 from django.core.mail import EmailMessage
-from django.http import HttpRequest
-from django.http import HttpResponse
+from django.http import HttpRequest  # noqa
+from django.http import HttpResponse  # noqa
 from django.http import HttpResponseForbidden
 from django.shortcuts import get_object_or_404
 from django.shortcuts import redirect
