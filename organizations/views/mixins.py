@@ -52,6 +52,7 @@ class OrganizationMixin(object):
 
     def get_object(self):
         return self.organization
+
     get_organization = get_object  # Now available when `get_object` is overridden
 
 
