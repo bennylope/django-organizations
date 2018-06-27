@@ -19,6 +19,10 @@ class AccountOwner(OrganizationOwnerBase):
 
 
 class AccountInvitation(OrganizationInvitationBase):
+
     def get_absolute_url(self):
         """Returns the invitation URL"""
-        return reverse("test_accounts:account_invitations:registration_create", kwargs={'guid': self.guid})
+        return reverse(
+            "test_accounts:account_invitations:invitations_register",
+            kwargs={"guid": str(self.guid).replace("-", "")},
+        )
