@@ -10,23 +10,58 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('test_vendors', '0002_model_update'),
+        ("test_vendors", "0002_model_update"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='VendorInvitation',
+            name="VendorInvitation",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('guid', models.UUIDField(editable=False)),
-                ('invitee_identifier', models.CharField(help_text='The contact identifier for the invitee, email, phone number, social media handle, etc.', max_length=1000)),
-                ('invited_by', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='test_vendors_vendorinvitation_sent_invitations', to=settings.AUTH_USER_MODEL)),
-                ('invitee', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='test_vendors_vendorinvitation_invitations', to=settings.AUTH_USER_MODEL)),
-                ('organization', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='organization_invites', to='test_vendors.Vendor')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("guid", models.UUIDField(editable=False)),
+                (
+                    "invitee_identifier",
+                    models.CharField(
+                        help_text="The contact identifier for the invitee, email, phone number, social media handle, etc.",
+                        max_length=1000,
+                    ),
+                ),
+                (
+                    "invited_by",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="test_vendors_vendorinvitation_sent_invitations",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                (
+                    "invitee",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="test_vendors_vendorinvitation_invitations",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                (
+                    "organization",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="organization_invites",
+                        to="test_vendors.Vendor",
+                    ),
+                ),
             ],
-            options={
-                'abstract': False,
-            },
+            options={"abstract": False},
             bases=(organizations.base.UnicodeMixin, models.Model),
-        ),
+        )
     ]

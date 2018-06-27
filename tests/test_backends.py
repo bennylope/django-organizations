@@ -24,7 +24,7 @@ from tests.utils import request_factory_login
 
 pytestmark = pytest.mark.django_db
 
-#@pytest.fixture(scope="module")
+# @pytest.fixture(scope="module")
 @pytest.fixture
 def account_user():
     yield User.objects.create(username="183jkjd", email="akjdkj@kjdk.com")
@@ -257,7 +257,7 @@ class TestBackendNamespacing(object):
     def test_registration_create(self):
         assert reverse("registration_create")
         # assert reverse("index")
-        assert reverse("test_accounts:account_invitations:registration_create")
+        assert reverse("test_accounts:account_invitations:invitations_register")
 
 
 class CustomModelBackend(object):
@@ -283,18 +283,21 @@ class TestInvitationModelBackend(object):
 
     def test_invite_returns_invitation(self, account_user, account_account):
         backend = ModelInvitation(org_model=Account)
-        invitation = backend.invite_by_email("bob@newuser.com", user=account_user, organization=account_account)
+        invitation = backend.invite_by_email(
+            "bob@newuser.com", user=account_user, organization=account_account
+        )
         assert isinstance(invitation, OrganizationInvitationBase)
 
     def test_send_invitation_anon_user(self, account_user, account_account, client):
         """Integration test with anon user"""
         outbox_count = len(mail.outbox)
         backend = ModelInvitation(org_model=Account)
-        invitation = backend.invite_by_email("bob@newuser.com", user=account_user, organization=account_account)
+        invitation = backend.invite_by_email(
+            "bob@newuser.com", user=account_user, organization=account_account
+        )
 
         assert isinstance(invitation, OrganizationInvitationBase)
         assert len(mail.outbox) > outbox_count
 
         response = client.get(invitation.get_absolute_url())
         assert response.status_code == 200
-
