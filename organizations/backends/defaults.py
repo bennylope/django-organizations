@@ -178,8 +178,9 @@ class BaseBackend(object):
                 display_name = sender.get_full_name()
             except (AttributeError, TypeError):
                 display_name = sender.get_username()
-            from_email = "%s <%s>" % (display_name,
-                    email.utils.parseaddr(settings.DEFAULT_FROM_EMAIL)[1])
+            from_email = "%s <%s>" % (
+                display_name, email.utils.parseaddr(settings.DEFAULT_FROM_EMAIL)[1]
+            )
             reply_to = "%s <%s>" % (display_name, sender.email)
         else:
             from_email = settings.DEFAULT_FROM_EMAIL
@@ -226,7 +227,7 @@ class RegistrationBackend(BaseBackend):
 
     @property
     def urls(self):
-        return self.get_urls(), self.namespace or 'registration'
+        return self.get_urls(), self.namespace or "registration"
 
     def register_by_email(self, email, sender=None, request=None, **kwargs):
         """

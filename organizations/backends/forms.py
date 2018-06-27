@@ -25,6 +25,8 @@
 
 from django import forms
 from django.contrib.auth import get_user_model
+from django.contrib.auth.models import AbstractBaseUser
+from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 
 
@@ -36,6 +38,7 @@ class UserRegistrationForm(forms.ModelForm):
     The class operates on a user model which is assumed to have the required
     fields of a BaseUserModel
     """
+    # TODO decouple first/last names from this form
     first_name = forms.CharField(max_length=30)
     last_name = forms.CharField(max_length=30)
     password = forms.CharField(max_length=30, widget=forms.PasswordInput)
