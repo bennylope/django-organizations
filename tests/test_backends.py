@@ -1,4 +1,6 @@
 
+import uuid
+
 import pytest
 from django.contrib.auth.models import User
 from django.core import mail
@@ -257,7 +259,11 @@ class TestBackendNamespacing(object):
     def test_registration_create(self):
         assert reverse("registration_create")
         # assert reverse("index")
-        assert reverse("test_accounts:account_invitations:invitations_register")
+
+        assert reverse(
+            "test_accounts:account_invitations:invitations_register",
+            kwargs={"guid": str(uuid.uuid4()).replace("-", "")},
+        )
 
 
 class CustomModelBackend(object):
@@ -279,6 +285,8 @@ class CustomModelBackend(object):
 class TestInvitationModelBackend(object):
     """
     Tests the backend using InvitationModels
+
+    pytest only!
     """
 
     def test_invite_returns_invitation(self, account_user, account_account):
@@ -298,6 +306,10 @@ class TestInvitationModelBackend(object):
 
         assert isinstance(invitation, OrganizationInvitationBase)
         assert len(mail.outbox) > outbox_count
+
+        from django.conf import settings
+
+        assert list(settings.MIDDLEWARE)
 
         response = client.get(invitation.get_absolute_url())
         assert response.status_code == 200
