@@ -26,23 +26,26 @@
 """
 Invitations that use an invitation model
 """
-from django.http import HttpResponseForbidden
-from django.shortcuts import render
 import email.utils
-from typing import Optional  # noqa
-from django.contrib.auth.models import AbstractUser  # noqa
-from typing import Text  # noqa
 
 from django.conf import settings
 from django.conf.urls import url
+from django.contrib.auth.models import AbstractUser  # noqa
+from django.utils.translation import ugettext_lazy as _
 from django.core.mail import EmailMessage
+from django.http import HttpRequest
+from django.http import HttpResponse
+from django.http import HttpResponseForbidden
+from django.shortcuts import get_object_or_404
 from django.shortcuts import redirect
+from django.shortcuts import render
 from django.template import loader
 
-from organizations.backends.forms import UserRegistrationForm
+from organizations.compat import typing
 from organizations.backends.defaults import InvitationBackend
+from organizations.backends.forms import UserRegistrationForm
 from organizations.base import OrganizationInvitationBase  # noqa
-from django.shortcuts import get_object_or_404
+from organizations.base import AbstractBaseOrganization  # noqa
 
 
 class ModelInvitation(InvitationBackend):
@@ -68,6 +71,14 @@ class ModelInvitation(InvitationBackend):
         """Return this to use a custom queryset that checks for expiration, for example"""
         return self.invitation_model.objects.all()
 
+    def get_invitation_accepted_url(self):
+        """Returns the redirect URL after user accepts invitation"""
+        return "/"
+
+    def get_invitation_accepted_registered_url(self):
+        """Returns the redirect URL after new user accepts invitation"""
+        return self.get_invitation_accepted_url()
+
     def activation_router(self, request, guid):
         """"""
         invitation = get_object_or_404(self.get_invitation_queryset(), guid=guid)
@@ -81,37 +92,38 @@ class ModelInvitation(InvitationBackend):
         else:
             return self.activate_new_user_view(request, invitation)
 
-    def activate_existing_user_view(
-            self,
-            request,
-            invitation,  # type: OrganizationInvitationBase
-    ):
+    def activate_existing_user_view(self, request, invitation):
+        # type: (HttpRequest, OrganizationInvitationBase) -> HttpResponse
         """"""
-        if request.user.email != invitation.invitee_identifier:
+        if request.user.email != invitation.invited_by:
             return HttpResponseForbidden(_("This is not your invitation"))
-        if request.method == 'POST':
-            # Add the user
+        if request.method == "POST":
             invitation.organization.add_user(request.user)
-            # TODO fire signal?
-            # TODO where to redirect?
-            return redirect("/")
-        return render(request, "organizations/invitation_join.html", {
-            "invitation": invitation,
-        })
+            invitation.invitee = request.user
+            invitation.save()
+            return redirect(self.get_invitation_accepted_url())
+        return render(
+            request, "organizations/invitation_join.html", {"invitation": invitation}
+        )
 
     def activate_new_user_view(self, request, invitation):
+        # type: (HttpRequest, OrganizationInvitationBase) -> HttpResponse
         """"""
         form = self.get_form(data=request.POST or None)
-        if request.method == 'POST' and form.is_valid():
-            new_user = form.save()
-            invitation.organization.add_user(request.user)
-            return redirect("/")
-        return render(request, "organizations/invitation_register.html", {
-            "invitation": invitation,
-            "form": form,
-        })
+        if request.method == "POST" and form.is_valid():
+            new_user = form.save()  # type: AbstractUser
+            invitation.organization.add_user(new_user)
+            invitation.invitee = new_user
+            invitation.save()
+            return redirect(self.get_invitation_accepted_registered_url())
+        return render(
+            request,
+            "organizations/invitation_register.html",
+            {"invitation": invitation, "form": form},
+        )
 
     def get_urls(self):
+        # type: () -> typing.List[url]
         return [
             url(
                 r"(?P<guid>[0-9a-f]{32})/$",
@@ -122,10 +134,11 @@ class ModelInvitation(InvitationBackend):
 
     @property
     def urls(self):
-        return self.get_urls(), self.namespace or 'registration'
+        # type: () -> typing.Tuple[typing.List[url], typing.Text]
+        return self.get_urls(), self.namespace or "registration"
 
     def invite_by_email(self, email, user, organization, **kwargs):
-        # type: (Text, Optional[Request], Any) -> OrganizationInvitationBase
+        # type: (typing.Text, AbstractUser, AbstractBaseOrganization) -> OrganizationInvitationBase
         """
         Primary interface method by which one user invites another to join
 
@@ -148,7 +161,10 @@ class ModelInvitation(InvitationBackend):
 
         # TODO allow sending just the OrganizationUser instance
         user_invitation = self.invitation_model.objects.create(
-            invitee=invitee, invitee_identifier=email.lower(), invited_by=user, organization=organization,
+            invitee=invitee,
+            invitee_identifier=email.lower(),
+            invited_by=user,
+            organization=organization,
         )
         self.send_invitation(user_invitation)
         return user_invitation
@@ -177,10 +193,10 @@ class ModelInvitation(InvitationBackend):
 
     def email_message(
         self,
-        recipient,  # type: Text
-        subject_template,  # type: Text
-        body_template,  # type: Text
-        sender=None,  # type: Optional[AbstractUser]
+        recipient,  # type: typing.Text
+        subject_template,  # type: typing.Text
+        body_template,  # type: typing.Text
+        sender=None,  # type: typing.Optional[AbstractUser]
         message_class=EmailMessage,
         **kwargs
     ):
