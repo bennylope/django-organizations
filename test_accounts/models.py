@@ -1,9 +1,10 @@
 from django.db import models
+
 from organizations.base import OrganizationBase
-from organizations.base import OrganizationUserBase
-from organizations.base import OrganizationOwnerBase
 from organizations.base import OrganizationInvitationBase
-from django.shortcuts import reverse
+from organizations.base import OrganizationOwnerBase
+from organizations.base import OrganizationUserBase
+from organizations.compat import reverse
 
 
 class Account(OrganizationBase):

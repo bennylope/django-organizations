@@ -24,15 +24,16 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import uuid
+
 from django.conf import settings
 from django.core.exceptions import FieldDoesNotExist
 from django.db import models
-from django.urls import reverse
 from django.db.models.base import ModelBase
 from django.utils.translation import ugettext_lazy as _
 
-from organizations.compat import six
 from organizations import signals
+from organizations.compat import reverse
+from organizations.compat import six
 from organizations.managers import ActiveOrgManager
 from organizations.managers import OrgManager
 
