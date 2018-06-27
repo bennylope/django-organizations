@@ -61,6 +61,8 @@ class ModelInvitation(InvitationBackend):
     invitation_body = "organizations/email/modeled_invitation_body.html"
     reminder_subject = "organizations/email/modeled_reminder_subject.txt"
     reminder_body = "organizations/email/modeled_reminder_body.html"
+    invitation_join_template = "organizations/invitation_join.html"
+
     form_class = UserRegistrationForm
 
     def __init__(self, org_model=None, namespace=None):
@@ -90,7 +92,7 @@ class ModelInvitation(InvitationBackend):
             # TODO change this?
             return redirect("/")
 
-        if request.user.is_authenticated:
+        if request.user.is_authenticated():
             return self.activate_existing_user_view(request, invitation)
         else:
             return self.activate_new_user_view(request, invitation)
@@ -106,7 +108,7 @@ class ModelInvitation(InvitationBackend):
             invitation.save()
             return redirect(self.get_invitation_accepted_url())
         return render(
-            request, "organizations/invitation_join.html", {"invitation": invitation}
+            request, self.invitation_join_template, {"invitation": invitation}
         )
 
     def activate_new_user_view(self, request, invitation):
@@ -121,7 +123,7 @@ class ModelInvitation(InvitationBackend):
             return redirect(self.get_invitation_accepted_registered_url())
         return render(
             request,
-            "organizations/invitation_register.html",
+            self.registration_form_template,
             {"invitation": invitation, "form": form},
         )
 
