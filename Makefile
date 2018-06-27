@@ -53,7 +53,7 @@ test-all:  ## run tests on every Python version with tox
 check: clean-build clean-pyc clean-test lint test-coverage  ## run all necessary steps to check validity of project
 
 build: clean  ## Create distribution files for release
-	pytest -k test_no_missing_migrations
+	# pytest -k test_no_missing_migrations
 	python setup.py sdist bdist_wheel
 
 release: build  ## Create distribution files and publish to PyPI
