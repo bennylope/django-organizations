@@ -1,6 +1,6 @@
-==============================================
-django-organizations: Sane multi-user accounts
-==============================================
+=========================================
+django-organizations: multi-user accounts
+=========================================
 
 django-organizations is an application that provides group account
 functionality for Django, allowing user access and rights to be consolidated
@@ -15,6 +15,7 @@ Contents:
     usage
     custom_usage
     cookbook
+    signals
     reference/index
 
 
