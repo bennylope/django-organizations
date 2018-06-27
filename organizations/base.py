@@ -32,6 +32,7 @@ from django.db.models.base import ModelBase
 from django.utils.translation import ugettext_lazy as _
 
 from organizations.compat import six
+from organizations import signals
 from organizations.managers import ActiveOrgManager
 from organizations.managers import OrgManager
 
@@ -208,6 +209,7 @@ class OrgMeta(ModelBase):
                 models.ForeignKey(
                     USER_MODEL,
                     null=True,
+                    blank=True,
                     related_name="%(app_label)s_%(class)s_invitations",
                     on_delete=models.CASCADE,
                 ),
@@ -271,14 +273,15 @@ class OrganizationBase(six.with_metaclass(OrgMeta, AbstractBaseOrganization)):
 
     @property
     def _org_user_model(self):
-        return self.__class__.module_registry[self.__class__.__module__][
-            "OrgUserModel"
-        ]
+        return self.__class__.module_registry[self.__class__.__module__]["OrgUserModel"]
 
     def add_user(self, user, **kwargs):
-        return self._org_user_model.objects.create(
+        org_user = self._org_user_model.objects.create(
             user=user, organization=self, **kwargs
         )
+        signals.user_added.send(sender=self, user=user)
+        return org_user
+
 
 class AbstractBaseOrganizationUser(UnicodeMixin, models.Model):
     """
@@ -346,7 +349,7 @@ class AbstractBaseInvitation(UnicodeMixin, models.Model):
     considered *more critical* to know who invited or joined even if they
     are no longer members of the organization.
     """
-    guid = models.UUIDField()
+    guid = models.UUIDField(editable=False)
     invitee_identifier = models.CharField(
         max_length=1000,
         help_text=_(
@@ -367,7 +370,7 @@ class AbstractBaseInvitation(UnicodeMixin, models.Model):
 
     def get_absolute_url(self):
         """Returns the invitation URL"""
-        return reverse("invitations_register", kwargs={'guid': self.guid})
+        return reverse("invitations_register", kwargs={"guid": self.guid})
 
     def invitation_token(self):
         """
