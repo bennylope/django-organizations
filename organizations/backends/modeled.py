@@ -27,11 +27,14 @@
 Invitations that use an invitation model
 """
 import email.utils
+from typing import List  # noq
+from typing import Optional  # noq
+from typing import Text  # noq
+from typing import Tuple  # noq
 
 from django.conf import settings
 from django.conf.urls import url
 from django.contrib.auth.models import AbstractUser  # noqa
-from django.utils.translation import ugettext_lazy as _
 from django.core.mail import EmailMessage
 from django.http import HttpRequest
 from django.http import HttpResponse
@@ -40,12 +43,12 @@ from django.shortcuts import get_object_or_404
 from django.shortcuts import redirect
 from django.shortcuts import render
 from django.template import loader
+from django.utils.translation import ugettext_lazy as _
 
-from organizations.compat import typing
 from organizations.backends.defaults import InvitationBackend
 from organizations.backends.forms import UserRegistrationForm
-from organizations.base import OrganizationInvitationBase  # noqa
 from organizations.base import AbstractBaseOrganization  # noqa
+from organizations.base import OrganizationInvitationBase  # noqa
 
 
 class ModelInvitation(InvitationBackend):
@@ -123,7 +126,7 @@ class ModelInvitation(InvitationBackend):
         )
 
     def get_urls(self):
-        # type: () -> typing.List[url]
+        # type: () -> List[url]
         return [
             url(
                 r"(?P<guid>[0-9a-f]{32})/$",
@@ -134,11 +137,11 @@ class ModelInvitation(InvitationBackend):
 
     @property
     def urls(self):
-        # type: () -> typing.Tuple[typing.List[url], typing.Text]
+        # type: () -> Tuple[List[url], Text]
         return self.get_urls(), self.namespace or "registration"
 
     def invite_by_email(self, email, user, organization, **kwargs):
-        # type: (typing.Text, AbstractUser, AbstractBaseOrganization) -> OrganizationInvitationBase
+        # type: (Text, AbstractUser, AbstractBaseOrganization) -> OrganizationInvitationBase
         """
         Primary interface method by which one user invites another to join
 
@@ -193,10 +196,10 @@ class ModelInvitation(InvitationBackend):
 
     def email_message(
         self,
-        recipient,  # type: typing.Text
-        subject_template,  # type: typing.Text
-        body_template,  # type: typing.Text
-        sender=None,  # type: typing.Optional[AbstractUser]
+        recipient,  # type: Text
+        subject_template,  # type: Text
+        body_template,  # type: Text
+        sender=None,  # type: Optional[AbstractUser]
         message_class=EmailMessage,
         **kwargs
     ):

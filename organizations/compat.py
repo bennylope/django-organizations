@@ -12,10 +12,3 @@ try:
     import six  # noqa
 except ImportError:
     from django.utils import six  # noqa
-
-
-try:
-    import typing
-except ImportError:
-    # No runtime issues, only failure to perform type hinting
-    typing = None
