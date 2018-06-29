@@ -103,9 +103,7 @@ class ModelInvitation(InvitationBackend):
         if request.user.email != invitation.invited_by:
             return HttpResponseForbidden(_("This is not your invitation"))
         if request.method == "POST":
-            invitation.organization.add_user(request.user)
-            invitation.invitee = request.user
-            invitation.save()
+            invitation.activate(request.user)
             return redirect(self.get_invitation_accepted_url())
         return render(
             request, self.invitation_join_template, {"invitation": invitation}
@@ -117,9 +115,7 @@ class ModelInvitation(InvitationBackend):
         form = self.get_form(data=request.POST or None)
         if request.method == "POST" and form.is_valid():
             new_user = form.save()  # type: AbstractUser
-            invitation.organization.add_user(new_user)
-            invitation.invitee = new_user
-            invitation.save()
+            invitation.activate(new_user)
             return redirect(self.get_invitation_accepted_registered_url())
         return render(
             request,

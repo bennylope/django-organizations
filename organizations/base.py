@@ -373,6 +373,22 @@ class AbstractBaseInvitation(UnicodeMixin, models.Model):
         """Returns the invitation URL"""
         return reverse("invitations_register", kwargs={"guid": self.guid})
 
+    def activate(self, user):
+        """
+        Updates the `invitee` value and saves the instance
+
+        Provided as a way of extending the behavior.
+
+        Args:
+            user:
+
+        Returns:
+
+        """
+        self.organization.add_user(user)
+        self.invitee = user
+        self.save()
+
     def invitation_token(self):
         """
         Returns a unique token for the user
