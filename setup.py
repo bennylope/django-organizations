@@ -42,6 +42,7 @@ setup(
         'organizations.backends',
         'organizations.migrations',
         'organizations.templatetags',
+        'organizations.views',
     ],
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',
