@@ -19,3 +19,6 @@ matrix:
   include:
     - python: "2.7"
       env: TOXENV=flake8
+# xenial is the only way to get 3.7, but xenial only supports 2.7/3.6/3.7
+    - python: "3.7"
+      dist: xenial
