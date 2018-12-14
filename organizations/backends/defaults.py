@@ -124,7 +124,8 @@ class BaseBackend(object):
             user.set_password(form.cleaned_data['password'])
             user.save()
             self.activate_organizations(user)
-            user = authenticate(username=form.cleaned_data['username'],
+            # change to email instead of username
+            user = authenticate(username=form.cleaned_data['email'],
                     password=form.cleaned_data['password'])
             login(request, user)
             return redirect(self.get_success_url())
@@ -200,8 +201,10 @@ class RegistrationBackend(BaseBackend):
         try:
             user = self.user_model.objects.get(email=email)
         except self.user_model.DoesNotExist:
-            user = self.user_model.objects.create(username=self.get_username(),
-                    email=email, password=self.user_model.objects.make_random_password())
+            user = self.user_model.objects.create(
+                email=email,
+                password=self.user_model.objects.make_random_password()   # removed username
+            )
             user.is_active = False
             user.save()
         self.send_activation(user, sender, **kwargs)
