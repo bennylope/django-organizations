@@ -37,6 +37,9 @@ urlpatterns = [
     url(r'^add/$',
         view=login_required(views.OrganizationCreate.as_view()),
         name="organization_add"),
+    url(r'^signup/$',                                                     # added this url. It was missing
+        view=(views.OrganizationSignup.as_view()),
+        name="organization_signup"),
     url(r'^(?P<organization_pk>[\d]+)/$',
         view=login_required(views.OrganizationDetail.as_view()),
         name="organization_detail"),
