@@ -59,6 +59,92 @@ functionality beyond the individual user.
 Documentation is on `Read the Docs
 <http://django-organizations.readthedocs.org/en/latest/index.html>`_
 
+
+Development & Contributing
+==========================
+
+**The master branch represents version 2 development. For updates related to 1.x
+versions of django-organizations pull requests should be made against the
+[`version-1.x` branch](tree/version-1.x).**
+
+Development is on-going. To-do items have been moved to the wiki for the time
+being.
+
+The basic functionality should not need much extending. Current dev priorities
+for me and contributors should include:
+
+* Improving the tests and test coverage (ideally moving them back out of the
+  main module and executable using the setup.py file)
+* Improving the backends and backends concept so that additional invitation and
+  registration backends can be used
+* Documentation
+* Ensuring all application text is translatable
+* Python 3 readiness
+
+Please use the project's issues tracker to report bugs, doc updates, or other
+requests/suggestions.
+
+Targets & testing
+-----------------
+
+The codebase is targeted and tested against:
+
+* Django 1.11.x against Python 2.7, 3.4, 3.5, 3.6, and PyPy
+* Django 2.0.x against Python 3.4, 3.5, 3.6, 3.7
+* Django 2.1.x against Python 3.5, 3.6, 3.7
+
+To run the tests against all target environments, install `tox
+<https://testrun.org/tox/latest/>`_ and then execute the command::
+
+    tox
+
+Fast testing
+------------
+
+Testing each change on all the environments takes some time, you may
+want to test faster and avoid slowing down development by using pytest
+against your current environment::
+
+    pip install -r requirements-test.txt
+    py.test
+
+Supply the ``-x`` option for **failfast** mode::
+
+    py.test -x
+
+Submitting
+----------
+
+These submission guidelines will make it more likely your submissions will be
+reviewed and make it into the project:
+
+* Ensure they match the project goals and are sufficiently generalized
+* Please try to follow `Django coding style
+  <https://docs.djangoproject.com/en/stable/internals/contributing/writing-code/coding-style/>`_.
+  The code base style isn't all up to par, but I'd like it to move in that
+  direction
+* Also please try to include `good commit log messages
+  <http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html>`_.
+* Pull requests should include an amount of code and commits that are
+  reasonable to review, are **logically grouped**, and based off clean feature
+  branches.
+
+Code contributions are expected to pass in all target environments, and
+pull requests should be made from branches with passing builds on `Travis
+CI <https://travis-ci.org/bennylope/django-organizations>`_.
+
+Project goals
+-------------
+
+django-organizations should be backend agnostic:
+
+1. Authentication agnostic
+2. Registration agnostic
+3. Invitation agnostic
+4. User messaging agnostic
+
+Etc.
+
 Installing
 ==========
 
@@ -180,87 +266,6 @@ and used to create unique organization model sets using custom tables. See the
 `Cooking with Django Organizations
 <http://django-organizations.readthedocs.org/en/latest/cookbook.html#advanced-customization>`_
 section in the documentation for advice on proceeding.
-
-Development & Contributing
-==========================
-
-Development is on-going. To-do items have been moved to the wiki for the time
-being.
-
-The basic functionality should not need much extending. Current dev priorities
-for me and contributors should include:
-
-* Improving the tests and test coverage (ideally moving them back out of the
-  main module and executable using the setup.py file)
-* Improving the backends and backends concept so that additional invitation and
-  registration backends can be used
-* Documentation
-* Ensuring all application text is translatable
-* Python 3 readiness
-
-Please use the project's issues tracker to report bugs, doc updates, or other
-requests/suggestions.
-
-Targets & testing
------------------
-
-The codebase is targeted and tested against:
-
-* Django 1.11.x against Python 2.7, 3.4, 3.5, 3.6, and PyPy
-* Django 2.0.x against Python 3.4, 3.5, 3.6, 3.7
-* Django 2.1.x against Python 3.5, 3.6, 3.7
-
-To run the tests against all target environments, install `tox
-<https://testrun.org/tox/latest/>`_ and then execute the command::
-
-    tox
-
-Fast testing
-------------
-
-Testing each change on all the environments takes some time, you may
-want to test faster and avoid slowing down development by using pytest
-against your current environment::
-
-    pip install -r requirements-test.txt
-    py.test
-
-Supply the ``-x`` option for **failfast** mode::
-
-    py.test -x
-
-Submitting
-----------
-
-These submission guidelines will make it more likely your submissions will be
-reviewed and make it into the project:
-
-* Ensure they match the project goals and are sufficiently generalized
-* Please try to follow `Django coding style
-  <https://docs.djangoproject.com/en/stable/internals/contributing/writing-code/coding-style/>`_.
-  The code base style isn't all up to par, but I'd like it to move in that
-  direction
-* Also please try to include `good commit log messages
-  <http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html>`_.
-* Pull requests should include an amount of code and commits that are
-  reasonable to review, are **logically grouped**, and based off clean feature
-  branches.
-
-Code contributions are expected to pass in all target environments, and
-pull requests should be made from branches with passing builds on `Travis
-CI <https://travis-ci.org/bennylope/django-organizations>`_.
-
-Project goals
--------------
-
-django-organizations should be backend agnostic:
-
-1. Authentication agnostic
-2. Registration agnostic
-3. Invitation agnostic
-4. User messaging agnostic
-
-Etc.
 
 License
 =======
