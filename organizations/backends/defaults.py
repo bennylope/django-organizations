@@ -133,7 +133,9 @@ class BaseBackend(object):
 
         if not RegistrationTokenGenerator().check_token(user, token):
             raise Http404(_("Your URL may have expired."))
-        form = self.get_form(data=request.POST or None, files=request.FILES or None, instance=user)
+        form = self.get_form(
+            data=request.POST or None, files=request.FILES or None, instance=user
+        )
         if form.is_valid():
             form.instance.is_active = True
             user = form.save()
