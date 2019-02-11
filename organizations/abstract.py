@@ -230,7 +230,7 @@ class AbstractOrganizationUser(
         from organizations.exceptions import OwnershipRequired
 
         try:
-            if self.organization.owner.organization_user.id == self.id:
+            if self.organization.owner.organization_user.pk == self.pk:
                 raise OwnershipRequired(
                     _(
                         "Cannot delete organization owner "
