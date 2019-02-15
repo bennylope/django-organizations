@@ -92,7 +92,7 @@ class ModelInvitation(InvitationBackend):
             # TODO change this?
             return redirect("/")
 
-        if request.user.is_authenticated():
+        if request.user.is_authenticated:
             return self.activate_existing_user_view(request, invitation)
         else:
             return self.activate_new_user_view(request, invitation)
