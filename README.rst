@@ -153,6 +153,9 @@ First add the application to your Python path. The easiest way is to use
 
     pip install django-organizations
 
+Check the `Release History tab <https://pypi.org/project/django-organizations/#history>`_ on
+the PyPI package page for pre-release versions. These can be downloaded by specifying the version.
+
 You can also install by downloading the source and running::
 
     $ python setup.py install
