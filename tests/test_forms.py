@@ -26,13 +26,13 @@ class OrgFormTests(TestCase):
         form = OrganizationForm(
             request,
             instance=self.org,
-            data={"name": self.org.name, "slug": self.org.slug, "owner": self.owner.id},
+            data={"name": self.org.name, "slug": self.org.slug, "owner": self.owner.pk},
         )
         self.assertTrue(form.is_valid())
         form = OrganizationForm(
             request,
             instance=self.org,
-            data={"name": self.org.name, "slug": self.org.slug, "owner": self.admin.id},
+            data={"name": self.org.name, "slug": self.org.slug, "owner": self.admin.pk},
         )
         self.assertFalse(form.is_valid())
 
@@ -42,13 +42,13 @@ class OrgFormTests(TestCase):
         form = OrganizationForm(
             request,
             instance=self.org,
-            data={"name": self.org.name, "slug": self.org.slug, "owner": self.owner.id},
+            data={"name": self.org.name, "slug": self.org.slug, "owner": self.owner.pk},
         )
         self.assertTrue(form.is_valid())
         form = OrganizationForm(
             request,
             instance=self.org,
-            data={"name": self.org.name, "slug": self.org.slug, "owner": self.admin.id},
+            data={"name": self.org.name, "slug": self.org.slug, "owner": self.admin.pk},
         )
         self.assertTrue(form.is_valid())
         form.save()
@@ -65,7 +65,7 @@ class OrgFormTests(TestCase):
         form = OrganizationForm(
             request,
             instance=self.org,
-            data={"name": self.org.name, "slug": self.org.slug, "owner": self.owner.id},
+            data={"name": self.org.name, "slug": self.org.slug, "owner": self.owner.pk},
         )
         self.assertTrue(form.is_valid())
         form.save()

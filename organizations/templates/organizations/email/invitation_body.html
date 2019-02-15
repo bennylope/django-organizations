@@ -2,6 +2,6 @@ You've been invited to join {{ organization|safe }} on {{ domain.name }} by {{ s
 
 Follow this link to create your user account.
 
-http://{{ domain.domain }}{% url "invitations_register" user.id token %}
+http://{{ domain.domain }}{% url "invitations_register" user.pk token %}
 
 If you are unsure about this link please contact the sender.

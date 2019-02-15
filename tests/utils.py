@@ -10,6 +10,6 @@ def request_factory_login(factory, user=None):
     # engine = import_module(settings.SESSION_ENGINE)
     request = factory.request()
     # request.session = engine.SessionStore()
-    # request.session[SESSION_KEY] = user.id
+    # request.session[SESSION_KEY] = user.pk
     request.user = user or AnonymousUser()
     return request

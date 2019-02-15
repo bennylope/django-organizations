@@ -115,7 +115,7 @@ class InvitationTests(TestCase):
         reverse(
             "invitations_register",
             kwargs={
-                "user_id": self.pending_user.id,
+                "user_id": self.pending_user.pk,
                 "token": self.tokenizer.make_token(self.pending_user),
             },
         )
@@ -124,13 +124,13 @@ class InvitationTests(TestCase):
         request = self.factory.request()
         with self.assertRaises(Http404):
             InvitationBackend().activate_view(
-                request, self.user.id, self.tokenizer.make_token(self.user)
+                request, self.user.pk, self.tokenizer.make_token(self.user)
             )
         self.assertEqual(
             200,
             InvitationBackend().activate_view(
                 request,
-                self.pending_user.id,
+                self.pending_user.pk,
                 self.tokenizer.make_token(self.pending_user),
             ).status_code,
         )
@@ -221,7 +221,7 @@ class RegistrationTests(TestCase):
         reverse(
             "registration_register",
             kwargs={
-                "user_id": self.pending_user.id,
+                "user_id": self.pending_user.pk,
                 "token": self.tokenizer.make_token(self.pending_user),
             },
         )
@@ -230,13 +230,13 @@ class RegistrationTests(TestCase):
         request = self.factory.request()
         with self.assertRaises(Http404):
             RegistrationBackend().activate_view(
-                request, self.user.id, self.tokenizer.make_token(self.user)
+                request, self.user.pk, self.tokenizer.make_token(self.user)
             )
         self.assertEqual(
             200,
             RegistrationBackend().activate_view(
                 request,
-                self.pending_user.id,
+                self.pending_user.pk,
                 self.tokenizer.make_token(self.pending_user),
             ).status_code,
         )
