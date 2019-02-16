@@ -168,7 +168,9 @@ Configuring
 -----------
 
 Make sure you have `django.contrib.auth` installed, and add the `organizations`
-application to your `INSTALLED_APPS` list::
+application to your `INSTALLED_APPS` list:
+
+.. code-block:: python
 
     INSTALLED_APPS = (
         ...
@@ -177,7 +179,9 @@ application to your `INSTALLED_APPS` list::
     )
 
 Then ensure that your project URL conf is updated. You should hook in the
-main application URL conf as well as your chosen invitation backend URLs::
+main application URL conf as well as your chosen invitation backend URLs:
+
+.. code-block:: python
 
     from organizations.backends import invitation_backend
 
@@ -193,11 +197,15 @@ Auto slug field
 The standard way of using Django Organizations is to use it as an installed app
 in your Django project. Django Organizations will need to use an auto slug
 field which are not included. By default it will try to import these from
-django-extensions, but you can configure your own in settings. The default::
+django-extensions, but you can configure your own in settings. The default:
+
+.. code-block:: python
 
     ORGS_SLUGFIELD = 'django_extensions.db.fields.AutoSlugField'
 
-Alternative (note: this is not compatible with Django 2.0)::
+Alternative (note: this is not compatible with Django 2.0):
+
+.. code-block:: python
 
     ORGS_SLUGFIELD = 'autoslug.fields.AutoSlugField'
 
@@ -218,7 +226,9 @@ Registration & invitation backends
 
 You can specify a different invitation backend in your project settings, and
 the `invitation_backend` function will provide the URLs defined by that
-backend::
+backend:
+
+.. code-block:: python
 
     INVITATION_BACKEND = 'myapp.backends.MyInvitationBackend'
 
@@ -243,7 +253,9 @@ There are three models:
   model. This allows `User` objects to own multiple organizations and makes it
   easy to enforce ownership from within the organization's membership.
 
-The underlying organizations API is simple::
+The underlying organizations API is simple:
+
+.. code-block:: python
 
     >>> from organizations.utils import create_organization
     >>> chris = User.objects.get(username="chris")
