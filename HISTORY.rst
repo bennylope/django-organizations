@@ -3,6 +3,12 @@
 History
 =======
 
+1.1.2 (2019-06-24)
+-------------------
+
+* Fixes bug in which HttpResponseBadRequest was not returned, instead treated
+  improperly as an exception.
+
 1.1.1
 -----
 
