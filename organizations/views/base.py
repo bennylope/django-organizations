@@ -141,7 +141,7 @@ class BaseOrganizationUserRemind(OrganizationUserMixin, DetailView):
     def get_object(self, **kwargs):
         self.organization_user = super(BaseOrganizationUserRemind, self).get_object()
         if self.organization_user.user.is_active:
-            raise HttpResponseBadRequest(_("User is already active"))
+            return HttpResponseBadRequest(_("User is already active"))
         return self.organization_user
 
     def post(self, request, *args, **kwargs):
