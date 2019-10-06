@@ -1,6 +1,7 @@
 {% extends "organizations_base.html" %}
+{% load i18n %}
 {% block content %}
-<h1>organizations</h1>
+<h1>{% trans "organizations" %}</h1>
 
 <ul>
     {% for organization in organizations %}
