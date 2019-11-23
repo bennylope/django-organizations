@@ -79,7 +79,6 @@ for me and contributors should include:
   registration backends can be used
 * Documentation
 * Ensuring all application text is translatable
-* Python 3 readiness
 
 Please use the project's issues tracker to report bugs, doc updates, or other
 requests/suggestions.
@@ -92,6 +91,8 @@ The codebase is targeted and tested against:
 * Django 1.11.x against Python 2.7, 3.4, 3.5, 3.6, and PyPy
 * Django 2.0.x against Python 3.4, 3.5, 3.6, 3.7
 * Django 2.1.x against Python 3.5, 3.6, 3.7
+* Django 2.2.x against Python 3.5, 3.6, 3.7, 3.8
+* Django 3.0.x against Python 3.6, 3.7, 3.8
 
 To run the tests against all target environments, install `tox
 <https://testrun.org/tox/latest/>`_ and then execute the command::
