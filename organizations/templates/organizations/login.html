@@ -1,4 +1,5 @@
 {% extends "organizations_base.html" %}
+{% load i18n %}
 {% block content %}
   <h1 id="login-header">Log in to your dashboard</h1>
   <div id="login-box">
@@ -6,7 +7,7 @@
         {{ form }}
         <input type="submit" value="Login">
     </form>
-    <p>Forgotten your password? <a href="{% url "password_reset" %}">Reset it.</a></p>
+	<p>{% trans "Forgotten your password?" %} <a href="{% url "password_reset" %}">{% trans "Reset it" %}.</a></p>
   </div>
 {% endblock %}
 

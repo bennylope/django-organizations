@@ -1,8 +1,9 @@
+{% load i18n %}
 <ul>
     {% for organization_user in organization_users %}
     <li>
     <a href="{{ organization_user.get_absolute_url }}">{{ organization_user }}</a>
-    {% if not organization_user.user.is_active %}Send reminder{% endif %}
+	{% if not organization_user.user.is_active %}{% trans "Send reminder" %}{% endif %}
     </li>
     {% endfor %}
 </ul>
