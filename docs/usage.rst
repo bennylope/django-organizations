@@ -98,3 +98,24 @@ to create their own accounts at registration. Each base backend class is
 designed to provide a common interface which your backend classes can use to
 work with whatever user models, registration systems, additional account
 systems, or any other tools you need for your site.
+
+Using template tags
+===================
+
+Django-organizations comes with following template tags:
+
+* organization_users
+* is_admin
+* is_owner
+
+Example usage of template tags in your templates:.::
+
+    {% load org_tags %}
+    
+    {# somewhere in your template you have `organization` and `user` variable #}
+    
+    {% if organization|is_admin:user %}
+        {{ user }} is a administrator of the {{ organization.name }} organization.
+    {% elif organization|is_owner:user %}
+        {{ user }} is owner of the {{ organization.name }} organization.
+    {% endif %}
