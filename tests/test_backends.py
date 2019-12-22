@@ -146,7 +146,7 @@ class InvitationTests(TestCase):
             self.pending_user, domain="example.com", organization=org, sender=self.user
         )
         self.assertEqual(result, False)
-        self.assertEquals(0, len(mail.outbox))
+        self.assertEqual(0, len(mail.outbox))
 
     def test_send_notification_active_user(self):
         """
@@ -158,8 +158,8 @@ class InvitationTests(TestCase):
         InvitationBackend().send_notification(
             self.user, domain="example.com", organization=org, sender=self.pending_user
         )
-        self.assertEquals(1, len(mail.outbox))
-        self.assertEquals(
+        self.assertEqual(1, len(mail.outbox))
+        self.assertEqual(
             mail.outbox[0].subject, u"You've been added to an organization"
         )
 
