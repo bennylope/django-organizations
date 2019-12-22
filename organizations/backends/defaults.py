@@ -339,7 +339,7 @@ class InvitationBackend(BaseBackend):
             user = self.user_model.objects.get(email=email)
         except self.user_model.DoesNotExist:
             # TODO break out user creation process
-            if "username" in inspect.getargspec(
+            if "username" in inspect.getfullargspec(
                 self.user_model.objects.create_user
             ).args:
                 user = self.user_model.objects.create(
