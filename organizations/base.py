@@ -57,7 +57,7 @@ class OrgMeta(ModelBase):
     Base metaclass for dynamically linking related organization models.
 
     This is particularly useful for custom organizations that can avoid
-    multitable inheritence and also add additional attributes to the
+    multitable inheritance and also add additional attributes to the
     organization users especially.
 
     The `module_registry` dictionary is used to track the architecture across
