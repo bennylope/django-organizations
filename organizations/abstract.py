@@ -269,7 +269,7 @@ class AbstractOrganizationOwner(
         Method validates against the primary key of the organization because
         when validating an inherited model it may be checking an instance of
         `Organization` against an instance of `CustomOrganization`. Mutli-table
-        inheritence means the database keys will be identical though.
+        inheritance means the database keys will be identical though.
 
         """
         from organizations.exceptions import OrganizationMismatch
