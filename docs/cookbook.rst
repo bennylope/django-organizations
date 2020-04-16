@@ -390,7 +390,7 @@ the related name.::
 
     account = get_object_or_404(Account, pk=pk)
     relevant_meeting_minutes = account.meeting_minutes.all()
-
+ 
 This works if the resource is defined in your project. If you're pulling this
 in from another app, e.g. a third party Django app, then you can't directly add
 a foreign key to the model. You can create a linking model which can be used in
@@ -402,7 +402,7 @@ a similar fashion.::
         account = models.ForeignKey('Account', related_name="document_links")
         document = models.ForeignKey('Document', unique=True)
 
-The linking model should in *most scenarios* enforce uniquness against the linked resource
+The linking model should in *most scenarios* enforce uniqueness against the linked resource
 model to prevent multiple organizations from having access to the resource.
 
 Providing access may be a little less straightforward. You can use the related name
