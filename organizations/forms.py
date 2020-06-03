@@ -26,7 +26,7 @@
 from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.sites.shortcuts import get_current_site
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 from organizations.backends import invitation_backend
 from organizations.models import Organization

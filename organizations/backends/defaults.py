@@ -48,7 +48,7 @@ from django.http import Http404
 from django.shortcuts import redirect
 from django.shortcuts import render
 from django.template import loader
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 
 from organizations.backends.forms import UserRegistrationForm
 from organizations.backends.forms import org_registration_form

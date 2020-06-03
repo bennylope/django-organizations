@@ -43,7 +43,7 @@ from django.shortcuts import get_object_or_404
 from django.shortcuts import redirect
 from django.shortcuts import render
 from django.template import loader
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 from organizations.backends.defaults import InvitationBackend
 from organizations.backends.forms import UserRegistrationForm
