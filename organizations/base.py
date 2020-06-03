@@ -29,7 +29,7 @@ from django.conf import settings
 from django.core.exceptions import FieldDoesNotExist
 from django.db import models
 from django.db.models.base import ModelBase
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 from organizations import signals
 from organizations.compat import reverse
