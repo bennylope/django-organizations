@@ -57,7 +57,6 @@ class BaseOrganizationList(ListView):
 
 
 class BaseOrganizationDetail(OrganizationMixin, DetailView):
-
     def get_context_data(self, **kwargs):
         context = super(BaseOrganizationDetail, self).get_context_data(**kwargs)
         context["organization_users"] = self.organization.organization_users.all()
@@ -88,13 +87,11 @@ class BaseOrganizationUpdate(OrganizationMixin, UpdateView):
 
 
 class BaseOrganizationDelete(OrganizationMixin, DeleteView):
-
     def get_success_url(self):
         return reverse("organization_list")
 
 
 class BaseOrganizationUserList(OrganizationMixin, ListView):
-
     def get(self, request, *args, **kwargs):
         self.organization = self.get_organization()
         self.object_list = self.organization.organization_users.all()
@@ -162,7 +159,6 @@ class BaseOrganizationUserUpdate(OrganizationUserMixin, UpdateView):
 
 
 class BaseOrganizationUserDelete(OrganizationUserMixin, DeleteView):
-
     def get_success_url(self):
         return reverse(
             "organization_user_list",
@@ -177,6 +173,7 @@ class OrganizationSignup(FormView):
     It simply processes the form and then calls the specified registration
     backend.
     """
+
     form_class = SignUpForm
     template_name = "organizations/signup_form.html"
     # TODO get success from backend, because some backends may do something

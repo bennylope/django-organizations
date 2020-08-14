@@ -67,6 +67,7 @@ class OrgMeta(ModelBase):
     within a module using these base classes are from other organization models.
 
     """
+
     module_registry = {}
 
     def __new__(cls, name, bases, attrs):  # noqa
@@ -95,7 +96,8 @@ class OrgMeta(ModelBase):
             elif b.__name__ in ["AbstractOrganizationOwner", "OrganizationOwnerBase"]:
                 key = "OrgOwnerModel"
             elif b.__name__ in [
-                "AbstractOrganizationInvitation", "OrganizationInvitationBase"
+                "AbstractOrganizationInvitation",
+                "OrganizationInvitationBase",
             ]:
                 key = "OrgInviteModel"
             if key:
@@ -127,9 +129,7 @@ class OrgMeta(ModelBase):
 
         cls.module_registry[module]["OrgModel"].invitation_model = cls.module_registry[
             module
-        ][
-            "OrgInviteModel"
-        ]
+        ]["OrgInviteModel"]
 
     def update_org_users(cls, module):
         """
@@ -268,7 +268,6 @@ class AbstractBaseOrganization(UnicodeMixin, models.Model):
 
 
 class OrganizationBase(six.with_metaclass(OrgMeta, AbstractBaseOrganization)):
-
     class Meta(AbstractBaseOrganization.Meta):
         abstract = True
 
@@ -319,7 +318,6 @@ class AbstractBaseOrganizationUser(UnicodeMixin, models.Model):
 
 
 class OrganizationUserBase(six.with_metaclass(OrgMeta, AbstractBaseOrganizationUser)):
-
     class Meta(AbstractBaseOrganizationUser.Meta):
         abstract = True
 
@@ -337,7 +335,6 @@ class AbstractBaseOrganizationOwner(UnicodeMixin, models.Model):
 
 
 class OrganizationOwnerBase(six.with_metaclass(OrgMeta, AbstractBaseOrganizationOwner)):
-
     class Meta(AbstractBaseOrganizationOwner.Meta):
         abstract = True
 
@@ -350,6 +347,7 @@ class AbstractBaseInvitation(UnicodeMixin, models.Model):
     considered *more critical* to know who invited or joined even if they
     are no longer members of the organization.
     """
+
     guid = models.UUIDField(editable=False)
     invitee_identifier = models.CharField(
         max_length=1000,
@@ -405,6 +403,5 @@ class AbstractBaseInvitation(UnicodeMixin, models.Model):
 
 
 class OrganizationInvitationBase(six.with_metaclass(OrgMeta, AbstractBaseInvitation)):
-
     class Meta(AbstractBaseInvitation.Meta):
         abstract = True

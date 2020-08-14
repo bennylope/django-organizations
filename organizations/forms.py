@@ -36,6 +36,7 @@ from organizations.utils import create_organization
 
 class OrganizationForm(forms.ModelForm):
     """Form class for updating Organizations"""
+
     owner = forms.ModelChoiceField(OrganizationUser.objects.all())
 
     def __init__(self, request, *args, **kwargs):
@@ -84,6 +85,7 @@ class OrganizationUserForm(forms.ModelForm):
 
 class OrganizationUserAddForm(forms.ModelForm):
     """Form class for adding OrganizationUsers to an existing Organization"""
+
     email = forms.EmailField(max_length=75)
 
     def __init__(self, request, organization, *args, **kwargs):
@@ -149,6 +151,7 @@ class OrganizationAddForm(forms.ModelForm):
     Form class for creating a new organization, complete with new owner, including a
     User instance, OrganizationUser instance, and OrganizationOwner instance.
     """
+
     email = forms.EmailField(
         max_length=75, help_text=_("The email address for the account owner")
     )
@@ -191,6 +194,7 @@ class SignUpForm(forms.Form):
     """
     Form class for signing up a new user and new account.
     """
+
     name = forms.CharField(max_length=50, help_text=_("The name of the organization"))
     slug = forms.SlugField(
         max_length=50,

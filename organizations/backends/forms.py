@@ -36,6 +36,7 @@ class UserRegistrationForm(forms.ModelForm):
     The class operates on a user model which is assumed to have the required
     fields of a BaseUserModel
     """
+
     # TODO decouple first/last names from this form
     first_name = forms.CharField(max_length=30)
     last_name = forms.CharField(max_length=30)
@@ -73,6 +74,7 @@ def org_registration_form(org_model):
 
     class OrganizationRegistrationForm(forms.ModelForm):
         """Form class for creating new organizations owned by new users."""
+
         email = forms.EmailField()
 
         class Meta:

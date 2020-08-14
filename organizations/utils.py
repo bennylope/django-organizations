@@ -74,9 +74,11 @@ def create_organization(
     >>> create_account = partial(create_organization, model=Account)
 
     """
-    org_model = kwargs.pop("model", None) or kwargs.pop(
-        "org_model", None
-    ) or default_org_model()
+    org_model = (
+        kwargs.pop("model", None)
+        or kwargs.pop("org_model", None)
+        or default_org_model()
+    )
     kwargs.pop("org_user_model", None)  # Discard deprecated argument
 
     org_owner_model = org_model.owner.related.related_model

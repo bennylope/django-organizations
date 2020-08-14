@@ -55,6 +55,7 @@ class ModelInvitation(InvitationBackend):
     """
 
     """
+
     notification_subject = "organizations/email/notification_subject.txt"
     notification_body = "organizations/email/notification_body.html"
     invitation_subject = "organizations/email/modeled_invitation_subject.txt"
@@ -67,7 +68,9 @@ class ModelInvitation(InvitationBackend):
 
     def __init__(self, org_model=None, namespace=None):
         super(ModelInvitation, self).__init__(org_model=org_model, namespace=namespace)
-        self.invitation_model = self.org_model.invitation_model  # type: OrganizationInvitationBase
+        self.invitation_model = (
+            self.org_model.invitation_model
+        )  # type: OrganizationInvitationBase
 
     def get_registration_form(self):
         return self.form_class

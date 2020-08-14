@@ -40,6 +40,7 @@ class OrganizationCreate(bases.OrganizationCreate):
     """
     Allows any user to create a new organization.
     """
+
     pass
 
 

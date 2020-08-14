@@ -59,6 +59,7 @@ class SharedBaseModel(models.Model):
     two private methods that are used by the rest
     of the abstract models.
     """
+
     created = AutoCreatedField()
     modified = AutoLastModifiedField()
 
@@ -94,6 +95,7 @@ class AbstractOrganization(
     """
     Abstract Organization model.
     """
+
     slug = SlugField(
         max_length=200,
         blank=False,
@@ -190,9 +192,9 @@ class AbstractOrganization(
         """
         Returns True is user is an admin in the organization, otherwise false
         """
-        return True if self.organization_users.filter(
-            user=user, is_admin=True
-        ) else False
+        return (
+            True if self.organization_users.filter(user=user, is_admin=True) else False
+        )
 
     def is_owner(self, user):
         """
@@ -207,6 +209,7 @@ class AbstractOrganizationUser(
     """
     Abstract OrganizationUser model
     """
+
     is_admin = models.BooleanField(default=False)
 
     class Meta(AbstractBaseOrganizationUser.Meta):

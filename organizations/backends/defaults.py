@@ -63,6 +63,7 @@ class BaseBackend(object):
     """
     Base backend class for registering and inviting users to an organization
     """
+
     registration_form_template = "organizations/register_form.html"
     activation_success_template = "organizations/register_success.html"
 
@@ -99,7 +100,7 @@ class BaseBackend(object):
         This is required data for user models with a username field.
         """
         return str(uuid.uuid4())[
-            :model_field_attr(self.user_model, "username", "max_length")
+            : model_field_attr(self.user_model, "username", "max_length")
         ]
 
     def activate_organizations(self, user):
@@ -180,7 +181,8 @@ class BaseBackend(object):
             except (AttributeError, TypeError):
                 display_name = sender.get_username()
             from_email = "%s <%s>" % (
-                display_name, email.utils.parseaddr(settings.DEFAULT_FROM_EMAIL)[1]
+                display_name,
+                email.utils.parseaddr(settings.DEFAULT_FROM_EMAIL)[1],
             )
             reply_to = "%s <%s>" % (display_name, sender.email)
         else:
@@ -204,6 +206,7 @@ class RegistrationBackend(BaseBackend):
     A backend for allowing new users to join the site by creating a new user
     associated with a new organization.
     """
+
     # NOTE this backend stands to be simplified further, as email verification
     # should be beyond the purview of this app
     activation_subject = "organizations/email/activation_subject.txt"
@@ -306,6 +309,7 @@ class InvitationBackend(BaseBackend):
     A backend for inviting new users to join the site as members of an
     organization.
     """
+
     notification_subject = "organizations/email/notification_subject.txt"
     notification_body = "organizations/email/notification_body.html"
     invitation_subject = "organizations/email/invitation_subject.txt"
@@ -339,9 +343,10 @@ class InvitationBackend(BaseBackend):
             user = self.user_model.objects.get(email=email)
         except self.user_model.DoesNotExist:
             # TODO break out user creation process
-            if "username" in inspect.getfullargspec(
-                self.user_model.objects.create_user
-            ).args:
+            if (
+                "username"
+                in inspect.getfullargspec(self.user_model.objects.create_user).args
+            ):
                 user = self.user_model.objects.create(
                     username=self.get_username(),
                     email=email,

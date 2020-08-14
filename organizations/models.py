@@ -57,6 +57,5 @@ class OrganizationOwner(AbstractOrganizationOwner):
 
 
 class OrganizationInvitation(AbstractOrganizationInvitation):
-
     class Meta(AbstractOrganizationInvitation.Meta):
         abstract = False
