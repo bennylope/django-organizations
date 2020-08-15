@@ -5,6 +5,7 @@ dist/
 docs/_build
 *.sqlite
 .tox
+.nox
 .env
 
 .coverage
