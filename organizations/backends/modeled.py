@@ -130,9 +130,7 @@ class ModelInvitation(InvitationBackend):
         # type: () -> List[path]
         return [
             path(
-                "<uuid:guid>/",
-                view=self.activation_router,
-                name="invitations_register",
+                "<uuid:guid>/", view=self.activation_router, name="invitations_register"
             )
         ]
 
