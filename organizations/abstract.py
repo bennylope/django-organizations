@@ -110,7 +110,7 @@ class AbstractOrganization(
         verbose_name = _("organization")
         verbose_name_plural = _("organizations")
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
     def get_absolute_url(self):
@@ -217,7 +217,7 @@ class AbstractOrganizationUser(
         verbose_name = _("organization user")
         verbose_name_plural = _("organization users")
 
-    def __unicode__(self):
+    def __str__(self):
         return u"{0} ({1})".format(
             self.name if self.user.is_active else self.user.email,
             self.organization.name,

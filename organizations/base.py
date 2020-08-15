@@ -40,17 +40,13 @@ from organizations.managers import OrgManager
 USER_MODEL = getattr(settings, "AUTH_USER_MODEL", "auth.User")
 
 
-class UnicodeMixin(object):
+class UnicodeMixin:
     """
     Python 2 and 3 string representation support.
+
+    Legacy cruft. Removing entirely even from migrations affects the
+    meta class creation.
     """
-
-    def __str__(self):
-        if six.PY3:
-            return self.__unicode__()
-        else:
-            return unicode(self).encode("utf-8")  # noqa
-
 
 class OrgMeta(ModelBase):
     """
@@ -230,7 +226,7 @@ class OrgMeta(ModelBase):
             )
 
 
-class AbstractBaseOrganization(UnicodeMixin, models.Model):
+class AbstractBaseOrganization(models.Model):
     """
     The umbrella object with which users can be associated.
 
@@ -248,7 +244,7 @@ class AbstractBaseOrganization(UnicodeMixin, models.Model):
         abstract = True
         ordering = ["name"]
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
     @property
@@ -283,7 +279,7 @@ class OrganizationBase(six.with_metaclass(OrgMeta, AbstractBaseOrganization)):
         return org_user
 
 
-class AbstractBaseOrganizationUser(UnicodeMixin, models.Model):
+class AbstractBaseOrganizationUser(models.Model):
     """
     ManyToMany through field relating Users to Organizations.
 
@@ -300,7 +296,7 @@ class AbstractBaseOrganizationUser(UnicodeMixin, models.Model):
         ordering = ["organization", "user"]
         unique_together = ("user", "organization")
 
-    def __unicode__(self):
+    def __str__(self):
         return u"{0} ({1})".format(
             self.user.get_full_name() if self.user.is_active else self.user.email,
             self.organization.name,
@@ -322,7 +318,7 @@ class OrganizationUserBase(six.with_metaclass(OrgMeta, AbstractBaseOrganizationU
         abstract = True
 
 
-class AbstractBaseOrganizationOwner(UnicodeMixin, models.Model):
+class AbstractBaseOrganizationOwner(models.Model):
     """
     Each organization must have one and only one organization owner.
     """
@@ -330,7 +326,7 @@ class AbstractBaseOrganizationOwner(UnicodeMixin, models.Model):
     class Meta:
         abstract = True
 
-    def __unicode__(self):
+    def __str__(self):
         return u"{0}: {1}".format(self.organization, self.organization_user)
 
 
@@ -339,7 +335,7 @@ class OrganizationOwnerBase(six.with_metaclass(OrgMeta, AbstractBaseOrganization
         abstract = True
 
 
-class AbstractBaseInvitation(UnicodeMixin, models.Model):
+class AbstractBaseInvitation(models.Model):
     """
     Tracks invitations to organizations
 
@@ -359,7 +355,7 @@ class AbstractBaseInvitation(UnicodeMixin, models.Model):
     class Meta:
         abstract = True
 
-    def __unicode__(self):
+    def __str__(self):
         return u"{0}: {1}".format(self.organization, self.invitee_identifier)
 
     def save(self, **kwargs):
