@@ -7,7 +7,7 @@ from organizations.models import Organization
 
 
 @override_settings(USE_TZ=True)
-class OrgFilterTests(TestCase):
+class TestTagsAndFilters(TestCase):
 
     fixtures = ["users.json", "orgs.json"]
 
@@ -17,6 +17,17 @@ class OrgFilterTests(TestCase):
         self.nirvana = Organization.objects.get(name="Nirvana")
         self.foo = Organization.objects.get(name="Foo Fighters")
         self.context = {}
+
+    def test_organization_users_tag(self):
+        self.context = {"organization": self.nirvana}
+        out = Template(
+            "{% load org_tags %}"
+            "{% organization_users organization %}"
+        ).render(
+            Context(self.context)
+        )
+        self.assertIn("Kurt", out)
+        self.assertIn("Dave", out)
 
     def test_is_owner_org_filter(self):
         self.context = {"organization": self.nirvana, "user": self.kurt}
