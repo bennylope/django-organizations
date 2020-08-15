@@ -55,7 +55,7 @@ class AutoCreatedField(models.DateTimeField):
     def __init__(self, *args, **kwargs):
         kwargs.setdefault("editable", False)
         kwargs.setdefault("default", now)
-        super(AutoCreatedField, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
 
 class AutoLastModifiedField(AutoCreatedField):
@@ -79,7 +79,7 @@ ORGS_SLUGFIELD = getattr(
 try:
     module, klass = ORGS_SLUGFIELD.rsplit(".", 1)
     BaseSlugField = getattr(import_module(module), klass)
-except (ImportError, ValueError):
+except (ImportError, ValueError, AttributeError):
     raise ImproperlyConfigured(
         "Your SlugField class, '{0}', is improperly defined. "
         "See the documentation and install an auto slug field".format(ORGS_SLUGFIELD)
