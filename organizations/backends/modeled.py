@@ -72,9 +72,6 @@ class ModelInvitation(InvitationBackend):
             self.org_model.invitation_model
         )  # type: OrganizationInvitationBase
 
-    def get_registration_form(self):
-        return self.form_class
-
     def get_invitation_queryset(self):
         """Return this to use a custom queryset that checks for expiration, for example"""
         return self.invitation_model.objects.all()
@@ -91,9 +88,7 @@ class ModelInvitation(InvitationBackend):
         """"""
         invitation = get_object_or_404(self.get_invitation_queryset(), guid=guid)
         if invitation.invitee:
-            # Invitation has already been accepted
-            # TODO change this?
-            return redirect("/")
+            return redirect(self.get_invitation_accepted_url())
 
         if request.user.is_authenticated:
             return self.activate_existing_user_view(request, invitation)
@@ -103,7 +98,7 @@ class ModelInvitation(InvitationBackend):
     def activate_existing_user_view(self, request, invitation):
         # type: (HttpRequest, OrganizationInvitationBase) -> HttpResponse
         """"""
-        if request.user.email != invitation.invited_by:
+        if request.user == invitation.invited_by:
             return HttpResponseForbidden(_("This is not your invitation"))
         if request.method == "POST":
             invitation.activate(request.user)
@@ -140,7 +135,6 @@ class ModelInvitation(InvitationBackend):
         return self.get_urls(), self.namespace or "registration"
 
     def invite_by_email(self, email, user, organization, **kwargs):
-        # type: (Text, AbstractUser, AbstractBaseOrganization) -> OrganizationInvitationBase
         """
         Primary interface method by which one user invites another to join
 
@@ -156,14 +150,14 @@ class ModelInvitation(InvitationBackend):
             MultipleObjectsReturned if multiple matching users are found
 
         """
-        try:
-            invitee = self.user_model.objects.get(email__iexact=email)
-        except self.user_model.DoesNotExist:
-            invitee = None
+        # TODO(bennylope): verify no such user already?
+        # try:
+        #     invitee = self.user_model.objects.get(email__iexact=email)
+        # except self.user_model.DoesNotExist:
+        #     invitee = None
 
         # TODO allow sending just the OrganizationUser instance
         user_invitation = self.invitation_model.objects.create(
-            invitee=invitee,
             invitee_identifier=email.lower(),
             invited_by=user,
             organization=organization,
@@ -172,7 +166,6 @@ class ModelInvitation(InvitationBackend):
         return user_invitation
 
     def send_invitation(self, invitation, **kwargs):
-        # type: (OrganizationInvitationBase) -> bool
         """
         Sends an invitation message for a specific invitation.
 

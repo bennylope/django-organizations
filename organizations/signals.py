@@ -25,11 +25,7 @@
 
 import django.dispatch
 
-user_kwargs = {"providing_args": ["user"]}
-user_added = django.dispatch.Signal(**user_kwargs)
-user_removed = django.dispatch.Signal(**user_kwargs)
-
+user_added = django.dispatch.Signal()
+user_removed = django.dispatch.Signal()
 invitation_accepted = django.dispatch.Signal()
-
-owner_kwargs = {"providing_args": ["old", "new"]}
-owner_changed = django.dispatch.Signal(**owner_kwargs)
+owner_changed = django.dispatch.Signal()
