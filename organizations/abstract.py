@@ -243,7 +243,7 @@ class AbstractOrganizationUser(
         # TODO This line presumes that OrgOwner model can't be modified
         except self._org_owner_model.DoesNotExist:
             pass
-        super(AbstractBaseOrganizationUser, self).delete(using=using)
+        super().delete(using=using)
 
     def get_absolute_url(self):
         return reverse(
@@ -280,7 +280,7 @@ class AbstractOrganizationOwner(
         if self.organization_user.organization.pk != self.organization.pk:
             raise OrganizationMismatch
         else:
-            super(AbstractBaseOrganizationOwner, self).save(*args, **kwargs)
+            super().save(*args, **kwargs)
 
 
 class AbstractOrganizationInvitation(

@@ -41,7 +41,7 @@ class OrganizationForm(forms.ModelForm):
 
     def __init__(self, request, *args, **kwargs):
         self.request = request
-        super(OrganizationForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.fields["owner"].queryset = self.instance.organization_users.filter(
             is_admin=True, user__is_active=True
         )
@@ -54,7 +54,7 @@ class OrganizationForm(forms.ModelForm):
     def save(self, commit=True):
         if self.instance.owner.organization_user != self.cleaned_data["owner"]:
             self.instance.change_owner(self.cleaned_data["owner"])
-        return super(OrganizationForm, self).save(commit=commit)
+        return super().save(commit=commit)
 
     def clean_owner(self):
         owner = self.cleaned_data["owner"]
@@ -91,7 +91,7 @@ class OrganizationUserAddForm(forms.ModelForm):
     def __init__(self, request, organization, *args, **kwargs):
         self.request = request
         self.organization = organization
-        super(OrganizationUserAddForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     class Meta:
         model = OrganizationUser
@@ -158,7 +158,7 @@ class OrganizationAddForm(forms.ModelForm):
 
     def __init__(self, request, *args, **kwargs):
         self.request = request
-        super(OrganizationAddForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     class Meta:
         model = Organization

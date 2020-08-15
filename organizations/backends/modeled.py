@@ -67,7 +67,7 @@ class ModelInvitation(InvitationBackend):
     form_class = UserRegistrationForm
 
     def __init__(self, org_model=None, namespace=None):
-        super(ModelInvitation, self).__init__(org_model=org_model, namespace=namespace)
+        super().__init__(org_model=org_model, namespace=namespace)
         self.invitation_model = (
             self.org_model.invitation_model
         )  # type: OrganizationInvitationBase

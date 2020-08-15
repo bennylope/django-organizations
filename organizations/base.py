@@ -362,7 +362,7 @@ class AbstractBaseInvitation(models.Model):
     def save(self, **kwargs):
         if not self.guid:
             self.guid = str(uuid.uuid4())
-        return super(AbstractBaseInvitation, self).save(**kwargs)
+        return super().save(**kwargs)
 
     def get_absolute_url(self):
         """Returns the invitation URL"""

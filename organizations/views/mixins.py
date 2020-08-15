@@ -43,7 +43,7 @@ class OrganizationMixin(object):
 
     def get_context_data(self, **kwargs):
         kwargs.update({self.org_context_name: self.organization})
-        return super(OrganizationMixin, self).get_context_data(**kwargs)
+        return super().get_context_data(**kwargs)
 
     @cached_property
     def organization(self):
@@ -66,7 +66,7 @@ class OrganizationUserMixin(OrganizationMixin):
         return self.user_model
 
     def get_context_data(self, **kwargs):
-        kwargs = super(OrganizationUserMixin, self).get_context_data(**kwargs)
+        kwargs = super().get_context_data(**kwargs)
         kwargs.update(
             {
                 self.org_user_context_name: self.object,
@@ -111,7 +111,7 @@ class MembershipRequiredMixin(object):
             and not request.user.is_superuser
         ):
             raise PermissionDenied(_("Wrong organization"))
-        return super(MembershipRequiredMixin, self).dispatch(request, *args, **kwargs)
+        return super().dispatch(request, *args, **kwargs)
 
 
 class AdminRequiredMixin(object):
@@ -126,7 +126,7 @@ class AdminRequiredMixin(object):
             and not request.user.is_superuser
         ):
             raise PermissionDenied(_("Sorry, admins only"))
-        return super(AdminRequiredMixin, self).dispatch(request, *args, **kwargs)
+        return super().dispatch(request, *args, **kwargs)
 
 
 class OwnerRequiredMixin(object):
@@ -141,4 +141,4 @@ class OwnerRequiredMixin(object):
             and not request.user.is_superuser
         ):
             raise PermissionDenied(_("You are not the organization owner"))
-        return super(OwnerRequiredMixin, self).dispatch(request, *args, **kwargs)
+        return super().dispatch(request, *args, **kwargs)

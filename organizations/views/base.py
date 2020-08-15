@@ -58,7 +58,7 @@ class BaseOrganizationList(ListView):
 
 class BaseOrganizationDetail(OrganizationMixin, DetailView):
     def get_context_data(self, **kwargs):
-        context = super(BaseOrganizationDetail, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         context["organization_users"] = self.organization.organization_users.all()
         context["organization"] = self.organization
         return context
@@ -72,7 +72,7 @@ class BaseOrganizationCreate(CreateView):
         return reverse("organization_list")
 
     def get_form_kwargs(self):
-        kwargs = super(BaseOrganizationCreate, self).get_form_kwargs()
+        kwargs = super().get_form_kwargs()
         kwargs.update({"request": self.request})
         return kwargs
 
@@ -81,7 +81,7 @@ class BaseOrganizationUpdate(OrganizationMixin, UpdateView):
     form_class = OrganizationForm
 
     def get_form_kwargs(self):
-        kwargs = super(BaseOrganizationUpdate, self).get_form_kwargs()
+        kwargs = super().get_form_kwargs()
         kwargs.update({"request": self.request})
         return kwargs
 
@@ -118,17 +118,17 @@ class BaseOrganizationUserCreate(OrganizationMixin, CreateView):
         )
 
     def get_form_kwargs(self):
-        kwargs = super(BaseOrganizationUserCreate, self).get_form_kwargs()
+        kwargs = super().get_form_kwargs()
         kwargs.update({"organization": self.organization, "request": self.request})
         return kwargs
 
     def get(self, request, *args, **kwargs):
         self.organization = self.get_object()
-        return super(BaseOrganizationUserCreate, self).get(request, *args, **kwargs)
+        return super().get(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
         self.organization = self.get_object()
-        return super(BaseOrganizationUserCreate, self).post(request, *args, **kwargs)
+        return super().post(request, *args, **kwargs)
 
 
 class BaseOrganizationUserRemind(OrganizationUserMixin, DetailView):
@@ -136,7 +136,7 @@ class BaseOrganizationUserRemind(OrganizationUserMixin, DetailView):
     # TODO move to invitations backend?
 
     def get_object(self, **kwargs):
-        self.organization_user = super(BaseOrganizationUserRemind, self).get_object()
+        self.organization_user = super().get_object()
         if self.organization_user.user.is_active:
             return HttpResponseBadRequest(_("User is already active"))
         return self.organization_user
@@ -187,7 +187,7 @@ class OrganizationSignup(FormView):
         except TypeError:
             if request.user.is_authenticated:
                 return redirect("organization_add")
-        return super(OrganizationSignup, self).dispatch(request, *args, **kwargs)
+        return super().dispatch(request, *args, **kwargs)
 
     def get_success_url(self):
         if hasattr(self, "success_url"):

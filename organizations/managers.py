@@ -38,4 +38,4 @@ class ActiveOrgManager(OrgManager):
     """
 
     def get_queryset(self):
-        return super(ActiveOrgManager, self).get_queryset().filter(is_active=True)
+        return super().get_queryset().filter(is_active=True)

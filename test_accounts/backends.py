@@ -6,6 +6,6 @@ from test_accounts.models import Account
 class AccountRegistration(RegistrationBackend):
 
     def __init__(self, namespace=None):
-        super(AccountRegistration, self).__init__(
+        super().__init__(
             org_model=Account, namespace=namespace
         )
