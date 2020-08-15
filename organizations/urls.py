@@ -23,8 +23,8 @@
 # OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-from django.conf.urls import include
-from django.conf.urls import url
+from django.urls import include
+from django.urls import path
 from django.contrib.auth.decorators import login_required
 
 from organizations.views import default as views
@@ -33,76 +33,76 @@ from organizations.views import default as views
 # app_name = "organizations"
 
 urlpatterns = [
-    url(
-        r"^$",
+    path(
+        "",
         view=login_required(views.OrganizationList.as_view()),
         name="organization_list",
     ),
-    url(
-        r"^add/$",
+    path(
+        "add/",
         view=login_required(views.OrganizationCreate.as_view()),
         name="organization_add",
     ),
-    url(
-        r"^(?P<organization_pk>[\d]+)/",
+    path(
+        "<int:organization_pk>/",
         include(
             [
-                url(
-                    r"^$",
+                path(
+                    "",
                     view=login_required(views.OrganizationDetail.as_view()),
                     name="organization_detail",
                 ),
-                url(
-                    r"^edit/$",
+                path(
+                    "edit/",
                     view=login_required(views.OrganizationUpdate.as_view()),
                     name="organization_edit",
                 ),
-                url(
-                    r"^delete/$",
+                path(
+                    "delete/",
                     view=login_required(views.OrganizationDelete.as_view()),
                     name="organization_delete",
                 ),
-                url(
-                    r"^people/",
+                path(
+                    "people/",
                     include(
                         [
-                            url(
-                                r"^$",
+                            path(
+                                "",
                                 view=login_required(
                                     views.OrganizationUserList.as_view()
                                 ),
                                 name="organization_user_list",
                             ),
-                            url(
-                                r"^add/$",
+                            path(
+                                "add/",
                                 view=login_required(
                                     views.OrganizationUserCreate.as_view()
                                 ),
                                 name="organization_user_add",
                             ),
-                            url(
-                                r"^(?P<user_pk>[\d]+)/remind/$",
+                            path(
+                                "<int:user_pk>/remind/",
                                 view=login_required(
                                     views.OrganizationUserRemind.as_view()
                                 ),
                                 name="organization_user_remind",
                             ),
-                            url(
-                                r"^(?P<user_pk>[\d]+)/$",
+                            path(
+                                "<int:user_pk>/",
                                 view=login_required(
                                     views.OrganizationUserDetail.as_view()
                                 ),
                                 name="organization_user_detail",
                             ),
-                            url(
-                                r"^(?P<user_pk>[\d]+)/edit/$",
+                            path(
+                                "<int:user_pk>/edit/",
                                 view=login_required(
                                     views.OrganizationUserUpdate.as_view()
                                 ),
                                 name="organization_user_edit",
                             ),
-                            url(
-                                r"^(?P<user_pk>[\d]+)/delete/$",
+                            path(
+                                "<int:user_pk>/delete/",
                                 view=login_required(
                                     views.OrganizationUserDelete.as_view()
                                 ),

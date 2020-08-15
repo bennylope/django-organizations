@@ -1,5 +1,5 @@
 from django.conf.urls import include
-from django.conf.urls import url
+from django.urls import path
 from django.contrib import admin
 
 from organizations.backends.modeled import ModelInvitation
@@ -10,8 +10,8 @@ admin.autodiscover()
 app_name = "test_accounts"
 
 urlpatterns = [
-    url(
-        r"^register/",
+    path(
+        "register/",
         include(
             ModelInvitation(org_model=Account, namespace="invitations").urls,
             namespace="account_invitations",

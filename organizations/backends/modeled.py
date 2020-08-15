@@ -33,7 +33,7 @@ from typing import Text  # noqa
 from typing import Tuple  # noqa
 
 from django.conf import settings
-from django.conf.urls import url
+from django.urls import path
 from django.contrib.auth.models import AbstractUser  # noqa
 from django.core.mail import EmailMessage
 from django.http import HttpRequest  # noqa
@@ -127,10 +127,10 @@ class ModelInvitation(InvitationBackend):
         )
 
     def get_urls(self):
-        # type: () -> List[url]
+        # type: () -> List[path]
         return [
-            url(
-                r"(?P<guid>[0-9a-f]{32})/$",
+            path(
+                "<uuid:guid>/",
                 view=self.activation_router,
                 name="invitations_register",
             )
@@ -138,7 +138,7 @@ class ModelInvitation(InvitationBackend):
 
     @property
     def urls(self):
-        # type: () -> Tuple[List[url], Text]
+        # type: () -> Tuple[List[path], Text]
         return self.get_urls(), self.namespace or "registration"
 
     def invite_by_email(self, email, user, organization, **kwargs):

@@ -262,7 +262,7 @@ class TestBackendNamespacing(object):
 
         assert reverse(
             "test_accounts:account_invitations:invitations_register",
-            kwargs={"guid": str(uuid.uuid4()).replace("-", "")},
+            kwargs={"guid": str(uuid.uuid4())},
         )
 
 
@@ -298,6 +298,7 @@ class TestInvitationModelBackend(object):
 
     def test_send_invitation_anon_user(self, account_user, account_account, client):
         """Integration test with anon user"""
+        from django.conf import settings
         outbox_count = len(mail.outbox)
         backend = ModelInvitation(org_model=Account)
         invitation = backend.invite_by_email(
@@ -306,9 +307,6 @@ class TestInvitationModelBackend(object):
 
         assert isinstance(invitation, OrganizationInvitationBase)
         assert len(mail.outbox) > outbox_count
-
-        from django.conf import settings
-
         assert list(settings.MIDDLEWARE)
 
         response = client.get(invitation.get_absolute_url())

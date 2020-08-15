@@ -25,5 +25,5 @@ class AccountInvitation(OrganizationInvitationBase):
         """Returns the invitation URL"""
         return reverse(
             "test_accounts:account_invitations:invitations_register",
-            kwargs={"guid": str(self.guid).replace("-", "")},
+            kwargs={"guid": str(self.guid)},
         )

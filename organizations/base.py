@@ -360,7 +360,7 @@ class AbstractBaseInvitation(models.Model):
 
     def save(self, **kwargs):
         if not self.guid:
-            self.guid = str(uuid.uuid4()).replace("-", "")
+            self.guid = str(uuid.uuid4())
         return super(AbstractBaseInvitation, self).save(**kwargs)
 
     def get_absolute_url(self):
