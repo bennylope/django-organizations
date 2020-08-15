@@ -108,10 +108,6 @@ class OrganizationUserAddForm(forms.ModelForm):
             user = get_user_model().objects.get(
                 email__iexact=self.cleaned_data["email"]
             )
-        except get_user_model().MultipleObjectsReturned:
-            raise forms.ValidationError(
-                _("This email address has been used multiple times.")
-            )
         except get_user_model().DoesNotExist:
             user = invitation_backend().invite_by_email(
                 self.cleaned_data["email"],
@@ -139,9 +135,13 @@ class OrganizationUserAddForm(forms.ModelForm):
 
     def clean_email(self):
         email = self.cleaned_data["email"]
-        if self.organization.users.filter(email=email):
+        if self.organization.users.filter(email__iexact=email).exists():
             raise forms.ValidationError(
                 _("There is already an organization " "member with this email address!")
+            )
+        if get_user_model().objects.filter(email__iexact=email).count() > 1:
+            raise forms.ValidationError(
+                _("This email address has been used multiple times.")
             )
         return email
 
