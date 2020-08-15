@@ -33,7 +33,6 @@ def build(session):
     session.install("docutils")
     session.install("twine")
     clean(session)
-    session.run("rm", "-rf", "dist", "build", external=True)
     session.run("python", "setup.py", "--quiet", "sdist", "bdist_wheel")
 
 
