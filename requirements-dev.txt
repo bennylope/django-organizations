@@ -1,6 +1,7 @@
 # Requirements used for managing tests, builds, documentation
 Sphinx
 tox
+nox
 wheel
 twine
 black
