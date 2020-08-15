@@ -66,7 +66,7 @@ settings.configure(
     ],
     SITE_ID=1,
     FIXTURE_DIRS=["tests/fixtures"],
-    ORGS_SLUGFIELD="autoslugged.AutoSlugField",
+    ORGS_SLUGFIELD="autoslug.AutoSlugField",
     INSTALLED_APPS=INSTALLED_APPS,
     ROOT_URLCONF="tests.urls",
     # STATIC_URL='/static/',

@@ -8,7 +8,7 @@ typing>=3.6.4
 
 # Required to test default models
 django-extensions>=1.6.0
-django-autoslugged>=2.0.0.dev0
+django-autoslug>=1.9.8
 
 # Required for mocking signals
 mock-django==0.6.9

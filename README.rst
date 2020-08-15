@@ -202,7 +202,7 @@ django-extensions, but you can configure your own in settings. The default:
 
     ORGS_SLUGFIELD = 'django_extensions.db.fields.AutoSlugField'
 
-Alternative (note: this is not compatible with Django 2.0):
+Alternative:
 
 .. code-block:: python
 
@@ -213,12 +213,8 @@ is now ignored and the functionality satisifed by a vendored solution. A
 warning will be given but this *should not* have any effect on your code.
 
 - `django-extensions <http://django-extensions.readthedocs.org/en/latest/>`_
-- `Django Autoslugged <https://github.com/mbourqui/django-autoslugged/>`_
+- `Django AutoSlug <https://github.com/justinmayer/django-autoslug/>`_
 - `django-slugger <https://gitlab.com/dspechnikov/django-slugger/>`_
-
-Note that as of django-autoslug 1.9.3. it is incompatible with Django 2.x Instead
-it is recommended at this time to use one of the supported forks, e.g.
-`django-autoslugged <https://github.com/mbourqui/django-autoslugged/>`_
 
 Registration & invitation backends
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

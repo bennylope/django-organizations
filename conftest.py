@@ -59,7 +59,7 @@ def pytest_configure():
         ],
         SITE_ID=1,
         FIXTURE_DIRS=["tests/fixtures"],
-        ORGS_SLUGFIELD="autoslugged.AutoSlugField",
+        ORGS_SLUGFIELD="autoslug.AutoSlugField",
         ROOT_URLCONF="tests.urls",
     )
     django.setup()
