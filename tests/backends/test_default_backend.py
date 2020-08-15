@@ -1,4 +1,3 @@
-
 import uuid
 
 import pytest
@@ -15,33 +14,14 @@ from django.urls import reverse
 from organizations.backends.defaults import BaseBackend
 from organizations.backends.defaults import InvitationBackend
 from organizations.backends.defaults import RegistrationBackend
-from organizations.backends.modeled import ModelInvitation
-from organizations.base import OrganizationInvitationBase
 from organizations.models import Organization
-from organizations.utils import create_organization
-from test_abstract.models import CustomOrganization
-from test_accounts.models import Account
-from test_vendors.models import Vendor
 from tests.utils import request_factory_login
 
 pytestmark = pytest.mark.django_db
 
-# @pytest.fixture(scope="module")
-@pytest.fixture
-def account_user():
-    yield User.objects.create(username="183jkjd", email="akjdkj@kjdk.com")
-
-
-# @pytest.fixture(scope="module")
-@pytest.fixture
-def account_account(account_user):
-    vendor = create_organization(account_user, "Acme", org_model=Account)
-    yield vendor
-
 
 @override_settings(USE_TZ=True)
 class BaseTests(TestCase):
-
     def test_generate_username(self):
         self.assertTrue(BaseBackend().get_username())
 
@@ -56,7 +36,6 @@ class BaseTests(TestCase):
     USE_TZ=True,
 )
 class TestSansOrganizations(TestCase):
-
     def test_verify_the_world(self):
         """Verify the test environment is set up correctly"""
         from django.conf import settings
@@ -71,7 +50,7 @@ class TestSansOrganizations(TestCase):
 
 
 @override_settings(USE_TZ=True)
-class InvitationTests(TestCase):
+class TestInvitations(TestCase):
 
     fixtures = ["users.json", "orgs.json"]
 
@@ -128,11 +107,13 @@ class InvitationTests(TestCase):
             )
         self.assertEqual(
             200,
-            InvitationBackend().activate_view(
+            InvitationBackend()
+            .activate_view(
                 request,
                 self.pending_user.pk,
                 self.tokenizer.make_token(self.pending_user),
-            ).status_code,
+            )
+            .status_code,
         )
 
     def test_send_notification_inactive_user(self):
@@ -165,7 +146,7 @@ class InvitationTests(TestCase):
 
 
 @override_settings(USE_TZ=True)
-class RegistrationTests(TestCase):
+class TestRegistration(TestCase):
 
     fixtures = ["users.json", "orgs.json"]
 
@@ -234,11 +215,13 @@ class RegistrationTests(TestCase):
             )
         self.assertEqual(
             200,
-            RegistrationBackend().activate_view(
+            RegistrationBackend()
+            .activate_view(
                 request,
                 self.pending_user.pk,
                 self.tokenizer.make_token(self.pending_user),
-            ).status_code,
+            )
+            .status_code,
         )
 
     def test_activate_orgs(self):
@@ -255,7 +238,6 @@ class RegistrationTests(TestCase):
 
 
 class TestBackendNamespacing(object):
-
     def test_registration_create(self):
         assert reverse("registration_create")
         # assert reverse("index")
@@ -264,50 +246,3 @@ class TestBackendNamespacing(object):
             "test_accounts:account_invitations:invitations_register",
             kwargs={"guid": str(uuid.uuid4())},
         )
-
-
-class CustomModelBackend(object):
-    """
-    The default backend should provide the same basic functionality
-    irrespective of the organization model.
-    """
-
-    def test_activate_orgs_vendor(self, account_user):
-        """Ensure no errors raised because correct relation name used"""
-        backend = InvitationBackend(org_model=Vendor)
-        backend.activate_organizations(account_user)
-
-    def test_activate_orgs_abstract(self, account_user):
-        backend = InvitationBackend(org_model=CustomOrganization)
-        backend.activate_organizations(account_user)
-
-
-class TestInvitationModelBackend(object):
-    """
-    Tests the backend using InvitationModels
-
-    pytest only!
-    """
-
-    def test_invite_returns_invitation(self, account_user, account_account):
-        backend = ModelInvitation(org_model=Account)
-        invitation = backend.invite_by_email(
-            "bob@newuser.com", user=account_user, organization=account_account
-        )
-        assert isinstance(invitation, OrganizationInvitationBase)
-
-    def test_send_invitation_anon_user(self, account_user, account_account, client):
-        """Integration test with anon user"""
-        from django.conf import settings
-        outbox_count = len(mail.outbox)
-        backend = ModelInvitation(org_model=Account)
-        invitation = backend.invite_by_email(
-            "bob@newuser.com", user=account_user, organization=account_account
-        )
-
-        assert isinstance(invitation, OrganizationInvitationBase)
-        assert len(mail.outbox) > outbox_count
-        assert list(settings.MIDDLEWARE)
-
-        response = client.get(invitation.get_absolute_url())
-        assert response.status_code == 200
