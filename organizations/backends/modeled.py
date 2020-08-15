@@ -33,7 +33,6 @@ from typing import Text  # noqa
 from typing import Tuple  # noqa
 
 from django.conf import settings
-from django.urls import path
 from django.contrib.auth.models import AbstractUser  # noqa
 from django.core.mail import EmailMessage
 from django.http import HttpRequest  # noqa
@@ -43,6 +42,7 @@ from django.shortcuts import get_object_or_404
 from django.shortcuts import redirect
 from django.shortcuts import render
 from django.template import loader
+from django.urls import path
 from django.utils.translation import gettext_lazy as _
 
 from organizations.backends.defaults import InvitationBackend

@@ -29,12 +29,13 @@ from django.conf import settings
 from django.db import models
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
+
 import six
 
+from organizations.base import AbstractBaseInvitation
 from organizations.base import AbstractBaseOrganization
 from organizations.base import AbstractBaseOrganizationOwner
 from organizations.base import AbstractBaseOrganizationUser
-from organizations.base import AbstractBaseInvitation
 from organizations.base import OrgMeta
 from organizations.fields import AutoCreatedField
 from organizations.fields import AutoLastModifiedField

@@ -28,7 +28,6 @@ from django.contrib.auth.models import User
 
 from organizations.utils import model_field_attr
 
-
 ORGS_INVITATION_BACKEND = getattr(
     settings, "INVITATION_BACKEND", "organizations.backends.defaults.InvitationBackend"
 )

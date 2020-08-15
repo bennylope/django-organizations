@@ -24,9 +24,9 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 from organizations.abstract import AbstractOrganization
+from organizations.abstract import AbstractOrganizationInvitation
 from organizations.abstract import AbstractOrganizationOwner
 from organizations.abstract import AbstractOrganizationUser
-from organizations.abstract import AbstractOrganizationInvitation
 
 
 class Organization(AbstractOrganization):

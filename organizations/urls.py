@@ -23,12 +23,11 @@
 # OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+from django.contrib.auth.decorators import login_required
 from django.urls import include
 from django.urls import path
-from django.contrib.auth.decorators import login_required
 
 from organizations.views import default as views
-
 
 # app_name = "organizations"
 

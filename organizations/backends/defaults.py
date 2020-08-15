@@ -29,7 +29,6 @@
 import email.utils
 import inspect
 import uuid
-
 from typing import ClassVar  # noqa
 from typing import Optional  # noqa
 from typing import Text  # noqa

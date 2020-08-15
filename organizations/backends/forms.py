@@ -25,8 +25,8 @@
 
 from django import forms
 from django.contrib.auth import get_user_model
-from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.forms import UserCreationForm
+from django.utils.translation import gettext_lazy as _
 
 
 class UserRegistrationForm(UserCreationForm):
@@ -37,6 +37,7 @@ class UserRegistrationForm(UserCreationForm):
     The class operates on a user model which is assumed to have the required
     fields of a BaseUserModel
     """
+
     # TODO(bennylope): Remove this entirely and replace with base class
 
 
