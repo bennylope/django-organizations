@@ -43,6 +43,7 @@ from django.urls import path
 from django.contrib.auth import authenticate
 from django.contrib.auth import get_user_model
 from django.contrib.auth import login
+from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.core.mail import EmailMessage
 from django.http import Http404
 from django.shortcuts import redirect
@@ -52,7 +53,6 @@ from django.utils.translation import gettext as _
 
 from organizations.backends.forms import UserRegistrationForm
 from organizations.backends.forms import org_registration_form
-from organizations.backends.tokens import RegistrationTokenGenerator
 from organizations.compat import reverse
 from organizations.utils import create_organization
 from organizations.utils import default_org_model
@@ -91,7 +91,7 @@ class BaseBackend(object):
 
     def get_token(self, user, **kwargs):
         """Returns a unique token for the given user"""
-        return RegistrationTokenGenerator().make_token(user)
+        return PasswordResetTokenGenerator().make_token(user)
 
     def get_username(self):
         """
@@ -132,7 +132,7 @@ class BaseBackend(object):
         except self.user_model.DoesNotExist:
             raise Http404(_("Your URL may have expired."))
 
-        if not RegistrationTokenGenerator().check_token(user, token):
+        if not PasswordResetTokenGenerator().check_token(user, token):
             raise Http404(_("Your URL may have expired."))
         form = self.get_form(
             data=request.POST or None, files=request.FILES or None, instance=user
@@ -155,7 +155,7 @@ class BaseBackend(object):
         """Sends a reminder email to the specified user"""
         if user.is_active:
             return False
-        token = RegistrationTokenGenerator().make_token(user)
+        token = PasswordResetTokenGenerator().make_token(user)
         kwargs.update({"token": token})
         self.email_message(
             user, self.reminder_subject, self.reminder_body, sender, **kwargs

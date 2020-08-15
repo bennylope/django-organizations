@@ -3,6 +3,7 @@ import uuid
 
 import pytest
 from django.contrib.auth.models import User
+from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.core import mail
 from django.http import Http404
 from django.http import QueryDict
@@ -14,7 +15,6 @@ from organizations.backends.defaults import BaseBackend
 from organizations.backends.defaults import InvitationBackend
 from organizations.backends.defaults import RegistrationBackend
 from organizations.backends.modeled import ModelInvitation
-from organizations.backends.tokens import RegistrationTokenGenerator
 from organizations.base import OrganizationInvitationBase
 from organizations.compat import reverse
 from organizations.models import Organization
@@ -78,7 +78,7 @@ class InvitationTests(TestCase):
     def setUp(self):
         mail.outbox = []
         self.factory = RequestFactory()
-        self.tokenizer = RegistrationTokenGenerator()
+        self.tokenizer = PasswordResetTokenGenerator()
         self.user = User.objects.get(username="krist")
         self.pending_user = User.objects.create_user(
             username="theresa", email="t@example.com", password="test"
@@ -172,7 +172,7 @@ class RegistrationTests(TestCase):
     def setUp(self):
         mail.outbox = []
         self.factory = RequestFactory()
-        self.tokenizer = RegistrationTokenGenerator()
+        self.tokenizer = PasswordResetTokenGenerator()
         self.user = User.objects.get(username="krist")
         self.pending_user = User.objects.create_user(
             username="theresa", email="t@example.com", password="test"
