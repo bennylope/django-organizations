@@ -1,4 +1,4 @@
-from django.conf.urls import include, url
+from django.urls import include, path
 from django.contrib import admin
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
@@ -8,11 +8,11 @@ admin.autodiscover()
 
 
 urlpatterns = [
-    url(r"^admin/", admin.site.urls),
-    url(r"^organizations/", include("organizations.urls")),
-    url(r"^invite/", include(invitation_backend().get_urls())),
-    url(r"^register/", include(registration_backend().get_urls())),
-    url(r"^accounts/", include("test_accounts.urls", namespace="test_accounts")),
+    path("admin/", admin.site.urls),
+    path("organizations/", include("organizations.urls")),
+    path("invite/", include(invitation_backend().get_urls())),
+    path("register/", include(registration_backend().get_urls())),
+    path("accounts/", include("test_accounts.urls", namespace="test_accounts")),
 ] + staticfiles_urlpatterns(
     "/static/"
 )
