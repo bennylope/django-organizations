@@ -75,19 +75,27 @@ class OrganizationUserMixin(OrganizationMixin):
         )
         return kwargs
 
-    def get_object(self):
-        """ Returns the OrganizationUser object based on the primary keys for both
+    @cached_property
+    def organization_user(self):
+        """
+        Returns the OrganizationUser object
+
+        This is fetched based on the primary keys for both
         the organization and the organization user.
         """
-        if hasattr(self, "organization_user"):
-            return self.organization_user
         organization_pk = self.kwargs.get("organization_pk", None)
         user_pk = self.kwargs.get("user_pk", None)
-        self.organization_user = get_object_or_404(
+        return get_object_or_404(
             self.get_user_model().objects.select_related(),
             user__pk=user_pk,
             organization__pk=organization_pk,
         )
+
+    def get_object(self):
+        """Proxy for the base class interface
+
+        This can be called all day long and the object is queried once.
+        """
         return self.organization_user
 
 
