@@ -82,12 +82,7 @@ def create_organization(
     kwargs.pop("org_user_model", None)  # Discard deprecated argument
 
     org_owner_model = org_model.owner.related.related_model
-    try:
-        # Django 1.9
-        org_user_model = org_model.organization_users.rel.related_model
-    except AttributeError:
-        # Django 1.8
-        org_user_model = org_model.organization_users.related.related_model
+    org_user_model = org_model.organization_users.rel.related_model
 
     if org_defaults is None:
         org_defaults = {}
