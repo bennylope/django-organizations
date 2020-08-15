@@ -20,6 +20,7 @@ def pytest_configure():
             "django.contrib.contenttypes",
             "django.contrib.sites",
             "django.contrib.admin",
+            "django.contrib.sessions",
             # The ordering here, the apps using the organization base models
             # first and *then* the organizations app itself is an implicit test
             # that the organizations app need not be installed in order to use
