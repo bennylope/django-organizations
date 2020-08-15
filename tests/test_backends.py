@@ -10,13 +10,13 @@ from django.http import QueryDict
 from django.test import TestCase
 from django.test.client import RequestFactory
 from django.test.utils import override_settings
+from django.urls import reverse
 
 from organizations.backends.defaults import BaseBackend
 from organizations.backends.defaults import InvitationBackend
 from organizations.backends.defaults import RegistrationBackend
 from organizations.backends.modeled import ModelInvitation
 from organizations.base import OrganizationInvitationBase
-from organizations.compat import reverse
 from organizations.models import Organization
 from organizations.utils import create_organization
 from test_abstract.models import CustomOrganization

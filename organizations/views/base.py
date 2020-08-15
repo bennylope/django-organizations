@@ -28,6 +28,7 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.http import HttpResponseBadRequest
 from django.shortcuts import redirect
 from django.shortcuts import render
+from django.urls import reverse
 from django.utils.translation import gettext as _
 from django.views.generic import CreateView
 from django.views.generic import DeleteView
@@ -38,7 +39,6 @@ from django.views.generic import UpdateView
 
 from organizations.backends import invitation_backend
 from organizations.backends import registration_backend
-from organizations.compat import reverse
 from organizations.forms import OrganizationAddForm
 from organizations.forms import OrganizationForm
 from organizations.forms import OrganizationUserAddForm

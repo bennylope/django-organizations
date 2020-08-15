@@ -39,7 +39,6 @@ from typing import Optional  # noqa
 from typing import Text  # noqa
 
 from django.conf import settings
-from django.urls import path
 from django.contrib.auth import authenticate
 from django.contrib.auth import get_user_model
 from django.contrib.auth import login
@@ -49,11 +48,12 @@ from django.http import Http404
 from django.shortcuts import redirect
 from django.shortcuts import render
 from django.template import loader
+from django.urls import path
+from django.urls import reverse
 from django.utils.translation import gettext as _
 
 from organizations.backends.forms import UserRegistrationForm
 from organizations.backends.forms import org_registration_form
-from organizations.compat import reverse
 from organizations.utils import create_organization
 from organizations.utils import default_org_model
 from organizations.utils import model_field_attr
