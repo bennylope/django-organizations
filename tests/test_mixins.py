@@ -5,18 +5,17 @@ from django.test import TestCase
 from django.test.client import RequestFactory
 from django.test.utils import override_settings
 
+from organizations.models import Organization
+from organizations.models import OrganizationUser
 from organizations.views.mixins import AdminRequiredMixin
 from organizations.views.mixins import MembershipRequiredMixin
 from organizations.views.mixins import OrganizationMixin
 from organizations.views.mixins import OrganizationUserMixin
 from organizations.views.mixins import OwnerRequiredMixin
-from organizations.models import Organization
-from organizations.models import OrganizationUser
 from tests.utils import request_factory_login
 
 
 class ViewStub(object):
-
     def __init__(self, **kwargs):
         self.kwargs = kwargs
 
@@ -29,11 +28,13 @@ class ViewStub(object):
 
 class OrgView(OrganizationMixin, ViewStub):
     """A testing view class"""
+
     pass
 
 
 class UserView(OrganizationUserMixin, ViewStub):
     """A testing view class"""
+
     pass
 
 
@@ -84,77 +85,74 @@ class AccessMixinTests(TestCase):
         self.dummy_request = request_factory_login(self.factory, self.dummy)
 
     def test_member_access(self):
-
         class MemberView(MembershipRequiredMixin, OrgView):
             pass
 
         self.assertEqual(
             200,
-            MemberView().dispatch(
-                self.kurt_request, organization_pk=self.nirvana.pk
-            ).status_code,
+            MemberView()
+            .dispatch(self.kurt_request, organization_pk=self.nirvana.pk)
+            .status_code,
         )
         self.assertEqual(
             200,
-            MemberView().dispatch(
-                self.krist_request, organization_pk=self.nirvana.pk
-            ).status_code,
+            MemberView()
+            .dispatch(self.krist_request, organization_pk=self.nirvana.pk)
+            .status_code,
         )
         self.assertEqual(
             200,
-            MemberView().dispatch(
-                self.dave_request, organization_pk=self.nirvana.pk
-            ).status_code,
+            MemberView()
+            .dispatch(self.dave_request, organization_pk=self.nirvana.pk)
+            .status_code,
         )
         with self.assertRaises(PermissionDenied):
             MemberView().dispatch(self.dummy_request, organization_pk=self.nirvana.pk)
 
     def test_admin_access(self):
-
         class AdminView(AdminRequiredMixin, OrgView):
             pass
 
         self.assertEqual(
             200,
-            AdminView().dispatch(
-                self.kurt_request, organization_pk=self.nirvana.pk
-            ).status_code,
+            AdminView()
+            .dispatch(self.kurt_request, organization_pk=self.nirvana.pk)
+            .status_code,
         )
         self.assertEqual(
             200,
-            AdminView().dispatch(
-                self.krist_request, organization_pk=self.nirvana.pk
-            ).status_code,
+            AdminView()
+            .dispatch(self.krist_request, organization_pk=self.nirvana.pk)
+            .status_code,
         )
         # Superuser
         self.assertEqual(
             200,
-            AdminView().dispatch(
-                self.dave_request, organization_pk=self.nirvana.pk
-            ).status_code,
+            AdminView()
+            .dispatch(self.dave_request, organization_pk=self.nirvana.pk)
+            .status_code,
         )
         with self.assertRaises(PermissionDenied):
             AdminView().dispatch(self.dummy_request, organization_pk=self.nirvana.pk)
 
     def test_owner_access(self):
-
         class OwnerView(OwnerRequiredMixin, OrgView):
             pass
 
         self.assertEqual(
             200,
-            OwnerView().dispatch(
-                self.kurt_request, organization_pk=self.nirvana.pk
-            ).status_code,
+            OwnerView()
+            .dispatch(self.kurt_request, organization_pk=self.nirvana.pk)
+            .status_code,
         )
         with self.assertRaises(PermissionDenied):
             OwnerView().dispatch(self.krist_request, organization_pk=self.nirvana.pk)
         # Superuser
         self.assertEqual(
             200,
-            OwnerView().dispatch(
-                self.dave_request, organization_pk=self.nirvana.pk
-            ).status_code,
+            OwnerView()
+            .dispatch(self.dave_request, organization_pk=self.nirvana.pk)
+            .status_code,
         )
         with self.assertRaises(PermissionDenied):
             OwnerView().dispatch(self.dummy_request, organization_pk=self.nirvana.pk)

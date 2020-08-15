@@ -1,6 +1,5 @@
 import uuid
 
-import pytest
 from django.contrib.auth.models import User
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.core import mail
@@ -10,6 +9,8 @@ from django.test import TestCase
 from django.test.client import RequestFactory
 from django.test.utils import override_settings
 from django.urls import reverse
+
+import pytest
 
 from organizations.backends.defaults import BaseBackend
 from organizations.backends.defaults import InvitationBackend

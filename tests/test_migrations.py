@@ -2,9 +2,9 @@
 Tests that migrations are not missing
 """
 
-import pytest
-
 from django.core.management import call_command
+
+import pytest
 
 
 @pytest.mark.django_db

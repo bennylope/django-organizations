@@ -69,7 +69,6 @@ class CreateOrgTests(TestCase):
 
 
 class AttributeUtilTests(TestCase):
-
     def test_present_field(self):
         self.assertTrue(model_field_attr(User, "username", "max_length"))
 

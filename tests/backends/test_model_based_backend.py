@@ -4,9 +4,10 @@
 
 """
 
-import pytest
 from django.contrib.auth.models import User
 from django.core import mail
+
+import pytest
 
 from organizations.backends.defaults import InvitationBackend
 from organizations.backends.modeled import ModelInvitation

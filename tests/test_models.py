@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 
+from functools import partial
+
 from django.contrib.auth.models import User
 from django.db import IntegrityError
 from django.test import TestCase
 from django.test.utils import override_settings
-from functools import partial
 
 from organizations.models import Organization
 from organizations.models import OrganizationInvitation

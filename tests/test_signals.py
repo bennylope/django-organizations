@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.test import TestCase
 from django.test.utils import override_settings
+
 from mock import call
 from mock_django.signals import mock_signal_receiver
 

@@ -5,8 +5,9 @@ Tests for configurable fields
 """
 import importlib
 
-import pytest
 from django.core.exceptions import ImproperlyConfigured
+
+import pytest
 
 from organizations import fields
 

@@ -3,13 +3,12 @@ from django.test import TestCase
 from django.test.client import RequestFactory
 from django.test.utils import override_settings
 
-from organizations.forms import OrganizationForm
 from organizations.forms import OrganizationAddForm
+from organizations.forms import OrganizationForm
 from organizations.forms import OrganizationUserAddForm
 from organizations.forms import OrganizationUserForm
 from organizations.models import Organization
 from tests.utils import request_factory_login
-
 
 User = get_user_model()
 
@@ -18,6 +17,7 @@ class TestOrganizationAddForm(TestCase):
     """
     Tests for adding new organizations
     """
+
     def setUp(self):
         self.factory = RequestFactory()
 
@@ -26,24 +26,17 @@ class TestOrganizationAddForm(TestCase):
         request = self.factory.request()
         form = OrganizationAddForm(
             request,
-            data={
-               "slug": "new_org",
-                "name": "New Org",
-                "email": "cthulu@oldgods.org",
-            }
+            data={"slug": "new_org", "name": "New Org", "email": "cthulu@oldgods.org",},
         )
         self.assertTrue(form.is_valid())
 
     def test_add_organization_for_existing_user(self):
-        user = User.objects.create_user("timmy", password="ajsdkfa3", email="timmy@whoa.com")
+        user = User.objects.create_user(
+            "timmy", password="ajsdkfa3", email="timmy@whoa.com"
+        )
         request = self.factory.request()
         form = OrganizationAddForm(
-            request,
-            data={
-                "slug": "new_org",
-                "name": "New Org",
-                "email": user.email,
-            }
+            request, data={"slug": "new_org", "name": "New Org", "email": user.email,}
         )
         self.assertTrue(form.is_valid())
         new_org = form.save()
@@ -51,15 +44,17 @@ class TestOrganizationAddForm(TestCase):
         self.assertEqual(new_org.name, "New Org")
 
     def test_add_organization_for_new_user(self):
-        user = User.objects.create_user("timmy", password="ajsdkfa3", email="timmy@whoa.com")
+        user = User.objects.create_user(
+            "timmy", password="ajsdkfa3", email="timmy@whoa.com"
+        )
         request = request_factory_login(self.factory, user)
         form = OrganizationAddForm(
             request,
             data={
                 "slug": "new_org",
                 "name": "New Org",
-                "email": "i.am.new.here@geemail.com"
-            }
+                "email": "i.am.new.here@geemail.com",
+            },
         )
         self.assertTrue(form.is_valid())
         new_org = form.save()
@@ -80,9 +75,7 @@ class TestOrganizationUserAddForm(TestCase):
         User.objects.create_user("asdkjf1", password="ajsdkfa3", email="bob@bob.com")
         request = request_factory_login(self.factory, self.owner.user)
         form = OrganizationUserAddForm(
-            request=request,
-            organization=self.org,
-            data={"email": "bob@bob.com"},
+            request=request, organization=self.org, data={"email": "bob@bob.com"},
         )
         self.assertFalse(form.is_valid())
 
@@ -90,9 +83,7 @@ class TestOrganizationUserAddForm(TestCase):
         admin = self.org.organization_users.get(user__username="krist")
         request = request_factory_login(self.factory, self.owner.user)
         form = OrganizationUserAddForm(
-            request=request,
-            organization=self.org,
-            data={"email": admin.user.email},
+            request=request, organization=self.org, data={"email": admin.user.email},
         )
         self.assertFalse(form.is_valid())
 
@@ -182,4 +173,3 @@ class TestOrganizationUserForm(TestCase):
         form = OrganizationUserForm(instance=self.owner, data={"is_admin": True})
         self.assertTrue(form.is_valid())
         form.save()
-

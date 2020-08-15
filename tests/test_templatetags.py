@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
-from django.template import Template, Context
+from django.template import Context
+from django.template import Template
 from django.test import TestCase
 from django.test.utils import override_settings
 
@@ -21,11 +22,8 @@ class TestTagsAndFilters(TestCase):
     def test_organization_users_tag(self):
         self.context = {"organization": self.nirvana}
         out = Template(
-            "{% load org_tags %}"
-            "{% organization_users organization %}"
-        ).render(
-            Context(self.context)
-        )
+            "{% load org_tags %}" "{% organization_users organization %}"
+        ).render(Context(self.context))
         self.assertIn("Kurt", out)
         self.assertIn("Dave", out)
 
@@ -36,9 +34,7 @@ class TestTagsAndFilters(TestCase):
             "{% if organization|is_owner:user %}"
             "Is Owner"
             "{% endif %}"
-        ).render(
-            Context(self.context)
-        )
+        ).render(Context(self.context))
         self.assertEqual(out, "Is Owner")
 
     def test_is_admin_org_filter(self):
@@ -48,9 +44,7 @@ class TestTagsAndFilters(TestCase):
             "{% if organization|is_admin:user %}"
             "Is Admin"
             "{% endif %}"
-        ).render(
-            Context(self.context)
-        )
+        ).render(Context(self.context))
         self.assertEqual(out, "Is Admin")
 
     def test_is_not_admin_org_filter(self):
@@ -60,7 +54,5 @@ class TestTagsAndFilters(TestCase):
             "{% if not organization|is_admin:user %}"
             "Is Not Admin"
             "{% endif %}"
-        ).render(
-            Context(self.context)
-        )
+        ).render(Context(self.context))
         self.assertEqual(out, "Is Not Admin")

@@ -4,8 +4,8 @@ from django.test import TestCase
 from django.test.client import RequestFactory
 from django.test.utils import override_settings
 
-from organizations.views import base
 from organizations.models import Organization
+from organizations.views import base
 from tests.utils import request_factory_login
 
 
@@ -30,15 +30,15 @@ class BaseViewTests(TestCase):
         """Ensure that the status code 200 is returned"""
         self.assertEqual(
             200,
-            base.BaseOrganizationList(request=self.kurt_request).get(
-                self.kurt_request
-            ).status_code,
+            base.BaseOrganizationList(request=self.kurt_request)
+            .get(self.kurt_request)
+            .status_code,
         )
         self.assertEqual(
             200,
-            base.BaseOrganizationList(request=self.dave_request).get(
-                self.dave_request
-            ).status_code,
+            base.BaseOrganizationList(request=self.dave_request)
+            .get(self.dave_request)
+            .status_code,
         )
 
     def test_org_list_queryset(self):
@@ -56,55 +56,53 @@ class BaseViewTests(TestCase):
         kwargs = {"organization_pk": self.nirvana.pk}
         self.assertEqual(
             200,
-            base.BaseOrganizationDetail(request=self.kurt_request, kwargs=kwargs).get(
-                self.kurt_request, **kwargs
-            ).status_code,
+            base.BaseOrganizationDetail(request=self.kurt_request, kwargs=kwargs)
+            .get(self.kurt_request, **kwargs)
+            .status_code,
         )
 
     def test_org_create(self):
         self.assertEqual(
             200,
-            base.BaseOrganizationCreate(request=self.kurt_request).get(
-                self.kurt_request
-            ).status_code,
+            base.BaseOrganizationCreate(request=self.kurt_request)
+            .get(self.kurt_request)
+            .status_code,
         )
 
     def test_org_update(self):
         kwargs = {"organization_pk": self.nirvana.pk}
         self.assertEqual(
             200,
-            base.BaseOrganizationUpdate(request=self.kurt_request, kwargs=kwargs).get(
-                self.kurt_request, **kwargs
-            ).status_code,
+            base.BaseOrganizationUpdate(request=self.kurt_request, kwargs=kwargs)
+            .get(self.kurt_request, **kwargs)
+            .status_code,
         )
 
     def test_org_delete(self):
         kwargs = {"organization_pk": self.nirvana.pk}
         self.assertEqual(
             200,
-            base.BaseOrganizationDelete(request=self.kurt_request, kwargs=kwargs).get(
-                self.kurt_request, **kwargs
-            ).status_code,
+            base.BaseOrganizationDelete(request=self.kurt_request, kwargs=kwargs)
+            .get(self.kurt_request, **kwargs)
+            .status_code,
         )
 
     def test_user_list(self):
         kwargs = {"organization_pk": self.nirvana.pk}
         self.assertEqual(
             200,
-            base.BaseOrganizationUserList(request=self.kurt_request, kwargs=kwargs).get(
-                self.kurt_request, **kwargs
-            ).status_code,
+            base.BaseOrganizationUserList(request=self.kurt_request, kwargs=kwargs)
+            .get(self.kurt_request, **kwargs)
+            .status_code,
         )
 
     def test_user_detail(self):
         kwargs = {"organization_pk": self.nirvana.pk, "user_pk": self.kurt.pk}
         self.assertEqual(
             200,
-            base.BaseOrganizationUserDetail(
-                request=self.kurt_request, kwargs=kwargs
-            ).get(
-                self.kurt_request, **kwargs
-            ).status_code,
+            base.BaseOrganizationUserDetail(request=self.kurt_request, kwargs=kwargs)
+            .get(self.kurt_request, **kwargs)
+            .status_code,
         )
 
     def test_bad_user_detail(self):
@@ -122,46 +120,40 @@ class BaseViewTests(TestCase):
         kwargs = {"organization_pk": self.nirvana.pk}
         self.assertEqual(
             200,
-            base.BaseOrganizationUserCreate(
-                request=self.kurt_request, kwargs=kwargs
-            ).get(
-                self.kurt_request, **kwargs
-            ).status_code,
+            base.BaseOrganizationUserCreate(request=self.kurt_request, kwargs=kwargs)
+            .get(self.kurt_request, **kwargs)
+            .status_code,
         )
 
     def test_user_update(self):
         kwargs = {"organization_pk": self.nirvana.pk, "user_pk": self.kurt.pk}
         self.assertEqual(
             200,
-            base.BaseOrganizationUserUpdate(
-                request=self.kurt_request, kwargs=kwargs
-            ).get(
-                self.kurt_request, **kwargs
-            ).status_code,
+            base.BaseOrganizationUserUpdate(request=self.kurt_request, kwargs=kwargs)
+            .get(self.kurt_request, **kwargs)
+            .status_code,
         )
 
     def test_user_delete(self):
         kwargs = {"organization_pk": self.nirvana.pk, "user_pk": self.kurt.pk}
         self.assertEqual(
             200,
-            base.BaseOrganizationUserDelete(
-                request=self.kurt_request, kwargs=kwargs
-            ).get(
-                self.kurt_request, **kwargs
-            ).status_code,
+            base.BaseOrganizationUserDelete(request=self.kurt_request, kwargs=kwargs)
+            .get(self.kurt_request, **kwargs)
+            .status_code,
         )
 
     def test_signup(self):
         """Ensure logged in users are redirected"""
         self.assertEqual(
             302,
-            base.OrganizationSignup(request=self.kurt_request).dispatch(
-                self.kurt_request
-            ).status_code,
+            base.OrganizationSignup(request=self.kurt_request)
+            .dispatch(self.kurt_request)
+            .status_code,
         )
         self.assertEqual(
             200,
-            base.OrganizationSignup(request=self.anon_request).dispatch(
-                self.anon_request
-            ).status_code,
+            base.OrganizationSignup(request=self.anon_request)
+            .dispatch(self.anon_request)
+            .status_code,
         )
