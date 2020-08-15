@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2012-2019, Ben Lopatin and contributors
+# Copyright (c) 2012-2020, Ben Lopatin and contributors
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
