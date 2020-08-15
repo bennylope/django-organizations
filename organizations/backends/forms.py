@@ -26,9 +26,10 @@
 from django import forms
 from django.contrib.auth import get_user_model
 from django.utils.translation import gettext_lazy as _
+from django.contrib.auth.forms import UserCreationForm
 
 
-class UserRegistrationForm(forms.ModelForm):
+class UserRegistrationForm(UserCreationForm):
     """
     Form class for completing a user's registration and activating the
     User.
@@ -36,35 +37,7 @@ class UserRegistrationForm(forms.ModelForm):
     The class operates on a user model which is assumed to have the required
     fields of a BaseUserModel
     """
-
-    # TODO decouple first/last names from this form
-    first_name = forms.CharField(max_length=30)
-    last_name = forms.CharField(max_length=30)
-    password = forms.CharField(max_length=30, widget=forms.PasswordInput)
-    password_confirm = forms.CharField(max_length=30, widget=forms.PasswordInput)
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.initial["username"] = ""
-
-    def clean(self):
-        password = self.cleaned_data.get("password")
-        password_confirm = self.cleaned_data.get("password_confirm")
-        if password != password_confirm or not password:
-            raise forms.ValidationError(_("Your password entries must match"))
-        return super().clean()
-
-    class Meta:
-        model = get_user_model()
-        exclude = (
-            "is_staff",
-            "is_superuser",
-            "is_active",
-            "last_login",
-            "date_joined",
-            "groups",
-            "user_permissions",
-        )
+    # TODO(bennylope): Remove this entirely and replace with base class
 
 
 def org_registration_form(org_model):
@@ -81,8 +54,8 @@ def org_registration_form(org_model):
             model = org_model
             exclude = ("is_active", "users")
 
-        def save(self, *args, **kwargs):
-            self.instance.is_active = False
-            super().save(*args, **kwargs)
+        # def save(self, *args, **kwargs):
+        #     self.instance.is_active = False
+        #     super().save(*args, **kwargs)
 
     return OrganizationRegistrationForm
