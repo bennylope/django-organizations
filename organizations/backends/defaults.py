@@ -54,7 +54,7 @@ from organizations.utils import default_org_model
 from organizations.utils import model_field_attr
 
 
-class BaseBackend(object):
+class BaseBackend:
     """
     Base backend class for registering and inviting users to an organization
     """

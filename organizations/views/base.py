@@ -210,7 +210,7 @@ class OrganizationSignup(FormView):
         return render(request, "organizations/signup_success.html", {})
 
 
-class ViewFactory(object):
+class ViewFactory:
     """
     A class that can create a faked 'module' with model specific views
 

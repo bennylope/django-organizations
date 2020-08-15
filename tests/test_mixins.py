@@ -15,7 +15,7 @@ from organizations.views.mixins import OwnerRequiredMixin
 from tests.utils import request_factory_login
 
 
-class ViewStub(object):
+class ViewStub:
     def __init__(self, **kwargs):
         self.kwargs = kwargs
 

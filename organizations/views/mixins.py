@@ -32,7 +32,7 @@ from organizations.models import Organization
 from organizations.models import OrganizationUser
 
 
-class OrganizationMixin(object):
+class OrganizationMixin:
     """Mixin used like a SingleObjectMixin to fetch an organization"""
 
     org_model = Organization
@@ -99,7 +99,7 @@ class OrganizationUserMixin(OrganizationMixin):
         return self.organization_user
 
 
-class MembershipRequiredMixin(object):
+class MembershipRequiredMixin:
     """This mixin presumes that authentication has already been checked"""
 
     def dispatch(self, request, *args, **kwargs):
@@ -114,7 +114,7 @@ class MembershipRequiredMixin(object):
         return super().dispatch(request, *args, **kwargs)
 
 
-class AdminRequiredMixin(object):
+class AdminRequiredMixin:
     """This mixin presumes that authentication has already been checked"""
 
     def dispatch(self, request, *args, **kwargs):
@@ -129,7 +129,7 @@ class AdminRequiredMixin(object):
         return super().dispatch(request, *args, **kwargs)
 
 
-class OwnerRequiredMixin(object):
+class OwnerRequiredMixin:
     """This mixin presumes that authentication has already been checked"""
 
     def dispatch(self, request, *args, **kwargs):
