@@ -4,6 +4,7 @@ from django.test.client import RequestFactory
 from django.test.utils import override_settings
 
 from organizations.forms import OrganizationForm
+from organizations.forms import OrganizationAddForm
 from organizations.forms import OrganizationUserAddForm
 from organizations.forms import OrganizationUserForm
 from organizations.models import Organization
@@ -11,6 +12,58 @@ from tests.utils import request_factory_login
 
 
 User = get_user_model()
+
+
+class TestOrganizationAddForm(TestCase):
+    """
+    Tests for adding new organizations
+    """
+    def setUp(self):
+        self.factory = RequestFactory()
+
+    def test_expected_valid_data_validates(self):
+        """Test our happy path"""
+        request = self.factory.request()
+        form = OrganizationAddForm(
+            request,
+            data={
+               "slug": "new_org",
+                "name": "New Org",
+                "email": "cthulu@oldgods.org",
+            }
+        )
+        self.assertTrue(form.is_valid())
+
+    def test_add_organization_for_existing_user(self):
+        user = User.objects.create_user("timmy", password="ajsdkfa3", email="timmy@whoa.com")
+        request = self.factory.request()
+        form = OrganizationAddForm(
+            request,
+            data={
+                "slug": "new_org",
+                "name": "New Org",
+                "email": user.email,
+            }
+        )
+        self.assertTrue(form.is_valid())
+        new_org = form.save()
+        self.assertTrue(new_org.is_active)
+        self.assertEqual(new_org.name, "New Org")
+
+    def test_add_organization_for_new_user(self):
+        user = User.objects.create_user("timmy", password="ajsdkfa3", email="timmy@whoa.com")
+        request = request_factory_login(self.factory, user)
+        form = OrganizationAddForm(
+            request,
+            data={
+                "slug": "new_org",
+                "name": "New Org",
+                "email": "i.am.new.here@geemail.com"
+            }
+        )
+        self.assertTrue(form.is_valid())
+        new_org = form.save()
+        self.assertFalse(new_org.is_active)  # Inactive until confirmation
 
 
 class TestOrganizationUserAddForm(TestCase):
@@ -98,6 +151,16 @@ class TestOrganizationForm(TestCase):
         self.assertTrue(form.is_valid())
         form.save()
         self.assertEqual(self.org.owner.organization_user, self.admin)
+
+
+class TestOrganizationUserForm(TestCase):
+    fixtures = ["users.json", "orgs.json"]
+
+    def setUp(self):
+        self.factory = RequestFactory()
+        self.org = Organization.objects.get(name="Nirvana")
+        self.admin = self.org.organization_users.get(user__username="krist")
+        self.owner = self.org.organization_users.get(user__username="kurt")
 
     def test_edit_owner_user(self):
         form = OrganizationUserForm(instance=self.owner, data={"is_admin": True})

@@ -172,6 +172,7 @@ class OrganizationAddForm(forms.ModelForm):
         try:
             user = get_user_model().objects.get(email=self.cleaned_data["email"])
         except get_user_model().DoesNotExist:
+            # TODO(bennylope): look into hooks for alt. registration systems here
             user = invitation_backend().invite_by_email(
                 self.cleaned_data["email"],
                 **{
