@@ -48,6 +48,7 @@ class UnicodeMixin:
     meta class creation.
     """
 
+
 class OrgMeta(ModelBase):
     """
     Base metaclass for dynamically linking related organization models.
