@@ -21,7 +21,10 @@ readme = open("README.rst").read()
 history = open("HISTORY.rst").read().replace(".. :changelog:", "")
 
 
-dependencies = ["Django>=1.8.0", "typing>=3.6.4"]
+dependencies = [
+    "Django>=2.2.0",
+    "typing;python_version<'3.6'",
+]
 
 
 setup(
