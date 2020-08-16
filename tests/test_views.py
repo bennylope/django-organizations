@@ -35,23 +35,39 @@ def invitee_user():
     )
 
 
-def test_organization_user_reminder(rf, account_account, account_user, invitee_user):
-    class OrgUserReminderView(base.BaseOrganizationUserRemind):
-        org_model = Account
-        user_model = AccountUser
+class TestUserReminderView:
+    @pytest.mark.parametrize("method", [("get"), ("post")])
+    def test_bad_request_for_active_user(
+        self, rf, account_account, account_user, invitee_user, method
+    ):
+        class OrgUserReminderView(base.BaseOrganizationUserRemind):
+            org_model = Account
+            user_model = AccountUser
 
-    invitee_user.is_active = False
-    invitee_user.save()
-    new_org_user = account_account.add_user(invitee_user)
-    request = rf.get("/", user=account_user)
-    kwargs = {"organization_pk": account_account.pk, "user_pk": invitee_user.pk}
-    response = OrgUserReminderView.as_view()(request, **kwargs)
-    assert response.status_code == 200
+        request = getattr(rf, method)("/", user=account_user)
+        kwargs = {"organization_pk": account_account.pk, "user_pk": account_user.pk}
+        response = OrgUserReminderView.as_view()(request, **kwargs)
+        assert response.status_code == 410
 
-    request = rf.post("/")
-    request.user = account_user
-    response = OrgUserReminderView.as_view()(request, **kwargs)
-    assert response.status_code == 302
+    def test_organization_user_reminder(
+        self, rf, account_account, account_user, invitee_user
+    ):
+        class OrgUserReminderView(base.BaseOrganizationUserRemind):
+            org_model = Account
+            user_model = AccountUser
+
+        invitee_user.is_active = False
+        invitee_user.save()
+        account_account.add_user(invitee_user)
+        request = rf.get("/", user=account_user)
+        kwargs = {"organization_pk": account_account.pk, "user_pk": invitee_user.pk}
+        response = OrgUserReminderView.as_view()(request, **kwargs)
+        assert response.status_code == 200
+
+        request = rf.post("/")
+        request.user = account_user
+        response = OrgUserReminderView.as_view()(request, **kwargs)
+        assert response.status_code == 302
 
 
 class TestSignupView:

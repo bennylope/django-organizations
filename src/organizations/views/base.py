@@ -26,7 +26,7 @@
 
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.exceptions import ImproperlyConfigured
-from django.http import HttpResponseBadRequest
+from django.http import HttpResponseGone
 from django.shortcuts import redirect
 from django.shortcuts import render
 from django.urls import reverse
@@ -152,14 +152,16 @@ class BaseOrganizationUserRemind(OrganizationUserMixin, DetailView):
             kwargs={"organization_pk": self.object.organization.pk},
         )
 
-    def get_object(self, **kwargs):
-        self.organization_user = super().get_object()
-        if self.organization_user.user.is_active:
-            return HttpResponseBadRequest(_("User is already active"))
-        return self.organization_user
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        if self.object.user.is_active:
+            return HttpResponseGone(_("User is already active"))
+        return super().get(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
+        if self.object.user.is_active:
+            return HttpResponseGone(_("User is already active"))
         invitation_backend().send_reminder(
             self.object.user,
             **{
