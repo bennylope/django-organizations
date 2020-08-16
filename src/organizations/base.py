@@ -299,9 +299,9 @@ class AbstractBaseOrganizationUser(models.Model):
         unique_together = ("user", "organization")
 
     def __str__(self):
-        return u"{0} ({1})".format(
-            self.user.get_full_name() if self.user.is_active else self.user.email,
-            self.organization.name,
+        return "{name} {org}".format(
+            name=self.name if self.user.is_active else self.user.email,
+            org=self.organization.name,
         )
 
     @property
@@ -310,9 +310,10 @@ class AbstractBaseOrganizationUser(models.Model):
         Returns the connected user's full name or string representation if the
         full name method is unavailable (e.g. on a custom user class).
         """
-        if hasattr(self.user, "get_full_name"):
+        try:
             return self.user.get_full_name()
-        return "{0}".format(self.user)
+        except AttributeError:
+            return str(self.user)
 
 
 class OrganizationUserBase(six.with_metaclass(OrgMeta, AbstractBaseOrganizationUser)):
@@ -329,7 +330,7 @@ class AbstractBaseOrganizationOwner(models.Model):
         abstract = True
 
     def __str__(self):
-        return u"{0}: {1}".format(self.organization, self.organization_user)
+        return "{0}: {1}".format(self.organization, self.organization_user)
 
 
 class OrganizationOwnerBase(six.with_metaclass(OrgMeta, AbstractBaseOrganizationOwner)):
@@ -358,7 +359,7 @@ class AbstractBaseInvitation(models.Model):
         abstract = True
 
     def __str__(self):
-        return u"{0}: {1}".format(self.organization, self.invitee_identifier)
+        return "{0}: {1}".format(self.organization, self.invitee_identifier)
 
     def save(self, **kwargs):
         if not self.guid:
