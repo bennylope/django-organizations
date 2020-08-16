@@ -16,6 +16,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 INSTALLED_APPS = [
     "django.contrib.auth",
+    "django.contrib.messages",
     "django.contrib.admin",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
@@ -69,7 +70,7 @@ settings.configure(
     ORGS_SLUGFIELD="autoslug.AutoSlugField",
     INSTALLED_APPS=INSTALLED_APPS,
     ROOT_URLCONF="tests.urls",
-    # STATIC_URL='/static/',
+    STATIC_URL="/static/",
     # STATIC_ROOT=os.path.join(BASE_DIR),
     # STATICFILES_DIRS = [
     #     os.path.join(BASE_DIR, "static"),

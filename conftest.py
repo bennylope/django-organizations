@@ -3,7 +3,6 @@ Configuration file for py.test
 """
 
 import django
-import os.path
 
 
 def pytest_configure():
@@ -62,5 +61,6 @@ def pytest_configure():
         FIXTURE_DIRS=["tests/fixtures"],
         ORGS_SLUGFIELD="autoslug.AutoSlugField",
         ROOT_URLCONF="tests.urls",
+        STATIC_URL="/static/",
     )
     django.setup()
