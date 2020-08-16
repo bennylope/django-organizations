@@ -88,7 +88,7 @@ class OrgModelTests(TestCase):
         self.assertEqual(new_guy.organization, self.foo)
 
     def test_remove_user(self):
-        new_guy = self.foo.add_user(self.krist)
+        self.foo.add_user(self.krist)
         self.foo.remove_user(self.krist)
         self.assertFalse(self.foo.users.filter(pk=self.krist.pk).exists())
 

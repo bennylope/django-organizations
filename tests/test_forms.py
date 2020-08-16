@@ -26,7 +26,7 @@ class TestOrganizationAddForm(TestCase):
         request = self.factory.request()
         form = OrganizationAddForm(
             request,
-            data={"slug": "new_org", "name": "New Org", "email": "cthulu@oldgods.org",},
+            data={"slug": "new_org", "name": "New Org", "email": "cthulu@oldgods.org"},
         )
         self.assertTrue(form.is_valid())
 
@@ -36,7 +36,7 @@ class TestOrganizationAddForm(TestCase):
         )
         request = self.factory.request()
         form = OrganizationAddForm(
-            request, data={"slug": "new_org", "name": "New Org", "email": user.email,}
+            request, data={"slug": "new_org", "name": "New Org", "email": user.email}
         )
         self.assertTrue(form.is_valid())
         new_org = form.save()
