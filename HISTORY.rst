@@ -6,12 +6,14 @@ History
 2.0.0
 -----
 
-Invitations use models now to track invitations
-
-- add typing for older versions and start using Python 2 compat type hinting
-- registration/inviation backends take an optional namepsace argument on initialization. The use
+* Invitation model backend uses models to track invitations
+* Registration/inviation backends take an optional namespace argument on initialization. The use
   case is if you want to namespace the URLs
-- can provide a dotted path to `invitation_backend` and `registration_backend` functions
+* Can provide a dotted path to `invitation_backend` and `registration_backend` functions
+* Drops support for Python 2 and Django versions < 2.2 LTS
+* Migrate the codebase to an src/ layout
+* Now with more test coverage!
+
 
 1.1.1
 -----
