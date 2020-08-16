@@ -236,6 +236,16 @@ class TestRegistration(TestCase):
         self.assertTrue(refreshed_org.is_active)
 
 
+class TestConfiguration:
+
+    def test_form_class(self):
+        class DummyBackend(InvitationBackend):
+            form_class = None
+
+        backend = DummyBackend()
+        with pytest.raises(AttributeError, match=r"You must define a form_class"):
+            backend.get_form()
+
 class TestBackendNamespacing:
     def test_registration_create(self):
         assert reverse("registration_create")

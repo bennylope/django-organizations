@@ -80,8 +80,8 @@ class BaseBackend:
 
     def get_form(self, **kwargs):
         """Returns the form for registering or inviting a user"""
-        if not hasattr(self, "form_class"):
-            raise AttributeError(_("You must define a form_class"))
+        if not getattr(self, "form_class", None):
+            raise AttributeError("You must define a form_class")
         return self.form_class(**kwargs)
 
     def get_token(self, user, **kwargs):
