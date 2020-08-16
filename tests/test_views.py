@@ -225,13 +225,27 @@ class TestBasicOrgViews(TestCase):
             **kwargs
         )
 
-    def test_user_create(self):
+    def test_user_create_get(self):
         kwargs = {"organization_pk": self.nirvana.pk}
         self.assertEqual(
             200,
             base.BaseOrganizationUserCreate(request=self.kurt_request, kwargs=kwargs)
             .get(self.kurt_request, **kwargs)
             .status_code,
+        )
+
+    def test_user_create_post(self):
+        request = request_factory_login(
+            self.factory,
+            self.kurt,
+            path="/",
+            method="post",
+            data={"email": "roadie@yahoo.com"},
+        )
+        kwargs = {"organization_pk": self.nirvana.pk}
+        self.assertEqual(
+            302,
+            base.BaseOrganizationUserCreate.as_view()(request, **kwargs).status_code,
         )
 
     def test_user_update(self):
