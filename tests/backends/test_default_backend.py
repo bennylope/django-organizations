@@ -141,9 +141,7 @@ class TestInvitations(TestCase):
             self.user, domain="example.com", organization=org, sender=self.pending_user
         )
         self.assertEqual(1, len(mail.outbox))
-        self.assertEqual(
-            mail.outbox[0].subject, "You've been added to an organization"
-        )
+        self.assertEqual(mail.outbox[0].subject, "You've been added to an organization")
 
 
 @override_settings(USE_TZ=True)
