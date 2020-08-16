@@ -198,12 +198,8 @@ class OrganizationSignup(FormView):
     backend = registration_backend()
 
     def dispatch(self, request, *args, **kwargs):
-        try:
-            if request.user.is_authenticated():
-                return redirect("organization_add")
-        except TypeError:
-            if request.user.is_authenticated:
-                return redirect("organization_add")
+        if request.user.is_authenticated:
+            return redirect("organization_add")
         return super().dispatch(request, *args, **kwargs)
 
     def get_success_url(self):
