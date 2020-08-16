@@ -237,7 +237,6 @@ class TestRegistration(TestCase):
 
 
 class TestConfiguration:
-
     def test_form_class(self):
         class DummyBackend(InvitationBackend):
             form_class = None
@@ -245,6 +244,7 @@ class TestConfiguration:
         backend = DummyBackend()
         with pytest.raises(AttributeError, match=r"You must define a form_class"):
             backend.get_form()
+
 
 class TestBackendNamespacing:
     def test_registration_create(self):

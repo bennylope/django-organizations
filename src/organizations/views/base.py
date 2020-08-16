@@ -25,6 +25,7 @@
 
 
 from django.contrib.sites.shortcuts import get_current_site
+from django.core.exceptions import ImproperlyConfigured
 from django.http import HttpResponseBadRequest
 from django.shortcuts import redirect
 from django.shortcuts import render
@@ -132,8 +133,24 @@ class BaseOrganizationUserCreate(OrganizationMixin, CreateView):
 
 
 class BaseOrganizationUserRemind(OrganizationUserMixin, DetailView):
+    """
+    Reminder view for already-linked org users
+
+    This is only applicable for invitation backends using the
+    strategy the original "default" backend uses, which is to
+    immediately add existing users to the organization after
+    invite, but leave new users inactive until confirmation.
+
+    """
+
     template_name = "organizations/organizationuser_remind.html"
     # TODO move to invitations backend?
+
+    def get_success_url(self):
+        return reverse(
+            "organization_user_list",
+            kwargs={"organization_pk": self.object.organization.pk},
+        )
 
     def get_object(self, **kwargs):
         self.organization_user = super().get_object()
@@ -151,7 +168,7 @@ class BaseOrganizationUserRemind(OrganizationUserMixin, DetailView):
                 "sender": request.user,
             }
         )
-        return redirect(self.object)
+        return redirect(self.get_success_url())
 
 
 class BaseOrganizationUserUpdate(OrganizationUserMixin, UpdateView):
@@ -190,12 +207,16 @@ class OrganizationSignup(FormView):
         return super().dispatch(request, *args, **kwargs)
 
     def get_success_url(self):
-        if hasattr(self, "success_url"):
+        if getattr(self, "success_url", None):
             return self.success_url
-        return reverse("organization_signup_success")
+        raise ImproperlyConfigured(
+            "{cls} must either have a `success_url` attribute defined"
+            "or override `get_success_url`".format(cls=self.__class__.__name__)
+        )
 
     def form_valid(self, form):
         """
+        Register user and create the organization
         """
         user = self.backend.register_by_email(form.cleaned_data["email"])
         create_organization(

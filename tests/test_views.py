@@ -1,16 +1,109 @@
 from django.contrib.auth.models import User
+from django.core.exceptions import ImproperlyConfigured
 from django.http import Http404
 from django.test import TestCase
 from django.test.client import RequestFactory
 from django.test.utils import override_settings
 
+import pytest
+
 from organizations.models import Organization
+from organizations.utils import create_organization
 from organizations.views import base
+from test_accounts.models import Account
+from test_accounts.models import AccountUser
 from tests.utils import request_factory_login
+
+pytestmark = pytest.mark.django_db
+
+
+@pytest.fixture
+def account_user():
+    yield User.objects.create(username="AccountUser", email="akjdkj@kjdk.com")
+
+
+@pytest.fixture
+def account_account(account_user):
+    vendor = create_organization(account_user, "Acme", org_model=Account)
+    yield vendor
+
+
+@pytest.fixture
+def invitee_user():
+    yield User.objects.create_user(
+        "newmember", email="jd@123.com", password="password123"
+    )
+
+
+def test_organization_user_reminder(rf, account_account, account_user, invitee_user):
+    class OrgUserReminderView(base.BaseOrganizationUserRemind):
+        org_model = Account
+        user_model = AccountUser
+
+    invitee_user.is_active = False
+    invitee_user.save()
+    new_org_user = account_account.add_user(invitee_user)
+    request = rf.get("/", user=account_user)
+    kwargs = {"organization_pk": account_account.pk, "user_pk": invitee_user.pk}
+    response = OrgUserReminderView.as_view()(request, **kwargs)
+    assert response.status_code == 200
+
+    request = rf.post("/")
+    request.user = account_user
+    response = OrgUserReminderView.as_view()(request, **kwargs)
+    assert response.status_code == 302
+
+
+class TestSignupView:
+    def test_anon_user_can_access_signup_view(self, rf):
+        """"""
+        request = request_factory_login(rf)
+        assert base.OrganizationSignup.as_view()(request).status_code == 200
+
+    def test_authenticated_user_is_redirected_from_signup_view(self, rf, account_user):
+        request = request_factory_login(rf, account_user)
+        assert base.OrganizationSignup.as_view()(request).status_code == 302
+
+    def test_anon_user_signup_base_class_has_no_success_url(self, rf):
+        """"""
+        request = request_factory_login(
+            rf,
+            method="post",
+            path="/",
+            data={
+                "name": "An Association of Very Interesting People",
+                "slug": "people",
+                "email": "hey@people.org",
+            },
+        )
+        with pytest.raises(ImproperlyConfigured):
+            base.OrganizationSignup.as_view()(request)
+
+    def test_anon_user_can_signup(self, rf):
+        """"""
+
+        class SignupView(base.OrganizationSignup):
+            success_url = "/"
+
+        request = request_factory_login(
+            rf,
+            method="post",
+            path="/",
+            data={
+                "name": "An Association of Very Interesting People",
+                "slug": "people",
+                "email": "hey@people.org",
+            },
+        )
+        response = SignupView.as_view()(request)
+        assert response.status_code == 302
+
+        # Verify its in the database
+        Organization.objects.get(slug="people", is_active=False)
 
 
 @override_settings(USE_TZ=True)
-class BaseViewTests(TestCase):
+class TestBasicOrgViews(TestCase):
 
     fixtures = ["users.json", "orgs.json"]
 
@@ -140,20 +233,5 @@ class BaseViewTests(TestCase):
             200,
             base.BaseOrganizationUserDelete(request=self.kurt_request, kwargs=kwargs)
             .get(self.kurt_request, **kwargs)
-            .status_code,
-        )
-
-    def test_signup(self):
-        """Ensure logged in users are redirected"""
-        self.assertEqual(
-            302,
-            base.OrganizationSignup(request=self.kurt_request)
-            .dispatch(self.kurt_request)
-            .status_code,
-        )
-        self.assertEqual(
-            200,
-            base.OrganizationSignup(request=self.anon_request)
-            .dispatch(self.anon_request)
             .status_code,
         )
