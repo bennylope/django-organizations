@@ -15,8 +15,40 @@ DEFAULT_INTERPRETER = "3.8"
 ALL_INTERPRETERS = (DEFAULT_INTERPRETER,)
 
 
+DEV_INSTALL_REQUIREMENTS = ("six", "django-autoslug")
+
+
 def get_path(*names):
     return os.path.join(NOX_DIR, *names)
+
+
+@nox.session(python=DEFAULT_INTERPRETER, reuse_venv=True)
+def manage(session, *args):
+    """
+    Runs management commands in a nox environment
+
+    The use for this command is primarily here for running
+    migrations, but it can be used to run any Django command,
+    e.g. running a quick dev server (though that much is
+    expected to be of little benefit).
+
+    Args:
+        session: nox's session
+        *args: either direct arguments from the command line
+                or passed through from another command. This
+                makes the command function reusable from more
+                explicitly named commands
+
+    Returns:
+        None
+
+    """
+    session.install("six")
+    session.install("django-autoslug")
+    session.install("Django==3.1")
+    session.install('-e', '.')
+    args = args if args else session.posargs
+    session.run("python", "manage.py", *args)
 
 
 @nox.session
