@@ -66,6 +66,9 @@ class TestCustomModelBackend:
         backend = InvitationBackend(org_model=CustomOrganization)
         backend.activate_organizations(account_user)
 
+    def test_invitation_str(self, email_invitation, invitee_user, account_account):
+        assert str(email_invitation) == "{}: {}".format(account_account.name, invitee_user.email)
+
 
 class TestInvitationModelBackend:
     """
