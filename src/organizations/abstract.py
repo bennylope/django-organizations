@@ -219,7 +219,7 @@ class AbstractOrganizationUser(
         verbose_name_plural = _("organization users")
 
     def __str__(self):
-        return u"{0} ({1})".format(
+        return "{0} ({1})".format(
             self.name if self.user.is_active else self.user.email,
             self.organization.name,
         )

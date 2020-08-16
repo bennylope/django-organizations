@@ -142,7 +142,7 @@ class TestInvitations(TestCase):
         )
         self.assertEqual(1, len(mail.outbox))
         self.assertEqual(
-            mail.outbox[0].subject, u"You've been added to an organization"
+            mail.outbox[0].subject, "You've been added to an organization"
         )
 
 

@@ -51,7 +51,7 @@ class OrgModelTests(TestCase):
 
     def test_org_string_representation(self):
         """Ensure that models' string representation are error free"""
-        self.foo.name = u"Föö Fíghterß"
+        self.foo.name = "Föö Fíghterß"
         self.assertTrue("{0}".format(self.foo))
         self.assertTrue("{0}".format(self.foo.owner))
         self.assertTrue("{0}".format(self.foo.owner.organization_user))

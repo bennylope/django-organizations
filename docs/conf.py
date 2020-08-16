@@ -40,8 +40,8 @@ source_suffix = ".rst"
 master_doc = "index"
 
 # General information about the project.
-project = u"django-organizations"
-copyright = u"2012-2019, Ben Lopatin and contributors"
+project = "django-organizations"
+copyright = "2012-2019, Ben Lopatin and contributors"
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -184,8 +184,8 @@ latex_documents = [
     (
         "index",
         "django-organizations.tex",
-        u"django-organizations Documentation",
-        u"Ben Lopatin",
+        "django-organizations Documentation",
+        "Ben Lopatin",
         "manual",
     )
 ]
@@ -219,8 +219,8 @@ man_pages = [
     (
         "index",
         "django-organizations",
-        u"django-organizations Documentation",
-        [u"Ben Lopatin"],
+        "django-organizations Documentation",
+        ["Ben Lopatin"],
         1,
     )
 ]
@@ -238,8 +238,8 @@ texinfo_documents = [
     (
         "index",
         "django-organizations",
-        u"django-organizations Documentation",
-        u"Ben Lopatin",
+        "django-organizations Documentation",
+        "Ben Lopatin",
         "django-organizations",
         "One line description of project.",
         "Miscellaneous",
