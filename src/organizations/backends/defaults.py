@@ -262,12 +262,8 @@ class RegistrationBackend(BaseBackend):
         """
         Initiates the organization and user account creation process
         """
-        try:
-            if request.user.is_authenticated():
-                return redirect("organization_add")
-        except TypeError:
-            if request.user.is_authenticated:
-                return redirect("organization_add")
+        if request.user.is_authenticated:
+            return redirect("organization_add")
         form = org_registration_form(self.org_model)(request.POST or None)
         if form.is_valid():
             try:
