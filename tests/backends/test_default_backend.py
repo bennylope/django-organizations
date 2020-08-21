@@ -18,8 +18,6 @@ from organizations.backends.defaults import RegistrationBackend
 from organizations.models import Organization
 from tests.utils import request_factory_login
 
-pytestmark = pytest.mark.django_db
-
 
 @override_settings(USE_TZ=True)
 class BaseTests(TestCase):

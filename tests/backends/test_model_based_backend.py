@@ -18,8 +18,6 @@ from test_accounts.models import Account
 from test_accounts.models import AccountInvitation
 from test_vendors.models import Vendor
 
-pytestmark = pytest.mark.django_db
-
 
 @pytest.fixture
 def account_user():

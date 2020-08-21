@@ -11,8 +11,6 @@ import pytest
 
 from organizations import fields
 
-pytestmark = pytest.mark.django_db
-
 
 def test_misconfigured_autoslug_cannot_import(settings):
     settings.ORGS_SLUGFIELD = "not.AModel"

@@ -17,8 +17,6 @@ from test_accounts.models import Account
 from test_accounts.models import AccountUser
 from tests.utils import request_factory_login
 
-pytestmark = pytest.mark.django_db
-
 
 @pytest.fixture
 def account_user():
@@ -168,7 +166,6 @@ class TestBaseOrganizationDelete:
 
 
 class TestBaseOrganizationUserDelete:
-
     def test_get_org_user_delete(
         self, rf, org_organization, account_user, extra_org_user
     ):
