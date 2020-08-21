@@ -1,13 +1,16 @@
 from django.contrib.auth.models import User
 from django.core.exceptions import ImproperlyConfigured
+from django.core.exceptions import ObjectDoesNotExist
 from django.http import Http404
 from django.test import TestCase
 from django.test.client import RequestFactory
 from django.test.utils import override_settings
+from django.urls import reverse
 
 import pytest
 
 from organizations.models import Organization
+from organizations.models import OrganizationUser
 from organizations.utils import create_organization
 from organizations.views import base
 from test_accounts.models import Account
@@ -24,8 +27,19 @@ def account_user():
 
 @pytest.fixture
 def account_account(account_user):
-    vendor = create_organization(account_user, "Acme", org_model=Account)
-    yield vendor
+    yield create_organization(account_user, "Acme", org_model=Account)
+
+
+@pytest.fixture
+def org_organization(account_user):
+    yield create_organization(account_user, "Acme", org_model=Organization)
+
+
+@pytest.fixture
+def extra_org_user(org_organization):
+    new_user = User.objects.create(username="NotYou", email="not@you.com")
+    org_organization.add_user(new_user)
+    yield new_user
 
 
 @pytest.fixture
@@ -118,6 +132,62 @@ class TestSignupView:
         Organization.objects.get(slug="people", is_active=False)
 
 
+class TestBaseCreateOrganization:
+    def test_get_org_create_view(self, rf):
+        request = request_factory_login(rf)
+        assert base.BaseOrganizationCreate.as_view()(request).status_code == 200
+
+    def test_create_new_org(self, rf, account_user):
+        request = request_factory_login(
+            rf,
+            user=account_user,
+            method="post",
+            path="/",
+            data={"name": "Vizsla Club", "slug": "vizsla", "email": "hey@woof.org",},
+        )
+        response = base.BaseOrganizationCreate.as_view()(request)
+        assert response.status_code == 302
+        assert response["Location"] == reverse("organization_list")
+        assert Organization.objects.get(slug="vizsla")
+
+
+class TestBaseOrganizationDelete:
+    def test_get_org_delete(self, rf, org_organization, account_user):
+        request = request_factory_login(rf, user=account_user)
+        kwargs = {"organization_pk": org_organization.pk}
+        response = base.BaseOrganizationDelete.as_view()(request, **kwargs)
+        assert response.status_code == 200
+
+    def test_delete_organization_with_post(self, rf, org_organization, account_user):
+        request = request_factory_login(rf, user=account_user, method="post", path="/")
+        kwargs = {"organization_pk": org_organization.pk}
+        response = base.BaseOrganizationDelete.as_view()(request, **kwargs)
+        assert response.status_code == 302
+        with pytest.raises(ObjectDoesNotExist):
+            org_organization.refresh_from_db()
+
+
+class TestBaseOrganizationUserDelete:
+
+    def test_get_org_user_delete(
+        self, rf, org_organization, account_user, extra_org_user
+    ):
+        request = request_factory_login(rf, user=account_user)
+        kwargs = {"organization_pk": org_organization.pk, "user_pk": extra_org_user.pk}
+        response = base.BaseOrganizationUserDelete.as_view()(request, **kwargs)
+        assert response.status_code == 200
+
+    def test_delete_organization_user_with_post(
+        self, rf, org_organization, account_user, extra_org_user
+    ):
+        request = request_factory_login(rf, user=account_user, method="post", path="/")
+        kwargs = {"organization_pk": org_organization.pk, "user_pk": extra_org_user.pk}
+        response = base.BaseOrganizationUserDelete.as_view()(request, **kwargs)
+        assert response.status_code == 302
+        with pytest.raises(ObjectDoesNotExist):
+            OrganizationUser.objects.get(user=extra_org_user)
+
+
 @override_settings(USE_TZ=True)
 class TestBasicOrgViews(TestCase):
 
@@ -170,28 +240,11 @@ class TestBasicOrgViews(TestCase):
             .status_code,
         )
 
-    def test_org_create(self):
-        self.assertEqual(
-            200,
-            base.BaseOrganizationCreate(request=self.kurt_request)
-            .get(self.kurt_request)
-            .status_code,
-        )
-
     def test_org_update(self):
         kwargs = {"organization_pk": self.nirvana.pk}
         self.assertEqual(
             200,
             base.BaseOrganizationUpdate(request=self.kurt_request, kwargs=kwargs)
-            .get(self.kurt_request, **kwargs)
-            .status_code,
-        )
-
-    def test_org_delete(self):
-        kwargs = {"organization_pk": self.nirvana.pk}
-        self.assertEqual(
-            200,
-            base.BaseOrganizationDelete(request=self.kurt_request, kwargs=kwargs)
             .get(self.kurt_request, **kwargs)
             .status_code,
         )
@@ -253,15 +306,6 @@ class TestBasicOrgViews(TestCase):
         self.assertEqual(
             200,
             base.BaseOrganizationUserUpdate(request=self.kurt_request, kwargs=kwargs)
-            .get(self.kurt_request, **kwargs)
-            .status_code,
-        )
-
-    def test_user_delete(self):
-        kwargs = {"organization_pk": self.nirvana.pk, "user_pk": self.kurt.pk}
-        self.assertEqual(
-            200,
-            base.BaseOrganizationUserDelete(request=self.kurt_request, kwargs=kwargs)
             .get(self.kurt_request, **kwargs)
             .status_code,
         )
