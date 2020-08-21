@@ -225,9 +225,6 @@ class OrganizationSignup(FormView):
         )
         return redirect(self.get_success_url())
 
-    def signup_success(self, request):
-        return render(request, "organizations/signup_success.html", {})
-
 
 class ViewFactory:
     """
