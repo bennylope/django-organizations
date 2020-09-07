@@ -28,7 +28,6 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.core.exceptions import ImproperlyConfigured
 from django.http import HttpResponseGone
 from django.shortcuts import redirect
-from django.shortcuts import render
 from django.urls import reverse
 from django.utils.translation import gettext as _
 from django.views.generic import CreateView

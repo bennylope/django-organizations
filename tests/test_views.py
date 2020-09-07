@@ -141,7 +141,7 @@ class TestBaseCreateOrganization:
             user=account_user,
             method="post",
             path="/",
-            data={"name": "Vizsla Club", "slug": "vizsla", "email": "hey@woof.org",},
+            data={"name": "Vizsla Club", "slug": "vizsla", "email": "hey@woof.org"},
         )
         response = base.BaseOrganizationCreate.as_view()(request)
         assert response.status_code == 302
