@@ -273,30 +273,30 @@ class ViewFactory:
 
     @property
     def OrganizationUserDetail(self):
-        klass = BaseOrganizationUserList
+        klass = BaseOrganizationUserDetail
         klass.org_model = self.org_model
         return klass
 
     @property
     def OrganizationUserUpdate(self):
-        klass = BaseOrganizationUserList
+        klass = BaseOrganizationUserUpdate
         klass.org_model = self.org_model
         return klass
 
     @property
     def OrganizationUserCreate(self):
-        klass = BaseOrganizationUserList
+        klass = BaseOrganizationUserCreate
         klass.org_model = self.org_model
         return klass
 
     @property
     def OrganizationUserDelete(self):
-        klass = BaseOrganizationUserList
+        klass = BaseOrganizationUserDelete
         klass.org_model = self.org_model
         return klass
 
     @property
     def OrganizationUserRemind(self):
-        klass = BaseOrganizationUserList
+        klass = BaseOrganizationUserRemind
         klass.org_model = self.org_model
         return klass
