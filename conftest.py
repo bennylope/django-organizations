@@ -63,6 +63,7 @@ def pytest_configure():
         ORGS_SLUGFIELD="autoslug.AutoSlugField",
         ROOT_URLCONF="tests.urls",
         STATIC_URL="/static/",
+        SECRET_KEY="ThisIsHorriblyInsecure",
     )
     django.setup()
 
