@@ -71,6 +71,7 @@ settings.configure(
     INSTALLED_APPS=INSTALLED_APPS,
     ROOT_URLCONF="tests.urls",
     STATIC_URL="/static/",
+    SECRET_KEY="ThisIsHorriblyInsecure",
     # STATIC_ROOT=os.path.join(BASE_DIR),
     # STATICFILES_DIRS = [
     #     os.path.join(BASE_DIR, "static"),
