@@ -103,3 +103,11 @@ def publish(session):
     session.run("twine", "check", "dist/*")
     print("REMINDER: Has the changelog been updated?")
     session.run("python", "-m", "twine", "upload", "dist/*")
+
+
+
+@nox.session(python=DEFAULT_INTERPRETER, reuse_venv=True)
+def docs(session):
+    session.run("make", "-C", "docs", "clean")
+    session.run("make", "-C", "docs", "html")
+    session.run("open", "docs/_build/html/index.html")

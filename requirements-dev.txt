@@ -1,5 +1,6 @@
 # Requirements used for managing tests, builds, documentation
-Sphinx
+Sphinx==3.5.4
+furo==2021.4.11b34
 tox
 nox
 wheel
