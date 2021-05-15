@@ -135,12 +135,12 @@ class BaseBackend:
         if form.is_valid():
             form.instance.is_active = True
             user = form.save()
-            user.set_password(form.cleaned_data["password"])
+            user.set_password(form.cleaned_data["password1"])
             user.save()
             self.activate_organizations(user)
             user = authenticate(
                 username=form.cleaned_data["username"],
-                password=form.cleaned_data["password"],
+                password=form.cleaned_data["password1"],
             )
             login(request, user)
             return redirect(self.get_success_url())
