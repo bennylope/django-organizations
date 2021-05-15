@@ -259,24 +259,36 @@ provided in ``organizations.abstract``. Here's an example from an `accounts` app
 .. code-block:: python
 
     from django.db import models
-    from organizations.abstract import (AbstractOrganization,
-                                        AbstractOrganizationUser,
-                                        AbstractOrganizationOwner)
+    from organizations.abstract import (
+        AbstractOrganization,
+        AbstractOrganizationUser,
+        AbstractOrganizationOwner,
+        AbstractOrganizationInvitation,
+    )
 
     class Account(AbstractOrganization):
+        """Core organization model"""
         monthly_subscription = models.IntegerField(default=1000)
 
     class AccountUser(AbstractOrganizationUser):
+        """Links a user to the organization"""
         user_type = models.CharField(max_length=1, default='')
 
     class AccountOwner(AbstractOrganizationOwner):
+        """Identifies ONE user, by AccountUser, to be the owner"""
         pass
+
+    class AccountInvitation(AbstractOrganizationInvitation):
+        """Stores invitations for adding users to organizations"""
+        pass
+
 
 This will create the following tables:
 
 * `accounts_account`
 * `accounts_accountuser`
 * `accounts_accountowner`
+* `accounts_accountinvitation`
 
 The `accounts_account` table will include all of the necessary fields for this
 and only this organization model.
@@ -300,9 +312,12 @@ Here's an example of a custom `accounts` inheriting the minimal `Base` models:
 .. code-block:: python
 
     from django.db import models
-    from organizations.base import (OrganizationBase,
-                                    OrganizationUserBase,
-                                    OrganizationOwnerBase)
+    from organizations.base import (
+        OrganizationBase,
+        OrganizationUserBase,
+        OrganizationOwnerBase,
+        OrganizationInvitationBase,
+    )
 
     class Account(OrganizationBase):
         monthly_subscription = models.IntegerField(default=1000)
@@ -311,6 +326,9 @@ Here's an example of a custom `accounts` inheriting the minimal `Base` models:
         user_type = models.CharField(max_length=1, default='')
 
     class AccountOwner(OrganizationOwnerBase):
+        pass
+
+    class AccountInvitation(OrganizationInvitationBase):
         pass
 
 Difference between abstract and base models
@@ -338,32 +356,37 @@ code in your application, eg:
 
     from django.contrib import admin
 
-    from .base_admin import (BaseOwnerInline,
-                             BaseOrganizationAdmin,
-                             BaseOrganizationUserAdmin,
-                             BaseOrganizationOwnerAdmin)
-    from .models import Organization, OrganizationUser, OrganizationOwner
+    from organizations.base_admin import (
+        BaseOwnerInline,
+        BaseOrganizationAdmin,
+        BaseOrganizationUserAdmin,
+        BaseOrganizationOwnerAdmin,
+    )
+    from myapp.models import MyOrg, MyOrgUser, MyOrgOwner, MyOrgInvitation
 
 
     class OwnerInline(BaseOwnerInline):
-        model = OrganizationOwner
+        model = MyOrgOwner
 
 
-    class OrganizationAdmin(BaseOrganizationAdmin):
+    @admin.register(MyOrg)
+    class OrgAdmin(BaseOrganizationAdmin):
         inlines = [OwnerInline]
 
 
-    class OrganizationUserAdmin(BaseOrganizationUserAdmin):
+    @admin.register(MyOrgUser)
+    class OrgUserAdmin(BaseOrganizationUserAdmin):
         pass
 
 
-    class OrganizationOwnerAdmin(BaseOrganizationOwnerAdmin):
+    @admin.register(MyOrgOwner)
+    class OrgOwnerAdmin(BaseOrganizationOwnerAdmin):
         pass
 
 
-    admin.site.register(Organization, OrganizationAdmin)
-    admin.site.register(OrganizationUser, OrganizationUserAdmin)
-    admin.site.register(OrganizationOwner, OrganizationOwnerAdmin)
+    @admin.register(MyOrgInvitation)
+    class OrgInvitationAdmin(admin.ModelAdmin):
+        pass
 
 Restricting and isolating resources
 ===================================
