@@ -25,7 +25,7 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 __author__ = "Ben Lopatin"
-__email__ = "ben@wellfire.co"
+__email__ = "ben@benlopatin.com"
 __version__ = "2.0.0"
 
 
