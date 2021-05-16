@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 """
 See setup.cfg for packaging settings
 """

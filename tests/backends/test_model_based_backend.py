@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 """
 Tests for the model based invitation backend
 """
