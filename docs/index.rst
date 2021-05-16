@@ -26,3 +26,14 @@ Indices and tables
 * :ref:`modindex`
 * :ref:`search`
 
+
+Sponsors
+========
+
+`Muster <https://www.muster.com/home?utm_source=readthedocs&campaign=opensource>`_ is building precision advocacy software to impact policy through grassroots action.
+
+.. image:: https://www.muster.com/hs-fs/hubfs/muster_logo-2.png?width=600&name=muster_logo-2.png
+  :target: https://www.muster.com/home?utm_source=readthedocs&campaign=opensource
+  :width: 400
+  :alt: Alternative text
+
