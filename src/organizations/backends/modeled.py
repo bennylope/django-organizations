@@ -52,9 +52,7 @@ from organizations.base import OrganizationInvitationBase  # noqa
 
 
 class ModelInvitation(InvitationBackend):
-    """
-
-    """
+    """Invitation backend for model-tracked invitations"""
 
     notification_subject = "organizations/email/notification_subject.txt"
     notification_body = "organizations/email/notification_body.html"
