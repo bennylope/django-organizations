@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 """
 Most of this code extracted and borrowed from django-model-utils
 
