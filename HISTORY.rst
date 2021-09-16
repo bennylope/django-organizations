@@ -3,6 +3,11 @@
 History
 =======
 
+Unreleased
+----------
+
+* Better compatibility with Django 3.2
+
 2.0.0
 -----
 
@@ -61,8 +66,8 @@ At this point it seems reasonable to bump to version 1.
 * Add notification to users when added to an organization
 * New abstract models create separation between 'plain' base models and abstract
   models that include abstracted functionality previously included only in
-  concrete models 
-* Python 3.6 and Django 1.11 test support 
+  concrete models
+* Python 3.6 and Django 1.11 test support
 
 0.8.2
 -----
