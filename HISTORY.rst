@@ -3,7 +3,7 @@
 History
 =======
 
-Unreleased
+2.0.1
 ----------
 
 * Better compatibility with Django 3.2
