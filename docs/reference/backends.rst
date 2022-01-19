@@ -162,8 +162,12 @@ The primary methods of interest are the `invite_by_email` method and the
 
     Use additional keyword arguments passed via `**kwargs` to include
     contextual information in the invitation, such as what account the user is
-    being invited to join.
-
+    being invited to join. 
+    By default the invitation template requires domain details as per the Django Sites framework
+    so you can provide either a Site object, or craft the domain kwarg as follows:
+        
+        domain={ "name": "My Site", "domain": "www.example.com" }
+    
 .. method:: InvitationBackend.activate_view(request, user_id, token)
 
   This method is a view for activating a user account via a unique link sent
