@@ -3,8 +3,13 @@
 History
 =======
 
+2.0.2
+-----
+
+* Remove `default_app_config` for forward compatiblity with Django 4.1
+
 2.0.1
-----------
+-----
 
 * Better compatibility with Django 3.2
 
