@@ -209,7 +209,7 @@ Alternative:
     ORGS_SLUGFIELD = 'autoslug.fields.AutoSlugField'
 
 Previous versions allowed you to specify an `ORGS_TIMESTAMPED_MODEL` path. This
-is now ignored and the functionality satisifed by a vendored solution. A
+is now ignored and the functionality satisfied by a vendored solution. A
 warning will be given but this *should not* have any effect on your code.
 
 - `django-extensions <http://django-extensions.readthedocs.org/en/latest/>`_

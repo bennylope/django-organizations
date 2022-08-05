@@ -10,7 +10,7 @@ Feature Scope section will be of particular interest to those looking to expand
 on this app's functionality, and the Pull Request Guidelines explain how I add
 code contributions.
 
-**Bug fix pull requests should be made agains the MASTER branch.**
+**Bug fix pull requests should be made against the MASTER branch.**
 
 Types of Contributions
 ======================
@@ -111,7 +111,7 @@ adding that in directly.
 Pull Request Guidelines
 =======================
 
-**Bug fix pull requests should be made agains the MASTER branch.**
+**Bug fix pull requests should be made against the MASTER branch.**
 
 Before you submit a pull request, check that it meets these guidelines:
 
@@ -136,7 +136,7 @@ versions of the software. You should be able to upgrade an installed version of
 Django Organizations by doing nothing more than upgrading the package and
 running `migrate`.
 
-**Bug fix pull requests should be made agains the MASTER branch.**
+**Bug fix pull requests should be made against the MASTER branch.**
 
 I am aiming to support each major Django version for `as long as it is
 supported
