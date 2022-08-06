@@ -9,7 +9,7 @@ users and creating new organizations**.
 While the default backends should suffice for basic implementations, the
 backends are designed to be easily extended for your specific project needs. If
 you make use of a profile model or a user model other than `auth.User` you
-should extend the releveant backends for your own project. If you've used
+should extend the relevant backends for your own project. If you've used
 custom URL names then you'll also want to extend the backends to use your own
 success URLs.
 

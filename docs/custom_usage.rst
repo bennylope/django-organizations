@@ -61,7 +61,7 @@ or::
     extended backend, if you are not already.
 
 This is worth noting here because Django Organizations is compatible with
-different user models in Django 1.4, which preceds the official swappable users
+different user models in Django 1.4, which precedes the official swappable users
 feature in Django 1.4.
 
 .. _mixins:

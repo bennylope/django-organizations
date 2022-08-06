@@ -59,7 +59,7 @@ or use the extensible invitation and registration backends.
 
 The default invitation backend accepts an email address and returns the user
 who either matches that email address or creates a new user with that email
-address. The view for adding a new user is then responsbile for adding this
+address. The view for adding a new user is then responsible for adding this
 user to the organization.
 
 The `OrganizationSignup` view is used for allowing a user new to the site to
