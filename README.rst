@@ -88,8 +88,7 @@ Targets & testing
 
 The codebase is targeted and tested against:
 
-* Django 2.2.x against Python 3.6, 3.7, 3.8
-* Django 3.2.x against Python 3.6, 3.7, 3.8, 3.9, 3.10
+* Django 3.2.x against Python 3.7, 3.8, 3.9, 3.10
 * Django 4.0.x against Python 3.8, 3.9, 3.10
 * Django 4.1.x against Python 3.8, 3.9, 3.10
 
