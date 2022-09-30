@@ -129,8 +129,7 @@ reviewed and make it into the project:
   branches.
 
 Code contributions are expected to pass in all target environments, and
-pull requests should be made from branches with passing builds on `Travis
-CI <https://travis-ci.org/bennylope/django-organizations>`_.
+pull requests should be made from branches with passing builds on `GitHub Actions <https://github.com/bennylope/django-organizations/actions/workflows/test.yml>`_.
 
 Project goals
 -------------
