@@ -127,7 +127,7 @@ class TestSignupView:
         assert response.status_code == 302
 
         # Verify its in the database
-        Organization.objects.get(slug="people", is_active=False)
+        Organization.objects.get(slug="an-association-of-very-interesting-people", is_active=False)
 
 
 class TestBaseCreateOrganization:
@@ -146,7 +146,7 @@ class TestBaseCreateOrganization:
         response = base.BaseOrganizationCreate.as_view()(request)
         assert response.status_code == 302
         assert response["Location"] == reverse("organization_list")
-        assert Organization.objects.get(slug="vizsla")
+        assert Organization.objects.get(slug="vizsla-club")
 
 
 class TestBaseOrganizationDelete:
