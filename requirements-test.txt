@@ -7,7 +7,7 @@ flake8>=2.4.1
 typing>=3.6.4
 
 # Required to test default models
-django-extensions>=1.6.0
+django-extensions>=2.0.8
 django-autoslug>=1.9.8
 
 # Required for mocking signals
