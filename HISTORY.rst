@@ -3,6 +3,15 @@
 History
 =======
 
+2.1.0
+-----
+
+* Adds migrations to support Django 4.x
+* Removes support for Django < 3.2
+* Updates tox testing for supported configurations of Django 3.2 - 4.1 with Python 3.7 - 3.10
+* Early tox testing of Django 4.1 with Python 3.11
+* Fixes GitHub Actions automated testing
+
 2.0.2
 -----
 
