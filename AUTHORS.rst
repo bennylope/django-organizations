@@ -24,6 +24,7 @@ Contributors:
 * `Samuel Spencer <https://github.com/LegoStormtroopr>`_
 * `Seb Vetter <https://github.com/elbaschid>`_
 * `KimSia Sim <https://github.com/simkimsia>`_
+* `Dan Moore <https://github.com/mgrdcm>`_
 
 If your name is missing as a contributor that's my oversight, let me know at
 ben@benlopatin.com
