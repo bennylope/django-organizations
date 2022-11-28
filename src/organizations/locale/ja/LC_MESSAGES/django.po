@@ -1,0 +1,166 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-11-28 11:08+0900\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+#: abstract.py:83 forms.py:179
+msgid "The name in all lowercase, suitable for URL identification"
+msgstr ""
+
+#: abstract.py:88
+msgid "organization"
+msgstr ""
+
+#: abstract.py:89 templates/organizations/organization_list.html:4
+msgid "organizations"
+msgstr ""
+
+#: abstract.py:195
+msgid "organization user"
+msgstr ""
+
+#: abstract.py:196
+msgid "organization users"
+msgstr ""
+
+#: abstract.py:217
+msgid ""
+"Cannot delete organization owner before organization or transferring "
+"ownership."
+msgstr ""
+
+#: abstract.py:242
+msgid "organization owner"
+msgstr ""
+
+#: abstract.py:243
+msgid "organization owners"
+msgstr ""
+
+#: backends/defaults.py:104 backends/defaults.py:107
+msgid "Your URL may have expired."
+msgstr ""
+
+#: backends/modeled.py:77
+msgid "This is not your invitation"
+msgstr ""
+
+#: base.py:216 forms.py:176
+msgid "The name of the organization"
+msgstr ""
+
+#: base.py:331
+msgid ""
+"The contact identifier for the invitee, email, phone number, social media "
+"handle, etc."
+msgstr ""
+
+#: forms.py:41
+msgid "Only the organization owner can change ownerhip"
+msgstr ""
+
+#: forms.py:59
+msgid "The organization owner must be an admin"
+msgstr ""
+
+#: forms.py:117
+msgid "There is already an organization member with this email address!"
+msgstr ""
+
+#: forms.py:121
+msgid "This email address has been used multiple times."
+msgstr ""
+
+#: forms.py:133
+msgid "The email address for the account owner"
+msgstr ""
+
+#: templates/organizations/invitation_join.html:2
+msgid "Would you like to join?"
+msgstr ""
+
+#: templates/organizations/invitation_join.html:4
+msgid "Join"
+msgstr ""
+
+#: templates/organizations/login.html:10
+msgid "Forgotten your password?"
+msgstr ""
+
+#: templates/organizations/login.html:10
+msgid "Reset it"
+msgstr ""
+
+#: templates/organizations/organization_confirm_delete.html:5
+msgid "Are you sure you want to delete this organization?"
+msgstr ""
+
+#: templates/organizations/organization_detail.html:7
+#: templates/organizations/organizationuser_detail.html:11
+msgid "Edit"
+msgstr ""
+
+#: templates/organizations/organization_detail.html:8
+#: templates/organizations/organizationuser_detail.html:12
+msgid "Delete"
+msgstr ""
+
+#: templates/organizations/organization_detail.html:9
+#: templates/organizations/organizationuser_list.html:7
+msgid "Add a member"
+msgstr ""
+
+#: templates/organizations/organization_users.html:6
+msgid "Send reminder"
+msgstr ""
+
+#: templates/organizations/organizationuser_detail.html:5
+#: templates/organizations/organizationuser_form.html:9
+msgid "This is you"
+msgstr ""
+
+#: templates/organizations/organizationuser_detail.html:7
+msgid "Name"
+msgstr ""
+
+#: templates/organizations/organizationuser_detail.html:8
+msgid "Email"
+msgstr ""
+
+#: templates/organizations/organizationuser_form.html:5
+msgid "Update your profile"
+msgstr ""
+
+#: templates/organizations/register_success.html:2
+msgid "Thanks!"
+msgstr ""
+
+#: views/base.py:133 views/base.py:139
+msgid "User is already active"
+msgstr ""
+
+#: views/mixins.py:90
+msgid "Wrong organization"
+msgstr ""
+
+#: views/mixins.py:105
+msgid "Sorry, admins only"
+msgstr ""
+
+#: views/mixins.py:120
+msgid "You are not the organization owner"
+msgstr ""
