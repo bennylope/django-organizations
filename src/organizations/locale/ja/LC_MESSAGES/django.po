@@ -19,148 +19,148 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 #: abstract.py:83 forms.py:179
 msgid "The name in all lowercase, suitable for URL identification"
-msgstr ""
+msgstr "英数字(小文字)とハイフンで構成されたURL"
 
 #: abstract.py:88
 msgid "organization"
-msgstr ""
+msgstr "組織"
 
 #: abstract.py:89 templates/organizations/organization_list.html:4
 msgid "organizations"
-msgstr ""
+msgstr "組織"
 
 #: abstract.py:195
 msgid "organization user"
-msgstr ""
+msgstr "組織のユーザ"
 
 #: abstract.py:196
 msgid "organization users"
-msgstr ""
+msgstr "組織のユーザ"
 
 #: abstract.py:217
 msgid ""
 "Cannot delete organization owner before organization or transferring "
 "ownership."
-msgstr ""
+msgstr "組織化前または所有権移転前の組織所有者を削除できません。"
 
 #: abstract.py:242
 msgid "organization owner"
-msgstr ""
+msgstr "組織の所有者"
 
 #: abstract.py:243
 msgid "organization owners"
-msgstr ""
+msgstr "組織の所有者"
 
 #: backends/defaults.py:104 backends/defaults.py:107
 msgid "Your URL may have expired."
-msgstr ""
+msgstr "URLの有効期限が切れている可能性があります。"
 
 #: backends/modeled.py:77
 msgid "This is not your invitation"
-msgstr ""
+msgstr "あなたの招待状ではありません"
 
 #: base.py:216 forms.py:176
 msgid "The name of the organization"
-msgstr ""
+msgstr "組織の名前"
 
 #: base.py:331
 msgid ""
 "The contact identifier for the invitee, email, phone number, social media "
 "handle, etc."
-msgstr ""
+msgstr "招待者の連絡先識別子、電子メール、電話番号、ソーシャル・メディア、ハンドルネームなど。"
 
 #: forms.py:41
 msgid "Only the organization owner can change ownerhip"
-msgstr ""
+msgstr "組織の所有者だけが所有権を変更することができます"
 
 #: forms.py:59
 msgid "The organization owner must be an admin"
-msgstr ""
+msgstr "組織の所有者は管理者である必要があります"
 
 #: forms.py:117
 msgid "There is already an organization member with this email address!"
-msgstr ""
+msgstr "このメールアドレスを持つ組織のメンバーがすでにいます"
 
 #: forms.py:121
 msgid "This email address has been used multiple times."
-msgstr ""
+msgstr "このメールアドレスは複数回使用されています。"
 
 #: forms.py:133
 msgid "The email address for the account owner"
-msgstr ""
+msgstr "アカウント所有者のメールアドレス"
 
 #: templates/organizations/invitation_join.html:2
 msgid "Would you like to join?"
-msgstr ""
+msgstr "参加しますか？"
 
 #: templates/organizations/invitation_join.html:4
 msgid "Join"
-msgstr ""
+msgstr "参加"
 
 #: templates/organizations/login.html:10
 msgid "Forgotten your password?"
-msgstr ""
+msgstr "パスワードを忘れましたか？"
 
 #: templates/organizations/login.html:10
 msgid "Reset it"
-msgstr ""
+msgstr "リセット"
 
 #: templates/organizations/organization_confirm_delete.html:5
 msgid "Are you sure you want to delete this organization?"
-msgstr ""
+msgstr "この組織を本当に削除してよろしいですか？"
 
 #: templates/organizations/organization_detail.html:7
 #: templates/organizations/organizationuser_detail.html:11
 msgid "Edit"
-msgstr ""
+msgstr "編集"
 
 #: templates/organizations/organization_detail.html:8
 #: templates/organizations/organizationuser_detail.html:12
 msgid "Delete"
-msgstr ""
+msgstr "削除"
 
 #: templates/organizations/organization_detail.html:9
 #: templates/organizations/organizationuser_list.html:7
 msgid "Add a member"
-msgstr ""
+msgstr "メンバーを追加する"
 
 #: templates/organizations/organization_users.html:6
 msgid "Send reminder"
-msgstr ""
+msgstr "リマインダーを送信する"
 
 #: templates/organizations/organizationuser_detail.html:5
 #: templates/organizations/organizationuser_form.html:9
 msgid "This is you"
-msgstr ""
+msgstr "これはあなた自身です"
 
 #: templates/organizations/organizationuser_detail.html:7
 msgid "Name"
-msgstr ""
+msgstr "名前"
 
 #: templates/organizations/organizationuser_detail.html:8
 msgid "Email"
-msgstr ""
+msgstr "Email"
 
 #: templates/organizations/organizationuser_form.html:5
 msgid "Update your profile"
-msgstr ""
+msgstr "あなたのプロフィールを更新する"
 
 #: templates/organizations/register_success.html:2
 msgid "Thanks!"
-msgstr ""
+msgstr "ありがとうございました！"
 
 #: views/base.py:133 views/base.py:139
 msgid "User is already active"
-msgstr ""
+msgstr "ユーザーはすでにアクティブです"
 
 #: views/mixins.py:90
 msgid "Wrong organization"
-msgstr ""
+msgstr "間違った組織"
 
 #: views/mixins.py:105
 msgid "Sorry, admins only"
-msgstr ""
+msgstr "申し訳ありませんが、管理者のみです"
 
 #: views/mixins.py:120
 msgid "You are not the organization owner"
-msgstr ""
+msgstr "あなたは組織の所有者ではありません"
