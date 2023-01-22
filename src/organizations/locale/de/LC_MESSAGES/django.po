@@ -1,0 +1,173 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-12-13 22:05+0100\n"
+"PO-Revision-Date: 2022-12-13 22:23+0100\n"
+"Last-Translator: ravi0lii <moritz@moremaier.com>\n"
+"Language-Team: \n"
+"Language: de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: organizations/abstract.py:83 organizations/forms.py:179
+msgid "The name in all lowercase, suitable for URL identification"
+msgstr "Der Name in Kleinbuchstaben, geeignet für die URL-Identifikation"
+
+#: organizations/abstract.py:88
+msgid "organization"
+msgstr "Organisation"
+
+#: organizations/abstract.py:89
+#: organizations/templates/organizations/organization_list.html:4
+msgid "organizations"
+msgstr "Organisationen"
+
+#: organizations/abstract.py:195
+msgid "organization user"
+msgstr "Organisationsmitglied"
+
+#: organizations/abstract.py:196
+msgid "organization users"
+msgstr "Organisationsmitglieder"
+
+#: organizations/abstract.py:217
+msgid ""
+"Cannot delete organization owner before organization or transferring "
+"ownership."
+msgstr ""
+"Der Eigentümer der Organisation kann nicht gelöscht werden, bevor die "
+"Organisation oder der Eigentümer nicht übertragen wird."
+
+#: organizations/abstract.py:242
+msgid "organization owner"
+msgstr "Organisationseigentümer"
+
+#: organizations/abstract.py:243
+msgid "organization owners"
+msgstr "Organisationseigentümer"
+
+#: organizations/backends/defaults.py:104
+#: organizations/backends/defaults.py:107
+msgid "Your URL may have expired."
+msgstr "Deine URL ist möglicherweise abgelaufen."
+
+#: organizations/backends/modeled.py:77
+msgid "This is not your invitation"
+msgstr "Das ist nicht deine Einladung"
+
+#: organizations/base.py:216 organizations/forms.py:176
+msgid "The name of the organization"
+msgstr "Der Name der Organisation"
+
+#: organizations/base.py:331
+msgid ""
+"The contact identifier for the invitee, email, phone number, social media "
+"handle, etc."
+msgstr ""
+"Die Kontakt-Identifikation für den Eingeladenen, wie E-Mail, "
+"Telefonnummer, Social-Media-Handle etc."
+
+#: organizations/forms.py:41
+msgid "Only the organization owner can change ownerhip"
+msgstr "Nur der Eigentümer der Organisation kann den Eigentümer ändern"
+
+#: organizations/forms.py:59
+msgid "The organization owner must be an admin"
+msgstr "Der Eigentümer der Organisation muss ein Administrator sein"
+
+#: organizations/forms.py:117
+msgid "There is already an organization member with this email address!"
+msgstr ""
+"Es gibt bereits ein Mitglied der Organisation mit dieser E-Mail Adresse!"
+
+#: organizations/forms.py:121
+msgid "This email address has been used multiple times."
+msgstr "Die E-Mail Adresse wurde mehrmals genutzt."
+
+#: organizations/forms.py:133
+msgid "The email address for the account owner"
+msgstr "Die E-Mail Adresse des Eigentümers des Kontos"
+
+#: organizations/templates/organizations/invitation_join.html:2
+msgid "Would you like to join?"
+msgstr "Willst du beitreten?"
+
+#: organizations/templates/organizations/invitation_join.html:4
+msgid "Join"
+msgstr "Beitreten"
+
+#: organizations/templates/organizations/login.html:10
+msgid "Forgotten your password?"
+msgstr "Passwort vergessen?"
+
+#: organizations/templates/organizations/login.html:10
+msgid "Reset it"
+msgstr "Zurücksetzen"
+
+#: organizations/templates/organizations/organization_confirm_delete.html:5
+msgid "Are you sure you want to delete this organization?"
+msgstr "Bist du dir sicher, dass du die Organisation löschen willst?"
+
+#: organizations/templates/organizations/organization_detail.html:7
+#: organizations/templates/organizations/organizationuser_detail.html:11
+msgid "Edit"
+msgstr "Bearbeiten"
+
+#: organizations/templates/organizations/organization_detail.html:8
+#: organizations/templates/organizations/organizationuser_detail.html:12
+msgid "Delete"
+msgstr "Löschen"
+
+#: organizations/templates/organizations/organization_detail.html:9
+#: organizations/templates/organizations/organizationuser_list.html:7
+msgid "Add a member"
+msgstr "Mitglied hinzufügen"
+
+#: organizations/templates/organizations/organization_users.html:6
+msgid "Send reminder"
+msgstr "Erinnerung senden"
+
+#: organizations/templates/organizations/organizationuser_detail.html:5
+#: organizations/templates/organizations/organizationuser_form.html:9
+msgid "This is you"
+msgstr "Das bist du"
+
+#: organizations/templates/organizations/organizationuser_detail.html:7
+msgid "Name"
+msgstr "Name"
+
+#: organizations/templates/organizations/organizationuser_detail.html:8
+msgid "Email"
+msgstr "E-Mail"
+
+#: organizations/templates/organizations/organizationuser_form.html:5
+msgid "Update your profile"
+msgstr "Aktualisiere dein Profil"
+
+#: organizations/templates/organizations/register_success.html:2
+msgid "Thanks!"
+msgstr "Danke!"
+
+#: organizations/views/base.py:133 organizations/views/base.py:139
+msgid "User is already active"
+msgstr "Nutzer ist bereits aktiv"
+
+#: organizations/views/mixins.py:90
+msgid "Wrong organization"
+msgstr "Falsche Organisation"
+
+#: organizations/views/mixins.py:105
+msgid "Sorry, admins only"
+msgstr "Entschuldigung, nur Administratoren sind erlaubt"
+
+#: organizations/views/mixins.py:120
+msgid "You are not the organization owner"
+msgstr "Du bist nicht der Eigentümer der Organisation"
