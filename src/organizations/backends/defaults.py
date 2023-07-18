@@ -118,6 +118,8 @@ class BaseBackend:
                 username=form.cleaned_data["username"],
                 password=form.cleaned_data["password1"],
             )
+            if user is None:
+                raise Http404(_("Cant authenticate user"))
             login(request, user)
             return redirect(self.get_success_url())
         return render(request, self.registration_form_template, {"form": form})
