@@ -12,7 +12,7 @@ django-organizations
     * - Author
       - Ben Lopatin (http://benlopatin.com)
     * - Status
-      - |docs| |travis| |version| |wheel| |supported-versions| |supported-implementations|
+      - |docs| |version| |wheel| |supported-versions| |supported-implementations|
 
 .. |docs| image:: https://readthedocs.org/projects/django-organizations/badge/?style=flat
     :target: https://readthedocs.org/projects/django-organizations
