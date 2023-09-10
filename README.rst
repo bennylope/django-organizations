@@ -12,15 +12,11 @@ django-organizations
     * - Author
       - Ben Lopatin (http://benlopatin.com)
     * - Status
-      - |docs| |travis| |version| |wheel| |supported-versions| |supported-implementations|
+      - |docs| |version| |wheel| |supported-versions| |supported-implementations|
 
 .. |docs| image:: https://readthedocs.org/projects/django-organizations/badge/?style=flat
     :target: https://readthedocs.org/projects/django-organizations
     :alt: Documentation Status
-
-.. |travis| image:: https://travis-ci.org/bennylope/django-organizations.svg?branch=master
-    :alt: Travis-CI Build Status
-    :target: https://travis-ci.org/bennylope/django-organizations
 
 .. |version| image:: https://img.shields.io/pypi/v/django-organizations.svg?style=flat
     :alt: PyPI Package latest release
@@ -88,7 +84,7 @@ Targets & testing
 
 The codebase is targeted and tested against:
 
-* Django 3.2.x against Python 3.7, 3.8, 3.9, 3.10
+* Django 3.2.x against Python 3.8, 3.9, 3.10
 * Django 4.1.x against Python 3.8, 3.9, 3.10, 3.11
 * Django 4.2.x against Python 3.8, 3.9, 3.10, 3.11
 
