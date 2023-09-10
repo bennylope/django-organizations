@@ -32,6 +32,29 @@ dynamic = ["version"]
 "Issues" = "https://github.com/bennylope/django-organizations/issues"
 "Documentation" = "https://django-organizations.readthedocs.io/en/latest/"
 
+[project.optional-dependencies]
+tests = [
+    "pytest>=6.0",
+    "coverage",
+    "pytest-django>=3.0.0",
+    "pytest-cov>=2.4.0",
+    # Required to test default models
+    "django-extensions>=2.0.8",
+    "django-autoslug>=1.9.8,",
+    # Required for mocking signals
+    "mock-django==0.6.9",
+]
+docs = [
+    "Sphinx==3.5.4",
+    "furo==2021.4.11b34",
+]
+dev = [
+    "django-organizations[tests]",
+    "tox",
+    "black",
+    "ruff",
+]
+
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
