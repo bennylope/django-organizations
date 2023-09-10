@@ -46,3 +46,6 @@ path = "src/organizations/__init__.py"
 [tool.hatch.build.targets.wheel]
 only-include = ["src/organizations"]
 packages = ["src/oranizations"]
+
+[tool.black]
+target-version = ["py311"]
