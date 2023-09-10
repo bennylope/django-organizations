@@ -1,6 +1,5 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 __author__ = "Ben Lopatin"
 __email__ = "ben@benlopatin.com"
-__version__ = "2.1.0"
+__version__ = "2.2.0"

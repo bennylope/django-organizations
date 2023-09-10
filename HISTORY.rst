@@ -3,6 +3,12 @@
 History
 =======
 
+2.2.0
+-----
+
+* Remove support for Django < 3.2
+* Remove support for Python 3.7
+
 2.1.0
 -----
 
