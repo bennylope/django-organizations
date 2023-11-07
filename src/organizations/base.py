@@ -9,8 +9,6 @@ from django.db.models.base import ModelBase
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
-import six
-
 from organizations import signals
 from organizations.managers import ActiveOrgManager
 from organizations.managers import OrgManager
@@ -242,7 +240,9 @@ class AbstractBaseOrganization(models.Model):
         return True if user in self.users.all() else False
 
 
-class OrganizationBase(six.with_metaclass(OrgMeta, AbstractBaseOrganization)):
+class OrganizationBase(AbstractBaseOrganization):
+    __meta__ = OrgMeta
+
     class Meta(AbstractBaseOrganization.Meta):
         abstract = True
 
@@ -293,7 +293,9 @@ class AbstractBaseOrganizationUser(models.Model):
             return str(self.user)
 
 
-class OrganizationUserBase(six.with_metaclass(OrgMeta, AbstractBaseOrganizationUser)):
+class OrganizationUserBase(AbstractBaseOrganizationUser):
+    __meta__ = OrgMeta
+
     class Meta(AbstractBaseOrganizationUser.Meta):
         abstract = True
 
@@ -310,7 +312,9 @@ class AbstractBaseOrganizationOwner(models.Model):
         return "{0}: {1}".format(self.organization, self.organization_user)
 
 
-class OrganizationOwnerBase(six.with_metaclass(OrgMeta, AbstractBaseOrganizationOwner)):
+class OrganizationOwnerBase(AbstractBaseOrganizationOwner):
+    __meta__ = OrgMeta
+
     class Meta(AbstractBaseOrganizationOwner.Meta):
         abstract = True
 
@@ -378,6 +382,8 @@ class AbstractBaseInvitation(models.Model):
         raise NotImplementedError
 
 
-class OrganizationInvitationBase(six.with_metaclass(OrgMeta, AbstractBaseInvitation)):
+class OrganizationInvitationBase(AbstractBaseInvitation):
+    __meta__ = OrgMeta
+
     class Meta(AbstractBaseInvitation.Meta):
         abstract = True

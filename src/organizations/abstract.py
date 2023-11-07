@@ -7,8 +7,6 @@ from django.db import models
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
-import six
-
 from organizations.base import AbstractBaseInvitation
 from organizations.base import AbstractBaseOrganization
 from organizations.base import AbstractBaseOrganizationOwner
@@ -67,12 +65,11 @@ class SharedBaseModel(models.Model):
         abstract = True
 
 
-class AbstractOrganization(
-    six.with_metaclass(OrgMeta, SharedBaseModel, AbstractBaseOrganization)
-):
+class AbstractOrganization(SharedBaseModel, AbstractBaseOrganization):
     """
     Abstract Organization model.
     """
+    __meta__ = OrgMeta
 
     slug = SlugField(
         max_length=200,
@@ -181,12 +178,11 @@ class AbstractOrganization(
         return self.owner.organization_user.user == user
 
 
-class AbstractOrganizationUser(
-    six.with_metaclass(OrgMeta, SharedBaseModel, AbstractBaseOrganizationUser)
-):
+class AbstractOrganizationUser(SharedBaseModel, AbstractBaseOrganizationUser):
     """
     Abstract OrganizationUser model
     """
+    __meta__ = OrgMeta
 
     is_admin = models.BooleanField(default=False)
 
@@ -230,12 +226,11 @@ class AbstractOrganizationUser(
         )
 
 
-class AbstractOrganizationOwner(
-    six.with_metaclass(OrgMeta, SharedBaseModel, AbstractBaseOrganizationOwner)
-):
+class AbstractOrganizationOwner(SharedBaseModel, AbstractBaseOrganizationOwner):
     """
     Abstract OrganizationOwner model
     """
+    __meta__ = OrgMeta
 
     class Meta:
         abstract = True
@@ -261,12 +256,11 @@ class AbstractOrganizationOwner(
             super().save(*args, **kwargs)
 
 
-class AbstractOrganizationInvitation(
-    six.with_metaclass(OrgMeta, SharedBaseModel, AbstractBaseInvitation)
-):
+class AbstractOrganizationInvitation(SharedBaseModel, AbstractBaseInvitation):
     """
     Abstract OrganizationInvitationBase model
     """
+    __meta__ = OrgMeta
 
     class Meta:
         abstract = True
