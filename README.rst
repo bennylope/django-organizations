@@ -38,9 +38,9 @@ django-organizations
 .. end-table
 
 
-Separate individual user identity from accounts and subscriptions. Django
-Organizations adds user-managed, multi-user groups to your Django project. Use
-Django Organizations whether your site needs organizations that function like
+Separate individual **user identity** from **accounts, subscriptions, etc.**.
+Django Organizations adds user-managed, multi-user groups to your Django project.
+Use Django Organizations whether your site needs organizations that function like
 social groups or multi-user account objects to provide account and subscription
 functionality beyond the individual user.
 
@@ -55,16 +55,20 @@ functionality beyond the individual user.
 Documentation is on `Read the Docs
 <http://django-organizations.readthedocs.org/en/latest/index.html>`_
 
+Project goals
+=============
+
+django-organizations should be backend agnostic:
+
+1. Authentication agnostic
+2. Registration agnostic
+3. Invitation agnostic
+4. User messaging agnostic
+
+Etc.
 
 Development & Contributing
 ==========================
-
-**The master branch represents version 2 development. For updates related to 1.x
-versions of django-organizations pull requests should be made against the
-[`version-1.x` branch](tree/version-1.x).**
-
-Development is on-going. To-do items have been moved to the wiki for the time
-being.
 
 The basic functionality should not need much extending. Current dev priorities
 for me and contributors should include:
@@ -86,7 +90,7 @@ The codebase is targeted and tested against:
 
 * Django 3.2.x against Python 3.8, 3.9, 3.10
 * Django 4.1.x against Python 3.8, 3.9, 3.10, 3.11
-* Django 4.2.x against Python 3.8, 3.9, 3.10, 3.11
+* Django 4.2.x against Python 3.8, 3.9, 3.10, 3.11, 3.12
 
 To run the tests against all target environments, install `tox
 <https://testrun.org/tox/latest/>`_ and then execute the command::
@@ -100,12 +104,12 @@ Testing each change on all the environments takes some time, you may
 want to test faster and avoid slowing down development by using pytest
 against your current environment::
 
-    pip install -r requirements-test.txt
-    py.test
+    pip install .[tests]
+    pytest
 
 Supply the ``-x`` option for **failfast** mode::
 
-    py.test -x
+    pytest -x
 
 Submitting
 ----------
@@ -127,18 +131,6 @@ reviewed and make it into the project:
 Code contributions are expected to pass in all target environments, and
 pull requests should be made from branches with passing builds on `GitHub Actions <https://github.com/bennylope/django-organizations/actions/workflows/test.yml>`_.
 
-Project goals
--------------
-
-django-organizations should be backend agnostic:
-
-1. Authentication agnostic
-2. Registration agnostic
-3. Invitation agnostic
-4. User messaging agnostic
-
-Etc.
-
 Installing
 ==========
 
@@ -150,16 +142,15 @@ First add the application to your Python path. The easiest way is to use
 Check the `Release History tab <https://pypi.org/project/django-organizations/#history>`_ on
 the PyPI package page for pre-release versions. These can be downloaded by specifying the version.
 
-You can also install by downloading the source and running::
-
-    $ python setup.py install
-
 By default you will need to install `django-extensions` or comparable libraries
 if you plan on adding Django Organizations as an installed app to your Django
 project. See below on configuring.
 
 Configuring
 -----------
+
+The simplest way to get *started* using Django Organizations is to install the
+app and use the "concrete" models.
 
 Make sure you have `django.contrib.auth` installed, and add the `organizations`
 application to your `INSTALLED_APPS` list:
@@ -172,7 +163,7 @@ application to your `INSTALLED_APPS` list:
         'organizations',
     )
 
-Then ensure that your project URL conf is updated. You should hook in the
+Then update your project URLs config. You should hook in the
 main application URL conf as well as your chosen invitation backend URLs:
 
 .. code-block:: python
@@ -184,6 +175,10 @@ main application URL conf as well as your chosen invitation backend URLs:
         url(r'^accounts/', include('organizations.urls')),
         url(r'^invitations/', include(invitation_backend().get_urls())),
     ]
+
+This is the simplest way of using the library, but it's far from the only
+or even the best way. See the `Cooking with Django Organizations` section
+of the docs full explanation of the use cases and how to configure them.
 
 Auto slug field
 ~~~~~~~~~~~~~~~
