@@ -1,5 +1,3 @@
-import warnings
-
 from django.conf import settings
 from django.db import models
 from django.urls import reverse
@@ -19,13 +17,6 @@ from organizations.signals import user_added
 from organizations.signals import user_removed
 
 USER_MODEL = getattr(settings, "AUTH_USER_MODEL", "auth.User")
-ORGS_TIMESTAMPED_MODEL = getattr(settings, "ORGS_TIMESTAMPED_MODEL", None)
-
-if ORGS_TIMESTAMPED_MODEL:
-    warnings.warn(
-        "Configured TimestampModel has been replaced and is now ignored.",
-        DeprecationWarning,
-    )
 
 
 class SharedBaseModel(models.Model):
