@@ -3,6 +3,12 @@
 History
 =======
 
+2.3.0
+-----
+
+* Remove `six` dependency
+* Start testing against Python 3.12
+
 2.2.0
 -----
 
