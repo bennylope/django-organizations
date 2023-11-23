@@ -1,0 +1,48 @@
+[project]
+name = "django-organizations"
+authors = [
+  { name="Ben Lopatin", email="ben@benlopatin.com" },
+]
+description = "Group accounts for Django"
+readme = "README.rst"
+requires-python = ">=3.8"
+license = {text = "BSD License"}
+classifiers = [
+    "Framework :: Django",
+    "Environment :: Web Environment",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: BSD License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Development Status :: 5 - Production/Stable",
+]
+dependencies = [
+    "six",
+    "Django>=3.2",
+]
+dynamic = ["version"]
+
+[project.urls]
+"Source" = "https://github.com/bennylope/django-organizations"
+"Issues" = "https://github.com/bennylope/django-organizations/issues"
+"Documentation" = "https://django-organizations.readthedocs.io/en/latest/"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build]
+sources = ["src"]
+directory = "dist/"
+
+[tool.hatch.version]
+path = "src/organizations/__init__.py"
+
+[tool.hatch.build.targets.wheel]
+only-include = ["src/organizations"]
+packages = ["src/oranizations"]
