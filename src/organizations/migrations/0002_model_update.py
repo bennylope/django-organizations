@@ -1,11 +1,9 @@
-# -*- coding: utf-8 -*-
 from django.db import migrations
 
 import organizations.fields
 
 
 class Migration(migrations.Migration):
-
     dependencies = [("organizations", "0001_initial")]
 
     operations = [

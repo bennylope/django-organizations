@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 
 from organizations.abstract import AbstractOrganization
 from organizations.abstract import AbstractOrganizationInvitation

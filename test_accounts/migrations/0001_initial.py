@@ -7,7 +7,6 @@ import organizations.base
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [migrations.swappable_dependency(settings.AUTH_USER_MODEL)]
@@ -35,7 +34,6 @@ class Migration(migrations.Migration):
                 ("monthly_subscription", models.IntegerField(default=1000)),
             ],
             options={"ordering": ["name"], "abstract": False},
-            bases=(organizations.base.UnicodeMixin, models.Model),
         ),
         migrations.CreateModel(
             name="AccountOwner",
@@ -59,7 +57,6 @@ class Migration(migrations.Migration):
                 ),
             ],
             options={"abstract": False},
-            bases=(organizations.base.UnicodeMixin, models.Model),
         ),
         migrations.CreateModel(
             name="AccountUser",
@@ -92,7 +89,6 @@ class Migration(migrations.Migration):
                 ),
             ],
             options={"ordering": ["organization", "user"], "abstract": False},
-            bases=(organizations.base.UnicodeMixin, models.Model),
         ),
         migrations.AddField(
             model_name="accountowner",

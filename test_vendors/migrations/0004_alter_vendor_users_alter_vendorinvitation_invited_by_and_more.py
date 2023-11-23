@@ -6,32 +6,49 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('auth', '0012_alter_user_first_name_max_length'),
+        ("auth", "0012_alter_user_first_name_max_length"),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('test_vendors', '0003_vendorinvitation'),
+        ("test_vendors", "0003_vendorinvitation"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='vendor',
-            name='users',
-            field=models.ManyToManyField(related_name='%(app_label)s_%(class)s', through='test_vendors.VendorUser', to=settings.AUTH_USER_MODEL),
+            model_name="vendor",
+            name="users",
+            field=models.ManyToManyField(
+                related_name="%(app_label)s_%(class)s",
+                through="test_vendors.VendorUser",
+                to=settings.AUTH_USER_MODEL,
+            ),
         ),
         migrations.AlterField(
-            model_name='vendorinvitation',
-            name='invited_by',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='%(app_label)s_%(class)s_sent_invitations', to=settings.AUTH_USER_MODEL),
+            model_name="vendorinvitation",
+            name="invited_by",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="%(app_label)s_%(class)s_sent_invitations",
+                to=settings.AUTH_USER_MODEL,
+            ),
         ),
         migrations.AlterField(
-            model_name='vendorinvitation',
-            name='invitee',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='%(app_label)s_%(class)s_invitations', to=settings.AUTH_USER_MODEL),
+            model_name="vendorinvitation",
+            name="invitee",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="%(app_label)s_%(class)s_invitations",
+                to=settings.AUTH_USER_MODEL,
+            ),
         ),
         migrations.AlterField(
-            model_name='vendoruser',
-            name='user',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='%(app_label)s_%(class)s', to=settings.AUTH_USER_MODEL),
+            model_name="vendoruser",
+            name="user",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="%(app_label)s_%(class)s",
+                to=settings.AUTH_USER_MODEL,
+            ),
         ),
     ]

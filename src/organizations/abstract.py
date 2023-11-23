@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 
 import warnings
 
@@ -7,12 +6,12 @@ from django.db import models
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
-import six
 
 from organizations.base import AbstractBaseInvitation
 from organizations.base import AbstractBaseOrganization
 from organizations.base import AbstractBaseOrganizationOwner
 from organizations.base import AbstractBaseOrganizationUser
+from organizations.base import with_metaclass
 from organizations.base import OrgMeta
 from organizations.fields import AutoCreatedField
 from organizations.fields import AutoLastModifiedField
@@ -68,7 +67,7 @@ class SharedBaseModel(models.Model):
 
 
 class AbstractOrganization(
-    six.with_metaclass(OrgMeta, SharedBaseModel, AbstractBaseOrganization)
+    with_metaclass(OrgMeta, SharedBaseModel, AbstractBaseOrganization)
 ):
     """
     Abstract Organization model.
@@ -182,7 +181,7 @@ class AbstractOrganization(
 
 
 class AbstractOrganizationUser(
-    six.with_metaclass(OrgMeta, SharedBaseModel, AbstractBaseOrganizationUser)
+    with_metaclass(OrgMeta, SharedBaseModel, AbstractBaseOrganizationUser)
 ):
     """
     Abstract OrganizationUser model
@@ -231,7 +230,7 @@ class AbstractOrganizationUser(
 
 
 class AbstractOrganizationOwner(
-    six.with_metaclass(OrgMeta, SharedBaseModel, AbstractBaseOrganizationOwner)
+    with_metaclass(OrgMeta, SharedBaseModel, AbstractBaseOrganizationOwner)
 ):
     """
     Abstract OrganizationOwner model
@@ -262,7 +261,7 @@ class AbstractOrganizationOwner(
 
 
 class AbstractOrganizationInvitation(
-    six.with_metaclass(OrgMeta, SharedBaseModel, AbstractBaseInvitation)
+    with_metaclass(OrgMeta, SharedBaseModel, AbstractBaseInvitation)
 ):
     """
     Abstract OrganizationInvitationBase model

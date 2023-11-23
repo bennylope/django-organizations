@@ -7,7 +7,6 @@ import organizations.base
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [migrations.swappable_dependency(settings.AUTH_USER_MODEL)]
@@ -36,7 +35,6 @@ class Migration(migrations.Migration):
                 ("city", models.CharField(default="", max_length=100)),
             ],
             options={"ordering": ["name"], "abstract": False},
-            bases=(organizations.base.UnicodeMixin, models.Model),
         ),
         migrations.CreateModel(
             name="VendorOwner",
@@ -60,7 +58,6 @@ class Migration(migrations.Migration):
                 ),
             ],
             options={"abstract": False},
-            bases=(organizations.base.UnicodeMixin, models.Model),
         ),
         migrations.CreateModel(
             name="VendorUser",
@@ -97,7 +94,6 @@ class Migration(migrations.Migration):
                 ),
             ],
             options={"ordering": ["organization", "user"], "abstract": False},
-            bases=(organizations.base.UnicodeMixin, models.Model),
         ),
         migrations.AddField(
             model_name="vendorowner",

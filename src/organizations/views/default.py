@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 
 from organizations.models import Organization
 from organizations.views.base import ViewFactory

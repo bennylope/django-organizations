@@ -7,7 +7,6 @@ import organizations.base
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
         ("test_accounts", "0002_model_update"),
@@ -62,6 +61,5 @@ class Migration(migrations.Migration):
                 ),
             ],
             options={"abstract": False},
-            bases=(organizations.base.UnicodeMixin, models.Model),
         )
     ]

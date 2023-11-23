@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # django-organizations documentation build configuration file, created by
 # sphinx-quickstart on Wed Feb 22 12:22:14 2012.

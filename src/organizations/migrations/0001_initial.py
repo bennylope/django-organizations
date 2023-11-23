@@ -11,7 +11,6 @@ import organizations.fields
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [migrations.swappable_dependency(settings.AUTH_USER_MODEL)]
@@ -65,7 +64,6 @@ class Migration(migrations.Migration):
                 "ordering": ["name"],
                 "abstract": False,
             },
-            bases=(organizations.base.UnicodeMixin, models.Model),
         ),
         migrations.CreateModel(
             name="OrganizationOwner",
@@ -105,7 +103,6 @@ class Migration(migrations.Migration):
                 "verbose_name_plural": "organization owners",
                 "abstract": False,
             },
-            bases=(organizations.base.UnicodeMixin, models.Model),
         ),
         migrations.CreateModel(
             name="OrganizationUser",
@@ -155,7 +152,6 @@ class Migration(migrations.Migration):
                 "ordering": ["organization", "user"],
                 "abstract": False,
             },
-            bases=(organizations.base.UnicodeMixin, models.Model),
         ),
         migrations.AddField(
             model_name="organizationowner",

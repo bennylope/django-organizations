@@ -1,11 +1,9 @@
-# -*- coding: utf-8 -*-
 from django.db import migrations
 
 import organizations.fields
 
 
 class Migration(migrations.Migration):
-
     dependencies = [("organizations", "0002_model_update")]
 
     operations = [

@@ -9,7 +9,6 @@ import organizations.fields
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
         ("test_abstract", "0001_initial"),
@@ -76,6 +75,5 @@ class Migration(migrations.Migration):
                 ),
             ],
             options={"abstract": False},
-            bases=(organizations.base.UnicodeMixin, models.Model),
         )
     ]

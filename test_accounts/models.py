@@ -20,7 +20,6 @@ class AccountOwner(OrganizationOwnerBase):
 
 
 class AccountInvitation(OrganizationInvitationBase):
-
     def get_absolute_url(self):
         """Returns the invitation URL"""
         return reverse(
