@@ -3,9 +3,15 @@
 History
 =======
 
+2.3.1
+-----
+
+* Update changelog to include all 2.3.0 changes
+
 2.3.0
 -----
 
+* Includes django-extensions as dependency
 * Remove `six` dependency
 * Start testing against Python 3.12
 
