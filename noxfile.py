@@ -15,7 +15,7 @@ DEFAULT_INTERPRETER = "3.8"
 ALL_INTERPRETERS = (DEFAULT_INTERPRETER,)
 
 
-DEV_INSTALL_REQUIREMENTS = ("six", "django-autoslug")
+DEV_INSTALL_REQUIREMENTS = ["django-autoslug"]
 
 
 def get_path(*names):

@@ -9,13 +9,20 @@ from django.db.models.base import ModelBase
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
-import six
-
 from organizations import signals
 from organizations.managers import ActiveOrgManager
 from organizations.managers import OrgManager
 
 USER_MODEL = getattr(settings, "AUTH_USER_MODEL", "auth.User")
+
+
+# Extracted from six
+def with_metaclass(meta, *bases):
+    class metaclass(type):
+        def __new__(cls, name, this_bases, d):
+            return meta(name, bases, d)
+
+    return type.__new__(metaclass, "temporary_class", (), {})
 
 
 class UnicodeMixin:
@@ -47,7 +54,7 @@ class OrgMeta(ModelBase):
 
     def __new__(cls, name, bases, attrs):  # noqa
         # Borrowed from Django-polymorphic
-        # Workaround compatibility issue with six.with_metaclass() and custom
+        # Workaround compatibility issue with with_metaclass() and custom
         # Django model metaclasses:
         if not attrs and name == "NewBase":
             return super(OrgMeta, cls).__new__(cls, name, bases, attrs)
@@ -242,7 +249,7 @@ class AbstractBaseOrganization(models.Model):
         return True if user in self.users.all() else False
 
 
-class OrganizationBase(six.with_metaclass(OrgMeta, AbstractBaseOrganization)):
+class OrganizationBase(with_metaclass(OrgMeta, AbstractBaseOrganization)):
     class Meta(AbstractBaseOrganization.Meta):
         abstract = True
 
@@ -293,7 +300,7 @@ class AbstractBaseOrganizationUser(models.Model):
             return str(self.user)
 
 
-class OrganizationUserBase(six.with_metaclass(OrgMeta, AbstractBaseOrganizationUser)):
+class OrganizationUserBase(with_metaclass(OrgMeta, AbstractBaseOrganizationUser)):
     class Meta(AbstractBaseOrganizationUser.Meta):
         abstract = True
 
@@ -310,7 +317,7 @@ class AbstractBaseOrganizationOwner(models.Model):
         return "{0}: {1}".format(self.organization, self.organization_user)
 
 
-class OrganizationOwnerBase(six.with_metaclass(OrgMeta, AbstractBaseOrganizationOwner)):
+class OrganizationOwnerBase(with_metaclass(OrgMeta, AbstractBaseOrganizationOwner)):
     class Meta(AbstractBaseOrganizationOwner.Meta):
         abstract = True
 
@@ -378,6 +385,6 @@ class AbstractBaseInvitation(models.Model):
         raise NotImplementedError
 
 
-class OrganizationInvitationBase(six.with_metaclass(OrgMeta, AbstractBaseInvitation)):
+class OrganizationInvitationBase(with_metaclass(OrgMeta, AbstractBaseInvitation)):
     class Meta(AbstractBaseInvitation.Meta):
         abstract = True
