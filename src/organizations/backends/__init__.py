@@ -1,4 +1,3 @@
-
 from importlib import import_module
 from typing import Optional  # noqa
 from typing import Text  # noqa

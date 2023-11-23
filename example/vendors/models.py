@@ -1,12 +1,10 @@
 from django.contrib.auth.models import Permission
 from django.db import models
 
-from organizations.abstract import (
-    AbstractOrganization,
-    AbstractOrganizationInvitation,
-    AbstractOrganizationOwner,
-    AbstractOrganizationUser,
-)
+from organizations.abstract import AbstractOrganization
+from organizations.abstract import AbstractOrganizationInvitation
+from organizations.abstract import AbstractOrganizationOwner
+from organizations.abstract import AbstractOrganizationUser
 
 
 class Vendor(AbstractOrganization):

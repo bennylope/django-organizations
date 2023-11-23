@@ -1,4 +1,3 @@
-
 """Backend classes should provide common interface"""
 
 import email.utils
@@ -144,8 +143,8 @@ class BaseBackend:
     ):
         """
         Returns an email message for a new user. This can be easily overridden.
-        For instance, to send an HTML message, use the EmailMultiAlternatives message_class
-        and attach the additional conent.
+        For instance, to send an HTML message, use the EmailMultiAlternatives
+        message_class and attach the additional conent.
         """
         if sender:
             try:

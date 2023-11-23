@@ -8,7 +8,6 @@ import subprocess
 
 import nox
 
-
 NOX_DIR = os.path.abspath(os.path.dirname(__file__))
 
 DEFAULT_INTERPRETER = "3.8"
@@ -46,7 +45,7 @@ def manage(session, *args):
     session.install("six")
     session.install("django-autoslug")
     session.install("Django==3.1")
-    session.install('-e', '.')
+    session.install("-e", ".")
     args = args if args else session.posargs
     session.run("python", "manage.py", *args)
 
@@ -103,7 +102,6 @@ def publish(session):
     session.run("twine", "check", "dist/*")
     print("REMINDER: Has the changelog been updated?")
     session.run("python", "-m", "twine", "upload", "dist/*")
-
 
 
 @nox.session(python=DEFAULT_INTERPRETER, reuse_venv=True)

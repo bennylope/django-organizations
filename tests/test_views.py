@@ -127,7 +127,9 @@ class TestSignupView:
         assert response.status_code == 302
 
         # Verify its in the database
-        Organization.objects.get(slug="an-association-of-very-interesting-people", is_active=False)
+        Organization.objects.get(
+            slug="an-association-of-very-interesting-people", is_active=False
+        )
 
 
 class TestBaseCreateOrganization:
@@ -187,7 +189,6 @@ class TestBaseOrganizationUserDelete:
 
 @override_settings(USE_TZ=True)
 class TestBasicOrgViews(TestCase):
-
     fixtures = ["users.json", "orgs.json"]
 
     def setUp(self):
@@ -272,7 +273,7 @@ class TestBasicOrgViews(TestCase):
                 request=self.kurt_request, kwargs=kwargs
             ).get,
             self.kurt_request,
-            **kwargs
+            **kwargs,
         )
 
     def test_user_create_get(self):

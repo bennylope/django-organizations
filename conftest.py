@@ -3,6 +3,7 @@ Configuration file for py.test
 """
 
 import django
+
 import pytest
 
 
@@ -66,6 +67,7 @@ def pytest_configure():
         SECRET_KEY="ThisIsHorriblyInsecure",
     )
     django.setup()
+
 
 @pytest.fixture(autouse=True)
 def enable_db_access_for_all_tests(db):

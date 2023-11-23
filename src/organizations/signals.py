@@ -1,4 +1,3 @@
-
 import django.dispatch
 
 user_added = django.dispatch.Signal()

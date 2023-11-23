@@ -1,4 +1,3 @@
-
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.exceptions import ImproperlyConfigured
 from django.http import HttpResponseGone

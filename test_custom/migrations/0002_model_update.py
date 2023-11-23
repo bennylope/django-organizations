@@ -1,10 +1,9 @@
 from __future__ import unicode_literals
 
-from django.db import migrations, models
+from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [("test_custom", "0001_initial")]
 
     operations = [

@@ -18,7 +18,6 @@ from test_custom.models import Team
 
 @override_settings(USE_TZ=True)
 class ActiveManagerTests(TestCase):
-
     fixtures = ["users.json", "orgs.json"]
 
     def test_active(self):
@@ -33,7 +32,6 @@ class ActiveManagerTests(TestCase):
 
 @override_settings(USE_TZ=True)
 class OrgModelTests(TestCase):
-
     fixtures = ["users.json", "orgs.json"]
 
     def setUp(self):
@@ -131,7 +129,6 @@ class OrgModelTests(TestCase):
 
 @override_settings(USE_TZ=True)
 class OrgDeleteTests(TestCase):
-
     fixtures = ["users.json", "orgs.json"]
 
     def test_delete_account(self):
@@ -154,7 +151,6 @@ class OrgDeleteTests(TestCase):
 
 
 class CustomModelTests(TestCase):
-
     # Load the world as we know it.
     fixtures = ["users.json", "orgs.json"]
 
