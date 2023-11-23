@@ -28,16 +28,15 @@ First add the application to your Python path. The easiest way is to use
 
     pip install django-organizations
 
-Upgrading Django for existing installations
--------------------------------------------
+Quickstart Configuration
+========================
 
-If you are upgrading the Django version of an existing deployment that
-deprecates South in favor of Django's native migrations, you will need to fake
-the migrations for Django Organizations (if you have installed the app
-directly, of course).
+.. note::
 
-Configuration
-=============
+    If however you want to use single-table customized organization models and/or
+    custom *organization user* models, it may be best to treat Django organizations
+    as a library and *not* install it in your Django project. See the
+    :ref:`cookbook-advanced` section.
 
 Ensure that you have a user system in place to connect to your organizations.
 
@@ -51,13 +50,6 @@ settings file.::
 
 This should work for the majority of cases, from either simple, out-of-the-box
 installations to custom organization models.
-
-.. note::
-
-    If however you want to use single-table customized organization models and/or
-    custom *organization user* models, it may be best to treat Django organizations
-    as a library and *not* install it in your Django project. See the
-    :ref:`cookbook-advanced` section.
 
 URLs
 ----
