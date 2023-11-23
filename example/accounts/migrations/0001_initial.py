@@ -9,7 +9,6 @@ import organizations.fields
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [migrations.swappable_dependency(settings.AUTH_USER_MODEL)]
@@ -65,7 +64,6 @@ class Migration(migrations.Migration):
                 "ordering": ["name"],
                 "abstract": False,
             },
-            bases=(organizations.base.UnicodeMixin, models.Model),
         ),
         migrations.CreateModel(
             name="AccountUser",
@@ -117,7 +115,6 @@ class Migration(migrations.Migration):
                 "abstract": False,
                 "unique_together": {("user", "organization")},
             },
-            bases=(organizations.base.UnicodeMixin, models.Model),
         ),
         migrations.CreateModel(
             name="AccountOwner",
@@ -164,7 +161,6 @@ class Migration(migrations.Migration):
                 "verbose_name_plural": "organization owners",
                 "abstract": False,
             },
-            bases=(organizations.base.UnicodeMixin, models.Model),
         ),
         migrations.CreateModel(
             name="AccountInvitation",
@@ -226,7 +222,6 @@ class Migration(migrations.Migration):
                 ),
             ],
             options={"abstract": False},
-            bases=(organizations.base.UnicodeMixin, models.Model),
         ),
         migrations.AddField(
             model_name="account",

@@ -24,14 +24,6 @@ def with_metaclass(meta, *bases):
     return type.__new__(metaclass, "temporary_class", (), {})
 
 
-class UnicodeMixin:
-    """
-    Python 2 and 3 string representation support.
-
-    Legacy cruft. Removing entirely even from migrations affects the
-    meta class creation.
-    """
-
 
 class OrgMeta(ModelBase):
     """

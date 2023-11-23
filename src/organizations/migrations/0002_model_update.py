@@ -4,7 +4,6 @@ import organizations.fields
 
 
 class Migration(migrations.Migration):
-
     dependencies = [("organizations", "0001_initial")]
 
     operations = [

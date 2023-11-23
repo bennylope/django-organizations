@@ -4,7 +4,6 @@ import organizations.fields
 
 
 class Migration(migrations.Migration):
-
     dependencies = [("organizations", "0002_model_update")]
 
     operations = [
