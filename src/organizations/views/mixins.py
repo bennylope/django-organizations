@@ -1,4 +1,3 @@
-
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import get_object_or_404
 from django.utils.functional import cached_property

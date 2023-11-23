@@ -50,7 +50,6 @@ class TestSansOrganizations(TestCase):
 
 @override_settings(USE_TZ=True)
 class TestInvitations(TestCase):
-
     fixtures = ["users.json", "orgs.json"]
 
     def setUp(self):
@@ -144,7 +143,6 @@ class TestInvitations(TestCase):
 
 @override_settings(USE_TZ=True)
 class TestRegistration(TestCase):
-
     fixtures = ["users.json", "orgs.json"]
 
     def setUp(self):

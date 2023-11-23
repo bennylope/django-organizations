@@ -49,11 +49,14 @@ docs = [
     "Sphinx==3.5.4",
     "furo==2021.4.11b34",
 ]
-dev = [
-    "django-organizations[tests]",
-    "tox",
-    "black",
+linting = [
     "ruff",
+    "isort",
+]
+dev = [
+    "django-organizations[tests,linting]",
+    "tox",
+    "pre-commit",
 ]
 
 [build-system]
@@ -73,3 +76,13 @@ packages = ["src/oranizations"]
 
 [tool.black]
 target-version = ["py311"]
+
+[tool.isort]
+line_length = 88
+force_single_line = true
+known_future_library = "future"
+known_django = "django"
+known_first_party = ["organizations"]
+sections = ["FUTURE", "STDLIB", "DJANGO", "THIRDPARTY", "FIRSTPARTY", "LOCALFOLDER"]
+default_section = "THIRDPARTY"
+skip_glob = ["**/__init__.py", "*/__init__.py"]

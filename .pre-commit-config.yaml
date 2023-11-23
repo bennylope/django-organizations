@@ -1,0 +1,18 @@
+exclude: "docs|node_modules|migrations|.git|.tox"
+default_stages: [ commit ]
+fail_fast: true
+
+repos:
+
+  - repo: https://github.com/charliermarsh/ruff-pre-commit
+    rev: "v0.1.6"
+    hooks:
+      - id: ruff-format
+      - id: ruff
+
+  - repo: https://github.com/pycqa/isort
+    rev: 5.12.0
+    hooks:
+      - id: isort
+        args:
+          - --settings-path=pyproject.toml

@@ -13,7 +13,6 @@ from organizations.signals import user_removed
 
 @override_settings(USE_TZ=True)
 class SignalsTestCase(TestCase):
-
     fixtures = ["users.json", "orgs.json"]
 
     def setUp(self):
@@ -27,7 +26,6 @@ class SignalsTestCase(TestCase):
         self.owner = self.org.organization_users.get(user__username="kurt")
 
     def test_user_added_called(self):
-
         with mock_signal_receiver(user_added) as add_receiver:
             self.foo.add_user(self.krist)
 
@@ -45,14 +43,12 @@ class SignalsTestCase(TestCase):
             )
 
     def test_user_added_not_called(self):
-
         with mock_signal_receiver(user_added) as add_receiver:
             self.foo.get_or_add_user(self.dave)
 
             self.assertEqual(add_receiver.call_args_list, [])
 
     def test_user_removed_called(self):
-
         with mock_signal_receiver(user_removed) as remove_receiver:
             self.foo.add_user(self.krist)
             self.foo.remove_user(self.krist)
@@ -63,7 +59,6 @@ class SignalsTestCase(TestCase):
             )
 
     def test_owner_changed_called(self):
-
         with mock_signal_receiver(owner_changed) as changed_receiver:
             self.org.change_owner(self.admin)
 

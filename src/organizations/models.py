@@ -1,4 +1,3 @@
-
 from organizations.abstract import AbstractOrganization
 from organizations.abstract import AbstractOrganizationInvitation
 from organizations.abstract import AbstractOrganizationOwner

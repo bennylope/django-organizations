@@ -13,7 +13,6 @@ from test_accounts.models import Account
 
 @override_settings(USE_TZ=True)
 class CreateOrgTests(TestCase):
-
     fixtures = ["users.json", "orgs.json"]
 
     def setUp(self):

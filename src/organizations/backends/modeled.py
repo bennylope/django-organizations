@@ -1,4 +1,3 @@
-
 """
 Invitations that use an invitation model
 """
@@ -42,12 +41,13 @@ class ModelInvitation(InvitationBackend):
 
     def __init__(self, org_model=None, namespace=None):
         super().__init__(org_model=org_model, namespace=namespace)
-        self.invitation_model = (
-            self.org_model.invitation_model
-        )  # type: OrganizationInvitationBase
+        self.invitation_model = self.org_model.invitation_model  # type: OrganizationInvitationBase  # noqa: E501
 
     def get_invitation_queryset(self):
-        """Return this to use a custom queryset that checks for expiration, for example"""
+        """Return available invitations.
+
+        Use a custom queryset that checks for expiration, for example.
+        """
         return self.invitation_model.objects.all()
 
     def get_invitation_accepted_url(self):
@@ -171,8 +171,8 @@ class ModelInvitation(InvitationBackend):
     ):
         """
         Returns an invitation email message. This can be easily overridden.
-        For instance, to send an HTML message, use the EmailMultiAlternatives message_class
-        and attach the additional conent.
+        For instance, to send an HTML message, use the EmailMultiAlternatives
+        message_class and attach the additional conent.
         """
         from_email = "%s %s <%s>" % (
             sender.first_name,

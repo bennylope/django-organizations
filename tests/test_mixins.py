@@ -40,7 +40,6 @@ class UserView(OrganizationUserMixin, ViewStub):
 
 @override_settings(USE_TZ=True)
 class ObjectMixinTests(TestCase):
-
     fixtures = ["users.json", "orgs.json"]
 
     def setUp(self):
@@ -67,7 +66,6 @@ class ObjectMixinTests(TestCase):
 
 @override_settings(USE_TZ=True)
 class AccessMixinTests(TestCase):
-
     fixtures = ["users.json", "orgs.json"]
 
     def setUp(self):

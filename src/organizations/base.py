@@ -1,4 +1,3 @@
-
 import uuid
 
 from django.conf import settings
@@ -22,7 +21,6 @@ def with_metaclass(meta, *bases):
             return meta(name, bases, d)
 
     return type.__new__(metaclass, "temporary_class", (), {})
-
 
 
 class OrgMeta(ModelBase):
@@ -326,7 +324,8 @@ class AbstractBaseInvitation(models.Model):
     invitee_identifier = models.CharField(
         max_length=1000,
         help_text=_(
-            "The contact identifier for the invitee, email, phone number, social media handle, etc."
+            "The contact identifier for the invitee, email, phone number,"
+            " social media handle, etc."
         ),
     )
 

@@ -62,7 +62,6 @@ class TestOrganizationAddForm(TestCase):
 
 
 class TestOrganizationUserAddForm(TestCase):
-
     fixtures = ["users.json", "orgs.json"]
 
     def setUp(self):
@@ -75,7 +74,9 @@ class TestOrganizationUserAddForm(TestCase):
         User.objects.create_user("asdkjf1", password="ajsdkfa3", email="bob@bob.com")
         request = request_factory_login(self.factory, self.owner.user)
         form = OrganizationUserAddForm(
-            request=request, organization=self.org, data={"email": "bob@bob.com"},
+            request=request,
+            organization=self.org,
+            data={"email": "bob@bob.com"},
         )
         self.assertFalse(form.is_valid())
 
@@ -83,7 +84,9 @@ class TestOrganizationUserAddForm(TestCase):
         admin = self.org.organization_users.get(user__username="krist")
         request = request_factory_login(self.factory, self.owner.user)
         form = OrganizationUserAddForm(
-            request=request, organization=self.org, data={"email": admin.user.email},
+            request=request,
+            organization=self.org,
+            data={"email": admin.user.email},
         )
         self.assertFalse(form.is_valid())
 
@@ -100,7 +103,6 @@ class TestOrganizationUserAddForm(TestCase):
 
 @override_settings(USE_TZ=True)
 class TestOrganizationForm(TestCase):
-
     fixtures = ["users.json", "orgs.json"]
 
     def setUp(self):

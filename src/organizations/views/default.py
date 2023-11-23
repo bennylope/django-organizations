@@ -1,4 +1,3 @@
-
 from organizations.models import Organization
 from organizations.views.base import ViewFactory
 from organizations.views.mixins import AdminRequiredMixin

@@ -9,7 +9,6 @@ from organizations.models import Organization
 
 @override_settings(USE_TZ=True)
 class TestTagsAndFilters(TestCase):
-
     fixtures = ["users.json", "orgs.json"]
 
     def setUp(self):

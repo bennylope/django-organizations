@@ -51,7 +51,9 @@ class Migration(migrations.Migration):
                     "slug",
                     organizations.fields.SlugField(
                         editable=True,
-                        help_text="The name in all lowercase, suitable for URL identification",
+                        help_text=(
+                            "The name in all lowercase, suitable for URL identification"
+                        ),
                         max_length=200,
                         populate_from="name",
                         unique=True,
