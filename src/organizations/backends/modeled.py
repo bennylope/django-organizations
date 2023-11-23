@@ -157,7 +157,7 @@ class ModelInvitation(InvitationBackend):
             self.invitation_subject,
             self.invitation_body,
             invitation.invited_by,
-            **kwargs
+            **kwargs,
         ).send()
 
     def email_message(
@@ -167,7 +167,7 @@ class ModelInvitation(InvitationBackend):
         body_template,  # type: Text
         sender=None,  # type: Optional[AbstractUser]
         message_class=EmailMessage,
-        **kwargs
+        **kwargs,
     ):
         """
         Returns an invitation email message. This can be easily overridden.

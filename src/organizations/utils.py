@@ -35,7 +35,7 @@ def create_organization(
     is_active=None,
     org_defaults=None,
     org_user_defaults=None,
-    **kwargs
+    **kwargs,
 ):
     """
     Returns a new organization, also creating an initial organization user who

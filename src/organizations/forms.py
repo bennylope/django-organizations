@@ -91,7 +91,7 @@ class OrganizationUserAddForm(forms.ModelForm):
                     "domain": get_current_site(self.request),
                     "organization": self.organization,
                     "sender": self.request.user,
-                }
+                },
             )
         # Send a notification email to this user to inform them that they
         # have been added to a new organization.
@@ -101,7 +101,7 @@ class OrganizationUserAddForm(forms.ModelForm):
                 "domain": get_current_site(self.request),
                 "organization": self.organization,
                 "sender": self.request.user,
-            }
+            },
         )
         return OrganizationUser.objects.create(
             user=user,
@@ -156,7 +156,7 @@ class OrganizationAddForm(forms.ModelForm):
                     "organization": self.cleaned_data["name"],
                     "sender": self.request.user,
                     "created": True,
-                }
+                },
             )
             is_active = False
         return create_organization(

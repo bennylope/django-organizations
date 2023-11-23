@@ -140,7 +140,7 @@ class BaseBackend:
         body_template,
         sender=None,
         message_class=EmailMessage,
-        **kwargs
+        **kwargs,
     ):
         """
         Returns an email message for a new user. This can be easily overridden.

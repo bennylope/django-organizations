@@ -142,7 +142,7 @@ class BaseOrganizationUserRemind(OrganizationUserMixin, DetailView):
                 "domain": get_current_site(self.request),
                 "organization": self.organization,
                 "sender": request.user,
-            }
+            },
         )
         return redirect(self.get_success_url())
 

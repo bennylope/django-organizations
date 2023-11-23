@@ -3,6 +3,11 @@
 History
 =======
 
+2.4.0
+-----
+
+* Adopted Hatch as packaging tool with pyproject.toml
+
 2.3.1
 -----
 
