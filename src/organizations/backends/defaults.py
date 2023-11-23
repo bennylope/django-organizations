@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 
 """Backend classes should provide common interface"""
 

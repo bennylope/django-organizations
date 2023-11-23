@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 
 """
 Invitations that use an invitation model
