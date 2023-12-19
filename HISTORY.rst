@@ -3,10 +3,14 @@
 History
 =======
 
+
 2.4.0
 -----
 
 * Adopted Hatch as packaging tool with pyproject.toml
+* Updated Japanese translations (thanks @skyarrow87!)
+* Officially add support for Django 5.0
+* Drop support for Django 4.1 (Django 3.2 LTS and Django 4.2 LTS are still actively tested against)
 
 2.3.1
 -----
