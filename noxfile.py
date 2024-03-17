@@ -3,6 +3,7 @@ nox configuration to systematize release and pre-release tasks
 
 Several nox tasks copied from the pipx project, Copyright (c) 2018 Chad Smith
 """
+
 import os
 import subprocess
 

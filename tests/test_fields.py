@@ -1,6 +1,7 @@
 """
 Tests for configurable fields
 """
+
 import importlib
 
 from django.core.exceptions import ImproperlyConfigured
