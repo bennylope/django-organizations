@@ -10,7 +10,7 @@ django-organizations
     * - Summary
       - Groups and multi-user account management
     * - Author
-      - Ben Lopatin (http://benlopatin.com)
+      - Ben Lopatin (https://www.benlopatin.com)
     * - Status
       - |docs| |version| |wheel| |supported-versions| |supported-implementations|
 
