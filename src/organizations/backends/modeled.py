@@ -1,6 +1,7 @@
 """
 Invitations that use an invitation model
 """
+
 import email.utils
 from typing import List  # noqa
 from typing import Optional  # noqa

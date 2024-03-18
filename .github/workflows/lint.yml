@@ -19,6 +19,6 @@ jobs:
         run: pip install .[linting]
       - name: Run flake8
         run: |
-          ruff .
+          ruff check .
           ruff format --check .
           isort src/organizations --check --diff
