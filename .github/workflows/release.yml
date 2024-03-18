@@ -26,8 +26,8 @@ jobs:
     - name: Build and publish distribution
       if: (github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags')) || github.event_name == 'release'
       env:
-        TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
-        TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+        HATCH_INDEX_USER: ${{ secrets.PYPI_USERNAME }}
+        HATCH_INDEX_AUTH: ${{ secrets.PYPI_PASSWORD }}
       run: |
         hatch build
         hatch publish
