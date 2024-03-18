@@ -3,6 +3,10 @@
 History
 =======
 
+2.4.1
+-----
+
+* Fixes related to release process
 
 2.4.0
 -----
