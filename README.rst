@@ -171,6 +171,7 @@ For Django version 1:
 .. code-block:: python
 
     from organizations.backends import invitation_backend
+    from django.conf.urls import url
 
     urlpatterns = [
         ...
