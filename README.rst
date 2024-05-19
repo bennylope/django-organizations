@@ -166,25 +166,9 @@ application to your `INSTALLED_APPS` list:
 Then update your project URLs config. You should hook in the
 main application URL conf as well as your chosen invitation backend URLs:
 
-For Django version 1:
-
 .. code-block:: python
 
     from organizations.backends import invitation_backend
-    from django.conf.urls import url
-
-    urlpatterns = [
-        ...
-        url(r'^accounts/', include('organizations.urls')),
-        url(r'^invitations/', include(invitation_backend().get_urls())),
-    ]
-
-For Django version 2.x or above:
-
-.. code-block:: python
-
-    from organizations.backends import invitation_backend
-    from django.urls import path, include
 
     urlpatterns = [
         ...
