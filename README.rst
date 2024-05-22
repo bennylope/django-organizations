@@ -172,8 +172,8 @@ main application URL conf as well as your chosen invitation backend URLs:
 
     urlpatterns = [
         ...
-        url(r'^accounts/', include('organizations.urls')),
-        url(r'^invitations/', include(invitation_backend().get_urls())),
+        path('accounts/', include('organizations.urls')),
+        path('invitations/', include(invitation_backend().get_urls())),
     ]
 
 This is the simplest way of using the library, but it's far from the only
