@@ -128,7 +128,7 @@ class BaseBackend:
             return False
         token = PasswordResetTokenGenerator().make_token(user)
         kwargs.update({"token": token})
-        self.email_message(
+        return self.email_message(
             user, self.reminder_subject, self.reminder_body, sender, **kwargs
         ).send()
 
@@ -230,7 +230,7 @@ class RegistrationBackend(BaseBackend):
             return False
         token = self.get_token(user)
         kwargs.update({"token": token})
-        self.email_message(
+        return self.email_message(
             user, self.activation_subject, self.activation_body, sender, **kwargs
         ).send()
 
@@ -337,10 +337,9 @@ class InvitationBackend(BaseBackend):
             return False
         token = self.get_token(user)
         kwargs.update({"token": token})
-        self.email_message(
+        return self.email_message(
             user, self.invitation_subject, self.invitation_body, sender, **kwargs
         ).send()
-        return True
 
     def send_notification(self, user, sender=None, **kwargs):
         """
@@ -350,7 +349,6 @@ class InvitationBackend(BaseBackend):
         """
         if not user.is_active:
             return False
-        self.email_message(
+        return self.email_message(
             user, self.notification_subject, self.notification_body, sender, **kwargs
         ).send()
-        return True
