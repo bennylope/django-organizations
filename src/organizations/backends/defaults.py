@@ -131,6 +131,7 @@ class BaseBackend:
         self.email_message(
             user, self.reminder_subject, self.reminder_body, sender, **kwargs
         ).send()
+        return True
 
     def email_message(
         self,
@@ -233,6 +234,7 @@ class RegistrationBackend(BaseBackend):
         self.email_message(
             user, self.activation_subject, self.activation_body, sender, **kwargs
         ).send()
+        return True
 
     def create_view(self, request):
         """
