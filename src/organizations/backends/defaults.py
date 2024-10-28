@@ -19,6 +19,7 @@ from django.shortcuts import render
 from django.template import loader
 from django.urls import path
 from django.urls import reverse
+from django.utils.crypto import get_random_string
 from django.utils.translation import gettext as _
 
 from organizations.backends.forms import UserRegistrationForm
@@ -26,6 +27,20 @@ from organizations.backends.forms import org_registration_form
 from organizations.utils import create_organization
 from organizations.utils import default_org_model
 from organizations.utils import model_field_attr
+
+
+def make_random_password(
+    length=10,
+    allowed_chars="abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789",
+):
+    """
+    Generate a random password with the given length and given
+    allowed_chars. The default value of allowed_chars does not have "I" or
+    "O" or letters and digits that look similar -- just to avoid confusion.
+
+    (Pulled directly from since-deprecated manager method in Django source)
+    """
+    return get_random_string(length, allowed_chars)
 
 
 class BaseBackend:
@@ -215,7 +230,7 @@ class RegistrationBackend(BaseBackend):
             user = self.user_model.objects.create(
                 username=self.get_username(),
                 email=email,
-                password=self.user_model.objects.make_random_password(),
+                password=make_random_password(),
             )
             user.is_active = False
             user.save()
@@ -248,7 +263,7 @@ class RegistrationBackend(BaseBackend):
                 user = self.user_model.objects.create(
                     username=self.get_username(),
                     email=form.cleaned_data["email"],
-                    password=self.user_model.objects.make_random_password(),
+                    password=make_random_password(),
                 )
                 user.is_active = False
                 user.save()
@@ -317,11 +332,11 @@ class InvitationBackend(BaseBackend):
                 user = self.user_model.objects.create(
                     username=self.get_username(),
                     email=email,
-                    password=self.user_model.objects.make_random_password(),
+                    password=make_random_password(),
                 )
             else:
                 user = self.user_model.objects.create(
-                    email=email, password=self.user_model.objects.make_random_password()
+                    email=email, password=make_random_password()
                 )
             user.is_active = False
             user.save()
