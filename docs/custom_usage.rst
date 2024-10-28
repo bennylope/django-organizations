@@ -171,7 +171,7 @@ with the contents of a freshly generated UUID.
 
 In the example accounts app you would create a file named `backends.py`.::
 
-    from organizations.backends.defaults import InvitationBackend
+    from organizations.backends.defaults import InvitationBackend, make_random_password
 
 
     class CustomInvitations(InvitationBackend):
@@ -179,8 +179,10 @@ In the example accounts app you would create a file named `backends.py`.::
           try:
               user = self.user_model.objects.get(email=email)
           except self.user_model.DoesNotExist:
-              user = self.user_model.objects.create(email=email,
-                      password=self.user_model.objects.make_random_password())
+              user = self.user_model.objects.create(
+                  email=email,
+                  password=make_random_password(),
+              )
               user.is_active = False
               user.save()
           self.send_invitation(user, sender, **kwargs)

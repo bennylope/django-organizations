@@ -3,6 +3,13 @@
 History
 =======
 
+2.5.0
+-----
+
+* Drop Python 3.8 support
+* Add Python 3.13 support
+* Add Django 5.1 support
+
 2.4.1
 -----
 
