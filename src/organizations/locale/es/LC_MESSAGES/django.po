@@ -32,8 +32,8 @@ msgid "organizations"
 msgstr "organizaciones"
 
 #: abstract.py:179
-msgid "is admin"
-msgstr "es administrador"
+msgid "Is admin"
+msgstr "Es administrador"
 
 #: abstract.py:183
 msgid "organization user"
@@ -80,12 +80,12 @@ msgid "The name of the organization"
 msgstr "El nombre de la organización"
 
 #: base.py:213
-msgid "is active"
-msgstr "está activo"
+msgid "Is active"
+msgstr "Está activo"
 
 #: base.py:325
-msgid "invitee identifier"
-msgstr "identificador del invitado"
+msgid "Invitee identifier"
+msgstr "Identificador del invitado"
 
 #: base.py:328
 msgid ""

@@ -209,8 +209,12 @@ class AbstractBaseOrganization(models.Model):
     the owner user.
     """
 
-    name = models.CharField(verbose_name=_('name'), max_length=200, help_text=_("The name of the organization"))
-    is_active = models.BooleanField(verbose_name=_('is active'), default=True)
+    name = models.CharField(
+        verbose_name=_("name"),
+        max_length=200,
+        help_text=_("The name of the organization"),
+    )
+    is_active = models.BooleanField(verbose_name=_("Is active"), default=True)
 
     objects = OrgManager()
     active = ActiveOrgManager()
@@ -322,7 +326,7 @@ class AbstractBaseInvitation(models.Model):
 
     guid = models.UUIDField(editable=False)
     invitee_identifier = models.CharField(
-        verbose_name=_('invitee identifier'),
+        verbose_name=_("Invitee identifier"),
         max_length=1000,
         help_text=_(
             "The contact identifier for the invitee, email, phone number,"
