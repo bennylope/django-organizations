@@ -176,7 +176,7 @@ class AbstractOrganizationUser(
     Abstract OrganizationUser model
     """
 
-    is_admin = models.BooleanField(verbose_name=_('is admin'), default=False)
+    is_admin = models.BooleanField(verbose_name=_("Is admin"), default=False)
 
     class Meta(AbstractBaseOrganizationUser.Meta):
         abstract = True
