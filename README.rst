@@ -90,7 +90,8 @@ The codebase is targeted and tested against:
 
 * Django 3.2.x against Python 3.8, 3.9, 3.10
 * Django 4.2.x against Python 3.8, 3.9, 3.10, 3.11, 3.12
-* Django 5.2.x against Python 3.10, 3.11, 3.12, 3.13
+* Django 5.2.x against Python 3.10, 3.11, 3.12, 3.13, 3.14
+* Django 6.0.x against Python 3.12, 3.13, 3.14
 
 To run the tests against all target environments, install `tox
 <https://testrun.org/tox/latest/>`_ and then execute the command::
