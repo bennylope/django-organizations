@@ -16,6 +16,7 @@ def pytest_configure():
         DATABASES={
             "default": {"ENGINE": "django.db.backends.sqlite3", "NAME": "test.sqlite3"}
         },
+        DEFAULT_AUTO_FIELD="django.db.models.AutoField",
         INSTALLED_APPS=[
             "django.contrib.auth",
             "django.contrib.contenttypes",
