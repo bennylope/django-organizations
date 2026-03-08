@@ -88,9 +88,9 @@ Targets & testing
 
 The codebase is targeted and tested against:
 
-* Django 3.2.x against Python 3.8, 3.9, 3.10
-* Django 4.2.x against Python 3.8, 3.9, 3.10, 3.11, 3.12
-* Django 5.2.x against Python 3.10, 3.11, 3.12, 3.13
+* Django 4.2.x against Python 3.10, 3.11, 3.12
+* Django 5.2.x against Python 3.10, 3.11, 3.12, 3.13, 3.14
+* Django 6.0.x against Python 3.12, 3.13, 3.14
 
 To run the tests against all target environments, install `tox
 <https://testrun.org/tox/latest/>`_ and then execute the command::
@@ -145,6 +145,12 @@ the PyPI package page for pre-release versions. These can be downloaded by speci
 By default you will need to install `django-extensions` or comparable libraries
 if you plan on adding Django Organizations as an installed app to your Django
 project. See below on configuring.
+
+Upgrading
+---------
+
+Upgrading django-organizations is expected to be a low-impact operation. See the Upgrading
+section in the Getting Started docs for additional considerations.
 
 Configuring
 -----------
@@ -268,14 +274,3 @@ License
 
 Anyone is free to use or modify this software under the terms of the BSD
 license.
-
-Sponsors
-========
-
-`Muster <https://www.muster.com/home?utm_source=github&campaign=opensource>`_ is building precision advocacy software to impact policy through grassroots action.
-
-.. image:: https://www.muster.com/hs-fs/hubfs/muster_logo-2.png?width=600&name=muster_logo-2.png
-  :target: https://www.muster.com/home?utm_source=github&campaign=opensource
-  :width: 400
-  :alt: Alternative text
-

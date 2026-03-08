@@ -97,6 +97,21 @@ consistent**, including keyword arguments. Otherwise you will end up generating
 extraneous and possibly conflicting migrations in your own app. The SlugField
 must accept the `populate_from` keyword argument.
 
+Upgrading
+=========
+
+Updating Django from a pre-6.0 version to 6.0 or above may result in creating
+new migrations for custom organization models if you do not already have
+`DEFAULT_AUTO_FIELD` set in your project. This is because in Django 6.0 the
+default field changed from `AutoField` (with an `IntegerField` under the hood)
+to a `BigAutoField` (with a `BigIntegerField` under the hood).
+
+This applies to your project and your project migrations, however, so
+you are free to treat this however you want, e.g. if you want to keep `IntegerFields`
+as the field type, configure your project settings as much or separate the `database
+and state operations <https://docs.djangoproject.com/en/6.0/ref/migration-operations/#django.db.migrations.operations.SeparateDatabaseAndState>`_
+in the migration (maybe not ideal but safe with regard to your database).
+
 Users and multi-account membership
 ==================================
 
