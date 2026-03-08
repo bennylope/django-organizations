@@ -97,6 +97,21 @@ consistent**, including keyword arguments. Otherwise you will end up generating
 extraneous and possibly conflicting migrations in your own app. The SlugField
 must accept the `populate_from` keyword argument.
 
+Upgrading
+=========
+
+If you are upgrading from version 2.5.0 *and* have custom models *and* 
+created them without a project-specified
+`primary key field type <https://docs.djangoproject.com/en/6.0/topics/db/models/#automatic-primary-key-fields>`_
+*and* you created your models prior to the default use of `BigInt` as the
+underlying autoincrementing ID field, *then* be informed that running `makemigrations` will 
+create new migrations updating these fields from `IntegerField` to `BigIntegerField`
+(wrapped by `BigAutoField`). This applies to your project and your project migrations, however, so
+you are free to treat this however you want, e.g. if you want to keep `IntegerFields`
+as the field type, configure your project settings as much or separate the `database
+and state operations <https://docs.djangoproject.com/en/6.0/ref/migration-operations/#django.db.migrations.operations.SeparateDatabaseAndState>`_
+in the migration (maybe not ideal but safe with regard to your database).
+
 Users and multi-account membership
 ==================================
 

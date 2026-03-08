@@ -146,6 +146,12 @@ By default you will need to install `django-extensions` or comparable libraries
 if you plan on adding Django Organizations as an installed app to your Django
 project. See below on configuring.
 
+Upgrading
+---------
+
+Upgrading django-organizations is expected to be a low-impact operation. See the Upgrading
+section in the Getting Started docs for additional considerations.
+
 Configuring
 -----------
 
@@ -268,14 +274,3 @@ License
 
 Anyone is free to use or modify this software under the terms of the BSD
 license.
-
-Sponsors
-========
-
-`Muster <https://www.muster.com/home?utm_source=github&campaign=opensource>`_ is building precision advocacy software to impact policy through grassroots action.
-
-.. image:: https://www.muster.com/hs-fs/hubfs/muster_logo-2.png?width=600&name=muster_logo-2.png
-  :target: https://www.muster.com/home?utm_source=github&campaign=opensource
-  :width: 400
-  :alt: Alternative text
-
