@@ -106,7 +106,7 @@ class BaseBackend:
             org.is_active = True
             org.save()
 
-    def activate_view(self, request, user_id, token):
+    def activate_view(self, request, user_id, token, extra_context=None):
         """
         View function that activates the given User by setting `is_active` to
         true if the provided information is verified.
@@ -135,7 +135,7 @@ class BaseBackend:
                 raise Http404(_("Can't authenticate user"))
             login(request, user)
             return redirect(self.get_success_url())
-        return render(request, self.registration_form_template, {"form": form})
+        return render(request, self.registration_form_template, {"form": form, **(extra_context or {})})
 
     def send_reminder(self, user, sender=None, **kwargs):
         """Sends a reminder email to the specified user"""
@@ -249,7 +249,7 @@ class RegistrationBackend(BaseBackend):
             user, self.activation_subject, self.activation_body, sender, **kwargs
         ).send()
 
-    def create_view(self, request):
+    def create_view(self, request, extra_context=None):
         """
         Initiates the organization and user account creation process
         """
@@ -278,12 +278,12 @@ class RegistrationBackend(BaseBackend):
             return render(
                 request,
                 self.activation_success_template,
-                {"user": user, "organization": organization},
+                {"user": user, "organization": organization, **(extra_context or {})},
             )
-        return render(request, self.registration_form_template, {"form": form})
+        return render(request, self.registration_form_template, {"form": form, **(extra_context or {})})
 
-    def success_view(self, request):
-        return render(request, self.activation_success_template, {})
+    def success_view(self, request, extra_context=None):
+        return render(request, self.activation_success_template, {**(extra_context or {})})
 
 
 class InvitationBackend(BaseBackend):
