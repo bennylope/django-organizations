@@ -168,7 +168,7 @@ The primary methods of interest are the `invite_by_email` method and the
         
         domain={ "name": "My Site", "domain": "www.example.com" }
     
-.. method:: InvitationBackend.activate_view(request, user_id, token)
+.. method:: InvitationBackend.activate_view(request, user_id, token, extra_context=None)
 
   This method is a view for activating a user account via a unique link sent
   via email. The view ensures the token matches a user and is valid, that the
