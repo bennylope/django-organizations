@@ -27,27 +27,15 @@ def model_field_names(model):
     )
 
 
-def create_organization(
-    user,
-    name,
-    slug=None,
-    is_active=None,
-    org_defaults=None,
-    org_user_defaults=None,
-    **kwargs,
+def _resolve_organization_models(
+    user, name, slug, is_active, org_defaults, org_user_defaults, kwargs
 ):
     """
-    Returns a new organization, also creating an initial organization user who
-    is the owner.
+    Resolves the models and default values shared by ``create_organization`` and
+    ``acreate_organization``.
 
-    The specific models can be specified if a custom organization app is used.
-    The simplest way would be to use a partial.
-
-    >>> from organizations.utils import create_organization
-    >>> from myapp.models import Account
-    >>> from functools import partial
-    >>> create_account = partial(create_organization, model=Account)
-
+    Returns a tuple of ``(org_model, org_user_model, org_owner_model,
+    org_defaults, org_user_defaults)`` ready to be passed to the (a)sync ORM.
     """
     org_model = (
         kwargs.pop("model", None)
@@ -73,12 +61,79 @@ def create_organization(
         org_defaults.update({"is_active": is_active})
 
     org_defaults.update({"name": name})
+    org_user_defaults.update({"user": user})
+    return org_model, org_user_model, org_owner_model, org_defaults, org_user_defaults
+
+
+def create_organization(
+    user,
+    name,
+    slug=None,
+    is_active=None,
+    org_defaults=None,
+    org_user_defaults=None,
+    **kwargs,
+):
+    """
+    Returns a new organization, also creating an initial organization user who
+    is the owner.
+
+    The specific models can be specified if a custom organization app is used.
+    The simplest way would be to use a partial.
+
+    >>> from organizations.utils import create_organization
+    >>> from myapp.models import Account
+    >>> from functools import partial
+    >>> create_account = partial(create_organization, model=Account)
+
+    """
+    (
+        org_model,
+        org_user_model,
+        org_owner_model,
+        org_defaults,
+        org_user_defaults,
+    ) = _resolve_organization_models(
+        user, name, slug, is_active, org_defaults, org_user_defaults, kwargs
+    )
+
     organization = org_model.objects.create(**org_defaults)
 
-    org_user_defaults.update({"organization": organization, "user": user})
+    org_user_defaults.update({"organization": organization})
     new_user = org_user_model.objects.create(**org_user_defaults)
 
     org_owner_model.objects.create(
+        organization=organization, organization_user=new_user
+    )
+    return organization
+
+
+async def acreate_organization(
+    user,
+    name,
+    slug=None,
+    is_active=None,
+    org_defaults=None,
+    org_user_defaults=None,
+    **kwargs,
+):
+    """Async version of ``create_organization``."""
+    (
+        org_model,
+        org_user_model,
+        org_owner_model,
+        org_defaults,
+        org_user_defaults,
+    ) = _resolve_organization_models(
+        user, name, slug, is_active, org_defaults, org_user_defaults, kwargs
+    )
+
+    organization = await org_model.objects.acreate(**org_defaults)
+
+    org_user_defaults.update({"organization": organization})
+    new_user = await org_user_model.objects.acreate(**org_user_defaults)
+
+    await org_owner_model.objects.acreate(
         organization=organization, organization_user=new_user
     )
     return organization
