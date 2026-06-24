@@ -1,6 +1,4 @@
-============
-Contributing
-============
+# Contributing
 
 Contributions are welcome, and they are greatly appreciated! Every
 little bit helps and credit will always be given.
@@ -12,11 +10,9 @@ code contributions.
 
 **Bug fix pull requests should be made against the MASTER branch.**
 
-Types of Contributions
-======================
+## Types of Contributions
 
-Report Bugs
-~~~~~~~~~~~
+### Report Bugs
 
 Report bugs at https://github.com/bennylope/django-organizations/issues.
 
@@ -29,27 +25,23 @@ If you are reporting a bug, please include:
 * Any additional details about your local setup that might be helpful in troubleshooting.
 * Detailed steps to reproduce the bug.
 
-Fix Bugs
-~~~~~~~~
+### Fix Bugs
 
 Look through the GitHub issues for bugs. Anything tagged with "bug"
 is open to whoever wants to implement it.
 
-Implement Features
-~~~~~~~~~~~~~~~~~~
+### Implement Features
 
 Look through the GitHub issues for features. Anything tagged with "feature"
 is open to whoever wants to implement it.
 
-Write Documentation
-~~~~~~~~~~~~~~~~~~~
+### Write Documentation
 
 Django-organizations could always use more documentation, whether as part of the
 official Django-organizations docs, in docstrings, or even on the web in blog posts,
 articles, and such.
 
-Submit Feedback
-~~~~~~~~~~~~~~~
+### Submit Feedback
 
 The best way to send feedback is to file an issue at https://github.com/bennylope/django-organizations/issues.
 
@@ -60,8 +52,7 @@ If you are proposing a feature:
 * Remember that this is a volunteer-driven project, and that contributions
   are welcome
 
-Get Started!
-------------
+## Get Started!
 
 Ready to contribute? Here's how to set up `django-organizations` for local development.
 
@@ -96,8 +87,7 @@ Ready to contribute? Here's how to set up `django-organizations` for local devel
 
 7. Submit a pull request through the GitHub website.
 
-Feature Scope
-=============
+## Feature Scope
 
 Django Organizations should make working with group account simple by providing
 patterns and code to perform core functionality. There's potential overlap with
@@ -108,8 +98,7 @@ end-user's project. If something requires a bit more work, it'd be better to
 modify Django Organizations to allow new custom functionality, rather than
 adding that in directly.
 
-Pull Request Guidelines
-=======================
+## Pull Request Guidelines
 
 **Bug fix pull requests should be made against the MASTER branch.**
 
@@ -141,3 +130,21 @@ running `migrate`.
 I am aiming to support each major Django version for `as long as it is
 supported
 <https://docs.djangoproject.com/en/dev/internals/release-process/#lts-releases>`_.
+
+## AI Policy
+
+In brief: this project does not prohibit contributions made with the assistance of
+generative AI tools, however it does demand that contributors take sole responsibility
+for their contributions and said contributions are legible to humans.
+
+- **Do NOT include tool co-authors in commits. These will be rejected as a matter of policy
+  no matter how small the contribution.**
+- Please indicate if and what tools were used, within the context of the issue or PR
+  description/comments.
+- Please do NOT use AI tooling to write prose (e.g. issues, PRs, comments, etc). 
+- No bots, no matter what the intent.
+
+Any contributions created with the assistance of generative AI tools must still meet
+the criteria of helpful contributions, both with regard to their intended solution
+and with regard to how they are presented for review.
+
