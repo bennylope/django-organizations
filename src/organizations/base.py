@@ -237,6 +237,12 @@ class AbstractBaseOrganization(models.Model):
     def is_member(self, user):
         return True if user in self.users.all() else False
 
+    async def ais_member(self, user):
+        """
+        Async version of ``is_member``.
+        """
+        return await self.users.filter(pk=user.pk).aexists()
+
 
 class OrganizationBase(with_metaclass(OrgMeta, AbstractBaseOrganization)):
     class Meta(AbstractBaseOrganization.Meta):
@@ -251,6 +257,16 @@ class OrganizationBase(with_metaclass(OrgMeta, AbstractBaseOrganization)):
             user=user, organization=self, **kwargs
         )
         signals.user_added.send(sender=self, user=user)
+        return org_user
+
+    async def aadd_user(self, user, **kwargs):
+        """
+        Async version of ``add_user``.
+        """
+        org_user = await self._org_user_model.objects.acreate(
+            user=user, organization=self, **kwargs
+        )
+        await signals.user_added.asend(sender=self, user=user)
         return org_user
 
 
@@ -364,6 +380,17 @@ class AbstractBaseInvitation(models.Model):
         org_user = self.organization.add_user(user, **self.activation_kwargs())
         self.invitee = user
         self.save()
+        return org_user
+
+    async def aactivate(self, user):
+        """Async version of ``activate``."""
+        # Load the organization explicitly; the lazy ``self.organization``
+        # accessor would raise SynchronousOnlyOperation here.
+        org_model = self._meta.get_field("organization").related_model
+        organization = await org_model.objects.aget(pk=self.organization_id)
+        org_user = await organization.aadd_user(user, **self.activation_kwargs())
+        self.invitee = user
+        await self.asave()
         return org_user
 
     def invitation_token(self):

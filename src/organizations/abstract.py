@@ -104,6 +104,23 @@ class AbstractOrganization(
         user_added.send(sender=self, user=user)
         return org_user
 
+    async def aadd_user(self, user, is_admin=False):
+        """Async version of ``add_user``."""
+        users_count = await self.users.acount()
+        if users_count == 0:
+            is_admin = True
+        org_user = await self._org_user_model.objects.acreate(
+            user=user, organization=self, is_admin=is_admin
+        )
+        if users_count == 0:
+            await self._org_owner_model.objects.acreate(
+                organization=self, organization_user=org_user
+            )
+
+        # User added signal
+        await user_added.asend(sender=self, user=user)
+        return org_user
+
     def remove_user(self, user):
         """
         Deletes a user from an organization.
@@ -113,6 +130,16 @@ class AbstractOrganization(
 
         # User removed signal
         user_removed.send(sender=self, user=user)
+
+    async def aremove_user(self, user):
+        """
+        Async version of ``remove_user``.
+        """
+        org_user = await self._org_user_model.objects.aget(user=user, organization=self)
+        await org_user.adelete()
+
+        # User removed signal
+        await user_removed.asend(sender=self, user=user)
 
     def get_or_add_user(self, user, **kwargs):
         """
@@ -143,6 +170,27 @@ class AbstractOrganization(
             user_added.send(sender=self, user=user)
         return org_user, created
 
+    async def aget_or_add_user(self, user, **kwargs):
+        """
+        Async version of ``get_or_add_user``.
+        """
+        is_admin = kwargs.pop("is_admin", False)
+        users_count = await self.users.acount()
+        if users_count == 0:
+            is_admin = True
+
+        org_user, created = await self._org_user_model.objects.aget_or_create(
+            organization=self, user=user, defaults={"is_admin": is_admin}
+        )
+        if users_count == 0:
+            await self._org_owner_model.objects.acreate(
+                organization=self, organization_user=org_user
+            )
+        if created:
+            # User added signal
+            await user_added.asend(sender=self, user=user)
+        return org_user, created
+
     def change_owner(self, new_owner):
         """
         Changes ownership of an organization.
@@ -154,6 +202,20 @@ class AbstractOrganization(
         # Owner changed signal
         owner_changed.send(sender=self, old=old_owner, new=new_owner)
 
+    async def achange_owner(self, new_owner):
+        """Async version of ``change_owner``."""
+        # Fetch the owner explicitly; the lazy ``self.owner`` accessor would
+        # raise SynchronousOnlyOperation here.
+        owner = await self._org_owner_model.objects.select_related(
+            "organization_user"
+        ).aget(organization=self)
+        old_owner = owner.organization_user
+        owner.organization_user = new_owner
+        await owner.asave()
+
+        # Owner changed signal
+        await owner_changed.asend(sender=self, old=old_owner, new=new_owner)
+
     def is_admin(self, user):
         """
         Returns True is user is an admin in the organization, otherwise false
@@ -162,11 +224,26 @@ class AbstractOrganization(
             True if self.organization_users.filter(user=user, is_admin=True) else False
         )
 
+    async def ais_admin(self, user):
+        """
+        Async version of ``is_admin``.
+        """
+        return await self.organization_users.filter(user=user, is_admin=True).aexists()
+
     def is_owner(self, user):
         """
         Returns True is user is the organization's owner, otherwise false
         """
         return self.owner.organization_user.user == user
+
+    async def ais_owner(self, user):
+        """
+        Async version of ``is_owner``.
+        """
+        owner = await self._org_owner_model.objects.select_related(
+            "organization_user"
+        ).aget(organization=self)
+        return owner.organization_user.user_id == user.pk
 
 
 class AbstractOrganizationUser(
@@ -189,7 +266,7 @@ class AbstractOrganizationUser(
             self.organization.name,
         )
 
-    def delete(self, using=None):
+    def delete(self, using=None, keep_parents=False):
         """
         If the organization user is also the owner, this should not be deleted
         unless it's part of a cascade from the Organization.
@@ -209,7 +286,9 @@ class AbstractOrganizationUser(
         # TODO This line presumes that OrgOwner model can't be modified
         except self._org_owner_model.DoesNotExist:
             pass
-        super().delete(using=using)
+        # ``keep_parents`` mirrors ``Model.delete``; ``Model.adelete`` forwards
+        # it, so the override must accept and pass it through.
+        super().delete(using=using, keep_parents=keep_parents)
 
     def get_absolute_url(self):
         return reverse(
