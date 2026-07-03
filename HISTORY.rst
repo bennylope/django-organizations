@@ -3,6 +3,11 @@
 History
 =======
 
+2.8.0 (WIP)
+-----
+
+* Drop Django 4.2 support (EOL) 
+
 2.7.0
 -----
 
