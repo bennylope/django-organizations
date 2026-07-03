@@ -26,6 +26,7 @@ Contributors:
 * `KimSia Sim <https://github.com/simkimsia>`_
 * `Dan Moore <https://github.com/mgrdcm>`_
 * `Sky <https://github.com/skyarrow87>`_
+* `David Burke <https://github.com/bufke>`_
 
 If your name is missing as a contributor that's my oversight, let me know at
 ben@benlopatin.com

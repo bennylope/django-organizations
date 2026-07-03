@@ -3,6 +3,12 @@
 History
 =======
 
+2.7.0
+-----
+
+* Fix for passing extra context to templates (thanks @mgrdcm!)
+* Adds initial async helper functions (thanks @bufke!)
+
 2.6.0
 -----
 
