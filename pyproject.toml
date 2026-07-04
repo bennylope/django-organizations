@@ -6,13 +6,15 @@ authors = [
 description = "Group accounts for Django"
 readme = "README.rst"
 requires-python = ">=3.10"
-license = {text = "BSD License"}
+license = "BSD-3-Clause"
+license-files = ["LICENSE"]
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Environment :: Web Environment",
     "Framework :: Django",
+    "Framework :: Django :: 5.2",
+    "Framework :: Django :: 6.0",
     "Intended Audience :: Developers",
-    "License :: OSI Approved :: BSD License",
     "Operating System :: OS Independent",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3.10",
@@ -34,6 +36,12 @@ dynamic = ["version"]
 "Documentation" = "https://django-organizations.readthedocs.io/en/latest/"
 
 [project.optional-dependencies]
+docs = [
+    "Sphinx>=7.2",
+    "furo>=2023.9.10",
+]
+
+[dependency-groups]
 tests = [
     "pytest>=6.0",
     "coverage",
@@ -45,22 +53,15 @@ tests = [
     # Required for mocking signals
     "mock-django==0.6.9",
 ]
-docs = [
-    "Sphinx==7.2.6",
-    "furo==2023.9.10",
-]
-linting = [
-    "ruff",
-    "isort",
-]
 dev = [
-    "django-organizations[tests,linting]",
+    {include-group = "tests"},
+    "ruff",
     "tox",
     "pre-commit",
 ]
 
 [build-system]
-requires = ["hatchling"]
+requires = ["hatchling>=1.27"]
 build-backend = "hatchling.build"
 
 [tool.hatch.build]
@@ -74,12 +75,28 @@ path = "src/organizations/__init__.py"
 only-include = ["src/organizations"]
 packages = ["src/organizations"]
 
-[tool.isort]
-line_length = 88
-force_single_line = true
-known_future_library = "future"
-known_django = "django"
-known_first_party = ["organizations"]
-sections = ["FUTURE", "STDLIB", "DJANGO", "THIRDPARTY", "FIRSTPARTY", "LOCALFOLDER"]
-default_section = "THIRDPARTY"
-skip_glob = ["**/__init__.py", "*/__init__.py"]
+[tool.ruff]
+extend-exclude = ["**/migrations/*"]
+
+[tool.ruff.lint]
+extend-select = ["I"]
+
+[tool.ruff.lint.per-file-ignores]
+"**/__init__.py" = ["I"]
+
+[tool.ruff.lint.isort]
+force-single-line = true
+known-first-party = ["organizations"]
+section-order = ["future", "standard-library", "django", "third-party", "first-party", "local-folder"]
+
+[tool.ruff.lint.isort.sections]
+django = ["django"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "--cov=organizations --cov-report=term"
+
+[tool.coverage.run]
+branch = true
+source = ["organizations"]
+omit = ["*/migrations/*"]
