@@ -3,11 +3,11 @@ name: Lint
 on:
   push:
     paths:
-      - 'src/'
-      - 'tests/'
+      - 'src/**'
+      - 'tests/**'
 
 jobs:
-  flake8:
+  lint:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
