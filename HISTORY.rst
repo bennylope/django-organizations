@@ -7,6 +7,7 @@ History
 -----
 
 * Drop Django 4.2 support (EOL) 
+* Packaging cleanup
 
 2.7.0
 -----
