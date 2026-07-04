@@ -41,7 +41,7 @@ tests = [
     "pytest-cov>=2.4.0",
     # Required to test default models
     "django-extensions>=2.0.8",
-    "django-autoslug>=1.9.8,",
+    "django-autoslug>=1.9.8",
     # Required for mocking signals
     "mock-django==0.6.9",
 ]
