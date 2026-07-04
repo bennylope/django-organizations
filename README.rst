@@ -73,8 +73,7 @@ Development & Contributing
 The basic functionality should not need much extending. Current dev priorities
 for me and contributors should include:
 
-* Improving the tests and test coverage (ideally moving them back out of the
-  main module and executable using the setup.py file)
+* Improving the tests and test coverage
 * Improving the backends and backends concept so that additional invitation and
   registration backends can be used
 * Documentation
@@ -92,23 +91,33 @@ The codebase is targeted and tested against:
 * Django 6.0.x against Python 3.12, 3.13, 3.14
 
 To run the tests against all target environments, install `tox
-<https://testrun.org/tox/latest/>`_ and then execute the command::
+<https://tox.wiki/>`_ and then execute the command::
 
     tox
+
+or with the project's `just <https://just.systems/>`_ recipe::
+
+    just test-all
 
 Fast testing
 ------------
 
 Testing each change on all the environments takes some time, you may
 want to test faster and avoid slowing down development by using pytest
-against your current environment::
+against your current environment. Set up a development environment with
+`uv <https://docs.astral.sh/uv/>`_ and run the tests::
 
-    pip install .[tests]
-    pytest
+    uv sync
+    uv run pytest
+
+or equivalently::
+
+    just install
+    just test
 
 Supply the ``-x`` option for **failfast** mode::
 
-    pytest -x
+    uv run pytest -x
 
 Submitting
 ----------
