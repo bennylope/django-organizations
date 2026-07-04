@@ -33,7 +33,7 @@ clean-test-all: clean-test  ## remove all test-related artifacts including tox
 	rm -rf .tox/
 
 format:  ## format the code with Black
-	black organizations tests example test_abstract test_accounts test_custom test_vendors
+	ruff format src/ tests/
 
 lint:  ## check style with flake8
 	flake8 organizations

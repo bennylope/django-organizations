@@ -74,9 +74,6 @@ path = "src/organizations/__init__.py"
 only-include = ["src/organizations"]
 packages = ["src/organizations"]
 
-[tool.black]
-target-version = ["py311"]
-
 [tool.isort]
 line_length = 88
 force_single_line = true
