@@ -1,7 +1,0 @@
-include setup.py
-include setup.cfg
-include README.rst
-include MANIFEST.in
-include HISTORY.rst
-include LICENSE
-recursive-include src/organizations/templates *
