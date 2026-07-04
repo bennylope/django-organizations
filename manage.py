@@ -5,9 +5,9 @@ Management command entry point for working with migrations
 
 import os
 import sys
+
 import django
 from django.conf import settings
-
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 

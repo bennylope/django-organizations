@@ -135,7 +135,11 @@ class BaseBackend:
                 raise Http404(_("Can't authenticate user"))
             login(request, user)
             return redirect(self.get_success_url())
-        return render(request, self.registration_form_template, {"form": form, **(extra_context or {})})
+        return render(
+            request,
+            self.registration_form_template,
+            {"form": form, **(extra_context or {})},
+        )
 
     def send_reminder(self, user, sender=None, **kwargs):
         """Sends a reminder email to the specified user"""
@@ -280,10 +284,16 @@ class RegistrationBackend(BaseBackend):
                 self.activation_success_template,
                 {"user": user, "organization": organization, **(extra_context or {})},
             )
-        return render(request, self.registration_form_template, {"form": form, **(extra_context or {})})
+        return render(
+            request,
+            self.registration_form_template,
+            {"form": form, **(extra_context or {})},
+        )
 
     def success_view(self, request, extra_context=None):
-        return render(request, self.activation_success_template, {**(extra_context or {})})
+        return render(
+            request, self.activation_success_template, {**(extra_context or {})}
+        )
 
 
 class InvitationBackend(BaseBackend):

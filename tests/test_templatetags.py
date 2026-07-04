@@ -21,7 +21,7 @@ class TestTagsAndFilters(TestCase):
     def test_organization_users_tag(self):
         self.context = {"organization": self.nirvana}
         out = Template(
-            "{% load org_tags %}" "{% organization_users organization %}"
+            "{% load org_tags %}{% organization_users organization %}"
         ).render(Context(self.context))
         self.assertIn("Kurt", out)
         self.assertIn("Dave", out)
@@ -29,20 +29,14 @@ class TestTagsAndFilters(TestCase):
     def test_is_owner_org_filter(self):
         self.context = {"organization": self.nirvana, "user": self.kurt}
         out = Template(
-            "{% load org_tags %}"
-            "{% if organization|is_owner:user %}"
-            "Is Owner"
-            "{% endif %}"
+            "{% load org_tags %}{% if organization|is_owner:user %}Is Owner{% endif %}"
         ).render(Context(self.context))
         self.assertEqual(out, "Is Owner")
 
     def test_is_admin_org_filter(self):
         self.context = {"organization": self.foo, "user": self.dave}
         out = Template(
-            "{% load org_tags %}"
-            "{% if organization|is_admin:user %}"
-            "Is Admin"
-            "{% endif %}"
+            "{% load org_tags %}{% if organization|is_admin:user %}Is Admin{% endif %}"
         ).render(Context(self.context))
         self.assertEqual(out, "Is Admin")
 

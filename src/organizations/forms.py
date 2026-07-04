@@ -112,7 +112,7 @@ class OrganizationUserAddForm(forms.ModelForm):
         email = self.cleaned_data["email"]
         if self.organization.users.filter(email__iexact=email).exists():
             raise forms.ValidationError(
-                _("There is already an organization " "member with this email address!")
+                _("There is already an organization member with this email address!")
             )
         if get_user_model().objects.filter(email__iexact=email).count() > 1:
             raise forms.ValidationError(
