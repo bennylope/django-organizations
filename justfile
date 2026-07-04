@@ -31,25 +31,25 @@ clean-test-all: clean-test
 
 # Format code with ruff
 format:
-    ruff format src/ tests/
+    uv run ruff format src/ tests/
 
 # Check style and formatting with ruff
 lint:
-    ruff check .
-    ruff format --check .
+    uv run ruff check .
+    uv run ruff format --check .
 
 # Run tests with the current Python
 test *args:
-    pytest --verbose {{args}}
+    uv run pytest --verbose {{args}}
 
 # Test with an HTML coverage report
 test-coverage: clean-test
-    pytest --verbose
-    coverage html
+    uv run pytest --verbose
+    uv run coverage html
 
 # Test all supported Python and Django versions with tox
 test-all:
-    tox
+    uv run tox
 
 # Run all necessary steps to check validity of project
 check: clean-build clean-pyc clean-test lint test-coverage
