@@ -51,7 +51,7 @@ tests = [
     "django-extensions>=2.0.8",
     "django-autoslug>=1.9.8",
     # Required for mocking signals
-    "mock-django==0.6.9",
+    "mock-django==0.6.10",
 ]
 dev = [
     {include-group = "tests"},
