@@ -89,6 +89,7 @@ The codebase is targeted and tested against:
 
 * Django 5.2.x against Python 3.10, 3.11, 3.12, 3.13, 3.14
 * Django 6.0.x against Python 3.12, 3.13, 3.14
+* Django 6.1.x against Python 3.12, 3.13, 3.14
 
 To run the tests against all target environments, install `tox
 <https://tox.wiki/>`_ and then execute the command::
